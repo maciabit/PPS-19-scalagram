@@ -4,22 +4,25 @@ name: Scala CI with Gradle
 
 on:
   push:
-    branches: [ main, develop ]
   pull_request:
-    branches: [ main, develop ]
+  schedule: 
+    - cron: '0 4 * * SUN'
+
+env: 
+  OS: [ubuntu, macos, windows] 
+  JAVA_VERSION: [1.8, 11, 14]
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        os: OS
+    runs-on: ${{matrix.os}}-latest
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 14
       uses: actions/setup-java@v1
       with:
         java-version: 14
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
