@@ -9,14 +9,14 @@ on:
     - cron: '0 4 * * SUN'
 
 env: 
-  OS: [ubuntu, macos, windows] 
-  JAVA_VERSION: [1.8, 11, 14]
+  - OS: [ubuntu, macos, windows] 
+  - JAVA_VERSION: [1.8, 11, 14]
 
 jobs:
   build:
     strategy:
       matrix:
-        os: OS
+        os: env.OS
     runs-on: ${{matrix.os}}-latest
     steps:
     - uses: actions/checkout@v2
