@@ -26,6 +26,9 @@ dependencies {
     // Use Scala 2.13 in our library project
     implementation("org.scala-lang:scala-library:2.13.2")
 
+    // Use requests to perform HTTP requests
+    implementation("com.lihaoyi:requests_2.13:0.6.5")
+
     // Use Scalatest for testing our library
     testImplementation("junit:junit:null")
     testImplementation("org.scalatest:scalatest_2.13:3.1.2")
