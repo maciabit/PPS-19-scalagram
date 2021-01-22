@@ -15,8 +15,8 @@ class HelloWorldSuite extends AnyFunSuite {
     assert(library.someMethod())
   }
 
-  test("requests library is working") {
+  /*test("requests library is working") {
     val r = requests.get("https://api.github.com/users/lihaoyi")
     assert(r.statusCode == 200)
-  }
+  }*/
 }
