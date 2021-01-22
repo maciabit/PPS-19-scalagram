@@ -8,3 +8,6 @@
 build
 
 .idea
+
+# Mac
+.DS_Store
