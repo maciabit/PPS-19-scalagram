@@ -21,7 +21,8 @@ jobs:
       run: ./gradlew build
   build:
     needs: preliminary-build
-    strategy:
+    strategy: 
+      fail-fast: false
       matrix:
         os: [ubuntu, macos, windows]
         java_version: [1.8, 11, 14]
