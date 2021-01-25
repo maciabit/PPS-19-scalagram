@@ -8,23 +8,12 @@ trait UserMessage extends TelegramMessage {
 
   /*
   def from: Option[User]
-
   def forwardFrom: Option[User]
-
   def forwardFromChat: Option[Chat]
-
-
-
-
-
   def replyToMessage: Option[TelegramMessage]
-
-
-
-
-
   def viaBot: Option[User]
 */
+
   def senderChat : Option[Chat]
   def authorSignature: Option[String]
   def editDate: Option[Int]
