@@ -13,7 +13,7 @@ class SendMessage(no_webpage: Option[Boolean] = None,
                   schedule_date: Option[Int] = None
                  ){
 
-  val token = "1234035252:AAHZx_HAABuhsvvswopfWA1w6Y85f3-o_zY"
+  val token = ""
 
   def sendMessage(): Int = {
     val req = requests.post("https://api.telegram.org/bot"+token+"/sendMessage?chat_id="+peer.chatId+"&text="+message)
