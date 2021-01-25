@@ -12,7 +12,8 @@ class HelloWorld {
 object HelloWorld extends App {
   println("Hello, world!")
 
-  val r = requests.get("https://api.github.com/users/lihaoyi")
+  //val r = requests.get("https://api.github.com/users/lihaoyi")
+  val r = requests.post("https://api.telegram.org/bot1234035252:AAHZx_HAABuhsvvswopfWA1w6Y85f3-o_zY/sendMessage?chat_id=-1001364807173&text=InviatodaIntelliJ")
 
   println(r.statusCode)
   println(r.headers("content-type"))

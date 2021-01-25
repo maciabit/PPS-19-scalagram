@@ -1,5 +1,5 @@
 package PPS19.scalagram.methods
 
-class sendMessage {
+sealed trait Markup {
 
 }

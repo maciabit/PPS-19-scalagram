@@ -1,0 +1,22 @@
+package PPS19.scalagram.methods
+
+class SendMessage(no_webpage: Option[Boolean] = None,
+                  silent: Option[Boolean] = None,
+                  background: Option[Boolean] = None,
+                  clear_draft: Option[Boolean] = None,
+                  peer: Peer,
+                  reply_to_msg_id: Option[Int] = None,
+                  message: String,
+                  //random_id: Long,
+                  reply_markup: Option[Markup] = None,
+                  entities: Option[Vector[Any]] = None,
+                  schedule_date: Option[Int] = None
+                 ){
+
+  val token = "1234035252:AAHZx_HAABuhsvvswopfWA1w6Y85f3-o_zY"
+
+  def sendMessage(): Int = {
+    val req = requests.post("https://api.telegram.org/bot"+token+"/sendMessage?chat_id="+peer.chatId+"&text="+message)
+    req.statusCode
+  }
+}
