@@ -5,7 +5,7 @@ name: Scala CI with Gradle
 on:
   push:
   pull_request:
-  schedule: 
+  schedule:
     - cron: '0 4 * * SUN'
 
 jobs:
@@ -13,15 +13,19 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 14
+    - name: Set up JDK
       uses: actions/setup-java@v1
       with:
         java-version: 14
+    - name: Create application.properties file with the bot's token
+      run: |
+        mkdir -p src/main/resources
+        echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
     - name: Build with Gradle
       run: ./gradlew build
   build:
     needs: preliminary-build
-    strategy: 
+    strategy:
       fail-fast: false
       matrix:
         os: [ubuntu, macos, windows]
@@ -29,9 +33,13 @@ jobs:
     runs-on: ${{matrix.os}}-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 14
+    - name: Set up JDK
       uses: actions/setup-java@v1
       with:
         java-version: ${{matrix.java_version}}
+    - name: Create application.properties file with the bot's token
+      run: |
+        mkdir -p src/main/resources
+        echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
     - name: Build with Gradle
       run: ./gradlew build
