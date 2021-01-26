@@ -9,18 +9,14 @@ import org.scalatestplus.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class ModelsSuite extends AnyFunSuite{
 
-  test("UpdateChannelPostTest"){
+
+  test("ChannelPostTest"){
     //val message = """{ "update_id": 2, "message":{"message_id" : 1, "chat":1, "date":2, "text":"Piccolo bat"} }"""
     val message = """{
                                 "update_id": 971212771,
                                 "channel_post": {
                                     "message_id": 344544,
                                     "author_signature": "ProphecyOfferte",
-                                    "sender_chat": {
-                                        "id": -1001364807173,
-                                        "title": "Bot Log",
-                                        "type": "channel"
-                                    },
                                     "chat": {
                                         "id": -1001364807173,
                                         "title": "Bot Log",
@@ -33,5 +29,7 @@ class ModelsSuite extends AnyFunSuite{
     val messageDec = decode[Update](message)
     assert(messageDec.isRight)
   }
+
+
 
 }
