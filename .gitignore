@@ -11,3 +11,6 @@ build
 
 # Mac
 .DS_Store
+
+# Ignore configuration stored in application.properties
+application.properties
