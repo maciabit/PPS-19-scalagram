@@ -25,9 +25,7 @@ class BotSuite extends AnyFunSuite {
   test("A Bot can be created") {
     val token = BotToken("<TOKEN>")
     val middlewares = List(Middleware(() => true))
-    val scenes = List(
-      Scene(Reaction(() => {}))
-    )
+    val scenes = List(Scene(Reaction(() => {})))
     val reactions = List(Reaction(() => {}))
     val bot = Bot(token, middlewares, scenes, reactions)
     assert(bot.token == token)
