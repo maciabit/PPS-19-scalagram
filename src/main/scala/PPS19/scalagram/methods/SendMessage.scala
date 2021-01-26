@@ -1,5 +1,7 @@
 package PPS19.scalagram.methods
 
+import PPS19.scalagram.utils.Props
+
 class SendMessage(no_webpage: Option[Boolean] = None,
                   silent: Option[Boolean] = None,
                   background: Option[Boolean] = None,
@@ -16,7 +18,7 @@ class SendMessage(no_webpage: Option[Boolean] = None,
   val token = ""
 
   def sendMessage(): Int = {
-    val req = requests.post("https://api.telegram.org/bot"+token+"/sendMessage?chat_id="+peer.chatId+"&text="+message)
+    val req = requests.post("https://api.telegram.org/bot"+Props.get("token")+"/sendMessage?chat_id="+peer.chatId+"&text="+message)
     req.statusCode
   }
 }
