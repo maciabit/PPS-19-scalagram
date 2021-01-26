@@ -1,8 +1,11 @@
 package PPS19.scalagram.methods
 
 import PPS19.scalagram.utils.Props
+import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
+import org.scalatestplus.junit.JUnitRunner
 
+@RunWith(classOf[JUnitRunner])
 class MethodsSuite extends AnyFunSuite{
   test("Send a message") {
     Props.load()

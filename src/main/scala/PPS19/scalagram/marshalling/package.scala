@@ -1,7 +1,7 @@
 package PPS19.scalagram
 
 package object marshalling {
-  private[PPS19] implicit class CaseString(private val word: String) extends AnyVal {
+  implicit class CaseString(private val word: String) extends AnyVal {
 
     def camelCase: String =
       if (word.isEmpty) word
