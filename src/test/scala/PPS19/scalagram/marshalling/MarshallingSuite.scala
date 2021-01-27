@@ -4,6 +4,8 @@ import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
 import PPS19.scalagram.marshalling.MapUtils._
+import PPS19.scalagram.methods.GetNewUpdates
+import PPS19.scalagram.utils.Props
 
 @RunWith(classOf[JUnitRunner])
 class MarshallingSuite extends AnyFunSuite{
@@ -24,5 +26,11 @@ class MarshallingSuite extends AnyFunSuite{
       "booleanField" -> true
     )
     assert(map.toUrlQuery == "chat_id=-10053564&text=lorem ipsium&boolean_field=true")
+  }
+  test("A Telegram API call can be performed using TelegramMethod Trait") {
+    Props.load()
+    val text = GetNewUpdates().getNewUpdates()
+    println(text)
+    assert(true)
   }
 }
