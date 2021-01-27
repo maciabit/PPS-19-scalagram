@@ -6,7 +6,8 @@ import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class MethodsSuite extends AnyFunSuite{
+class MethodsSuite extends AnyFunSuite {
+
   /*test("Send a message") {
     Props.load()
     val p = InputPeerChat(chatId = "-1001364807173")
@@ -15,4 +16,11 @@ class MethodsSuite extends AnyFunSuite{
     val r = sm.sendMessage()
     assert(r == 200)
   }*/
+
+  test("A Telegram API call can be performed using TelegramMethod Trait") {
+    Props.load()
+    val text = GetNewUpdates().getNewUpdates()
+    println(text)
+    assert(true)
+  }
 }

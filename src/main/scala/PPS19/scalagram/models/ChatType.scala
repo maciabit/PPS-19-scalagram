@@ -6,7 +6,7 @@ import io.circe.Decoder
   */
 object ChatType extends Enumeration {
   type ChatType = Value
-  val Private, /*Group, Supergroup, */Channel = Value
+  val Private, Group, Supergroup, Channel = Value
 
   implicit val chatTypeDecoder: Decoder[ChatType] =
     Decoder[String].map(s => ChatType.withName(s.capitalize))

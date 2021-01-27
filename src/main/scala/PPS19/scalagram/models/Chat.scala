@@ -18,8 +18,8 @@ object Chat {
       .get[ChatType]("type")
       .map {
         case ChatType.Private    => deriveDecoder[PrivateChat]
-        //case ChatType.Group      => deriveDecoder[Group]
-        //case ChatType.Supergroup => deriveDecoder[Supergroup]
+        case ChatType.Group      => deriveDecoder[Group]
+        case ChatType.Supergroup => deriveDecoder[Supergroup]
         case ChatType.Channel    => deriveDecoder[Channel]
       }
       .flatMap(_.tryDecode(cursor))
@@ -29,8 +29,8 @@ object Chat {
 final case class PrivateChat(id: Long, username: Option[String], firstName: Option[String], lastName: Option[String])
   extends Chat
 
-//final case class Group(id: Long, title: Option[String]) extends Chat
+final case class Group(id: Long, title: Option[String]) extends Chat
 
-//final case class Supergroup(id: Long, title: Option[String], username: Option[String]) extends Chat
+final case class Supergroup(id: Long, title: Option[String], username: Option[String]) extends Chat
 
 final case class Channel(id: Long, title: Option[String], username: Option[String]) extends Chat
