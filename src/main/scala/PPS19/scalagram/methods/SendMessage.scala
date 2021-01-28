@@ -1,8 +1,10 @@
 package PPS19.scalagram.methods
 
-import PPS19.scalagram.utils.Props
+import PPS19.scalagram.models.messages.TelegramMessage
 import io.circe.Json
+import io.circe.parser._
 import requests.Response
+import scala.util.{Try,Success,Failure}
 
 case class SendMessage(){
   val method: Map[String, Any] => Response = TelegramMethod.method(HttpMethod.POST, "sendMessage")
@@ -14,8 +16,8 @@ case class SendMessage(){
                   disableNotification: Option[Boolean] = None,
                   replyToMessageId: Option[Int],
                   allowSendingWithoutReply: Option[Boolean],
-                  replyMarkup: Option[Markup] = None): Json = {
-    val urlParams: Map[String, Any] = Map {
+                  replyMarkup: Option[Markup] = None): Try[TelegramMessage] = {
+    val urlParams: Map[String, Any] = Map (
       "chat_id" -> chatId,
       "text" -> text,
       "parse_mode" -> parseMode,
@@ -25,13 +27,18 @@ case class SendMessage(){
       "reply_to_message_id" -> replyToMessageId,
       "allow_sending_without_reply" -> allowSendingWithoutReply,
       "reply_markup" -> replyMarkup,
-    } filter { case (_, value) => value.isDefined } map { case (key, value) => (key, value.get) }
+    ) filter {
+      case (_, None) => false
+      case _ => true
+    } map {
+      case (key, Some(value)) => (key, value)
+      case (key, value) => (key, value)
+    }
     val res = method(urlParams)
-
-  }
-
-  def sendMessage(): Int = {
-    val req = requests.post("https://api.telegram.org/bot"+Props.get("token")+"/sendMessage?chat_id="+peer.chatId+"&text="+message)
-    req.statusCode
+    val decoded = decode[TelegramMessage](res.text())
+    decoded match {
+      case Right(message) => Success(message)
+      case Left(error) => Failure(error)
+    }
   }
 }
