@@ -1,4 +1,5 @@
 package PPS19.scalagram.models.messages
+import PPS19.scalagram.marshalling.codecs.DecoderOps
 import PPS19.scalagram.models.Chat
 import io.circe.Decoder
 import cats.syntax.functor._
@@ -15,5 +16,5 @@ object TelegramMessage {
     List[Decoder[TelegramMessage]](
       UserMessage.userMessageDecoder.widen,
       //SystemMessage.systemMessageDecoder.widen
-    ).reduceLeft(_.or(_))
+    ).reduceLeft(_.or(_)).camelCase
 }

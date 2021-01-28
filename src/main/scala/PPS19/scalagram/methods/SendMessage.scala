@@ -10,15 +10,15 @@ case class SendMessage(){
   val method: Map[String, Any] => Response = TelegramMethod.method(HttpMethod.POST, "sendMessage")
   def sendMessage(chatId: Either[String, Int],
                   text: String,
-                  parseMode: Option[String],
+                  parseMode: Option[String] = None,
                   entities: Option[Vector[Any]] = None,
                   disablePreview: Option[Boolean] = None,
                   disableNotification: Option[Boolean] = None,
-                  replyToMessageId: Option[Int],
-                  allowSendingWithoutReply: Option[Boolean],
+                  replyToMessageId: Option[Int] = None,
+                  allowSendingWithoutReply: Option[Boolean] = None,
                   replyMarkup: Option[Markup] = None): Try[TelegramMessage] = {
     val urlParams: Map[String, Any] = Map (
-      "chat_id" -> chatId,
+      "chat_id" -> chatId.fold(l => l, r => r),
       "text" -> text,
       "parse_mode" -> parseMode,
       "entities" -> entities,
@@ -35,7 +35,7 @@ case class SendMessage(){
       case (key, value) => (key, value)
     }
     val res = method(urlParams)
-    val decoded = decode[TelegramMessage](res.text())
+    val decoded = decode[TelegramMessage](parse(res.text()).getOrElse(Json.Null).findAllByKey("result").head.toString())
     decoded match {
       case Right(message) => Success(message)
       case Left(error) => Failure(error)

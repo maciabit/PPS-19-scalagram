@@ -29,7 +29,4 @@ class ModelsSuite extends AnyFunSuite{
     val messageDec = decode[Update](message)
     assert(messageDec.isRight)
   }
-
-
-
 }
