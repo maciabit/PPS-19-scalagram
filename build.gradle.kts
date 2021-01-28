@@ -34,6 +34,10 @@ dependencies {
     implementation("io.circe:circe-parser_2.13:0.14.0-M3")
     implementation("io.circe:circe-generic_2.13:0.14.0-M3")
 
+    // Use Akka for the polling infrastructure
+    implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation("com.typesafe.akka:akka-actor-typed_2.13:2.6.11")
+
     // Use Scalatest for testing our library
     testImplementation("junit:junit:null")
     testImplementation("org.scalatest:scalatest_2.13:3.1.2")
