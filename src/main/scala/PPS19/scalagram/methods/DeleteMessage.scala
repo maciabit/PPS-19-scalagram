@@ -1,5 +1,6 @@
 package PPS19.scalagram.methods
 
+import PPS19.scalagram.models.HttpMethod
 import requests.Response
 
 case class DeleteMessage() {

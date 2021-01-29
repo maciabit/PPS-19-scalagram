@@ -1,4 +1,4 @@
-package PPS19.scalagram.methods
+package PPS19.scalagram.models
 
 object HttpMethod extends Enumeration {
   type HttpMethod = Value

@@ -1,7 +1,8 @@
 package PPS19.scalagram.methods
 
 import PPS19.scalagram.marshalling.MapUtils.MapToUrlParams
-import PPS19.scalagram.methods.HttpMethod.HttpMethod
+import PPS19.scalagram.models.HttpMethod
+import PPS19.scalagram.models.HttpMethod.HttpMethod
 import PPS19.scalagram.utils.Props
 import requests.Response
 

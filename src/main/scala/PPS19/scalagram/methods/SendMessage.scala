@@ -1,10 +1,12 @@
 package PPS19.scalagram.methods
 
+import PPS19.scalagram.models.{HttpMethod, Markup}
 import PPS19.scalagram.models.messages.TelegramMessage
 import io.circe.Json
 import io.circe.parser._
 import requests.Response
-import scala.util.{Try,Success,Failure}
+
+import scala.util.{Failure, Success, Try}
 
 case class SendMessage(){
   val method: Map[String, Any] => Response = TelegramMethod.method(HttpMethod.POST, "sendMessage")

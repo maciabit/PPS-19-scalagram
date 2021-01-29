@@ -1,6 +1,7 @@
 package PPS19.scalagram.methods
-import PPS19.scalagram.models.Update
+
 import scala.util.{Try,Success,Failure}
+import PPS19.scalagram.models.{HttpMethod, Update}
 import io.circe.{HCursor, Json}
 import requests.Response
 import io.circe.parser._
