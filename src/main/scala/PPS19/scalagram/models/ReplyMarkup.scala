@@ -15,7 +15,7 @@ object ReplyMarkup {
   }
 }
 
-case class InlineKeyboardMarkup (prova: String) extends ReplyMarkup
+case class InlineKeyboardMarkup (inline_keyboard: Seq[Seq[InlineKeyboardButton]]) extends ReplyMarkup
 case class ReplyKeyboardMarkup (keyboard: Seq[Seq[KeyboardButton]], resize_keyboard:Option[Boolean] = None, one_time_keyboard:Option[Boolean] = None, selective:Option[Boolean] = None) extends ReplyMarkup
 case class ReplyKeyboardRemove (remove_keyboard:Boolean = true, selective:Option[Boolean] = None) extends ReplyMarkup
 case class ForceReply (force_reply : Boolean = true, selective : Option[Boolean] = None) extends ReplyMarkup
