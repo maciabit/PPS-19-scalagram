@@ -29,7 +29,6 @@ class MethodsSuite extends AnyFunSuite with BeforeAndAfter {
     assert(true)
   }
 
-
   test("A Telegram message can be pinned and unpinned with HTTP call") {
     val firstMessageToPin = SendMessage().sendMessage(chatId = Left("-1001286594106"), text = "firstMessageToPin")
     val secondMessageToPin = SendMessage().sendMessage(chatId = Left("-1001286594106"), text = "secondMessageToPin")
