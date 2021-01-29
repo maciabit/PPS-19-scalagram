@@ -1,7 +1,10 @@
 package PPS19.scalagram.models
 
+import PPS19.scalagram.methods.SendMessage
 import PPS19.scalagram.models.messages.TextMessage
+import PPS19.scalagram.utils.Props
 import io.circe.parser.decode
+import io.circe.syntax.EncoderOps
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
@@ -9,9 +12,25 @@ import org.scalatestplus.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class ModelsSuite extends AnyFunSuite{
 
+  test("A message with a Response Keyboard with a single button can be sent"){
+    Props.load()
+    val a = (ReplyKeyboardMarkup(keyboard = Seq(Seq(KeyboardButton(text = "Button created on intellij")))) : ReplyMarkup)
+    SendMessage().sendMessage(chatId = Left("-1001286594106"), text = "Provaaaa[][][]]'''!!!-.-.-[]é*}{}{", replyMarkup = Some(a))
+  }
+
+  test("A message with a Response Keyboard with a row of button can be sent"){
+    Props.load()
+    val a = (ReplyKeyboardMarkup(keyboard = Seq(Seq(KeyboardButton(text = "Button created on intellij"), KeyboardButton(text = "Button created on intellij second")))) : ReplyMarkup)
+    SendMessage().sendMessage(chatId = Left("-1001286594106"), text = "Provaaaa[][][]]'''!!!-.-.-[]é*}{}{", replyMarkup = Some(a))
+  }
+
+  test("A message with a Response Keyboard with a column of button can be sent"){
+    Props.load()
+    val a = (ReplyKeyboardMarkup(keyboard = Seq(Seq(KeyboardButton(text = "Button created on intellij second")),Seq(KeyboardButton(text = "Button created on intellij")))) : ReplyMarkup)
+    SendMessage().sendMessage(chatId = Left("-1001286594106"), text = "Provaaaa[][][]]'''!!!-.-.-[]é*}{}{", replyMarkup = Some(a))
+  }
 
   test("ChannelPostTest"){
-    //val message = """{ "update_id": 2, "message":{"message_id" : 1, "chat":1, "date":2, "text":"Piccolo bat"} }"""
     val message = """{
                                 "update_id": 971212771,
                                 "channel_post": {

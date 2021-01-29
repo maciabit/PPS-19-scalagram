@@ -1,10 +1,11 @@
 package PPS19.scalagram.methods
 
-import PPS19.scalagram.models.{HttpMethod, Markup}
+import PPS19.scalagram.models.{HttpMethod, ReplyMarkup}
 import PPS19.scalagram.models.messages.TelegramMessage
 import io.circe.Json
 import io.circe.parser._
 import requests.Response
+import io.circe.syntax.EncoderOps
 
 import scala.util.{Failure, Success, Try}
 
@@ -18,7 +19,7 @@ case class SendMessage(){
                   disableNotification: Option[Boolean] = None,
                   replyToMessageId: Option[Int] = None,
                   allowSendingWithoutReply: Option[Boolean] = None,
-                  replyMarkup: Option[Markup] = None): Try[TelegramMessage] = {
+                  replyMarkup: Option[ReplyMarkup] = None): Try[TelegramMessage] = {
     val urlParams: Map[String, Any] = Map (
       "chat_id" -> chatId.fold(l => l, r => r),
       "text" -> text,
@@ -28,7 +29,7 @@ case class SendMessage(){
       "disable_notification" -> disableNotification,
       "reply_to_message_id" -> replyToMessageId,
       "allow_sending_without_reply" -> allowSendingWithoutReply,
-      "reply_markup" -> replyMarkup,
+      "reply_markup" -> replyMarkup.asJson.toString().filter(_ >= ' '),
     ) filter {
       case (_, None) => false
       case _ => true
