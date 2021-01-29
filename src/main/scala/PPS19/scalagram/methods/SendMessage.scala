@@ -1,6 +1,6 @@
 package PPS19.scalagram.methods
 
-import PPS19.scalagram.models.{HttpMethod, Markup}
+import PPS19.scalagram.models.{HttpMethod, Markup, TelegramError}
 import PPS19.scalagram.models.messages.TelegramMessage
 import io.circe.Json
 import io.circe.parser._
@@ -37,10 +37,14 @@ case class SendMessage(){
       case (key, value) => (key, value)
     }
     val res = method(urlParams)
-    val decoded = decode[TelegramMessage](parse(res.text()).getOrElse(Json.Null).findAllByKey("result").head.toString())
-    decoded match {
-      case Right(message) => Success(message)
-      case Left(error) => Failure(error)
+    val parsed = parse(res.text()).getOrElse(Json.Null)
+    parsed.findAllByKey("ok").head.toString() match {
+      case "false" => Failure(decode[TelegramError](parsed.toString()).getOrElse(null))
+      case "true" =>
+        decode[TelegramMessage](parsed.findAllByKey("result").head.toString()) match {
+          case Right(message) => Success(message)
+          case Left(error) => Failure(error)
+        }
     }
   }
 }

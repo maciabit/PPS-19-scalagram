@@ -32,13 +32,13 @@ class MethodsSuite extends AnyFunSuite with BeforeAndAfter {
 
 
   test("A Telegram message can be pinned with HTTP call"){
-    assert(PinMessage().pinMessage(chatId = Left("-1001286594106"), messageId = 353, disableNotification = Some(true)))
-    assert(PinMessage().pinMessage(chatId = Left("-1001286594106"), messageId = 355, disableNotification = Some(true)))
-    assert(PinMessage().pinMessage(chatId = Left("-1001286594106"), messageId = 356, disableNotification = Some(true)))
+    assert(PinMessage().pinMessage(chatId = Left("-1001286594106"), messageId = 510, disableNotification = Some(true)))
+    assert(PinMessage().pinMessage(chatId = Left("-1001286594106"), messageId = 511, disableNotification = Some(true)))
+    assert(PinMessage().pinMessage(chatId = Left("-1001286594106"), messageId = 512, disableNotification = Some(true)))
   }
 
   test("A Telegram message can be unpinned with HTTP call"){
-    assert(UnpinMessage().unpinMessage(chatId = Left("-1001286594106"), messageId = 353))
+    assert(UnpinMessage().unpinMessage(chatId = Left("-1001286594106"), messageId = 510))
   }
 
    test("All Telegram messages of a given chat can be unpinned") {

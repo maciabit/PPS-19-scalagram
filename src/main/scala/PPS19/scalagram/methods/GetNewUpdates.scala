@@ -1,12 +1,10 @@
 package PPS19.scalagram.methods
 
-import scala.util.{Try,Success,Failure}
-import PPS19.scalagram.models.{HttpMethod, Update}
-import io.circe.{HCursor, Json}
+import scala.util.{Failure, Success, Try}
+import PPS19.scalagram.models.{HttpMethod, TelegramError, Update}
+import io.circe.Json
 import requests.Response
 import io.circe.parser._
-
-import scala.util.Try
 
 case class GetNewUpdates() {
   val method: Map[String, Any] => Response = TelegramMethod.method(HttpMethod.GET, "getUpdates")
@@ -22,10 +20,9 @@ case class GetNewUpdates() {
     ) filter (_._2.isDefined) map { case (key, value) => (key, value.get) }
     val res = method(urlParams)
     val parsed = parse(res.text()).getOrElse(Json.Null)
-    val updates = decode[List[Update]](parsed.findAllByKey("ok").head.toString())
-    updates match {
-      case Left(error) => Failure(error)
-      case Right(message) =>
+    parsed.findAllByKey("ok").head.toString() match {
+      case "false" => Failure(decode[TelegramError](parsed.toString()).getOrElse(null))
+      case "true" =>
         val json = parsed.findAllByKey("result").head.asArray.get
           .map(update => decode[Update](update.toString()))
           .map { case Right(update) => update }
