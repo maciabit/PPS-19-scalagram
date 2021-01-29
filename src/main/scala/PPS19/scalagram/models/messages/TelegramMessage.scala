@@ -15,6 +15,6 @@ object TelegramMessage {
   implicit val telegramMessageDecoder: Decoder[TelegramMessage] =
     List[Decoder[TelegramMessage]](
       UserMessage.userMessageDecoder.widen,
-      //SystemMessage.systemMessageDecoder.widen
+      SystemMessage.systemMessageDecoder.widen
     ).reduceLeft(_.or(_)).camelCase
 }

@@ -29,4 +29,44 @@ class ModelsSuite extends AnyFunSuite{
     val messageDec = decode[Update](message)
     assert(messageDec.isRight)
   }
+  test("A system Message received in a group can be decoded"){
+    val message = """{
+            "update_id": 844881872,
+            "message": {
+                "message_id": 515,
+                "from": {
+                    "id": 1543598092,
+                    "is_bot": true,
+                    "first_name": "ScalagramTest",
+                    "username": "ScalagramTestBot"
+                },
+                "chat": {
+                    "id": -1001286594106,
+                    "title": "NodeBots",
+                    "type": "supergroup"
+                },
+                "date": 1611909473,
+                "pinned_message": {
+                    "message_id": 510,
+                    "from": {
+                        "id": 263890809,
+                        "is_bot": false,
+                        "first_name": "Francesco",
+                        "last_name": "Boschi",
+                        "username": "Flavietto4"
+                    },
+                    "chat": {
+                        "id": -1001286594106,
+                        "title": "NodeBots",
+                        "type": "supergroup"
+                    },
+                    "date": 1611909398,
+                    "text": "Leggi"
+                }
+            }
+        }"""
+    val messageDec = decode[Update](message)
+    println(messageDec)
+    assert(messageDec.isRight)
+  }
 }
