@@ -7,7 +7,7 @@ import PPS19.scalagram.models.messages._
 import cats.syntax.functor._
 
 sealed trait Update {
-def updateId : Long
+  def updateId : Long
 }
 
 object Update {

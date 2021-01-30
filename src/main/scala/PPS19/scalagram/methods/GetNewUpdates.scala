@@ -7,7 +7,7 @@ import requests.Response
 import io.circe.parser._
 
 case class GetNewUpdates() {
-  val method: Map[String, Any] => Response = TelegramMethod.method(HttpMethod.GET, "getUpdates")
+  val method: Map[String, Any] => Try[Response] = TelegramMethod.method1(HttpMethod.GET, "getUpdates")
   def getNewUpdates(offset: Option[Int] = None,
                     limit: Option[Int] = None,
                     timeout: Option[Int] = None,
@@ -19,15 +19,20 @@ case class GetNewUpdates() {
       "allowed_Updates" -> allowedUpdates,
     ) filter (_._2.isDefined) map { case (key, value) => (key, value.get) }
     val res = method(urlParams)
-    val parsed = parse(res.text()).getOrElse(Json.Null)
-    parsed.findAllByKey("ok").head.toString() match {
-      case "false" => Failure(decode[TelegramError](parsed.toString()).getOrElse(null))
-      case "true" =>
-        val json = parsed.findAllByKey("result").head.asArray.get
-          .map(update => decode[Update](update.toString()))
-          .map { case Right(update) => update }
-          .toList
-        Success(json)
+    if(res.isSuccess) {
+      val parsed = parse(res.get.text()).getOrElse(Json.Null)
+      parsed.findAllByKey("ok").head.toString() match {
+        case "false" => Failure(decode[TelegramError](parsed.toString()).getOrElse(null))
+        case "true" =>
+          val json = parsed.findAllByKey("result").head.asArray.get
+            .map(update => decode[Update](update.toString()))
+            .map { case Right(update) => update }
+            .toList
+          Success(json)
+      }
+    } else {
+      println("ciao")
+      Failure(TelegramError.connectionError)
     }
   }
 }
