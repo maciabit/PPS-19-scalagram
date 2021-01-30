@@ -34,8 +34,9 @@ class MethodsSuite extends AnyFunSuite with BeforeAndAfter {
     assert(TestUtils.retry(PinMessage().pinMessage(chatId = Left("-1001286594106"), messageId = thirdMessageToPin.get.messageId, disableNotification = Some(true)))(3).isSuccess)
     assert(TestUtils.retry(UnpinMessage().unpinMessage(chatId = Left("-1001286594106"), firstMessageToPin.get.messageId))(3).isSuccess)
   }
-
+/*
    test("All Telegram messages of a given chat can be unpinned") {
      assert(TestUtils.retry(UnpinAllMessages().unpinAllMessages(chatId = Left("-1001286594106")))(3).isSuccess)
    }
+ */
 }
