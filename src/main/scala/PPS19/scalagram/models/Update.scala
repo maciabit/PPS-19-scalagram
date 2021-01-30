@@ -13,14 +13,6 @@ sealed trait Update {
 object Update {
   final case class Unknown(updateId: Long) extends Update
 
-  /*implicit val updateDecoder : Decoder[Update] = List[Decoder[Update]](
-    deriveDecoder[MessageReceived].widen,
-    deriveDecoder[MessageEdited].widen,
-    deriveDecoder[ChannelPost].widen,
-    deriveDecoder[ChannelPostEdited].widen,
-    deriveDecoder[Unknown].widen
-  ).reduceLeft(_.or(_)).camelCase*/
-
   implicit val updateDecoder: Decoder[Update] = List[Decoder[Update]](
     deriveDecoder[MessageReceived].widen,
     deriveDecoder[MessageEdited].widen,

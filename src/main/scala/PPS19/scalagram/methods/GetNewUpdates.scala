@@ -31,7 +31,7 @@ case class GetNewUpdates() {
           Success(json)
       }
     } else {
-      println("ciao")
+      println(TelegramError.connectionError.description)
       Failure(TelegramError.connectionError)
     }
   }

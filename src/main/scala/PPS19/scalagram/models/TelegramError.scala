@@ -7,5 +7,7 @@ case class TelegramError(statusCode: Int, description: String, ok: Boolean) exte
 
 object TelegramError {
   implicit val telegramErrorDecoder: Decoder[TelegramError] = deriveDecoder[TelegramError]
-  implicit val connectionError: TelegramError = TelegramError(404, "No internet", ok = false)
+  implicit val connectionError: TelegramError = TelegramError(404,
+    "Unable to connect to the Internet. Check the status of your network and try again.",
+    ok = false)
 }
