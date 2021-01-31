@@ -6,23 +6,23 @@ on:
   push:
   pull_request:
   schedule:
-    - cron: '0 4 * * SUN'
+    - cron: "0 4 * * SUN"
 
 jobs:
   preliminary-build:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK
-      uses: actions/setup-java@v1
-      with:
-        java-version: 14
-    - name: Create application.properties file with the bot's token
-      run: |
-        mkdir -p src/main/resources
-        echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
-    - name: Build with Gradle
-      run: ./gradlew build
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 14
+      - name: Create application.properties file with the bot's token
+        run: |
+          mkdir -p src/main/resources
+          echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
+      - name: Build with Gradle
+        run: ./gradlew build
   build:
     needs: preliminary-build
     strategy:
@@ -31,14 +31,14 @@ jobs:
         java_version: [1.8, 11, 14]
     runs-on: ${{matrix.os}}-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK
-      uses: actions/setup-java@v1
-      with:
-        java-version: ${{matrix.java_version}}
-    - name: Compiling sources file
-      run: ./gradlew compileScala
-      run: ./gradlew compileJava
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{matrix.java_version}}
+      - name: Compiling sources file
+      - run: ./gradlew compileScala
+      - run: ./gradlew compileJava
   test:
     needs: build
     strategy:
@@ -49,14 +49,14 @@ jobs:
         java_version: [1.8, 11, 14]
     runs-on: ${{matrix.os}}-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK
-      uses: actions/setup-java@v1
-      with:
-        java-version: ${{matrix.java_version}}
-    - name: Create application.properties file with the bot's token
-      run: |
-        mkdir -p src/main/resources
-        echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
-    - name: Tests with Gradle
-      run: ./gradlew test
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{matrix.java_version}}
+      - name: Create application.properties file with the bot's token
+        run: |
+          mkdir -p src/main/resources
+          echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
+      - name: Tests with Gradle
+        run: ./gradlew test
