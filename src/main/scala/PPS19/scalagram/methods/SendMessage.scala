@@ -1,6 +1,6 @@
 package PPS19.scalagram.methods
 
-import PPS19.scalagram.models.{HttpMethod, ReplyMarkup, TelegramError}
+import PPS19.scalagram.models.{ReplyMarkup, TelegramError}
 import PPS19.scalagram.models.messages.TelegramMessage
 import io.circe.Json
 import io.circe.parser._
@@ -10,7 +10,7 @@ import io.circe.syntax.EncoderOps
 import scala.util.{Failure, Success, Try}
 
 case class SendMessage(){
-  val method: Map[String, Any] => Try[Response] = TelegramRequest.telegramApiRequest(HttpMethod.POST, "sendMessage")
+  val method: Map[String, Any] => Try[Response] = TelegramRequest.telegramApiRequest(requests.post, "sendMessage")
   def sendMessage(chatId: Either[String, Int],
                   text: String,
                   parseMode: Option[String] = None,
@@ -49,7 +49,6 @@ case class SendMessage(){
           }
       }
     } else {
-      println(TelegramError.connectionError.description)
       Failure(TelegramError.connectionError)
     }
   }

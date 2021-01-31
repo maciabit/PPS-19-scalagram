@@ -1,13 +1,13 @@
 package PPS19.scalagram.methods
 
 import scala.util.{Failure, Success, Try}
-import PPS19.scalagram.models.{HttpMethod, TelegramError, Update}
+import PPS19.scalagram.models.{TelegramError, Update}
 import io.circe.Json
 import requests.Response
 import io.circe.parser._
 
 case class GetNewUpdates() {
-  val method: Map[String, Any] => Try[Response] = TelegramRequest.telegramApiRequest(HttpMethod.GET, "getUpdates")
+  val method: Map[String, Any] => Try[Response] = TelegramRequest.telegramApiRequest(requests.get, "getUpdates")
   def getNewUpdates(offset: Option[Int] = None,
                     limit: Option[Int] = None,
                     timeout: Option[Int] = None,
@@ -31,7 +31,6 @@ case class GetNewUpdates() {
           Success(json)
       }
     } else {
-      println(TelegramError.connectionError.description)
       Failure(TelegramError.connectionError)
     }
   }

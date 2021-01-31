@@ -1,6 +1,6 @@
 package PPS19.scalagram.methods
 
-import PPS19.scalagram.models.{HttpMethod, TelegramError}
+import PPS19.scalagram.models.TelegramError
 import io.circe.Json
 import io.circe.parser.{decode, parse}
 import requests.Response
@@ -8,7 +8,7 @@ import requests.Response
 import scala.util.{Failure, Success, Try}
 
 case class PinMessage() {
-  val method: Map[String, Any] => Try[Response] = TelegramRequest.telegramApiRequest(HttpMethod.POST, "pinChatMessage")
+  val method: Map[String, Any] => Try[Response] = TelegramRequest.telegramApiRequest(requests.post, "pinChatMessage")
   def pinMessage(chatId: Either[String,Int], messageId: Int, disableNotification: Option[Boolean]): Try[Boolean] = {
     val urlParams: Map[String, Any] = Map(
       "chat_id" -> chatId.fold(l => l, r => r),
@@ -29,7 +29,6 @@ case class PinMessage() {
         case "true" => Success(true)
       }
     } else {
-      println(TelegramError.connectionError.description)
       Failure(TelegramError.connectionError)
     }
   }

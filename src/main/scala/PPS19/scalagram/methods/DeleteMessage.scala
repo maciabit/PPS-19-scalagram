@@ -1,6 +1,6 @@
 package PPS19.scalagram.methods
 
-import PPS19.scalagram.models.{HttpMethod, TelegramError}
+import PPS19.scalagram.models.TelegramError
 import io.circe.Json
 import io.circe.parser.{decode, parse}
 import requests.Response
@@ -8,7 +8,7 @@ import requests.Response
 import scala.util.{Failure, Success, Try}
 
 case class DeleteMessage() {
-  val method: Map[String, Any] => Try[Response] = TelegramRequest.telegramApiRequest(HttpMethod.GET, "deleteMessage")
+  val method: Map[String, Any] => Try[Response] = TelegramRequest.telegramApiRequest(requests.get, "deleteMessage")
   def deleteMessage(chatId: Either[String,Int], messageId: Int): Try[Boolean] = {
     val urlParams: Map[String, Any] = Map(
       "chat_id" -> chatId.fold(l => l, r => r),
@@ -22,7 +22,6 @@ case class DeleteMessage() {
         case "true" => Success(true)
       }
     } else {
-      println(TelegramError.connectionError.description)
       Failure(TelegramError.connectionError)
     }
   }
