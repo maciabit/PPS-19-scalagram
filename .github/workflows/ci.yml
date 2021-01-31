@@ -36,9 +36,10 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{matrix.java_version}}
-      - name: Compiling sources file
-      - run: ./gradlew compileScala
-      - run: ./gradlew compileJava
+      - name: Compile Scala
+        run: ./gradlew compileScala
+      - name: Compile Java
+        run: ./gradlew compileJava
   test:
     needs: build
     strategy:
