@@ -26,6 +26,22 @@ jobs:
   build:
     needs: preliminary-build
     strategy:
+      matrix:
+        os: [ubuntu, macos, windows]
+        java_version: [1.8, 11, 14]
+    runs-on: ${{matrix.os}}-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: ${{matrix.java_version}}
+    - name: Compiling sources file
+      run: ./gradlew compileScala
+      run: ./gradlew compileJava
+  test:
+    needs: build
+    strategy:
       max-parallel: 1
       fail-fast: false
       matrix:
@@ -42,5 +58,5 @@ jobs:
       run: |
         mkdir -p src/main/resources
         echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
-    - name: Build with Gradle
-      run: ./gradlew build
+    - name: Tests with Gradle
+      run: ./gradlew test
