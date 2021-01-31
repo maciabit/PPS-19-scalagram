@@ -10,7 +10,7 @@ import io.circe.syntax.EncoderOps
 import scala.util.{Failure, Success, Try}
 
 case class SendMessage(){
-  val method: Map[String, Any] => Try[Response] = TelegramMethod.method1(HttpMethod.POST, "sendMessage")
+  val method: Map[String, Any] => Try[Response] = TelegramRequest.telegramApiRequest(HttpMethod.POST, "sendMessage")
   def sendMessage(chatId: Either[String, Int],
                   text: String,
                   parseMode: Option[String] = None,

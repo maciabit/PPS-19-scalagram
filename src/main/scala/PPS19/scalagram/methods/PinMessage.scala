@@ -8,7 +8,7 @@ import requests.Response
 import scala.util.{Failure, Success, Try}
 
 case class PinMessage() {
-  val method: Map[String, Any] => Try[Response] = TelegramMethod.method1(HttpMethod.POST, "pinChatMessage")
+  val method: Map[String, Any] => Try[Response] = TelegramRequest.telegramApiRequest(HttpMethod.POST, "pinChatMessage")
   def pinMessage(chatId: Either[String,Int], messageId: Int, disableNotification: Option[Boolean]): Try[Boolean] = {
     val urlParams: Map[String, Any] = Map(
       "chat_id" -> chatId.fold(l => l, r => r),

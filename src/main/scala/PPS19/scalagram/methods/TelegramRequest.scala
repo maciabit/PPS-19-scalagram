@@ -8,11 +8,11 @@ import requests.{Response, UnknownHostException}
 
 import scala.util.{Failure, Success, Try}
 
-object TelegramMethod {
+object TelegramRequest {
 
   val TELEGRAM_API_URL = "https://api.telegram.org/bot"
 
-  def method1(httpMethod: HttpMethod, endpoint: String)(urlParams: Map[String, Any]): Try[Response] = {
+  def telegramApiRequest(httpMethod: HttpMethod, endpoint: String)(urlParams: Map[String, Any]): Try[Response] = {
     val url = s"$TELEGRAM_API_URL${Props.get("token")}/$endpoint?${urlParams.toUrlQuery}"
     httpMethod match {
       case HttpMethod.GET => Try(requests.get(url)) match {
@@ -33,12 +33,4 @@ object TelegramMethod {
       }
     }
   }
-
-  def method(httpMethod: HttpMethod, endpoint: String)(urlParams: Map[String, Any]): Response = httpMethod match {
-    case HttpMethod.GET => requests.post(s"$TELEGRAM_API_URL${Props.get("token")}/$endpoint?${urlParams.toUrlQuery}")
-    case HttpMethod.POST => requests.post(s"$TELEGRAM_API_URL${Props.get("token")}/$endpoint?${urlParams.toUrlQuery}")
-    case HttpMethod.PUT => requests.put(s"$TELEGRAM_API_URL${Props.get("token")}/$endpoint?${urlParams.toUrlQuery}")
-    case HttpMethod.DELETE => requests.delete(s"$TELEGRAM_API_URL${Props.get("token")}/$endpoint?${urlParams.toUrlQuery}")
-  }
-
 }

@@ -8,7 +8,7 @@ import requests.Response
 import scala.util.{Failure, Success, Try}
 
 case class DeleteMessage() {
-  val method: Map[String, Any] => Try[Response] = TelegramMethod.method1(HttpMethod.GET, "deleteMessage")
+  val method: Map[String, Any] => Try[Response] = TelegramRequest.telegramApiRequest(HttpMethod.GET, "deleteMessage")
   def deleteMessage(chatId: Either[String,Int], messageId: Int): Try[Boolean] = {
     val urlParams: Map[String, Any] = Map(
       "chat_id" -> chatId.fold(l => l, r => r),

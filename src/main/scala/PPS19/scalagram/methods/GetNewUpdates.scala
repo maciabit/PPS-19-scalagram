@@ -7,7 +7,7 @@ import requests.Response
 import io.circe.parser._
 
 case class GetNewUpdates() {
-  val method: Map[String, Any] => Try[Response] = TelegramMethod.method1(HttpMethod.GET, "getUpdates")
+  val method: Map[String, Any] => Try[Response] = TelegramRequest.telegramApiRequest(HttpMethod.GET, "getUpdates")
   def getNewUpdates(offset: Option[Int] = None,
                     limit: Option[Int] = None,
                     timeout: Option[Int] = None,

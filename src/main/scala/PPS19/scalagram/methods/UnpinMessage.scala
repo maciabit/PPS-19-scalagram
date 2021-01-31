@@ -8,7 +8,7 @@ import io.circe.parser.{decode, parse}
 import scala.util.{Failure, Success, Try}
 
 case class UnpinMessage() {
-  val method: Map[String, Any] => Try[Response] = TelegramMethod.method(HttpMethod.POST, "unpinChatMessage")
+  val method: Map[String, Any] => Try[Response] = TelegramRequest.telegramApiRequest(HttpMethod.POST, "unpinChatMessage")
   def unpinMessage(chatId: Either[String,Int], messageId: Int): Try[Boolean] = {
     val urlParams: Map[String, Any] = Map(
       "chat_id" -> chatId.fold(l => l, r => r),
