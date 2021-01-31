@@ -12,16 +12,16 @@ class MethodsSuite extends AnyFunSuite with BeforeAndAfter {
   before {
     Props.load()
   }
-  test("Send a message") {
+  /*test("Send a message") {
     assert(TestUtils.retry(SendMessage().sendMessage(chatId = Left("-1001286594106"), text = "IntelliJ Test"))(3).isSuccess)
-  }
+  }*/
 
   test("A Telegram API call can be performed using TelegramMethod Trait") {
     GetNewUpdates().getNewUpdates()
     assert(true)
   }
 
-  test("A Telegram message can be deleted with HTTP call") {
+  /*test("A Telegram message can be deleted with HTTP call") {
     val text = SendMessage().sendMessage(chatId = Left("-1001286594106"), text = "texttobedeleted")
     assert(TestUtils.retry(DeleteMessage().deleteMessage(chatId = Left("-1001286594106"), messageId = text.get.messageId))(3).isSuccess)
   }
@@ -38,6 +38,6 @@ class MethodsSuite extends AnyFunSuite with BeforeAndAfter {
 
    test("All Telegram messages of a given chat can be unpinned") {
      assert(TestUtils.retry(UnpinAllMessages().unpinAllMessages(chatId = Left("-1001286594106")))(3).isSuccess)
-   }
+   }*/
 
 }

@@ -10,7 +10,7 @@ import io.circe.syntax.EncoderOps
 import scala.util.{Failure, Success, Try}
 
 case class SendMessage(){
-  val method: Map[String, Any] => Response = TelegramMethod.method(HttpMethod.POST, "sendMessage")
+  val method: Map[String, Any] => Try[Response] = TelegramMethod.method1(HttpMethod.POST, "sendMessage")
   def sendMessage(chatId: Either[String, Int],
                   text: String,
                   parseMode: Option[String] = None,
@@ -38,14 +38,19 @@ case class SendMessage(){
       case (key, value) => (key, value)
     }
     val res = method(urlParams)
-    val parsed = parse(res.text()).getOrElse(Json.Null)
-    parsed.findAllByKey("ok").head.toString() match {
-      case "false" => Failure(decode[TelegramError](parsed.toString()).getOrElse(null))
-      case "true" =>
-        decode[TelegramMessage](parsed.findAllByKey("result").head.toString()) match {
-          case Right(message) => Success(message)
-          case Left(error) => Failure(error)
-        }
+    if(res.isSuccess) {
+      val parsed = parse(res.get.text()).getOrElse(Json.Null)
+      parsed.findAllByKey("ok").head.toString() match {
+        case "false" => Failure(decode[TelegramError](parsed.toString()).getOrElse(null))
+        case "true" =>
+          decode[TelegramMessage](parsed.findAllByKey("result").head.toString()) match {
+            case Right(message) => Success(message)
+            case Left(error) => Failure(error)
+          }
+      }
+    } else {
+      println(TelegramError.connectionError.description)
+      Failure(TelegramError.connectionError)
     }
   }
 }
