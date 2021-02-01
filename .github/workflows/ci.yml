@@ -109,7 +109,7 @@ jobs:
           ls -alh build
       - uses: nick-invision/retry@v2
         with:
-          timeout_seconds: 15
+          timeout_minutes: 10
           max_attempts: 5
           shell: bash
           command: ./gradlew test
