@@ -52,7 +52,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{env.OS}}_${{env.JAVA_VERSION}}
-          path: wo #${{env.OS}}_${{env.JAVA_VERSION}}
+          path: build
 
   test:
     needs: build
