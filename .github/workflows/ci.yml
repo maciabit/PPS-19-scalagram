@@ -85,6 +85,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: cache_${{env.OS}}_${{env.JAVA_VERSION}}
+      - name: pwd
+        shell: bash
+        run: |
+        pwd
+        ls -alh
       - name: Build with Gradle
         shell: bash
         run: ./gradlew build -x test
