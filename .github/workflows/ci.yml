@@ -12,22 +12,22 @@ jobs:
   preliminary-build:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 14
       - name: Create application.properties file with the bot's token
         run: |
           mkdir -p src/main/resources
           echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
       - name: Creating file
         run: touch bot_token
-      - name: upload artifacts
+      - name: upload bot token artifacts
         uses: actions/upload-artifact@v2
         with:
           name: bot_token
           path: bot_token
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 14
       - name: Build with Gradle
         run: ./gradlew build
 
@@ -35,8 +35,8 @@ jobs:
     needs: preliminary-build
     strategy:
       matrix:
-        os: [ubuntu, macos, windows]
-        java_version: [1.8, 11, 14]
+        os: [ubuntu]
+        java_version: [14]
     runs-on: ${{matrix.os}}-latest
     env:
       OS: ${{matrix.os}}
@@ -67,8 +67,8 @@ jobs:
       max-parallel: 1
       fail-fast: false
       matrix:
-        os: [ubuntu, macos, windows]
-        java_version: [1.8, 11, 14]
+        os: [ubuntu]
+        java_version: [1.8]
     runs-on: ${{matrix.os}}-latest
     env:
       OS: ${{matrix.os}}
