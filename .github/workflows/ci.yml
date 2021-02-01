@@ -44,7 +44,9 @@ jobs:
           java-version: ${{matrix.java_version}}
       - name: Compile Scala
         shell: bash
-        run: ./gradlew compileScala
+        run: |
+          ./gradlew compileScala
+          ls -alh build
       - name: Compile Java
         shell: bash
         run: ./gradlew compileJava
@@ -104,10 +106,14 @@ jobs:
         run: ./gradlew build -x test
       - name: Build with Gradle
         shell: bash
-        run: ./gradlew build -x test
+        run: |
+          ./gradlew build -x test
+          ls- alh build
       - name: Tests with Gradle
         shell: bash
-        run: ./gradlew test
+        run: |
+          ./gradlew test
+          ls -alh build
       - name: Remove build artifact
         shell: bash
         run: rm -rf build
