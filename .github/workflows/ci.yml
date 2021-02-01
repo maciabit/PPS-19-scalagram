@@ -21,15 +21,15 @@ jobs:
         run: |
           mkdir -p src/main/resources
           echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
-      #- name: Build with Gradle
-      #  run: ./gradlew build
+      - name: Build with Gradle
+        run: ./gradlew build
 
   build:
     needs: preliminary-build
     strategy:
       matrix:
-        os: [ubuntu]
-        java_version: [14]
+        os: [ubuntu, macos, windows]
+        java_version: [14, 12, 1.8]
     runs-on: ${{matrix.os}}-latest
     env:
       OS: ${{matrix.os}}
@@ -65,8 +65,8 @@ jobs:
       max-parallel: 1
       fail-fast: false
       matrix:
-        os: [ubuntu]
-        java_version: [14]
+        os: [ubuntu, macos, windows]
+        java_version: [14, 12, 1.8]
     runs-on: ${{matrix.os}}-latest
     env:
       OS: ${{matrix.os}}
@@ -107,11 +107,12 @@ jobs:
         run: |
           ./gradlew build -x test
           ls -alh build
-      - name: Tests with Gradle
-        shell: bash
-        run: |
-          ./gradlew test
-          ls -alh build
+      - uses: nick-invision/retry@v2
+        with:
+          timeout_seconds: 15
+          max_attempts: 5
+          shell: bash
+          command: ./gradlew test
       - name: Remove build artifact
         shell: bash
         run: rm -rf build
