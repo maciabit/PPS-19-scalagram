@@ -43,8 +43,10 @@ jobs:
         with:
           java-version: ${{matrix.java_version}}
       - name: Compile Scala
+        shell: bash
         run: ./gradlew compileScala
       - name: Compile Java
+        shell: bash
         run: ./gradlew compileJava
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
@@ -84,10 +86,14 @@ jobs:
         with:
           name: cache_${{env.OS}}_${{env.JAVA_VERSION}}
       - name: Tests with Gradle
+        shell: bash
         run: ./gradlew test
       - name: Remove build artifact
+        shell: bash
         run: rm -rf build
       - name: Remove bot token artifact
+        shell: bash
         run: rm -rf src/main/resources/application.properties
       - name: Remove cache artifact
+        shell: bash
         run: rm -rf .gradle
