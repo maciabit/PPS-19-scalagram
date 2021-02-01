@@ -47,7 +47,7 @@ jobs:
       - name: Compile Java
         run: ./gradlew compileJava
       - name: Create stage file
-        run: touch ${{env.OS}}_${{env.JAVA_VERSION}};ls
+        run: OS=${{env.OS}}; JAVA=${{env.JAVA_VERSION}}; touch ${OS}_${JAVA};ls
 
   test:
     needs: build
