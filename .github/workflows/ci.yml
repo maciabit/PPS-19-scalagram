@@ -21,8 +21,8 @@ jobs:
         run: |
           mkdir -p src/main/resources
           echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
-      - name: Build with Gradle
-        run: ./gradlew build
+      #- name: Build with Gradle
+      #  run: ./gradlew build
 
   build:
     needs: preliminary-build
@@ -61,12 +61,13 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu]
-        java_version: [1.8]
+        java_version: [14]
     runs-on: ${{matrix.os}}-latest
     env:
       OS: ${{matrix.os}}
       JAVA_VERSION: ${{matrix.java_version}}
     steps:
+      - uses: actions/checkout@v2
       - name: download artifacts
         uses: actions/download-artifact@v2
         with:
