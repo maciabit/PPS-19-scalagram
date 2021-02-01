@@ -12,22 +12,15 @@ jobs:
   preliminary-build:
     runs-on: ubuntu-20.04
     steps:
-      - name: Create application.properties file with the bot's token
-        run: |
-          mkdir -p src/main/resources
-          echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
-      - name: Creating file
-        run: touch bot_token
-      - name: upload bot token artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: bot_token
-          path: bot_token
       - uses: actions/checkout@v2
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
           java-version: 14
+      - name: Create application.properties file with the bot's token
+        run: |
+          mkdir -p src/main/resources
+          echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
       - name: Build with Gradle
         run: ./gradlew build
 
@@ -78,9 +71,9 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ${{env.OS}}_${{env.JAVA_VERSION}}
-      - name: download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: bot_token
+      - name: Create application.properties file with the bot's token
+        run: |
+          mkdir -p src/main/resources
+          echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
       - name: Tests with Gradle
         run: ./gradlew test
