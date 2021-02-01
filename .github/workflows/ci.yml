@@ -45,11 +45,9 @@ jobs:
       - name: Compile Scala
         shell: bash
         run: |
-          ./gradlew compileScala
+          ./gradlew build -x test
+          ./gradlew compileTestScala
           ls -alh build
-      - name: Compile Java
-        shell: bash
-        run: ./gradlew compileJava
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
