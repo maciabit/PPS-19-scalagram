@@ -22,7 +22,14 @@ jobs:
           mkdir -p src/main/resources
           echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build -x test
+      - name: Gradle test
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 10
+          max_attempts: 5
+          shell: bash
+          command: ./gradlew test
 
   build:
     needs: preliminary-build
@@ -107,7 +114,8 @@ jobs:
         run: |
           ./gradlew build -x test
           ls -alh build
-      - uses: nick-invision/retry@v2
+      - name: Gradle test
+        uses: nick-invision/retry@v2
         with:
           timeout_minutes: 10
           max_attempts: 5
