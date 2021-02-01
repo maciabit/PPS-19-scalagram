@@ -98,6 +98,7 @@ jobs:
         run: |
           pwd
           ls -alh
+          ls -alh build
       - name: Build with Gradle
         shell: bash
         run: ./gradlew build -x test
