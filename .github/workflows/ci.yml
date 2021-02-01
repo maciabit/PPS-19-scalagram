@@ -77,14 +77,22 @@ jobs:
         run: |
           mkdir -p src/main/resources
           echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
+      - name: Create build directory
+        shell: bash
+        run: mkdir build
       - name: Download build artifact
         uses: actions/download-artifact@v2
         with:
           name: ${{env.OS}}_${{env.JAVA_VERSION}}
+          path: build
+      - name: Create cache directory
+        shell: bash
+        run: mkdir .gradle
       - name: Download cache artifact
         uses: actions/download-artifact@v2
         with:
           name: cache_${{env.OS}}_${{env.JAVA_VERSION}}
+          path: .gradle
       - name: pwd
         shell: bash
         run: |
