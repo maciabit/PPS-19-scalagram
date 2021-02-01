@@ -33,6 +33,7 @@ jobs:
     runs-on: ${{matrix.os}}-latest
     env:
       OS: ${{matrix.os}}
+      JAVA_VERSION: ${{matrix.java_verison}}
     steps:
       - name: Print OS
         run: echo ${{env.OS}}
@@ -45,6 +46,8 @@ jobs:
         run: ./gradlew compileScala
       - name: Compile Java
         run: ./gradlew compileJava
+      - name: Create stage file
+        run: touch ${{env.OS}}_${{env.JAVA_VERSION}};ls
 
   test:
     needs: build
