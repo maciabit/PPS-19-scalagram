@@ -11,8 +11,8 @@ trait InputFile {
 
 object InputFile {
   implicit val encodeInputFile : Encoder[InputFile] = Encoder.instance {
-    case existingMedia: ExistingMedia => existingMedia.asJson.deepDropNullValues
-    case remoteMedia: RemoteMedia => remoteMedia.asJson.deepDropNullValues
+    case existingMedia: ExistingMedia => existingMedia.asJson.deepDropNullValues.findAllByKey("fileId").head
+    case remoteMedia: RemoteMedia => remoteMedia.asJson.deepDropNullValues.findAllByKey("url").head
   }
 }
 

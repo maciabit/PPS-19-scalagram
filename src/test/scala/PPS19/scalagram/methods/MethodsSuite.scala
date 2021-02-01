@@ -50,3 +50,11 @@ class MethodsSuite extends AnyFunSuite with BeforeAndAfter {
      assert(UnpinAllMessages().unpinAllMessages(chatId = Left("-1001286594106")).isSuccess)
    }
 }
+
+@RunWith(classOf[JUnitRunner])
+class SingleTestForSpam extends AnyFunSuite with BeforeAndAfter {
+
+  before {
+    Props.load()
+  }
+}

@@ -22,7 +22,7 @@ case class SendPhoto(){
                   replyMarkup: Option[ReplyMarkup] = None): Try[TelegramMessage] = {
     val urlParams: Map[String, Any] = Map (
       "chat_id" -> chatId.fold(l => l, r => r),
-      "photo" -> photo.asJson.toString().filter(_ >= ' '),
+      "photo" -> photo.asJson.toString().filter( _ >=' ').replace('\"', " ".charAt(0)).replaceAll("\\s", ""),
       "caption" -> caption,
       "parse_mode" -> parseMode,
       "entities" -> entities,
