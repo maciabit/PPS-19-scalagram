@@ -21,8 +21,8 @@ jobs:
         run: |
           mkdir -p src/main/resources
           echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
-      - name: Build with Gradle
-        run: ./gradlew build
+      #- name: Build with Gradle
+      #  run: ./gradlew build
 
   build:
     needs: preliminary-build
