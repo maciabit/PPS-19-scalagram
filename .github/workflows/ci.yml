@@ -108,7 +108,7 @@ jobs:
         shell: bash
         run: |
           ./gradlew build -x test
-          ls- alh build
+          ls -alh build
       - name: Tests with Gradle
         shell: bash
         run: |
