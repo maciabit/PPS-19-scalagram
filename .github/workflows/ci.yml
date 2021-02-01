@@ -16,6 +16,8 @@ jobs:
         run: |
           mkdir -p src/main/resources
           echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
+      - name: Bot token file
+        run: touch bot_token
       - name: upload bot token artifacts
         uses: actions/upload-artifact@v2
         with:
