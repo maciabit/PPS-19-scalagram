@@ -23,6 +23,7 @@ jobs:
           echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
       - name: Build with Gradle
         run: ./gradlew build
+
   build:
     needs: preliminary-build
     strategy:
@@ -30,7 +31,11 @@ jobs:
         os: [ubuntu, macos, windows]
         java_version: [1.8, 11, 14]
     runs-on: ${{matrix.os}}-latest
+    env:
+      OS: ${{matrix.os}}
     steps:
+      - name: Print OS
+        run: echo ${{env.OS}}
       - uses: actions/checkout@v2
       - name: Set up JDK
         uses: actions/setup-java@v1
@@ -40,6 +45,7 @@ jobs:
         run: ./gradlew compileScala
       - name: Compile Java
         run: ./gradlew compileJava
+
   test:
     needs: build
     strategy:
@@ -49,6 +55,8 @@ jobs:
         os: [ubuntu, macos, windows]
         java_version: [1.8, 11, 14]
     runs-on: ${{matrix.os}}-latest
+    env:
+      OS: ${{matrix.os}}
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK
