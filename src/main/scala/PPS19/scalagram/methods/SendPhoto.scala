@@ -9,11 +9,11 @@ import requests.Response
 
 import scala.util.{Failure, Success, Try}
 
-case class SendMedia(){
+case class SendPhoto(){
   val method: Map[String, Any] => Try[Response] = TelegramRequest.telegramApiRequest(requests.post, "sendPhoto")
-  def sendMessage(chatId: Either[String, Int],
+  def sendPhoto(chatId: Either[String, Int],
                   photo: String, //Either[InputFile, String],
-                  caption: Option[String],
+                  caption: Option[String] = None,
                   parseMode: Option[String] = None,
                   entities: Option[Vector[Any]] = None,
                   disableNotification: Option[Boolean] = None,
@@ -44,8 +44,8 @@ case class SendMedia(){
         case "false" => Failure(decode[TelegramError](parsed.toString()).getOrElse(null))
         case "true" =>
           decode[TelegramMessage](parsed.findAllByKey("result").head.toString()) match {
-            case Right(message) => Success(message)
-            case Left(error) => Failure(error)
+            case Right(message) => println("destra");Success(message)
+            case Left(error) => println("sinistra");Failure(error)
           }
       }
     } else {

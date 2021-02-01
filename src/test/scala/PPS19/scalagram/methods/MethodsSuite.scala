@@ -12,8 +12,12 @@ class MethodsSuite extends AnyFunSuite with BeforeAndAfter {
   before {
     Props.load()
   }
-  test("Send a message") {
+  test("A message can be sent") {
     assert(SendMessage().sendMessage(chatId = Left("-1001286594106"), text = "IntelliJ Test").isSuccess)
+  }
+  test("An image can be sent using direct URL") {
+    val url = "https://cdn.pixabay.com/photo/2017/10/24/00/39/bot-icon-2883144_1280.png"
+    assert(SendPhoto().sendPhoto(chatId = Left("-1001286594106"), photo = url).isSuccess)
   }
 
   test("A Telegram API call can be performed using TelegramMethod Trait") {
