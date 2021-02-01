@@ -80,6 +80,10 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: bot_token
+      - name: Create application.properties file with the bot's token
+        run: |
+          mkdir -p src/main/resources
+          echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
       - name: Download build artifact
         uses: actions/download-artifact@v2
         with:
@@ -92,3 +96,7 @@ jobs:
         run: ./gradlew test
       - name: Remove build artifact
         run: rm -rf build
+      - name: Remove bot token artifact
+        run: rm -rf src/main/resources/application.properties
+      - name: Remove cache artifact
+        run: rm -rf .gradle
