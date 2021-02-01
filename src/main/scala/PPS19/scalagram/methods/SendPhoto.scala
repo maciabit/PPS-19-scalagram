@@ -1,6 +1,6 @@
 package PPS19.scalagram.methods
 
-import PPS19.scalagram.models.{ReplyMarkup, TelegramError}
+import PPS19.scalagram.models.{InputFile, ReplyMarkup, TelegramError}
 import PPS19.scalagram.models.messages.TelegramMessage
 import io.circe.Json
 import io.circe.parser.{decode, parse}
@@ -12,7 +12,7 @@ import scala.util.{Failure, Success, Try}
 case class SendPhoto(){
   val method: Map[String, Any] => Try[Response] = TelegramRequest.telegramApiRequest(requests.post, "sendPhoto")
   def sendPhoto(chatId: Either[String, Int],
-                  photo: String, //Either[InputFile, String],
+                  photo: InputFile,
                   caption: Option[String] = None,
                   parseMode: Option[String] = None,
                   entities: Option[Vector[Any]] = None,
@@ -22,7 +22,7 @@ case class SendPhoto(){
                   replyMarkup: Option[ReplyMarkup] = None): Try[TelegramMessage] = {
     val urlParams: Map[String, Any] = Map (
       "chat_id" -> chatId.fold(l => l, r => r),
-      "photo" -> photo,
+      "photo" -> photo.asJson.toString().filter(_ >= ' '),
       "caption" -> caption,
       "parse_mode" -> parseMode,
       "entities" -> entities,
@@ -44,8 +44,8 @@ case class SendPhoto(){
         case "false" => Failure(decode[TelegramError](parsed.toString()).getOrElse(null))
         case "true" =>
           decode[TelegramMessage](parsed.findAllByKey("result").head.toString()) match {
-            case Right(message) => println("destra");Success(message)
-            case Left(error) => println("sinistra");Failure(error)
+            case Right(message) => Success(message)
+            case Left(error) => Failure(error)
           }
       }
     } else {
