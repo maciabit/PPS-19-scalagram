@@ -21,6 +21,13 @@ jobs:
         run: |
           mkdir -p src/main/resources
           echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
+      - name: Creating file
+        run: touch bot_token
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: bot_token
+          path: bot_token
       - name: Build with Gradle
         run: ./gradlew build
 
@@ -71,5 +78,9 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ${{env.OS}}_${{env.JAVA_VERSION}}
+      - name: download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: bot_token
       - name: Tests with Gradle
         run: ./gradlew test
