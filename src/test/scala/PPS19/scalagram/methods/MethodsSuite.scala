@@ -1,6 +1,9 @@
 package PPS19.scalagram.methods
 
+import PPS19.scalagram.models.Update
+import PPS19.scalagram.models.messages.TelegramMessage
 import PPS19.scalagram.utils.{Props, TestUtils}
+import io.circe.jawn.decode
 import org.scalatest.BeforeAndAfter
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
@@ -15,6 +18,7 @@ class MethodsSuite extends AnyFunSuite with BeforeAndAfter {
   test("A message can be sent") {
     assert(SendMessage().sendMessage(chatId = Left("-1001286594106"), text = "IntelliJ Test").isSuccess)
   }
+
   test("An image can be sent using direct URL") {
     val url = "https://cdn.pixabay.com/photo/2017/10/24/00/39/bot-icon-2883144_1280.png"
     assert(SendPhoto().sendPhoto(chatId = Left("-1001286594106"), photo = url).isSuccess)
