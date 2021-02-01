@@ -21,20 +21,15 @@ jobs:
         run: |
           mkdir -p src/main/resources
           echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
-      - name: Upload bot token artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: bot_token
-          path: src/main/resources/application.properties
-      #- name: Build with Gradle
-      #  run: ./gradlew build
+      - name: Build with Gradle
+        run: ./gradlew build
 
   build:
     needs: preliminary-build
     strategy:
       matrix:
-        os: [ubuntu]
-        java_version: [14]
+        os: [ubuntu, macos, windows]
+        java_version: [1.8, 12, 14]
     runs-on: ${{matrix.os}}-latest
     env:
       OS: ${{matrix.os}}
@@ -68,18 +63,14 @@ jobs:
       max-parallel: 1
       fail-fast: false
       matrix:
-        os: [ubuntu]
-        java_version: [14]
+        os: [ubuntu, macos, windows]
+        java_version: [1.8, 12, 14]
     runs-on: ${{matrix.os}}-latest
     env:
       OS: ${{matrix.os}}
       JAVA_VERSION: ${{matrix.java_version}}
     steps:
       - uses: actions/checkout@v2
-      - name: Download bot token artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: bot_token
       - name: Create application.properties file with the bot's token
         run: |
           mkdir -p src/main/resources
