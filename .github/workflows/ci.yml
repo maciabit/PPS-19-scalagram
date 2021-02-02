@@ -89,11 +89,9 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: bot_token
-          path: src/main/resources/application.properties
-      - name: Create application.properties file with the bot's token
-        run: |
-          mkdir -p src/main/resources
-          echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
+          #path: src/main/resources/application.properties
+      - name: Ls bot token
+        run: ls -alh src/main/resources/application.properties
       - name: Create build directory
         shell: bash
         run: mkdir build
