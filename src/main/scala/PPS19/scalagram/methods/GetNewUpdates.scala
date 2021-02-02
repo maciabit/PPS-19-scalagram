@@ -19,19 +19,19 @@ case class GetNewUpdates() {
       "allowed_Updates" -> allowedUpdates,
     ) filter (_._2.isDefined) map { case (key, value) => (key, value.get) }
     val res = method(urlParams)
-    if(res.isSuccess) {
-      val parsed = parse(res.get.text()).getOrElse(Json.Null)
-      parsed.findAllByKey("ok").head.toString() match {
-        case "false" => Failure(decode[TelegramError](parsed.toString()).getOrElse(null))
-        case "true" =>
-          val json = parsed.findAllByKey("result").head.asArray.get
-            .map(update => decode[Update](update.toString()))
-            .map { case Right(update) => update }
-            .toList
-          Success(json)
-      }
-    } else {
-      Failure(TelegramError.connectionError)
+    res match {
+      case Success(response) =>
+        val parsed = parse(response.text()).getOrElse(Json.Null)
+        parsed.findAllByKey("ok").head.toString() match {
+          case "false" => Failure(decode[TelegramError](parsed.toString()).getOrElse(null))
+          case "true" =>
+            val json = parsed.findAllByKey("result").head.asArray.get
+              .map(update => decode[Update](update.toString()))
+              .map { case Right(update) => update }
+              .toList
+            Success(json)
+        }
+      case Failure(e) => Failure(e)
     }
   }
 }

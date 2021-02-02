@@ -1,6 +1,6 @@
 package PPS19.scalagram.methods
 
-import PPS19.scalagram.models.{InputFile, ReplyMarkup, TelegramError}
+import PPS19.scalagram.models.{ExistingMedia, InputFile, RemoteMedia, ReplyMarkup, TelegramError}
 import PPS19.scalagram.models.messages.TelegramMessage
 import io.circe.Json
 import io.circe.parser.{decode, parse}
@@ -22,7 +22,10 @@ case class SendPhoto(){
                   replyMarkup: Option[ReplyMarkup] = None): Try[TelegramMessage] = {
     val urlParams: Map[String, Any] = Map (
       "chat_id" -> chatId.fold(l => l, r => r),
-      "photo" -> photo.asJson.toString().filter( _ >=' ').replace('\"', " ".charAt(0)).replaceAll("\\s", ""),
+      "photo" -> (photo match {
+        case ExistingMedia(fileId) => fileId
+        case RemoteMedia(url) => url
+      }),
       "caption" -> caption,
       "parse_mode" -> parseMode,
       "entities" -> entities,
@@ -38,18 +41,18 @@ case class SendPhoto(){
       case (key, value) => (key, value)
     }
     val res = method(urlParams)
-    if(res.isSuccess) {
-      val parsed = parse(res.get.text()).getOrElse(Json.Null)
-      parsed.findAllByKey("ok").head.toString() match {
-        case "false" => Failure(decode[TelegramError](parsed.toString()).getOrElse(null))
-        case "true" =>
-          decode[TelegramMessage](parsed.findAllByKey("result").head.toString()) match {
-            case Right(message) => Success(message)
-            case Left(error) => Failure(error)
-          }
-      }
-    } else {
-      Failure(TelegramError.connectionError)
+    res match {
+      case Success(response) =>
+        val parsed = parse(response.text()).getOrElse(Json.Null)
+        parsed.findAllByKey("ok").head.toString() match {
+          case "false" => Failure(decode[TelegramError](parsed.toString()).getOrElse(null))
+          case "true" =>
+            decode[TelegramMessage](parsed.findAllByKey("result").head.toString()) match {
+              case Right(message) => Success(message)
+              case Left(error) => Failure(error)
+            }
+        }
+      case Failure(e) => Failure(e)
     }
   }
 }
