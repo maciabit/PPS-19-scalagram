@@ -2,6 +2,7 @@ package PPS19.scalagram.logic
 
 import PPS19.scalagram.models.MessageUpdate
 import PPS19.scalagram.models.messages.TextMessage
+import PPS19.scalagram.modes.Mode
 
 case class BotToken(token: String)
 
@@ -16,10 +17,13 @@ sealed trait Bot {
       Trigger {
         case MessageUpdate(_, message) if message.isInstanceOf[TextMessage] =>
           message.asInstanceOf[TextMessage].text == command
+        case _ => false
       },
       action
     )
   }
+
+  def launch(mode: Mode): Unit = mode.start(this)
 }
 
 object Bot {
