@@ -8,24 +8,26 @@ trait Operation {
   /**
    * @return true if the update processing should continue, false otherwise
    */
-  def operation: () => Boolean
-
-  def execute(): Boolean = operation()
+  def operation: Context => Boolean
 }
 
 /**
  * An operation that might terminate the update processing
  * @param operation: function to be executed
  */
-case class Middleware(operation: () => Boolean) extends Operation
+case class Middleware(operation: Context => Boolean) extends Operation
+
+case class Trigger(matches: Context => Boolean)
 
 /**
  * An operation that always terminates update processing
  * @param action: function to be executed
  */
-case class Reaction(action: () => Unit) extends Operation {
-  def operation: () => Boolean = () => {
-    action()
+case class Reaction(trigger: Trigger, action: Context => Unit) extends Operation {
+  def operation: Context => Boolean = context => if (trigger.matches(context)) {
+    action(context)
     false
+  } else {
+    true
   }
 }

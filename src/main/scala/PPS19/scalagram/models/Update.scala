@@ -7,7 +7,7 @@ import PPS19.scalagram.models.messages._
 import cats.syntax.functor._
 
 sealed trait Update {
-  def updateId : Long
+  val updateId: Long
 }
 
 object Update {
@@ -22,7 +22,22 @@ object Update {
   ).reduceLeft(_.or(_)).camelCase
 }
 
-final case class MessageReceived(updateId: Long, message: TelegramMessage) extends Update
-final case class MessageEdited(updateId: Long, editedMessage: TelegramMessage) extends Update
-final case class ChannelPost(updateId: Long, channelPost: TelegramMessage) extends Update
-final case class ChannelPostEdited(updateId: Long, editedChannelPost: TelegramMessage) extends Update
+trait MessageUpdate extends Update {
+  val updateId: Long
+  val message: TelegramMessage
+}
+
+object MessageUpdate {
+  def unapply(update: MessageUpdate): Option[(Long, TelegramMessage)] = Some(update.updateId, update.message)
+}
+
+final case class MessageReceived(updateId: Long, message: TelegramMessage) extends MessageUpdate
+final case class MessageEdited(updateId: Long, editedMessage: TelegramMessage) extends MessageUpdate {
+  val message: TelegramMessage = editedMessage
+}
+final case class ChannelPost(updateId: Long, channelPost: TelegramMessage) extends  MessageUpdate {
+  val message: TelegramMessage = channelPost
+}
+final case class ChannelPostEdited(updateId: Long, editedChannelPost: TelegramMessage) extends  MessageUpdate {
+  val message: TelegramMessage = editedChannelPost
+}
