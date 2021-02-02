@@ -15,14 +15,14 @@ case class UnpinMessage() {
       "message_id" -> messageId,
     )
     val res = method(urlParams)
-    if(res.isSuccess) {
-      val parsed = parse(res.get.text()).getOrElse(Json.Null)
-      parsed.findAllByKey("ok").head.toString() match {
-        case "false" => Failure(decode[TelegramError](parsed.toString()).getOrElse(null))
-        case "true" => Success(true)
-      }
-    } else {
-      Failure(TelegramError.connectionError)
+    res match {
+      case Success(response) =>
+        val parsed = parse(response.text()).getOrElse(Json.Null)
+        parsed.findAllByKey("ok").head.toString() match {
+          case "false" => Failure(decode[TelegramError](parsed.toString()).getOrElse(null))
+          case "true" => Success(true)
+        }
+      case Failure(e) => Failure(e)
     }
   }
 }

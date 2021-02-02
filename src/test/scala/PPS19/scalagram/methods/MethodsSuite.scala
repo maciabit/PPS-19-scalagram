@@ -18,12 +18,12 @@ class MethodsSuite extends AnyFunSuite with BeforeAndAfter {
   }
 
   test("An image can be sent using direct URL") {
-    val url = RemoteMedia(url = Some("https://cdn.pixabay.com/photo/2017/10/24/00/39/bot-icon-2883144_1280.png"))
+    val url = RemoteMedia("https://cdn.pixabay.com/photo/2017/10/24/00/39/bot-icon-2883144_1280.png")
     assert(SendPhoto().sendPhoto(chatId = Left("-1001286594106"), photo = url).isSuccess)
   }
 
   test("An image can be sent using its id if already exits") {
-    val id = ExistingMedia(fileId = Some("AgACAgQAAx0ETK_eOgACDX5gGBsCoUnpGj9O7XHDkpjsEYbhQQAC07UxGzzIwVA-L6tqZfWUa9kB-ChdAAMBAAMCAANtAANSPgMAAR4E"))
+    val id = ExistingMedia("AgACAgQAAx0ETK_eOgACDX5gGBsCoUnpGj9O7XHDkpjsEYbhQQAC07UxGzzIwVA-L6tqZfWUa9kB-ChdAAMBAAMCAANtAANSPgMAAR4E")
     assert(SendPhoto().sendPhoto(chatId = Left("-1001286594106"), photo = id).isSuccess)
   }
 

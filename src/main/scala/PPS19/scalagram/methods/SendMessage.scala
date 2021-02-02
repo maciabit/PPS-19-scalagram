@@ -38,18 +38,18 @@ case class SendMessage(){
       case (key, value) => (key, value)
     }
     val res = method(urlParams)
-    if(res.isSuccess) {
-      val parsed = parse(res.get.text()).getOrElse(Json.Null)
-      parsed.findAllByKey("ok").head.toString() match {
+    res match {
+      case Success(response) =>
+        val parsed = parse(response.text()).getOrElse(Json.Null)
+        parsed.findAllByKey("ok").head.toString() match {
         case "false" => Failure(decode[TelegramError](parsed.toString()).getOrElse(null))
         case "true" =>
           decode[TelegramMessage](parsed.findAllByKey("result").head.toString()) match {
             case Right(message) => Success(message)
             case Left(error) => Failure(error)
           }
-      }
-    } else {
-      Failure(TelegramError.connectionError)
+        }
+      case Failure(e) => Failure(e)
     }
   }
 }
