@@ -1,36 +1,14 @@
 package PPS19.scalagram.logic
 
-import PPS19.scalagram.models.Update
-import io.circe.jawn.decode
 import org.scalatest.funsuite.AnyFunSuite
 import org.junit.runner.RunWith
-import org.scalatest.BeforeAndAfter
 import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class BotSuite extends AnyFunSuite with BeforeAndAfter {
+class BotSuite extends AnyFunSuite {
 
-  var context: Context = _
-
-  before {
-    val bot = Bot(BotToken(""), List(), List(), List())
-    val message = """{
-      "update_id": 971212771,
-      "channel_post": {
-        "message_id": 344544,
-        "author_signature": "ProphecyOfferte",
-        "chat": {
-          "id": -1001364807173,
-          "title": "Bot Log",
-          "type": "channel"
-        },
-        "date": 1611486001,
-        "text": "Alive at 2021-01-24 12:00:00"
-      }
-    }"""
-    val update = decode[Update](message)
-    context = Context(bot, update.getOrElse(null))
-  }
+  val bot: Bot = Bot(BotToken(""), List(), List(), List())
+  val context: Context = Context(bot)
 
   test("A Middleware can return true") {
     val middleware = Middleware(_ => true)
