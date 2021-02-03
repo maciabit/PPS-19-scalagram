@@ -4,8 +4,7 @@ import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
 import PPS19.scalagram.marshalling.MapUtils._
-import PPS19.scalagram.methods.GetNewUpdates
-import PPS19.scalagram.utils.Props
+
 
 @RunWith(classOf[JUnitRunner])
 class MarshallingSuite extends AnyFunSuite {

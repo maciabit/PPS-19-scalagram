@@ -62,11 +62,11 @@ class KeyboardSuite extends AnyFunSuite with BeforeAndAfter with BeforeAndAfterE
       // Link button
       InlineKeyboardButton("Link", url = Some("https://www.youtube.com/")),
       // Callback button
-      InlineKeyboardButton("Callback", callback_data = Some("Callback")),
+      InlineKeyboardButton("Callback", callbackData = Some("Callback")),
       // Switch inline button (current chat)
-      InlineKeyboardButton("Inline chat", switch_inline_query_current_chat = Some("HI")),
+      InlineKeyboardButton("Inline chat", switchInlineQueryCurrentChat = Some("HI")),
       // Switch inline button (inline query)
-      InlineKeyboardButton("Inline query", switch_inline_query = Some("")),
+      InlineKeyboardButton("Inline query", switchInlineQuery = Some("")),
     ))))
     val message = SendMessage().sendMessage(groupChatId, "Various Inline Buttons", replyMarkup = keyboard)
     assert(message.isSuccess)
