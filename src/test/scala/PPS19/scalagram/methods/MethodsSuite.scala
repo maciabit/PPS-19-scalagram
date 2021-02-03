@@ -12,6 +12,7 @@ class MethodsSuite extends AnyFunSuite with BeforeAndAfter with BeforeAndAfterEa
 
   before {
     Props.load()
+    println(Props.get("token"))
   }
 
   override def beforeEach(): Unit = {
