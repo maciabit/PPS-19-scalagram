@@ -1,6 +1,7 @@
 package PPS19.scalagram.models
 
-import PPS19.scalagram.methods.SendMessage
+import PPS19.scalagram.methods.{AnswerCallbackQuery, GetNewUpdates, SendMessage}
+import PPS19.scalagram.models.messages.CallbackQuery
 import PPS19.scalagram.utils.{Props, TestUtils}
 import io.circe.parser.decode
 import org.scalatest.BeforeAndAfter
@@ -144,6 +145,18 @@ class SingleTestForSpam extends AnyFunSuite with BeforeAndAfter {
   before {
     Props.load()
   }
+  /*
+  test("A message with a Inline Keyboard with a row containing a url button and a callback button can be sent"){
+      val a = (InlineKeyboardMarkup(inline_keyboard = Seq(Seq(InlineKeyboardButton(text = "Open youtube", url = Some("https://www.youtube.com/")), InlineKeyboardButton(text = "Callback", callback_data = Some("Callback"))))) : ReplyMarkup)
+      val mess = SendMessage().sendMessage(chatId = Left("-1001286594106"), text = "Row of button test", replyMarkup = Some(a))
+      if(mess.isSuccess){
+        Thread.sleep(5000)
+        val upd = GetNewUpdates().getNewUpdates().get.last.asInstanceOf[CallbackButtonSelected].callbackQuery.id
+        print(upd)
+        AnswerCallbackQuery().answerCallbackQuery(callbackQueryId = upd, cacheTime = Some(1000), showAlert = Some(true),text = Some("Nice, you clicked me!"), url = None)
+      }
+  }
+  */
 
 }
 

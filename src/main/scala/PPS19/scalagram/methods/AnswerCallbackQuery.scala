@@ -2,24 +2,26 @@ package PPS19.scalagram.methods
 
 import PPS19.scalagram.models.TelegramError
 import io.circe.Json
-import io.circe.parser.{decode, parse}
 import requests.Response
+import io.circe.parser.{decode, parse}
 
 import scala.util.{Failure, Success, Try}
 
-case class PinMessage() {
-  val method: Map[String, Any] => Try[Response] = TelegramRequest.telegramApiRequest(requests.post, "pinChatMessage")
-  def pinMessage(chatId: Either[String,Int], messageId: Int, disableNotification: Option[Boolean]): Try[Boolean] = {
+case class AnswerCallbackQuery() {
+  val method: Map[String, Any] => Try[Response] = TelegramRequest.telegramApiRequest(requests.get, "answerCallbackQuery")
+  def answerCallbackQuery(callbackQueryId: String, text: Option[String], showAlert: Option[Boolean], url:Option[String], cacheTime: Option[Int]): Try[Boolean] = {
     val urlParams: Map[String, Any] = Map(
-      "chat_id" -> chatId.fold(l => l, r => r),
-      "message_id" -> messageId,
-      "disable_notification" -> disableNotification
-    ) filter {
+      "callback_query_id" -> callbackQueryId,
+      "text" -> text,
+      "show_alert" -> showAlert,
+      "url" -> url,
+      "cache_time" -> cacheTime
+    ).filter {
       case (_, None) => false
       case _ => true
-    } map {
-        case (key, Some(value)) => (key, value)
-        case(key,value) => (key,value)
+    }.map {
+      case (key, Some(value)) => (key, value)
+      case(key,value) => (key,value)
     }
     val res = method(urlParams)
     res match {

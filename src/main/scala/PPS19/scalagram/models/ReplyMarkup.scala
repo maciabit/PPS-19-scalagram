@@ -1,8 +1,10 @@
 package PPS19.scalagram.models
 
-import io.circe.Encoder
+import cats.syntax.functor._
+import io.circe.{Decoder, Encoder}
 import io.circe.syntax._
 import io.circe.generic.auto._
+import io.circe.generic.semiauto.deriveDecoder
 
 sealed trait ReplyMarkup
 
