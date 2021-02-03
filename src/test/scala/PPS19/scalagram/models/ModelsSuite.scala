@@ -75,7 +75,6 @@ class KeyboardSuite extends AnyFunSuite with BeforeAndAfter with BeforeAndAfterE
 
   before {
     Props.load()
-    println(Props.get("token"))
   }
 
   override def beforeEach(): Unit = {
