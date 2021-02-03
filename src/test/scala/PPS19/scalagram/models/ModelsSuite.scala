@@ -98,10 +98,10 @@ class KeyboardSuite extends AnyFunSuite with BeforeAndAfter with BeforeAndAfterE
   }
 
   /*Response keyboard in private chat for optional feature test*/
-  test("A message with a response keyboard allowing user to send his location and phone number can be sent (ONLY FOR PRIVATE CHAT)"){
+  /*test("A message with a response keyboard allowing user to send his location and phone number can be sent (ONLY FOR PRIVATE CHAT)"){
     val a = (ReplyKeyboardMarkup(keyboard = Seq(Seq(KeyboardButton(text = "Send your phone number", request_contact = Some(true))),Seq(KeyboardButton(text = "Send your location", request_location = Some(true))))) : ReplyMarkup)
     assert(SendMessage().sendMessage(chatId = Left("263890809"), text = "Column of button test", replyMarkup = Some(a)).isSuccess)
-  }
+  }*/
 
   /*Inline keyboard test*/
   test("A message with a Inline Keyboard with a single url button can be sent"){

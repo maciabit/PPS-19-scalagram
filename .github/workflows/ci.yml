@@ -18,7 +18,7 @@ jobs:
         java_version: [14]
     runs-on: ${{matrix.os}}-latest
     env:
-      token-name: BOT_TOKEN #_${{matrix.os}}_${{matrix.java_version}}
+      token-name: BOT_TOKEN_${{matrix.os}}_${{matrix.java_version}}
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK
