@@ -9,22 +9,7 @@ on:
     - cron: '0 4 * * SUN'
 
 jobs:
-#  preliminary-build:
-#    runs-on: ubuntu-20.04
-#    steps:
-#    - uses: actions/checkout@v2
-#    - name: Set up JDK
-#      uses: actions/setup-java@v1
-#      with:
-#        java-version: 14
-#    - name: Create application.properties file with the bot's token
-#      run: |
-#        mkdir -p src/main/resources
-#        echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
-#    - name: Build with Gradle
-#      run: ./gradlew build
   build:
-#    needs: preliminary-build
     strategy:
       max-parallel: 2
       fail-fast: false
@@ -33,7 +18,7 @@ jobs:
         java_version: [14]
     runs-on: ${{matrix.os}}-latest
     env:
-      token-name: BOT_TOKEN_${{matrix.os}}_${{matrix.java_version}}
+      token-name: BOT_TOKEN #_${{matrix.os}}_${{matrix.java_version}}
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK

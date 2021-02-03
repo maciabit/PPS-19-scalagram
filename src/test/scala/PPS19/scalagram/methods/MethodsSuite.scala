@@ -27,10 +27,10 @@ class MethodsSuite extends AnyFunSuite with BeforeAndAfter with BeforeAndAfterEa
     assert(SendPhoto().sendPhoto(chatId = Left("-1001286594106"), photo = url).isSuccess)
   }
 
-  test("An image can be sent using its id if already exits") {
+  /*test("An image can be sent using its id if already exits") {
     val id = ExistingMedia("AgACAgQAAx0ETK_eOgACDX5gGBsCoUnpGj9O7XHDkpjsEYbhQQAC07UxGzzIwVA-L6tqZfWUa9kB-ChdAAMBAAMCAANtAANSPgMAAR4E")
     assert(SendPhoto().sendPhoto(chatId = Left("-1001286594106"), photo = id).isSuccess)
-  }
+  }*/
 
   test("A Telegram API call can be performed using TelegramMethod Trait") {
     assert(GetNewUpdates().getNewUpdates().isSuccess)
