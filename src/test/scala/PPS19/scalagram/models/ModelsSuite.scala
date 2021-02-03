@@ -3,7 +3,7 @@ package PPS19.scalagram.models
 import PPS19.scalagram.methods.SendMessage
 import PPS19.scalagram.utils.{Props, TestUtils}
 import io.circe.parser.decode
-import org.scalatest.BeforeAndAfter
+import org.scalatest.{BeforeAndAfter, BeforeAndAfterEach}
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
@@ -71,10 +71,14 @@ class ModelsSuite extends AnyFunSuite {
 }
 
 @RunWith(classOf[JUnitRunner])
-class KeyboardSuite extends AnyFunSuite with BeforeAndAfter {
+class KeyboardSuite extends AnyFunSuite with BeforeAndAfter with BeforeAndAfterEach {
 
   before {
     Props.load()
+  }
+
+  override def beforeEach(): Unit = {
+    Thread.sleep(3000)
   }
 
   /*Response Keyboard test*/

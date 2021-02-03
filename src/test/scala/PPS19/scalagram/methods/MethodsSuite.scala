@@ -1,18 +1,23 @@
 package PPS19.scalagram.methods
 
-import PPS19.scalagram.models.{ExistingMedia, InputFile, RemoteMedia}
+import PPS19.scalagram.models.{ExistingMedia, RemoteMedia}
 import PPS19.scalagram.utils.Props
-import org.scalatest.BeforeAndAfter
+import org.scalatest.{BeforeAndAfter, BeforeAndAfterEach}
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class MethodsSuite extends AnyFunSuite with BeforeAndAfter {
+class MethodsSuite extends AnyFunSuite with BeforeAndAfter with BeforeAndAfterEach {
 
   before {
     Props.load()
   }
+
+  override def beforeEach(): Unit = {
+    Thread.sleep(3000)
+  }
+
   test("A message can be sent") {
     assert(SendMessage().sendMessage(chatId = Left("-1001286594106"), text = "IntelliJ Test").isSuccess)
   }
