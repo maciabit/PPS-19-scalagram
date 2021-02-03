@@ -4,7 +4,7 @@ import PPS19.scalagram.methods.{AnswerCallbackQuery, GetNewUpdates, SendMessage}
 import PPS19.scalagram.models.messages.CallbackQuery
 import PPS19.scalagram.utils.{Props, TestUtils}
 import io.circe.parser.decode
-import org.scalatest.BeforeAndAfter
+import org.scalatest.{BeforeAndAfter, BeforeAndAfterEach}
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
@@ -72,10 +72,14 @@ class ModelsSuite extends AnyFunSuite {
 }
 
 @RunWith(classOf[JUnitRunner])
-class KeyboardSuite extends AnyFunSuite with BeforeAndAfter {
+class KeyboardSuite extends AnyFunSuite with BeforeAndAfter with BeforeAndAfterEach {
 
   before {
     Props.load()
+  }
+
+  override def beforeEach(): Unit = {
+    Thread.sleep(3000)
   }
 
   /*Response Keyboard test*/
@@ -95,10 +99,10 @@ class KeyboardSuite extends AnyFunSuite with BeforeAndAfter {
   }
 
   /*Response keyboard in private chat for optional feature test*/
-  test("A message with a response keyboard allowing user to send his location and phone number can be sent (ONLY FOR PRIVATE CHAT)"){
+  /*test("A message with a response keyboard allowing user to send his location and phone number can be sent (ONLY FOR PRIVATE CHAT)"){
     val a = (ReplyKeyboardMarkup(keyboard = Seq(Seq(KeyboardButton(text = "Send your phone number", request_contact = Some(true))),Seq(KeyboardButton(text = "Send your location", request_location = Some(true))))) : ReplyMarkup)
     assert(SendMessage().sendMessage(chatId = Left("263890809"), text = "Column of button test", replyMarkup = Some(a)).isSuccess)
-  }
+  }*/
 
   /*Inline keyboard test*/
   test("A message with a Inline Keyboard with a single url button can be sent"){
