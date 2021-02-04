@@ -1,6 +1,6 @@
 package PPS19.scalagram.methods
 
-import PPS19.scalagram.models.{ExistingMedia, RemoteMedia}
+import PPS19.scalagram.models.RemoteMedia
 import PPS19.scalagram.utils.Props
 import org.scalatest.{BeforeAndAfter, BeforeAndAfterEach}
 import org.junit.runner.RunWith
