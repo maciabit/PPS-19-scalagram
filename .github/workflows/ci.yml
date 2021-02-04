@@ -30,7 +30,7 @@ jobs:
       id: sub
       with:
         _input-text: ${{matrix.java_version}}
-        ".": ""
+        .: ""
     - name: Create application.properties file with the bot's token
       shell: bash
       env:
