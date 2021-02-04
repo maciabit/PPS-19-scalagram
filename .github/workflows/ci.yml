@@ -23,6 +23,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: Set up JDK
       uses: actions/setup-java@v1
+      with:
+        java-version: ${{matrix.java_version}}
     - name: Create application.properties file with the bot's token
       shell: bash
       run: |
