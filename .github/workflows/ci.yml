@@ -32,6 +32,7 @@ jobs:
         _input-text: ${{matrix.java_version}}
         ".": ""
     - name: Create application.properties file with the bot's token
+      shell: bash
       env:
         token-name: BOT_TOKEN_${{matrix.os}}_${{steps.sub.outputs.result}}
       run: |
