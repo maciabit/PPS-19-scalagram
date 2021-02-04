@@ -32,4 +32,11 @@ jobs:
           mkdir -p src/main/resources
           echo token=$SECRET_VALUE > src/main/resources/application.properties
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build -x test
+      - name: Test (safe) with Gradle
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 10
+          max_attempts: 5
+          shell: bash
+          command: ./gradlew test
