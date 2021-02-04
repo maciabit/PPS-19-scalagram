@@ -1,5 +1,6 @@
 package PPS19.scalagram.akka
 
+import PPS19.scalagram.logic.{Bot, Context}
 import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed.{ActorRef, Behavior}
 
@@ -15,23 +16,31 @@ object UpdateDispatcherActor {
   )
   private def getUpdate: Update = updates(scala.util.Random.nextInt(updates.length))
 
-  def apply(interval: FiniteDuration, workerTimeout: FiniteDuration): Behavior[LookForUpdates] =
-    scheduleUpdateBehavior(interval, workerTimeout)
+  def apply(bot: Bot, interval: FiniteDuration, workerTimeout: FiniteDuration): Behavior[LookForUpdates] =
+    scheduleUpdateBehavior(bot, interval, workerTimeout)
 
-  private def scheduleUpdateBehavior(interval: FiniteDuration, workerTimeout: FiniteDuration): Behavior[LookForUpdates] =
+  private def scheduleUpdateBehavior(
+    bot: Bot,
+    interval: FiniteDuration,
+    workerTimeout: FiniteDuration
+  ): Behavior[LookForUpdates] =
     Behaviors.withTimers { timers =>
       timers.startTimerAtFixedRate(LookForUpdates(), interval)
-      fetchUpdateBehavior(workerTimeout)
+      fetchUpdateBehavior(bot, workerTimeout)
     }
 
-  private def fetchUpdateBehavior(workerTimeout: FiniteDuration): Behavior[LookForUpdates] =
+  private def fetchUpdateBehavior(bot: Bot, workerTimeout: FiniteDuration): Behavior[LookForUpdates] =
     Behaviors.receive { (context, _) =>
       context.log.info("Fetching updates")
       val update = getUpdate
       val workerName = s"worker${update.chatId}"
       val worker = context.child(workerName) match {
         case Some(actor: ActorRef[ProcessUpdate]) => actor
-        case None => context.spawn(WorkerActor(workerTimeout), workerName)
+        case None => {
+          val botContext = Context(bot)
+          botContext.timeout = workerTimeout
+          context.spawn(WorkerActor(botContext), workerName)
+        }
       }
       worker ! ProcessUpdate(update)
       Behaviors.same

@@ -1,43 +1,55 @@
 package PPS19.scalagram.methods
 
-import PPS19.scalagram.utils.{Props, TestUtils}
-import org.scalatest.BeforeAndAfter
+import PPS19.scalagram.models.RemoteMedia
+import PPS19.scalagram.utils.Props
+import org.scalatest.{BeforeAndAfter, BeforeAndAfterEach}
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class MethodsSuite extends AnyFunSuite with BeforeAndAfter {
+class MethodsSuite extends AnyFunSuite with BeforeAndAfter with BeforeAndAfterEach {
+
+  val imageUrl = "https://via.placeholder.com/600/92c952"
+  val groupChatId = Left("-1001286594106")
 
   before {
     Props.load()
   }
-  test("Send a message") {
-    assert(TestUtils.retry(SendMessage().sendMessage(chatId = Left("-1001286594106"), text = "IntelliJ Test"))(3).isSuccess)
+
+  override def beforeEach(): Unit = {
+    Thread.sleep(3000)
   }
 
-  test("A Telegram API call can be performed using TelegramMethod Trait") {
-    GetNewUpdates().getNewUpdates()
-    assert(true)
+  test("A message can be sent") {
+    assert(SendMessage().sendMessage(groupChatId, "Test message").isSuccess)
   }
 
-  test("A Telegram message can be deleted with HTTP call") {
-    val text = SendMessage().sendMessage(chatId = Left("-1001286594106"), text = "texttobedeleted")
-    assert(TestUtils.retry(DeleteMessage().deleteMessage(chatId = Left("-1001286594106"), messageId = text.get.messageId))(3).isSuccess)
+  test("An image can be sent using an URL") {
+    val url = RemoteMedia(imageUrl)
+    assert(SendPhoto().sendPhoto(groupChatId, url).isSuccess)
   }
 
-  test("A Telegram message can be pinned and unpinned with HTTP call") {
-   val firstMessageToPin = SendMessage().sendMessage(chatId = Left("-1001286594106"), text = "firstMessageToPin")
-   val secondMessageToPin = SendMessage().sendMessage(chatId = Left("-1001286594106"), text = "secondMessageToPin")
-   val thirdMessageToPin = SendMessage().sendMessage(chatId = Left("-1001286594106"), text = "thirdMessageToPin")
-   assert(TestUtils.retry(PinMessage().pinMessage(chatId = Left("-1001286594106"), messageId = firstMessageToPin.get.messageId, disableNotification = Some(true)))(3).isSuccess)
-   assert(TestUtils.retry(PinMessage().pinMessage(chatId = Left("-1001286594106"), messageId = secondMessageToPin.get.messageId, disableNotification = Some(true)))(3).isSuccess)
-   assert(TestUtils.retry(PinMessage().pinMessage(chatId = Left("-1001286594106"), messageId = thirdMessageToPin.get.messageId, disableNotification = Some(true)))(3).isSuccess)
-   assert(TestUtils.retry(UnpinMessage().unpinMessage(chatId = Left("-1001286594106"), firstMessageToPin.get.messageId))(3).isSuccess)
+  test("Updates can be retrieved") {
+    assert(GetNewUpdates().getNewUpdates().isSuccess)
   }
 
-   test("All Telegram messages of a given chat can be unpinned") {
-     assert(TestUtils.retry(UnpinAllMessages().unpinAllMessages(chatId = Left("-1001286594106")))(3).isSuccess)
-   }
+  test("A message can be deleted") {
+    val text = SendMessage().sendMessage(groupChatId, "Test message to be deleted")
+    assert(DeleteMessage().deleteMessage(groupChatId, text.get.messageId).isSuccess)
+  }
 
+  test("A message can be pinned and unpinned") {
+    val firstMessageToPin = SendMessage().sendMessage(groupChatId, "First message to pin")
+    val secondMessageToPin = SendMessage().sendMessage(groupChatId, "Second message to pin")
+    val thirdMessageToPin = SendMessage().sendMessage(groupChatId, "Third message to pin")
+    assert(PinMessage().pinMessage(groupChatId, firstMessageToPin.get.messageId, Some(true)).isSuccess)
+    assert(PinMessage().pinMessage(groupChatId, secondMessageToPin.get.messageId, Some(true)).isSuccess)
+    assert(PinMessage().pinMessage(groupChatId, thirdMessageToPin.get.messageId, Some(true)).isSuccess)
+    assert(UnpinMessage().unpinMessage(groupChatId, firstMessageToPin.get.messageId).isSuccess)
+  }
+
+  test("All pinned messages of a given chat can be unpinned at once") {
+    assert(UnpinAllMessages().unpinAllMessages(groupChatId).isSuccess)
+  }
 }

@@ -5,128 +5,31 @@ name: Scala CI with Gradle
 on:
   push:
   pull_request:
+  workflow_dispatch:
   schedule:
     - cron: "0 4 * * SUN"
 
 jobs:
-  preliminary-build:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 14
-      - name: Create application.properties file with the bot's token
-        run: |
-          mkdir -p src/main/resources
-          echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
-      - name: Build with Gradle
-        run: ./gradlew build -x test
-      - name: Gradle test
-        uses: nick-invision/retry@v2
-        with:
-          timeout_minutes: 10
-          max_attempts: 5
-          shell: bash
-          command: ./gradlew test
-
   build:
-    needs: preliminary-build
     strategy:
+      fail-fast: false
       matrix:
-        os: [ubuntu, macos, windows]
-        java_version: [14, 12, 8]
+        os: [ubuntu, windows, macos]
+        java_version: [8, 11, 14]
     runs-on: ${{matrix.os}}-latest
     env:
-      OS: ${{matrix.os}}
-      JAVA_VERSION: ${{matrix.java_version}}
+      token-name: BOT_TOKEN_${{matrix.os}}_${{matrix.java_version}}
     steps:
-      - name: Print OS
-        run: echo ${{env.OS}}
       - uses: actions/checkout@v2
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
           java-version: ${{matrix.java_version}}
-      - name: Compile Scala
-        shell: bash
-        run: |
-          ./gradlew build -x test
-          ./gradlew compileTestScala
-          ls -alh build
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{env.OS}}_${{env.JAVA_VERSION}}
-          path: build
-      - name: Upload cache artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: cache_${{env.OS}}_${{env.JAVA_VERSION}}
-          path: .gradle
-
-  test:
-    needs: build
-    strategy:
-      max-parallel: 1
-      fail-fast: false
-      matrix:
-        os: [ubuntu, macos, windows]
-        java_version: [14, 12, 8]
-    runs-on: ${{matrix.os}}-latest
-    env:
-      OS: ${{matrix.os}}
-      JAVA_VERSION: ${{matrix.java_version}}
-    steps:
-      - uses: actions/checkout@v2
       - name: Create application.properties file with the bot's token
+        shell: bash
         run: |
+          SECRET_VALUE=${{secrets[env.token-name]}}
           mkdir -p src/main/resources
-          echo token=${{secrets.BOT_TOKEN}} > src/main/resources/application.properties
-      - name: Create build directory
-        shell: bash
-        run: mkdir build
-      - name: Download build artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{env.OS}}_${{env.JAVA_VERSION}}
-          path: build
-      - name: Create cache directory
-        shell: bash
-        run: mkdir .gradle
-      - name: Download cache artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: cache_${{env.OS}}_${{env.JAVA_VERSION}}
-          path: .gradle
-      - name: pwd
-        shell: bash
-        run: |
-          pwd
-          ls -alh
-          ls -alh build
+          echo token=$SECRET_VALUE > src/main/resources/application.properties
       - name: Build with Gradle
-        shell: bash
-        run: ./gradlew build -x test
-      - name: Build with Gradle
-        shell: bash
-        run: |
-          ./gradlew build -x test
-          ls -alh build
-      - name: Gradle test
-        uses: nick-invision/retry@v2
-        with:
-          timeout_minutes: 10
-          max_attempts: 5
-          shell: bash
-          command: ./gradlew test
-      - name: Remove build artifact
-        shell: bash
-        run: rm -rf build
-      - name: Remove bot token artifact
-        shell: bash
-        run: rm -rf src/main/resources/application.properties
-      - name: Remove cache artifact
-        shell: bash
-        run: rm -rf .gradle
+        run: ./gradlew build

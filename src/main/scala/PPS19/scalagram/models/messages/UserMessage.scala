@@ -33,5 +33,6 @@ object UserMessage {
   implicit val userMessageDecoder: Decoder[UserMessage] =
     List[Decoder[UserMessage]](
       deriveDecoder[TextMessage].widen,
+      deriveDecoder[PhotoMessage].widen
     ).reduceLeft(_.or(_))
 }
