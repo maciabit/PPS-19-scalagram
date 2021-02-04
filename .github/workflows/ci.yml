@@ -15,26 +15,16 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu, windows, macos]
-        java_version: [1.8, 11, 14]
+        java_version: [8, 11, 14]
     runs-on: ${{matrix.os}}-latest
-    #env:
-    #  token-name: BOT_TOKEN_${{matrix.os}}_${{matrix.java_version}}
+    env:
+      token-name: BOT_TOKEN_${{matrix.os}}_${{matrix.java_version}}
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK
       uses: actions/setup-java@v1
-      with:
-        java-version: ${{matrix.java_version}}
-    - name: Compute secret name # Needed to remove the "." from java_version 1.8
-      uses: bluwy/substitute-string-action@v1
-      id: sub
-      with:
-        _input-text: ${{matrix.java_version}}
-        .: ""
     - name: Create application.properties file with the bot's token
       shell: bash
-      env:
-        token-name: BOT_TOKEN_${{matrix.os}}_${{steps.sub.outputs.result}}
       run: |
         SECRET_VALUE=${{secrets[env.token-name]}}
         mkdir -p src/main/resources
