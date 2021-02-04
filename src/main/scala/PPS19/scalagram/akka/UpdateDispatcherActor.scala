@@ -14,7 +14,10 @@ object UpdateDispatcherActor {
     Update(200, "Message from Met"),
     Update(300, "Message from Flavio"),
   )
-  private def getUpdate: Update = updates(scala.util.Random.nextInt(updates.length))
+  private def getUpdates = List(
+    updates(scala.util.Random.nextInt(updates.length)),
+    updates(scala.util.Random.nextInt(updates.length))
+  )
 
   def apply(bot: Bot, interval: FiniteDuration, workerTimeout: FiniteDuration): Behavior[LookForUpdates] =
     scheduleUpdateBehavior(bot, interval, workerTimeout)
@@ -32,17 +35,17 @@ object UpdateDispatcherActor {
   private def fetchUpdateBehavior(bot: Bot, workerTimeout: FiniteDuration): Behavior[LookForUpdates] =
     Behaviors.receive { (context, _) =>
       context.log.info("Fetching updates")
-      val update = getUpdate
-      val workerName = s"worker${update.chatId}"
-      val worker = context.child(workerName) match {
-        case Some(actor: ActorRef[ProcessUpdate]) => actor
-        case None => {
-          val botContext = Context(bot)
-          botContext.timeout = workerTimeout
-          context.spawn(WorkerActor(botContext), workerName)
+      for (update <- getUpdates) {
+        val workerName = s"worker${update.chatId}"
+        val worker = context.child(workerName) match {
+          case Some(actor) => actor.asInstanceOf[ActorRef[WorkerMessage]]
+          case None =>
+            val botContext = Context(bot)
+            botContext.timeout = workerTimeout
+            context.spawn(WorkerActor(botContext), workerName)
         }
+        worker ! ProcessUpdate(update)
       }
-      worker ! ProcessUpdate(update)
       Behaviors.same
     }
 }
