@@ -3,7 +3,7 @@ package PPS19.scalagram.akka
 import java.time.LocalDateTime
 
 // Fake update class
-case class Update(chatId: Int, message: String)
+case class Update(id: Int, chatId: Int, message: String)
 
 /** Any message that a WorkerActor can handle */
 sealed trait WorkerMessage

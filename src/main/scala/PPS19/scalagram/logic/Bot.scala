@@ -1,7 +1,7 @@
 package PPS19.scalagram.logic
 
-import PPS19.scalagram.methods.{AnswerCallbackQuery, DeleteMessage, PinMessage, SendMessage, SendPhoto, UnpinAllMessages, UnpinMessage}
-import PPS19.scalagram.models.{InputFile, MessageUpdate, ReplyMarkup}
+import PPS19.scalagram.methods.{AnswerCallbackQuery, DeleteMessage, GetNewUpdates, PinMessage, SendMessage, SendPhoto, UnpinAllMessages, UnpinMessage}
+import PPS19.scalagram.models.{InputFile, MessageUpdate, ReplyMarkup, Update}
 import PPS19.scalagram.models.messages.{TelegramMessage, TextMessage}
 import PPS19.scalagram.modes.Mode
 
@@ -27,6 +27,13 @@ sealed trait Bot {
   }
 
   def launch(mode: Mode): Unit = mode.start(this)
+
+  def getUpdates(
+    offset: Option[Int] = None,
+    limit: Option[Int] = None,
+    timeout: Option[Int] = None,
+    allowedUpdates: Option[Array[String]] = None
+  ): Try[List[Update]] = GetNewUpdates().getNewUpdates(offset, limit, timeout, allowedUpdates)
 
   def sendMessage(
     chatId: Either[String, Int],
@@ -96,9 +103,9 @@ object Bot {
 
   def apply(
     token: BotToken,
-    middlewares: List[Middleware],
-    scenes: List[Scene],
-    reactions: List[Reaction]
+    middlewares: List[Middleware] = List.empty,
+    scenes: List[Scene] = List.empty,
+    reactions: List[Reaction] = List.empty
   ): Bot = BotImpl(token, middlewares, scenes, reactions)
 
   def unapply(bot: Bot): Option[(BotToken, List[Middleware], List[Scene], List[Reaction])] =
