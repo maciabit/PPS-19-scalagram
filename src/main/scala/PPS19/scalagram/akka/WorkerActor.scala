@@ -1,6 +1,6 @@
 package PPS19.scalagram.akka
 
-import PPS19.scalagram.logic.{Bot, Context}
+import PPS19.scalagram.logic.Context
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
 
