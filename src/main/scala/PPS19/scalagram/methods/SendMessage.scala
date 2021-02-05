@@ -33,21 +33,10 @@ case class SendMessage() {
       "disable_notification" -> disableNotification,
       "reply_to_message_id" -> replyToMessageId,
       "allow_sending_without_reply" -> allowSendingWithoutReply,
-      "reply_markup" -> replyMarkup match {
-        case (k, Some(markup : InlineKeyboardMarkup)) =>
-          val encoder: Encoder[InlineKeyboardMarkup] = deriveEncoder
-          (k, encoder.snakeCase(markup).toString().filter(_ >= ' '))
-        case (k, Some(markup : ReplyKeyboardMarkup)) =>
-          val encoder: Encoder[ReplyKeyboardMarkup] = deriveEncoder
-          (k, encoder.snakeCase(markup).toString().filter(_ >= ' '))
-        case (k, Some(markup : ReplyKeyboardRemove)) =>
-          val encoder: Encoder[ReplyKeyboardRemove] = deriveEncoder
-          (k, encoder.snakeCase(markup).toString().filter(_ >= ' '))
-        case (k, Some(markup : ForceReply)) =>
-          val encoder: Encoder[ForceReply] = deriveEncoder
-          (k, encoder.snakeCase(markup).toString().filter(_ >= ' '))
-        case (k, None) => (k, None)
-      }
+      "reply_markup" -> (replyMarkup match {
+        case (Some(markup)) => Encoder[ReplyMarkup].snakeCase(markup).toString.filter(_ >= ' ')
+        case (None) => (None)
+      })
     )
     val res = method(urlParams)
     res match {
