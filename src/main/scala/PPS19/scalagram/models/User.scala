@@ -1,4 +1,5 @@
 package PPS19.scalagram.models
+
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
 import cats.syntax.functor._
@@ -29,6 +30,3 @@ final case class HumanUser(id: Int, isBot: Boolean = false, firstName: String, l
   extends User
 
 final case class BotUser(id: Int, isBot: Boolean = true, firstName: String, lastName: Option[String], username:Option[String], languageCode: Option[String], canJoinGroups: Option[Boolean], canReadAllGroupMessages: Option[Boolean],supportsInlineQueries: Option[Boolean] ) extends User
-
-
-

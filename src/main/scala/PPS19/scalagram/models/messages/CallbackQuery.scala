@@ -1,6 +1,6 @@
 package PPS19.scalagram.models.messages
 
-import PPS19.scalagram.models.{User}
+import PPS19.scalagram.models.User
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
 import cats.syntax.functor._

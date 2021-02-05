@@ -1,9 +1,8 @@
 package PPS19.scalagram.methods
 
-import PPS19.scalagram.models.{ForceReply, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ReplyMarkup}
+import PPS19.scalagram.models.ReplyMarkup
 import PPS19.scalagram.models.messages.TelegramMessage
 import io.circe.{Encoder, Json}
-import io.circe.generic.semiauto.deriveEncoder
 import io.circe.parser._
 import PPS19.scalagram.marshalling.codecs.EncoderOps
 

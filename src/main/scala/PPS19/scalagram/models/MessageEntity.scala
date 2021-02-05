@@ -9,7 +9,6 @@ sealed trait MessageEntity {
 }
 
 object MessageEntity {
-  import io.circe.generic.auto._
 
   implicit val chatDecoder: Decoder[MessageEntity] = Decoder.instance[MessageEntity] { cursor =>
     cursor

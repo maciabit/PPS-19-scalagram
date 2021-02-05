@@ -1,6 +1,6 @@
 package PPS19.scalagram.models
 
-import io.circe.{Encoder}
+import io.circe.Encoder
 import io.circe.syntax._
 import io.circe.generic.auto._
 
