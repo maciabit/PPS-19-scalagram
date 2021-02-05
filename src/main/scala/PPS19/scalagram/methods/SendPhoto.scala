@@ -1,18 +1,15 @@
 package PPS19.scalagram.methods
 
-import PPS19.scalagram.models.{ExistingMedia, InputFile, RemoteMedia, ReplyKeyboardRemove}
+import PPS19.scalagram.models.{ExistingMedia, ForceReply, InlineKeyboardMarkup, InputFile, RemoteMedia, ReplyKeyboardMarkup, ReplyKeyboardRemove, ReplyMarkup, UploadMedia}
 import PPS19.scalagram.models.messages.TelegramMessage
 import io.circe.parser.decode
 import PPS19.scalagram.marshalling.codecs.EncoderOps
-import PPS19.scalagram.models.{ForceReply, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyMarkup}
 import io.circe.generic.semiauto.deriveEncoder
 import io.circe.{Encoder, Json}
 
 import scala.util.{Failure, Success, Try}
 
 case class SendPhoto() {
-
-  private val method: Map[String, Any] => Try[Json] = telegramApiRequest(requests.post, "sendPhoto")
 
   def sendPhoto(
     chatId: Either[String, Int],
@@ -30,6 +27,7 @@ case class SendPhoto() {
       "photo" -> (photo match {
         case ExistingMedia(fileId) => fileId
         case RemoteMedia(url) => url
+        case UploadMedia(_) => None
       }),
       "caption" -> caption,
       "parse_mode" -> parseMode,
@@ -53,7 +51,14 @@ case class SendPhoto() {
         case (k, None) => (k, None)
       }
     )
-    val res = method(urlParams)
+    implicit val multipartFormData: Map[String, String] = Map (
+      "photo" -> (photo match {
+        case UploadMedia(path) => path
+        case _ => null
+      })
+    )
+      .filter(item => item._2 != null)
+    val res = telegramApiRequest(requests.post, "sendPhoto")(urlParams)
     res match {
       case Success(json) => decode[TelegramMessage](json.toString()) match {
         case Right(message) => Success(message)

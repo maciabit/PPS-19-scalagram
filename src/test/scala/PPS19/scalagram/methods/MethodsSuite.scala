@@ -1,6 +1,6 @@
 package PPS19.scalagram.methods
 
-import PPS19.scalagram.models.RemoteMedia
+import PPS19.scalagram.models.{RemoteMedia, UploadMedia}
 import PPS19.scalagram.utils.Props
 import org.scalatest.{BeforeAndAfter, BeforeAndAfterEach}
 import org.junit.runner.RunWith
@@ -10,8 +10,9 @@ import org.scalatestplus.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class MethodsSuite extends AnyFunSuite with BeforeAndAfter with BeforeAndAfterEach {
 
-  val imageUrl = "https://via.placeholder.com/600/92c952"
-  val groupChatId = Left("-1001286594106")
+  private val imageUrl = "https://via.placeholder.com/600/92c952"
+  private val placeholderPhoto = getClass.getClassLoader.getResource("placeholder.jpg").getPath
+  private val groupChatId = Left("-1001286594106")
 
   before {
     Props.load()
@@ -27,6 +28,12 @@ class MethodsSuite extends AnyFunSuite with BeforeAndAfter with BeforeAndAfterEa
 
   test("An image can be sent using an URL") {
     val url = RemoteMedia(imageUrl)
+    assert(SendPhoto().sendPhoto(groupChatId, url).isSuccess)
+  }
+
+  test("An image can be sent using a file") {
+    println(placeholderPhoto)
+    val url = UploadMedia(placeholderPhoto)
     assert(SendPhoto().sendPhoto(groupChatId, url).isSuccess)
   }
 
