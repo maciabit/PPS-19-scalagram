@@ -2,6 +2,7 @@ package PPS19.scalagram.modes
 
 import PPS19.scalagram.akka.{LookForUpdates, UpdateDispatcherActor}
 import PPS19.scalagram.logic.{Bot, BotToken}
+import PPS19.scalagram.utils.Props
 import akka.actor.typed.ActorSystem
 
 import scala.concurrent.duration._
@@ -50,6 +51,7 @@ object Polling {
 }
 
 object TryPolling extends App {
-  val bot = Bot(BotToken(""), List(), List(), List())
+  Props.load()
+  val bot = Bot(BotToken(Props.get("token")))
   bot.launch(Polling(5.seconds, 10.seconds))
 }

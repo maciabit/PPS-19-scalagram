@@ -1,6 +1,6 @@
 package PPS19.scalagram.methods
 
-import PPS19.scalagram.models.{ForceReply, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, LoginUrl, ReplyKeyboardMarkup, ReplyKeyboardRemove, ReplyMarkup}
+import PPS19.scalagram.models.{ForceReply, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove}
 import PPS19.scalagram.utils.Props
 import org.junit.runner.RunWith
 import org.scalatest.{BeforeAndAfter, BeforeAndAfterEach}
