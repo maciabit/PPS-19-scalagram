@@ -1,12 +1,15 @@
 package PPS19.scalagram.methods
 
+import PPS19.scalagram.logic.BotToken
+
 import scala.util.{Success, Try}
 import PPS19.scalagram.models.Update
 import io.circe.Json
 import io.circe.parser._
 import requests.Requester
 
-case class GetNewUpdates(
+case class GetUpdates(
+  token: BotToken,
   offset: Option[Int] = None,
   limit: Option[Int] = None,
   timeout: Option[Int] = None,

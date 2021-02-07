@@ -1,8 +1,8 @@
 package PPS19.scalagram.methods
 
+import PPS19.scalagram.logic.BotToken
 import PPS19.scalagram.marshalling.MapUtils.MapToUrlParams
 import PPS19.scalagram.models.TelegramError
-import PPS19.scalagram.utils.Props
 import io.circe.Json
 import io.circe.parser.{decode, parse}
 import requests.{MultiItem, Requester}
@@ -13,6 +13,8 @@ import scala.util.{Failure, Success, Try}
 trait TelegramRequest[T] {
 
   val TELEGRAM_API_URL = "https://api.telegram.org/bot"
+
+  val token: BotToken
 
   val request: Requester
 
@@ -42,7 +44,7 @@ trait TelegramRequest[T] {
           requests.MultiItem(key, file, file.getName)
       }
       .toList
-    val url = s"$TELEGRAM_API_URL${Props.get("token")}/$endpoint?$query"
+    val url = s"$TELEGRAM_API_URL${token.token}/$endpoint?$query"
     val req = multiItem match {
       case Nil => Try(request(url))
       case _ => Try(request(url, data = requests.MultiPart(multiItem:_*)))

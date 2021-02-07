@@ -10,7 +10,10 @@ object Props {
 
   private val properties: Properties = new Properties()
 
-  def get(property: String): String = properties.getProperty(property)
+  def get(property: String): String = {
+    if (properties.isEmpty) load()
+    properties.getProperty(property)
+  }
 
   def load(): Unit = {
     if (!properties.isEmpty) return

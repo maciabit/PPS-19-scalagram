@@ -1,5 +1,6 @@
 package PPS19.scalagram.methods
 
+import PPS19.scalagram.logic.BotToken
 import PPS19.scalagram.models.{ExistingMedia, InputFile, RemoteMedia, UploadMedia}
 import PPS19.scalagram.models.messages.TelegramMessage
 import io.circe.parser.decode
@@ -11,6 +12,7 @@ import requests.Requester
 import scala.util.{Failure, Success, Try}
 
 case class SendPhoto(
+  token: BotToken,
   chatId: Either[String, Int],
   photo: InputFile,
   caption: Option[String] = None,

@@ -1,11 +1,13 @@
 package PPS19.scalagram.methods
 
+import PPS19.scalagram.logic.BotToken
 import io.circe.Json
 import requests.Requester
 
-import scala.util.{Failure, Success, Try}
+import scala.util.{Success, Try}
 
 case class AnswerCallbackQuery(
+  token: BotToken,
   callbackQueryId: String,
   text: Option[String],
   showAlert: Option[Boolean],

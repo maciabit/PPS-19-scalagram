@@ -1,6 +1,6 @@
 package PPS19.scalagram.logic
 
-import PPS19.scalagram.methods.{AnswerCallbackQuery, DeleteMessage, GetNewUpdates, PinMessage, SendMessage, SendPhoto, UnpinAllMessages, UnpinMessage}
+import PPS19.scalagram.methods.{AnswerCallbackQuery, DeleteMessage, GetUpdates, PinMessage, SendMessage, SendPhoto, UnpinAllMessages, UnpinMessage}
 import PPS19.scalagram.models.{InputFile, MessageUpdate, ReplyMarkup, Update}
 import PPS19.scalagram.models.messages.{TelegramMessage, TextMessage}
 import PPS19.scalagram.modes.Mode
@@ -33,7 +33,7 @@ sealed trait Bot {
     limit: Option[Int] = None,
     timeout: Option[Int] = None,
     allowedUpdates: Option[Array[String]] = None
-  ): Try[List[Update]] = GetNewUpdates(offset, limit, timeout, allowedUpdates).call()
+  ): Try[List[Update]] = GetUpdates(token, offset, limit, timeout, allowedUpdates).call()
 
   def sendMessage(
     chatId: Either[String, Int],
@@ -46,6 +46,7 @@ sealed trait Bot {
     allowSendingWithoutReply: Option[Boolean] = None,
     replyMarkup: Option[ReplyMarkup] = None
   ): Try[TelegramMessage] = SendMessage(
+    token,
     chatId,
     text,
     parseMode,
@@ -68,6 +69,7 @@ sealed trait Bot {
     allowSendingWithoutReply: Option[Boolean] = None,
     replyMarkup: Option[ReplyMarkup] = None
   ): Try[TelegramMessage] = SendPhoto(
+    token,
     chatId,
     photo,
     caption,
@@ -80,15 +82,15 @@ sealed trait Bot {
   ).call()
 
   def deleteMessage(chatId: Either[String, Int], messageId: Int): Try[Boolean] =
-    DeleteMessage(chatId, messageId).call()
+    DeleteMessage(token, chatId, messageId).call()
 
   def pinMessage(chatId: Either[String, Int], messageId: Int, disableNotification: Option[Boolean]): Try[Boolean] =
-    PinMessage(chatId, messageId, disableNotification).call()
+    PinMessage(token, chatId, messageId, disableNotification).call()
 
   def unpinMessage(chatId: Either[String, Int], messageId: Int): Try[Boolean] =
-    UnpinMessage(chatId, messageId).call()
+    UnpinMessage(token, chatId, messageId).call()
 
-  def unpinAllMessages(chatId: Either[String, Int]): Try[Boolean] = UnpinAllMessages(chatId).call()
+  def unpinAllMessages(chatId: Either[String, Int]): Try[Boolean] = UnpinAllMessages(token, chatId).call()
 
   def answerCallbackQuery(
     callbackQueryId: String,
@@ -96,7 +98,7 @@ sealed trait Bot {
     showAlert: Option[Boolean],
     url: Option[String],
     cacheTime: Option[Int]
-  ): Unit = AnswerCallbackQuery(callbackQueryId, text, showAlert, url, cacheTime).call()
+  ): Unit = AnswerCallbackQuery(token, callbackQueryId, text, showAlert, url, cacheTime).call()
 }
 
 object Bot {

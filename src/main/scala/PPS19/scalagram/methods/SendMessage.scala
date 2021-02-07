@@ -1,5 +1,6 @@
 package PPS19.scalagram.methods
 
+import PPS19.scalagram.logic.BotToken
 import PPS19.scalagram.models.ReplyMarkup
 import PPS19.scalagram.models.messages.TelegramMessage
 import io.circe.{Encoder, Json}
@@ -10,6 +11,7 @@ import requests.Requester
 import scala.util.{Failure, Success, Try}
 
 case class SendMessage(
+  token: BotToken,
   chatId: Either[String, Int],
   text: String,
   parseMode: Option[String] = None,
