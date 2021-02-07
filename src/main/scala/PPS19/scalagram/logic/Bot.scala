@@ -33,7 +33,7 @@ sealed trait Bot {
     limit: Option[Int] = None,
     timeout: Option[Int] = None,
     allowedUpdates: Option[Array[String]] = None
-  ): Try[List[Update]] = GetNewUpdates().getNewUpdates(offset, limit, timeout, allowedUpdates)
+  ): Try[List[Update]] = GetNewUpdates().call(offset, limit, timeout, allowedUpdates)
 
   def sendMessage(
     chatId: Either[String, Int],
@@ -45,7 +45,7 @@ sealed trait Bot {
     replyToMessageId: Option[Int] = None,
     allowSendingWithoutReply: Option[Boolean] = None,
     replyMarkup: Option[ReplyMarkup] = None
-  ): Try[TelegramMessage] = SendMessage().sendMessage(
+  ): Try[TelegramMessage] = SendMessage().call(
     chatId,
     text,
     parseMode,
@@ -67,7 +67,7 @@ sealed trait Bot {
     replyToMessageId: Option[Int] = None,
     allowSendingWithoutReply: Option[Boolean] = None,
     replyMarkup: Option[ReplyMarkup] = None
-  ): Try[TelegramMessage] = SendPhoto().sendPhoto(
+  ): Try[TelegramMessage] = SendPhoto().call(
     chatId,
     photo,
     caption,
@@ -80,15 +80,15 @@ sealed trait Bot {
   )
 
   def deleteMessage(chatId: Either[String, Int], messageId: Int): Try[Boolean] =
-    DeleteMessage().deleteMessage(chatId, messageId)
+    DeleteMessage().call(chatId, messageId)
 
   def pinMessage(chatId: Either[String, Int], messageId: Int, disableNotification: Option[Boolean]): Try[Boolean] =
-    PinMessage().pinMessage(chatId, messageId, disableNotification)
+    PinMessage().call(chatId, messageId, disableNotification)
 
   def unpinMessage(chatId: Either[String, Int], messageId: Int): Try[Boolean] =
-    UnpinMessage().unpinMessage(chatId, messageId)
+    UnpinMessage().call(chatId, messageId)
 
-  def unpinAllMessages(chatId: Either[String, Int]): Try[Boolean] = UnpinAllMessages().unpinAllMessages(chatId)
+  def unpinAllMessages(chatId: Either[String, Int]): Try[Boolean] = UnpinAllMessages().call(chatId)
 
   def answerCallbackQuery(
     callbackQueryId: String,
@@ -96,7 +96,7 @@ sealed trait Bot {
     showAlert: Option[Boolean],
     url: Option[String],
     cacheTime: Option[Int]
-  ): Unit = AnswerCallbackQuery().answerCallbackQuery(callbackQueryId, text, showAlert, url, cacheTime)
+  ): Unit = AnswerCallbackQuery().call(callbackQueryId, text, showAlert, url, cacheTime)
 }
 
 object Bot {

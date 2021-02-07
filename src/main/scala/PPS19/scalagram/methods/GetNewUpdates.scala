@@ -9,7 +9,7 @@ case class GetNewUpdates() {
 
   private val method: Map[String, Any] => Try[Json] = telegramApiRequest(requests.get, "getUpdates")
 
-  def getNewUpdates(
+  def call(
     offset: Option[Int] = None,
     limit: Option[Int] = None,
     timeout: Option[Int] = None,

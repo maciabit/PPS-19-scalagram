@@ -8,7 +8,7 @@ case class PinMessage() {
 
   private val method: Map[String, Any] => Try[Json] = telegramApiRequest(requests.post, "pinChatMessage")
 
-  def pinMessage(
+  def call(
     chatId: Either[String,Int],
     messageId: Int,
     disableNotification: Option[Boolean]

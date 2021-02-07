@@ -8,7 +8,7 @@ case class UnpinAllMessages() {
 
   private val method: Map[String, Any] => Try[Json] = telegramApiRequest(requests.post, "unpinAllChatMessages")
 
-  def unpinAllMessages(chatId: Either[String,Int]): Try[Boolean] = {
+  def call(chatId: Either[String,Int]): Try[Boolean] = {
     val urlParams: Map[String, Any] = Map(
       "chat_id" -> chatId.fold(l => l, r => r),
     )

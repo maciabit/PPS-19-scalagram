@@ -24,19 +24,19 @@ class KeyboardSuite extends AnyFunSuite with BeforeAndAfter with BeforeAndAfterE
 
   test("A message with a single button Response Keyboard can be sent") {
     val keyboard = Some(ReplyKeyboardMarkup(Seq(Seq(KeyboardButton("Button")))))
-    val message = SendMessage().sendMessage(groupChatId, "Single button keyboard", replyMarkup = keyboard)
-    assert(message.isSuccess)
-  }
-
-  test("A message with a row of buttons Response Keyboard can be sent") {
-    val keyboard = Some(ReplyKeyboardMarkup(Seq(Seq(KeyboardButton("Button 1"), KeyboardButton("Button 2")))))
-    val message = SendMessage().sendMessage(groupChatId, "Row of buttons keyboard", replyMarkup = keyboard)
+    val message = SendMessage().call(groupChatId, "Single button keyboard", replyMarkup = keyboard)
     assert(message.isSuccess)
   }
 
   test("A message with a column of buttons Response Keyboard can be sent") {
+    val keyboard = Some(ReplyKeyboardMarkup(Seq(Seq(KeyboardButton("Button 1"), KeyboardButton("Button 2")))))
+    val message = SendMessage().call(groupChatId, "Row of buttons keyboard", replyMarkup = keyboard)
+    assert(message.isSuccess)
+  }
+
+  test("A message with a row of buttons Response Keyboard can be sent") {
     val keyboard = Some(ReplyKeyboardMarkup(Seq(Seq(KeyboardButton("Button 1")), Seq(KeyboardButton("Button 2")))))
-    val message = SendMessage().sendMessage(groupChatId, "Column of buttons keyboard", replyMarkup = keyboard)
+    val message = SendMessage().call(groupChatId, "Column of buttons keyboard", replyMarkup = keyboard)
     assert(message.isSuccess)
   }
 
@@ -45,13 +45,13 @@ class KeyboardSuite extends AnyFunSuite with BeforeAndAfter with BeforeAndAfterE
       Seq(KeyboardButton("Button 1"), KeyboardButton("Button 2")),
       Seq(KeyboardButton("Button 3"), KeyboardButton("Button 4"))
     )))
-    val message = SendMessage().sendMessage(groupChatId, "Grid of buttons keyboard", replyMarkup = keyboard)
+    val message = SendMessage().call(groupChatId, "Grid of buttons keyboard", replyMarkup = keyboard)
     assert(message.isSuccess)
   }
 
   test("A Response Keyboard can be removed") {
     val keyboard = Some(ReplyKeyboardRemove())
-    val message = SendMessage().sendMessage(groupChatId, "Removing response keyboard", replyMarkup = keyboard)
+    val message = SendMessage().call(groupChatId, "Removing response keyboard", replyMarkup = keyboard)
     assert(message.isSuccess)
   }
 
@@ -68,7 +68,7 @@ class KeyboardSuite extends AnyFunSuite with BeforeAndAfter with BeforeAndAfterE
       // Switch inline button (inline query)
       InlineKeyboardButton("Inline query", switchInlineQuery = Some("")),
     ))))
-    val message = SendMessage().sendMessage(groupChatId, "Various Inline Buttons", replyMarkup = keyboard)
+    val message = SendMessage().call(groupChatId, "Various Inline Buttons", replyMarkup = keyboard)
     assert(message.isSuccess)
   }
 
@@ -76,7 +76,7 @@ class KeyboardSuite extends AnyFunSuite with BeforeAndAfter with BeforeAndAfterE
 
   test("A message that displays a reply interface to the user can be sent") {
     val keyboard = Some(ForceReply())
-    val message = SendMessage().sendMessage(groupChatId, "You all must answer me", replyMarkup = keyboard)
+    val message = SendMessage().call(groupChatId, "You all must answer me", replyMarkup = keyboard)
     assert(message.isSuccess)
   }
 }

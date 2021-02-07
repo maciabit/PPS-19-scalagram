@@ -8,7 +8,7 @@ case class DeleteMessage() {
 
   private val method: Map[String, Any] => Try[Json] = telegramApiRequest(requests.get, "deleteMessage")
 
-  def deleteMessage(
+  def call(
     chatId: Either[String,Int],
     messageId: Int
   ): Try[Boolean] = {

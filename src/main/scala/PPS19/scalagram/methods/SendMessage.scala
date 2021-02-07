@@ -12,7 +12,7 @@ case class SendMessage() {
 
   private val method: Map[String, Any] => Try[Json] = telegramApiRequest(requests.post, "sendMessage")
 
-  def sendMessage(
+  def call(
     chatId: Either[String, Int],
     text: String,
     parseMode: Option[String] = None,
@@ -33,8 +33,8 @@ case class SendMessage() {
       "reply_to_message_id" -> replyToMessageId,
       "allow_sending_without_reply" -> allowSendingWithoutReply,
       "reply_markup" -> (replyMarkup match {
-        case (Some(markup)) => Encoder[ReplyMarkup].snakeCase(markup).toString.filter(_ >= ' ')
-        case (None) => (None)
+        case Some(markup) => Encoder[ReplyMarkup].snakeCase(markup).toString.filter(_ >= ' ')
+        case None => None
       })
     )
     val res = method(urlParams)

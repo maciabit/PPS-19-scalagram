@@ -8,7 +8,7 @@ case class AnswerCallbackQuery() {
 
   private val method: Map[String, Any] => Try[Json] = telegramApiRequest(requests.get, "answerCallbackQuery")
 
-  def answerCallbackQuery(
+  def call(
     callbackQueryId: String,
     text: Option[String],
     showAlert: Option[Boolean],

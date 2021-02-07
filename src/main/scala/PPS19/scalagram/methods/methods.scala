@@ -16,7 +16,9 @@ package object methods {
 
   val TELEGRAM_API_URL = "https://api.telegram.org/bot"
 
-  def telegramApiRequest(request: Requester, endpoint: String)(urlParams: Map[String, Any])(implicit multipartFormData: Map[String, String]): Try[Json] = {
+  def telegramApiRequest(request: Requester, endpoint: String)
+                        (urlParams: Map[String, Any])
+                        (implicit multipartFormData: Map[String, String]): Try[Json] = {
     val query = urlParams
       .filter {
         case (_, None) => false
@@ -27,7 +29,6 @@ package object methods {
         case (key, value) => (key, value)
       }
       .toUrlQuery
-
     val multiItem: List[MultiItem] = multipartFormData
       .map {
         case (key, value) =>
@@ -35,12 +36,10 @@ package object methods {
           requests.MultiItem(key, file, file.getName)
       }
       .toList
-
     val url = s"$TELEGRAM_API_URL${Props.get("token")}/$endpoint?$query"
-    println(url)
     val req = multiItem match {
       case Nil => Try(request(url))
-      case _ =>   Try(request(url, data = requests.MultiPart(multiItem:_*)))
+      case _ => Try(request(url, data = requests.MultiPart(multiItem:_*)))
     }
     req match {
       case Success(response) =>

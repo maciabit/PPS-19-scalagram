@@ -23,40 +23,40 @@ class MethodsSuite extends AnyFunSuite with BeforeAndAfter with BeforeAndAfterEa
   }
 
   test("A message can be sent") {
-    assert(SendMessage().sendMessage(groupChatId, "Test message").isSuccess)
+    assert(SendMessage().call(groupChatId, "Test message").isSuccess)
   }
 
   test("An image can be sent using an URL") {
     val url = RemoteMedia(imageUrl)
-    assert(SendPhoto().sendPhoto(groupChatId, url).isSuccess)
+    assert(SendPhoto().call(groupChatId, url).isSuccess)
   }
 
   test("An image can be sent using a file") {
     println(placeholderPhoto)
     val url = UploadMedia(placeholderPhoto)
-    assert(SendPhoto().sendPhoto(groupChatId, url).isSuccess)
+    assert(SendPhoto().call(groupChatId, url).isSuccess)
   }
 
   test("Updates can be retrieved") {
-    assert(GetNewUpdates().getNewUpdates().isSuccess)
+    assert(GetNewUpdates().call().isSuccess)
   }
 
   test("A message can be deleted") {
-    val text = SendMessage().sendMessage(groupChatId, "Test message to be deleted")
-    assert(DeleteMessage().deleteMessage(groupChatId, text.get.messageId).isSuccess)
+    val text = SendMessage().call(groupChatId, "Test message to be deleted")
+    assert(DeleteMessage().call(groupChatId, text.get.messageId).isSuccess)
   }
 
   test("A message can be pinned and unpinned") {
-    val firstMessageToPin = SendMessage().sendMessage(groupChatId, "First message to pin")
-    val secondMessageToPin = SendMessage().sendMessage(groupChatId, "Second message to pin")
-    val thirdMessageToPin = SendMessage().sendMessage(groupChatId, "Third message to pin")
-    assert(PinMessage().pinMessage(groupChatId, firstMessageToPin.get.messageId, Some(true)).isSuccess)
-    assert(PinMessage().pinMessage(groupChatId, secondMessageToPin.get.messageId, Some(true)).isSuccess)
-    assert(PinMessage().pinMessage(groupChatId, thirdMessageToPin.get.messageId, Some(true)).isSuccess)
-    assert(UnpinMessage().unpinMessage(groupChatId, firstMessageToPin.get.messageId).isSuccess)
+    val firstMessageToPin = SendMessage().call(groupChatId, "First message to pin")
+    val secondMessageToPin = SendMessage().call(groupChatId, "Second message to pin")
+    val thirdMessageToPin = SendMessage().call(groupChatId, "Third message to pin")
+    assert(PinMessage().call(groupChatId, firstMessageToPin.get.messageId, Some(true)).isSuccess)
+    assert(PinMessage().call(groupChatId, secondMessageToPin.get.messageId, Some(true)).isSuccess)
+    assert(PinMessage().call(groupChatId, thirdMessageToPin.get.messageId, Some(true)).isSuccess)
+    assert(UnpinMessage().call(groupChatId, firstMessageToPin.get.messageId).isSuccess)
   }
 
   test("All pinned messages of a given chat can be unpinned at once") {
-    assert(UnpinAllMessages().unpinAllMessages(groupChatId).isSuccess)
+    assert(UnpinAllMessages().call(groupChatId).isSuccess)
   }
 }

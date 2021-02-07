@@ -11,7 +11,7 @@ import scala.util.{Failure, Success, Try}
 
 case class SendPhoto() {
 
-  def sendPhoto(
+  def call(
     chatId: Either[String, Int],
     photo: InputFile,
     caption: Option[String] = None,
@@ -37,7 +37,7 @@ case class SendPhoto() {
       "allow_sending_without_reply" -> allowSendingWithoutReply,
       "reply_markup" -> (replyMarkup match {
         case Some(markup) => Encoder[ReplyMarkup].snakeCase(markup).toString.filter(_ >= ' ')
-        case (None) => None
+        case None => None
       })
     )
     implicit val multipartFormData: Map[String, String] = Map (
