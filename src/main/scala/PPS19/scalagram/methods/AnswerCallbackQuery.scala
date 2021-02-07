@@ -1,5 +1,6 @@
 package PPS19.scalagram.methods
 
+import io.circe.Json
 import requests.Requester
 
 import scala.util.{Failure, Success, Try}
@@ -24,8 +25,5 @@ case class AnswerCallbackQuery(
     "cache_time" -> cacheTime
   )
 
-  def call(): Try[Boolean] = perform() match {
-    case Success(_) => Success(true)
-    case Failure(error) => Failure(error)
-  }
+  def parseSuccessResponse(json: Json): Try[Boolean] = Success(true)
 }

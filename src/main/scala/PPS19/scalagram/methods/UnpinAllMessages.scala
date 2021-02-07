@@ -1,8 +1,9 @@
 package PPS19.scalagram.methods
 
+import io.circe.Json
 import requests.Requester
 
-import scala.util.{Failure, Success, Try}
+import scala.util.{Success, Try}
 
 case class UnpinAllMessages(chatId: Either[String, Int]) extends TelegramRequest[Boolean] {
 
@@ -14,8 +15,5 @@ case class UnpinAllMessages(chatId: Either[String, Int]) extends TelegramRequest
     "chat_id" -> chatId.fold(l => l, r => r),
   )
 
-  def call(): Try[Boolean] = perform() match {
-    case Success(_) => Success(true)
-    case Failure(error) => Failure(error)
-  }
+  def parseSuccessResponse(json: Json): Try[Boolean] = Success(true)
 }

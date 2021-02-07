@@ -1,7 +1,8 @@
 package PPS19.scalagram.methods
 
-import scala.util.{Failure, Success, Try}
+import scala.util.{Success, Try}
 import PPS19.scalagram.models.Update
+import io.circe.Json
 import io.circe.parser._
 import requests.Requester
 
@@ -23,13 +24,11 @@ case class GetNewUpdates(
     "allowed_Updates" -> allowedUpdates,
   )
 
-  def call(): Try[List[Update]] = perform() match {
-    case Success(json) =>
-      val updates = json.asArray.get
-        .map { update => decode[Update](update.toString()) }
-        .collect { case Right(update) => update }
-        .toList
-      Success(updates)
-    case Failure(error) => Failure(error)
+  def parseSuccessResponse(json: Json): Try[List[Update]] = {
+    val updates = json.asArray.get
+      .map { update => decode[Update](update.toString()) }
+      .collect { case Right(update) => update }
+      .toList
+    Success(updates)
   }
 }

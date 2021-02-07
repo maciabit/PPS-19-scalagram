@@ -5,7 +5,7 @@ import PPS19.scalagram.models.messages.TelegramMessage
 import io.circe.parser.decode
 import PPS19.scalagram.marshalling.codecs.EncoderOps
 import PPS19.scalagram.models.ReplyMarkup
-import io.circe.Encoder
+import io.circe.{Encoder, Json}
 import requests.Requester
 
 import scala.util.{Failure, Success, Try}
@@ -52,11 +52,8 @@ case class SendPhoto(
     })
   ).filter(item => item._2 != null)
 
-  def call(): Try[TelegramMessage] = perform() match {
-    case Success(json) => decode[TelegramMessage](json.toString()) match {
-      case Right(message) => Success(message)
-      case Left(error) => Failure(error)
-    }
-    case Failure(error) => Failure(error)
+  def parseSuccessResponse(json: Json): Try[TelegramMessage] = decode[TelegramMessage](json.toString()) match {
+    case Right(message) => Success(message)
+    case Left(error) => Failure(error)
   }
 }

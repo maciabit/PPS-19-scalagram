@@ -12,6 +12,8 @@ import scala.util.{Failure, Success, Try}
 
 trait TelegramRequest[T] {
 
+  val TELEGRAM_API_URL = "https://api.telegram.org/bot"
+
   val request: Requester
 
   val endpoint: String
@@ -20,7 +22,9 @@ trait TelegramRequest[T] {
 
   val multipartFormData: Map[String, String] = Map.empty
 
-  def perform(): Try[Json] = {
+  def parseSuccessResponse(json: Json): Try[T]
+
+  def call(): Try[T] = {
     val query = urlParams
       .filter {
         case (_, None) => false
@@ -45,14 +49,12 @@ trait TelegramRequest[T] {
     }
     req match {
       case Success(response) =>
-        val parsed = parse(response.text()).getOrElse(Json.Null)
-        parsed.findAllByKey("ok").head.toString() match {
-          case "false" => Failure(decode[TelegramError](parsed.toString()).getOrElse(null))
-          case "true" => Success(parsed.findAllByKey("result").head)
+        val json = parse(response.text()).getOrElse(Json.Null)
+        json.findAllByKey("ok").head.toString() match {
+          case "false" => Failure(decode[TelegramError](json.toString()).getOrElse(null))
+          case "true" => parseSuccessResponse(json.findAllByKey("result").head)
         }
       case Failure(e) => Failure(e)
     }
   }
-
-  def call(): Try[T]
 }
