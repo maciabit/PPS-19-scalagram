@@ -7,9 +7,9 @@ import requests.Requester
 import scala.util.{Success, Try}
 
 case class DeleteMessage(
-  token: BotToken,
-  chatId: Either[String,Int],
-  messageId: Int
+    token: BotToken,
+    chatId: Either[String, Int],
+    messageId: Int
 ) extends TelegramRequest[Boolean] {
 
   val request: Requester = requests.get
@@ -18,7 +18,7 @@ case class DeleteMessage(
 
   val urlParams: Map[String, Any] = Map(
     "chat_id" -> chatId.fold(l => l, r => r),
-    "message_id" -> messageId,
+    "message_id" -> messageId
   )
 
   def parseSuccessResponse(json: Json): Try[Boolean] = Success(true)

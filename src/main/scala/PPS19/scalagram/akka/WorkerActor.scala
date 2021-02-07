@@ -18,10 +18,18 @@ object WorkerActor {
           case ProcessUpdate(update) =>
             botContext.updateCount += 1
             botContext.lastUpdateTimestamp = LocalDateTime.now()
-            timers.startSingleTimer(Timeout(botContext.lastUpdateTimestamp), botContext.timeout)
-            context.log.info("Update {} Update count: {}", update, botContext.updateCount)
+            timers.startSingleTimer(
+              Timeout(botContext.lastUpdateTimestamp),
+              botContext.timeout
+            )
+            context.log.info(
+              "Update {} Update count: {}",
+              update,
+              botContext.updateCount
+            )
             receiveBehavior(botContext)
-          case Timeout(messageTimestamp) if messageTimestamp != botContext.lastUpdateTimestamp =>
+          case Timeout(messageTimestamp)
+              if messageTimestamp != botContext.lastUpdateTimestamp =>
             context.log.info("Timer {}", messageTimestamp)
             receiveBehavior(botContext)
           case _ =>

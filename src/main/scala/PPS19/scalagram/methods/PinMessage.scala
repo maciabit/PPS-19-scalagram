@@ -7,10 +7,10 @@ import requests.Requester
 import scala.util.{Success, Try}
 
 case class PinMessage(
-  token: BotToken,
-  chatId: Either[String,Int],
-  messageId: Int,
-  disableNotification: Option[Boolean]
+    token: BotToken,
+    chatId: Either[String, Int],
+    messageId: Int,
+    disableNotification: Option[Boolean]
 ) extends TelegramRequest[Boolean] {
 
   val request: Requester = requests.post

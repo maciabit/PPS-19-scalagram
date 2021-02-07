@@ -1,7 +1,7 @@
 package PPS19.scalagram.utils
 
-import org.scalatest.funsuite.AnyFunSuite
 import org.junit.runner.RunWith
+import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
 
 import java.net.URL
@@ -14,7 +14,9 @@ class PropsSuite extends AnyFunSuite {
     assert(url != null)
   }
 
-  test("The bot token needed for testing can be read from application.properties") {
+  test(
+    "The bot token needed for testing can be read from application.properties"
+  ) {
     Props.load()
     val token = Props.get("token")
     assert(token != null)

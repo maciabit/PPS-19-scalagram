@@ -5,14 +5,14 @@ import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
 
 sealed trait Chat {
-  def id:Long
+  def id: Long
 }
 
 object Chat {
 
   /**
-   * Decodes chat based on the `type` value of the input Json
-   */
+    * Decodes chat based on the `type` value of the input Json
+    */
   implicit val chatDecoder: Decoder[Chat] = Decoder.instance[Chat] { cursor =>
     cursor
       .get[ChatType]("type")
@@ -26,11 +26,23 @@ object Chat {
   }
 }
 
-final case class PrivateChat(id: Long, username: Option[String], firstName: Option[String], lastName: Option[String])
-  extends Chat
+final case class PrivateChat(
+    id: Long,
+    username: Option[String],
+    firstName: Option[String],
+    lastName: Option[String]
+) extends Chat
 
 final case class Group(id: Long, title: Option[String]) extends Chat
 
-final case class Supergroup(id: Long, title: Option[String], username: Option[String]) extends Chat
+final case class Supergroup(
+    id: Long,
+    title: Option[String],
+    username: Option[String]
+) extends Chat
 
-final case class Channel(id: Long, title: Option[String], username: Option[String]) extends Chat
+final case class Channel(
+    id: Long,
+    title: Option[String],
+    username: Option[String]
+) extends Chat

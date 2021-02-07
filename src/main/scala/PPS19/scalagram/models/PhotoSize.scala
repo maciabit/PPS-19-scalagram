@@ -13,11 +13,18 @@ sealed trait PhotoSize {
 }
 
 object PhotoSize {
+
   /**
-   * Decodes chat based on the `type` value of the input Json
-   */
-  implicit val photoSizeDecoder : Decoder[PhotoSize] = List[Decoder[PhotoSize]](
-    deriveDecoder[Size].widen,
+    * Decodes chat based on the `type` value of the input Json
+    */
+  implicit val photoSizeDecoder: Decoder[PhotoSize] = List[Decoder[PhotoSize]](
+    deriveDecoder[Size].widen
   ).reduceLeft(_.or(_))
 }
-final case class Size(fileId: String, fileUniqueId: String, width: Int, height: Int, fileSize: Option[Int] = None) extends PhotoSize
+final case class Size(
+    fileId: String,
+    fileUniqueId: String,
+    width: Int,
+    height: Int,
+    fileSize: Option[Int] = None
+) extends PhotoSize

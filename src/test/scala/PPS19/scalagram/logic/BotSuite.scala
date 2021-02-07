@@ -1,7 +1,7 @@
 package PPS19.scalagram.logic
 
-import org.scalatest.funsuite.AnyFunSuite
 import org.junit.runner.RunWith
+import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])

@@ -13,23 +13,29 @@ object UpdateDispatcherActor {
   private val updates = List(
     Update(1, 100, "Message from Gianni"),
     Update(2, 200, "Message from Met"),
-    Update(3, 300, "Message from Flavio"),
+    Update(3, 300, "Message from Flavio")
   )
   private def getUpdates(updateId: Option[Int]) = {
     println(updateId)
-    Success(List(
-      updates(scala.util.Random.nextInt(updates.length)),
-      updates(scala.util.Random.nextInt(updates.length))
-    ))
+    Success(
+      List(
+        updates(scala.util.Random.nextInt(updates.length)),
+        updates(scala.util.Random.nextInt(updates.length))
+      )
+    )
   }
 
-  def apply(bot: Bot, interval: FiniteDuration, workerTimeout: FiniteDuration): Behavior[LookForUpdates] =
+  def apply(
+      bot: Bot,
+      interval: FiniteDuration,
+      workerTimeout: FiniteDuration
+  ): Behavior[LookForUpdates] =
     scheduleUpdateBehavior(bot, interval, workerTimeout)
 
   private def scheduleUpdateBehavior(
-    bot: Bot,
-    interval: FiniteDuration,
-    workerTimeout: FiniteDuration
+      bot: Bot,
+      interval: FiniteDuration,
+      workerTimeout: FiniteDuration
   ): Behavior[LookForUpdates] =
     Behaviors.withTimers { timers =>
       timers.startTimerAtFixedRate(LookForUpdates(), interval)
@@ -37,15 +43,17 @@ object UpdateDispatcherActor {
     }
 
   private def fetchUpdateBehavior(
-    bot: Bot,
-    workerTimeout: FiniteDuration,
-    lasUpdateId: Option[Int] = None
+      bot: Bot,
+      workerTimeout: FiniteDuration,
+      lasUpdateId: Option[Int] = None
   ): Behavior[LookForUpdates] =
     Behaviors.receive { (context, _) =>
       context.log.info("Fetching updates")
       // Fetch updates
       val updates = getUpdates(lasUpdateId)
-      val updateId = if (updates.isFailure || updates.get.isEmpty) lasUpdateId else Some(updates.get.last.id)
+      val updateId =
+        if (updates.isFailure || updates.get.isEmpty) lasUpdateId
+        else Some(updates.get.last.id)
       // Dispatch updates to workers
       for (update <- updates.getOrElse(List.empty)) {
         val workerName = s"worker${update.chatId}"

@@ -7,12 +7,12 @@ import requests.Requester
 import scala.util.{Success, Try}
 
 case class AnswerCallbackQuery(
-  token: BotToken,
-  callbackQueryId: String,
-  text: Option[String],
-  showAlert: Option[Boolean],
-  url: Option[String],
-  cacheTime: Option[Int]
+    token: BotToken,
+    callbackQueryId: String,
+    text: Option[String],
+    showAlert: Option[Boolean],
+    url: Option[String],
+    cacheTime: Option[Int]
 ) extends TelegramRequest[Boolean] {
 
   val request: Requester = requests.get

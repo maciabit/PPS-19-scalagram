@@ -1,11 +1,11 @@
 package PPS19.scalagram.models.messages
 
 import PPS19.scalagram.models.User
+import cats.syntax.functor._
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
-import cats.syntax.functor._
 
-sealed trait Callback{
+sealed trait Callback {
   def id: String
   def from: User
   def message: Option[TelegramMessage]
@@ -15,17 +15,19 @@ sealed trait Callback{
   def gameShortName: Option[String]
 }
 
-object Callback{
-  implicit val callbackQueryDecoder : Decoder[Callback] = List[Decoder[Callback]](
-    deriveDecoder[CallbackQuery].widen,
-  ).reduceLeft(_.or(_))
+object Callback {
+  implicit val callbackQueryDecoder: Decoder[Callback] =
+    List[Decoder[Callback]](
+      deriveDecoder[CallbackQuery].widen
+    ).reduceLeft(_.or(_))
 }
 
-final case class CallbackQuery(id: String,
-                               from: User,
-                               message: Option[TelegramMessage],
-                               inlineMessageId: Option[String],
-                               chatInstance: String,
-                               data: Option[String] = None,
-                               gameShortName: Option[String] = None
-                            ) extends  Callback
+final case class CallbackQuery(
+    id: String,
+    from: User,
+    message: Option[TelegramMessage],
+    inlineMessageId: Option[String],
+    chatInstance: String,
+    data: Option[String] = None,
+    gameShortName: Option[String] = None
+) extends Callback

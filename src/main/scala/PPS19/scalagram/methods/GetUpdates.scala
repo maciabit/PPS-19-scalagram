@@ -1,19 +1,19 @@
 package PPS19.scalagram.methods
 
 import PPS19.scalagram.logic.BotToken
-
-import scala.util.{Success, Try}
 import PPS19.scalagram.models.Update
 import io.circe.Json
 import io.circe.parser._
 import requests.Requester
 
+import scala.util.{Success, Try}
+
 case class GetUpdates(
-  token: BotToken,
-  offset: Option[Int] = None,
-  limit: Option[Int] = None,
-  timeout: Option[Int] = None,
-  allowedUpdates: Option[Array[String]] = None
+    token: BotToken,
+    offset: Option[Int] = None,
+    limit: Option[Int] = None,
+    timeout: Option[Int] = None,
+    allowedUpdates: Option[Array[String]] = None
 ) extends TelegramRequest[List[Update]] {
 
   val request: Requester = requests.get
@@ -24,7 +24,7 @@ case class GetUpdates(
     "offset" -> offset,
     "limit" -> limit,
     "timeout" -> timeout,
-    "allowed_Updates" -> allowedUpdates,
+    "allowed_Updates" -> allowedUpdates
   )
 
   def parseSuccessResponse(json: Json): Try[List[Update]] = {

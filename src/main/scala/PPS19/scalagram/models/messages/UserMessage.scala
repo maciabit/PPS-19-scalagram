@@ -1,8 +1,8 @@
 package PPS19.scalagram.models.messages
 import PPS19.scalagram.models._
 import cats.syntax.functor._
-import io.circe.generic.semiauto.deriveDecoder
 import io.circe.Decoder
+import io.circe.generic.semiauto.deriveDecoder
 
 trait UserMessage extends TelegramMessage {
 

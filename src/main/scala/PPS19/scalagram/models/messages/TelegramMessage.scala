@@ -2,8 +2,8 @@ package PPS19.scalagram.models.messages
 
 import PPS19.scalagram.marshalling.codecs.DecoderOps
 import PPS19.scalagram.models.Chat
-import io.circe.Decoder
 import cats.syntax.functor._
+import io.circe.Decoder
 
 trait TelegramMessage {
   def messageId: Int

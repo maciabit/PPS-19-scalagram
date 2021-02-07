@@ -30,30 +30,29 @@ trait TelegramRequest[T] {
     val query = urlParams
       .filter {
         case (_, None) => false
-        case _ => true
+        case _         => true
       }
       .map {
         case (key, Some(value)) => (key, value)
-        case (key, value) => (key, value)
+        case (key, value)       => (key, value)
       }
       .toUrlQuery
-    val multiItem: List[MultiItem] = multipartFormData
-      .map {
-        case (key, value) =>
-          val file = new File(value)
-          requests.MultiItem(key, file, file.getName)
-      }
-      .toList
+    val multiItem: List[MultiItem] = multipartFormData.map {
+      case (key, value) =>
+        val file = new File(value)
+        requests.MultiItem(key, file, file.getName)
+    }.toList
     val url = s"$TELEGRAM_API_URL${token.token}/$endpoint?$query"
     val req = multiItem match {
       case Nil => Try(request(url))
-      case _ => Try(request(url, data = requests.MultiPart(multiItem:_*)))
+      case _   => Try(request(url, data = requests.MultiPart(multiItem: _*)))
     }
     req match {
       case Success(response) =>
         val json = parse(response.text()).getOrElse(Json.Null)
         json.findAllByKey("ok").head.toString() match {
-          case "false" => Failure(decode[TelegramError](json.toString()).getOrElse(null))
+          case "false" =>
+            Failure(decode[TelegramError](json.toString()).getOrElse(null))
           case "true" => parseSuccessResponse(json.findAllByKey("result").head)
         }
       case Failure(e) => Failure(e)

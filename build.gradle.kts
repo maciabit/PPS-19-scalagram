@@ -12,13 +12,13 @@ plugins {
 
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
+
+    // Apply the Scalafmt plugin to add tasks related to code formatting
+    id("cz.alenkacz.gradle.scalafmt") version "1.14.0"
 }
 
 repositories {
-    // Use jcenter for resolving dependencies.
-    // You can declare any Maven/Ivy/file repository here.
-    //jcenter()
-
+    // Use mavenCentral for resolving dependencies.
     mavenCentral()
 }
 
