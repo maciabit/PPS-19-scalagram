@@ -1,22 +1,22 @@
 package PPS19.scalagram.methods
 
-import io.circe.Json
+import requests.Requester
 
 import scala.util.{Failure, Success, Try}
 
-case class UnpinMessage() {
+case class UnpinMessage(chatId: Either[String, Int], messageId: Int) extends TelegramRequest[Boolean] {
 
-  private val method: Map[String, Any] => Try[Json] = telegramApiRequest(requests.post, "unpinChatMessage")
+  val request: Requester = requests.post
 
-  def call(chatId: Either[String,Int], messageId: Int): Try[Boolean] = {
-    val urlParams: Map[String, Any] = Map(
-      "chat_id" -> chatId.fold(l => l, r => r),
-      "message_id" -> messageId,
-    )
-    val res = method(urlParams)
-    res match {
-      case Success(_) => Success(true)
-      case Failure(error) => Failure(error)
-    }
+  val endpoint: String = "unpinChatMessage"
+
+  val urlParams: Map[String, Any] = Map(
+    "chat_id" -> chatId.fold(l => l, r => r),
+    "message_id" -> messageId,
+  )
+
+  def call(): Try[Boolean] = perform() match {
+    case Success(_) => Success(true)
+    case Failure(error) => Failure(error)
   }
 }

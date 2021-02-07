@@ -33,7 +33,7 @@ sealed trait Bot {
     limit: Option[Int] = None,
     timeout: Option[Int] = None,
     allowedUpdates: Option[Array[String]] = None
-  ): Try[List[Update]] = GetNewUpdates().call(offset, limit, timeout, allowedUpdates)
+  ): Try[List[Update]] = GetNewUpdates(offset, limit, timeout, allowedUpdates).call()
 
   def sendMessage(
     chatId: Either[String, Int],
@@ -45,7 +45,7 @@ sealed trait Bot {
     replyToMessageId: Option[Int] = None,
     allowSendingWithoutReply: Option[Boolean] = None,
     replyMarkup: Option[ReplyMarkup] = None
-  ): Try[TelegramMessage] = SendMessage().call(
+  ): Try[TelegramMessage] = SendMessage(
     chatId,
     text,
     parseMode,
@@ -55,7 +55,7 @@ sealed trait Bot {
     replyToMessageId,
     allowSendingWithoutReply,
     replyMarkup
-  )
+  ).call()
 
   def sendPhoto(
     chatId: Either[String, Int],
@@ -67,7 +67,7 @@ sealed trait Bot {
     replyToMessageId: Option[Int] = None,
     allowSendingWithoutReply: Option[Boolean] = None,
     replyMarkup: Option[ReplyMarkup] = None
-  ): Try[TelegramMessage] = SendPhoto().call(
+  ): Try[TelegramMessage] = SendPhoto(
     chatId,
     photo,
     caption,
@@ -77,18 +77,18 @@ sealed trait Bot {
     replyToMessageId,
     allowSendingWithoutReply,
     replyMarkup
-  )
+  ).call()
 
   def deleteMessage(chatId: Either[String, Int], messageId: Int): Try[Boolean] =
-    DeleteMessage().call(chatId, messageId)
+    DeleteMessage(chatId, messageId).call()
 
   def pinMessage(chatId: Either[String, Int], messageId: Int, disableNotification: Option[Boolean]): Try[Boolean] =
-    PinMessage().call(chatId, messageId, disableNotification)
+    PinMessage(chatId, messageId, disableNotification).call()
 
   def unpinMessage(chatId: Either[String, Int], messageId: Int): Try[Boolean] =
-    UnpinMessage().call(chatId, messageId)
+    UnpinMessage(chatId, messageId).call()
 
-  def unpinAllMessages(chatId: Either[String, Int]): Try[Boolean] = UnpinAllMessages().call(chatId)
+  def unpinAllMessages(chatId: Either[String, Int]): Try[Boolean] = UnpinAllMessages(chatId).call()
 
   def answerCallbackQuery(
     callbackQueryId: String,
@@ -96,7 +96,7 @@ sealed trait Bot {
     showAlert: Option[Boolean],
     url: Option[String],
     cacheTime: Option[Int]
-  ): Unit = AnswerCallbackQuery().call(callbackQueryId, text, showAlert, url, cacheTime)
+  ): Unit = AnswerCallbackQuery(callbackQueryId, text, showAlert, url, cacheTime).call()
 }
 
 object Bot {
