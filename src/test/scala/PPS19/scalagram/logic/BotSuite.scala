@@ -31,7 +31,7 @@ class BotSuite extends AnyFunSuite {
     val middlewares = List(Middleware(_ => true))
     val scenes = List(Scene(Reaction(Trigger(_ => true), _ => {})))
     val reactions = List(Reaction(Trigger(_ => true), _ => {}))
-    val bot = Bot(token, middlewares, scenes, reactions)
+    val bot = Bot(token, middlewares, reactions, scenes)
     assert(bot.token == token)
     assert(bot.middlewares == middlewares)
     assert(bot.scenes == scenes)
@@ -40,7 +40,7 @@ class BotSuite extends AnyFunSuite {
 
   test("A reaction can be created with the onCommand method") {
     val bot = Bot(BotToken(""), List(), List(), List())
-    bot.onCommand("/hello") { _ =>
+    Bot.onCommand("/hello") { _ =>
       println("ciao")
     }
   }

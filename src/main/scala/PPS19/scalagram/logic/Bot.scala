@@ -12,19 +12,8 @@ case class BotToken(token: String)
 sealed trait Bot {
   val token: BotToken
   val middlewares: List[Middleware]
-  val scenes: List[Scene]
   val reactions: List[Reaction]
-
-  def onCommand(command: String)(action: Context => Unit): Reaction = {
-    Reaction(
-      Trigger {
-        case MessageUpdate(_, message) if message.isInstanceOf[TextMessage] =>
-          message.asInstanceOf[TextMessage].text == command
-        case _ => false
-      },
-      action
-    )
-  }
+  val scenes: List[Scene]
 
   def launch(mode: Mode): Unit = mode.start(this)
 
@@ -116,8 +105,8 @@ object Bot {
   def apply(
       token: BotToken,
       middlewares: List[Middleware] = List.empty,
-      scenes: List[Scene] = List.empty,
-      reactions: List[Reaction] = List.empty
+      reactions: List[Reaction] = List.empty,
+      scenes: List[Scene] = List.empty
   ): Bot = BotImpl(token, middlewares, scenes, reactions)
 
   def unapply(
@@ -131,4 +120,18 @@ object Bot {
       scenes: List[Scene],
       reactions: List[Reaction]
   ) extends Bot
+
+  def onCommand(command: String)(action: Context => Unit): Reaction = {
+    Reaction(
+      Trigger { context =>
+        context.update match {
+          case Some(MessageUpdate(_, message))
+              if message.isInstanceOf[TextMessage] =>
+            message.asInstanceOf[TextMessage].text == command
+          case _ => false
+        }
+      },
+      action
+    )
+  }
 }

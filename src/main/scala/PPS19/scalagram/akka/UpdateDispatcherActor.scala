@@ -2,28 +2,12 @@ package PPS19.scalagram.akka
 
 import PPS19.scalagram.logic.{Bot, Context}
 import PPS19.scalagram.models.MessageUpdate
-import akka.actor.typed.scaladsl.Behaviors
+import akka.actor.typed.scaladsl.{ActorContext, Behaviors}
 import akka.actor.typed.{ActorRef, Behavior}
 
 import scala.concurrent.duration._
 
 object UpdateDispatcherActor {
-
-  // Fake updates
-  /*private val updates = List(
-    Update(1, 100, "Message from Gianni"),
-    Update(2, 200, "Message from Met"),
-    Update(3, 300, "Message from Flavio")
-  )
-  private def getUpdates(updateId: Option[Int]) = {
-    println(updateId)
-    Success(
-      List(
-        updates(scala.util.Random.nextInt(updates.length)),
-        updates(scala.util.Random.nextInt(updates.length))
-      )
-    )
-  }*/
 
   def apply(
       bot: Bot,
