@@ -1,9 +1,11 @@
 package PPS19.scalagram.akka
 
+import PPS19.scalagram.models.Update
+
 import java.time.LocalDateTime
 
 // Fake update class
-case class Update(id: Int, chatId: Int, message: String)
+//case class Update(id: Int, chatId: Int, message: String)
 
 /** Any message that a WorkerActor can handle */
 sealed trait WorkerMessage

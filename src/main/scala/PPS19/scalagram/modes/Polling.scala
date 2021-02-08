@@ -62,7 +62,6 @@ object Polling {
 }
 
 object TryPolling extends App {
-  Props.load()
   val bot = Bot(BotToken(Props.get("token")))
-  bot.launch(Polling(5.seconds, 10.seconds))
+  bot.launch(Polling(5.seconds))
 }

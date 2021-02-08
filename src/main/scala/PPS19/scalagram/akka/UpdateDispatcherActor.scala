@@ -1,16 +1,16 @@
 package PPS19.scalagram.akka
 
 import PPS19.scalagram.logic.{Bot, Context}
+import PPS19.scalagram.models.MessageUpdate
 import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed.{ActorRef, Behavior}
 
 import scala.concurrent.duration._
-import scala.util.Success
 
 object UpdateDispatcherActor {
 
   // Fake updates
-  private val updates = List(
+  /*private val updates = List(
     Update(1, 100, "Message from Gianni"),
     Update(2, 200, "Message from Met"),
     Update(3, 300, "Message from Flavio")
@@ -23,7 +23,7 @@ object UpdateDispatcherActor {
         updates(scala.util.Random.nextInt(updates.length))
       )
     )
-  }
+  }*/
 
   def apply(
       bot: Bot,
@@ -45,18 +45,16 @@ object UpdateDispatcherActor {
   private def fetchUpdateBehavior(
       bot: Bot,
       workerTimeout: FiniteDuration,
-      lasUpdateId: Option[Int] = None
+      nextUpdateId: Option[Long] = None
   ): Behavior[LookForUpdates] =
     Behaviors.receive { (context, _) =>
       context.log.info("Fetching updates")
       // Fetch updates
-      val updates = getUpdates(lasUpdateId)
-      val updateId =
-        if (updates.isFailure || updates.get.isEmpty) lasUpdateId
-        else Some(updates.get.last.id)
+      val updates = bot.getUpdates(nextUpdateId)
       // Dispatch updates to workers
       for (update <- updates.getOrElse(List.empty)) {
-        val workerName = s"worker${update.chatId}"
+        val chatId = update.asInstanceOf[MessageUpdate].message.chat.id
+        val workerName = s"worker$chatId"
         val worker = context.child(workerName) match {
           case Some(actor) => actor.asInstanceOf[ActorRef[WorkerMessage]]
           case None =>
@@ -66,6 +64,9 @@ object UpdateDispatcherActor {
         }
         worker ! ProcessUpdate(update)
       }
+      val updateId =
+        if (updates.isFailure || updates.get.isEmpty) nextUpdateId
+        else Some(updates.get.last.updateId + 1)
       fetchUpdateBehavior(bot, workerTimeout, updateId)
     }
 }

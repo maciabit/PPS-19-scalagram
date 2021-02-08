@@ -10,7 +10,7 @@ import scala.util.{Success, Try}
 
 case class GetUpdates(
     token: BotToken,
-    offset: Option[Int] = None,
+    offset: Option[Long] = None,
     limit: Option[Int] = None,
     timeout: Option[Int] = None,
     allowedUpdates: Option[Array[String]] = None

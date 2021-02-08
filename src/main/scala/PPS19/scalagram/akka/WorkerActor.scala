@@ -22,11 +22,8 @@ object WorkerActor {
               Timeout(botContext.lastUpdateTimestamp),
               botContext.timeout
             )
-            context.log.info(
-              "Update {} Update count: {}",
-              update,
-              botContext.updateCount
-            )
+            context.log.info("Update count: {}", botContext.updateCount)
+            context.log.info("Update: {}", update)
             receiveBehavior(botContext)
           case Timeout(messageTimestamp)
               if messageTimestamp != botContext.lastUpdateTimestamp =>
