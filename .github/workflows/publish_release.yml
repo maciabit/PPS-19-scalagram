@@ -14,7 +14,10 @@ jobs:
       - uses: actions/checkout@master
       - name: build
         run: ./gradlew build -x test
-      - uses: actions/checkout@master
+      - name: command
+        run: |
+          ls
+          pwd
       - name: Create release
         uses: Roang-zero1/github-create-release-action@master
         env:
@@ -23,9 +26,9 @@ jobs:
         run: |
           ls
           pwd
-      - name: Create GitHub release
+      - name: Load release artifact
         uses: Roang-zero1/github-upload-release-artifacts-action@master
         with:
-          args: ./build/libs/PPS-19-scalagram.jar
+          args: build/libs/PPS-19-scalagram.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
