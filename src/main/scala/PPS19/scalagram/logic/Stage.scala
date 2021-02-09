@@ -16,7 +16,9 @@ object Stage {
 
     override def setActiveScene(scene: Scene): Unit = {
       if (!scenes.contains(scene)) {
-        throw new IllegalArgumentException("The stage does not contain the provided scene")
+        throw new IllegalArgumentException(
+          "The stage does not contain the provided scene"
+        )
       }
       activeScene = Some(scene)
     }

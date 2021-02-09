@@ -1,10 +1,9 @@
 package PPS19.scalagram.marshalling
 
+import PPS19.scalagram.marshalling.MapUtils._
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
-import PPS19.scalagram.marshalling.MapUtils._
-
 
 @RunWith(classOf[JUnitRunner])
 class MarshallingSuite extends AnyFunSuite {
@@ -27,6 +26,8 @@ class MarshallingSuite extends AnyFunSuite {
       "text" -> "lorem ipsium",
       "booleanField" -> true
     )
-    assert(map.toUrlQuery == "chat_id=-10053564&text=lorem ipsium&boolean_field=true")
+    assert(
+      map.toUrlQuery == "chat_id=-10053564&text=lorem ipsium&boolean_field=true"
+    )
   }
 }

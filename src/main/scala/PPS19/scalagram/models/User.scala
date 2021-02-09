@@ -1,7 +1,8 @@
 package PPS19.scalagram.models
+
+import cats.syntax.functor._
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
-import cats.syntax.functor._
 
 sealed trait User {
   def id: Int
@@ -16,19 +17,36 @@ sealed trait User {
 }
 
 object User {
+
   /**
-   * Decodes chat based on the `type` value of the input Json
-   */
-  implicit val userDecoder : Decoder[User] = List[Decoder[User]](
+    * Decodes chat based on the `type` value of the input Json
+    */
+  implicit val userDecoder: Decoder[User] = List[Decoder[User]](
     deriveDecoder[HumanUser].widen,
-    deriveDecoder[BotUser].widen,
+    deriveDecoder[BotUser].widen
   ).reduceLeft(_.or(_))
 }
 
-final case class HumanUser(id: Int, isBot: Boolean = false, firstName: String, lastName: Option[String], username:Option[String], languageCode: Option[String], canJoinGroups: Option[Boolean], canReadAllGroupMessages: Option[Boolean],supportsInlineQueries: Option[Boolean] )
-  extends User
+final case class HumanUser(
+    id: Int,
+    isBot: Boolean = false,
+    firstName: String,
+    lastName: Option[String],
+    username: Option[String],
+    languageCode: Option[String],
+    canJoinGroups: Option[Boolean],
+    canReadAllGroupMessages: Option[Boolean],
+    supportsInlineQueries: Option[Boolean]
+) extends User
 
-final case class BotUser(id: Int, isBot: Boolean = true, firstName: String, lastName: Option[String], username:Option[String], languageCode: Option[String], canJoinGroups: Option[Boolean], canReadAllGroupMessages: Option[Boolean],supportsInlineQueries: Option[Boolean] ) extends User
-
-
-
+final case class BotUser(
+    id: Int,
+    isBot: Boolean = true,
+    firstName: String,
+    lastName: Option[String],
+    username: Option[String],
+    languageCode: Option[String],
+    canJoinGroups: Option[Boolean],
+    canReadAllGroupMessages: Option[Boolean],
+    supportsInlineQueries: Option[Boolean]
+) extends User

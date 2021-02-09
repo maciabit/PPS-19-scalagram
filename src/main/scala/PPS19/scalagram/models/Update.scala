@@ -1,10 +1,10 @@
 package PPS19.scalagram.models
 
 import PPS19.scalagram.marshalling.codecs.DecoderOps
-import io.circe.Decoder
-import io.circe.generic.semiauto.deriveDecoder
 import PPS19.scalagram.models.messages._
 import cats.syntax.functor._
+import io.circe.Decoder
+import io.circe.generic.semiauto.deriveDecoder
 
 sealed trait Update {
   val updateId: Long
@@ -29,19 +29,27 @@ trait MessageUpdate extends Update {
 }
 
 object MessageUpdate {
-  def unapply(update: MessageUpdate): Option[(Long, TelegramMessage)] = Some(update.updateId, update.message)
+  def unapply(update: MessageUpdate): Option[(Long, TelegramMessage)] =
+    Some(update.updateId, update.message)
 }
 
-final case class MessageReceived(updateId: Long, message: TelegramMessage) extends MessageUpdate
+final case class MessageReceived(updateId: Long, message: TelegramMessage)
+    extends MessageUpdate
 
-final case class MessageEdited(updateId: Long, editedMessage: TelegramMessage) extends MessageUpdate {
+final case class MessageEdited(updateId: Long, editedMessage: TelegramMessage)
+    extends MessageUpdate {
   val message: TelegramMessage = editedMessage
 }
-final case class ChannelPost(updateId: Long, channelPost: TelegramMessage) extends  MessageUpdate {
+final case class ChannelPost(updateId: Long, channelPost: TelegramMessage)
+    extends MessageUpdate {
   val message: TelegramMessage = channelPost
 }
-final case class ChannelPostEdited(updateId: Long, editedChannelPost: TelegramMessage) extends  MessageUpdate {
+final case class ChannelPostEdited(
+    updateId: Long,
+    editedChannelPost: TelegramMessage
+) extends MessageUpdate {
   val message: TelegramMessage = editedChannelPost
 }
 
-final case class CallbackButtonSelected(updateId: Long, callbackQuery: Callback) extends Update
+final case class CallbackButtonSelected(updateId: Long, callbackQuery: Callback)
+    extends Update

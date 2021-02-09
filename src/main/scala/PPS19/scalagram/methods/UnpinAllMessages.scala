@@ -1,21 +1,21 @@
 package PPS19.scalagram.methods
 
+import PPS19.scalagram.logic.BotToken
 import io.circe.Json
+import requests.Requester
 
-import scala.util.{Failure, Success, Try}
+import scala.util.{Success, Try}
 
-case class UnpinAllMessages() {
+case class UnpinAllMessages(token: BotToken, chatId: Either[String, Int])
+    extends TelegramRequest[Boolean] {
 
-  private val method: Map[String, Any] => Try[Json] = telegramApiRequest(requests.post, "unpinAllChatMessages")
+  val request: Requester = requests.post
 
-  def unpinAllMessages(chatId: Either[String,Int]): Try[Boolean] = {
-    val urlParams: Map[String, Any] = Map(
-      "chat_id" -> chatId.fold(l => l, r => r),
-    )
-    val res = method(urlParams)
-    res match {
-      case Success(_) => Success(true)
-      case Failure(error) => Failure(error)
-    }
-  }
+  val endpoint: String = "unpinAllChatMessages"
+
+  val urlParams: Map[String, Any] = Map(
+    "chat_id" -> chatId.fold(l => l, r => r)
+  )
+
+  def parseSuccessResponse(json: Json): Try[Boolean] = Success(true)
 }

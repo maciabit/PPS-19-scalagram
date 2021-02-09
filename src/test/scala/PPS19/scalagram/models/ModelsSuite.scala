@@ -1,10 +1,6 @@
 package PPS19.scalagram.models
 
-import PPS19.scalagram.methods.{AnswerCallbackQuery, GetNewUpdates, SendMessage}
-import PPS19.scalagram.models.messages.CallbackQuery
-import PPS19.scalagram.utils.Props
 import io.circe.parser.decode
-import org.scalatest.{BeforeAndAfter, BeforeAndAfterEach}
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner

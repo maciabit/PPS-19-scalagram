@@ -1,8 +1,8 @@
 package PPS19.scalagram.akka
 
-import PPS19.scalagram.logic.{Bot, Context}
+import PPS19.scalagram.logic.Context
 import akka.actor.typed.Behavior
-import akka.actor.typed.scaladsl.Behaviors
+import akka.actor.typed.scaladsl.{ActorContext, Behaviors}
 
 import java.time.LocalDateTime
 
@@ -11,6 +11,9 @@ object WorkerActor {
   def apply(context: Context): Behavior[WorkerMessage] =
     receiveBehavior(context)
 
+  private val log = (context: ActorContext[Any]) =>
+    (x: Any) => context.log.info(x.toString)
+
   def receiveBehavior(botContext: Context): Behavior[WorkerMessage] = {
     Behaviors.withTimers { timers =>
       Behaviors.receive { (context, message) =>
@@ -18,10 +21,39 @@ object WorkerActor {
           case ProcessUpdate(update) =>
             botContext.updateCount += 1
             botContext.lastUpdateTimestamp = LocalDateTime.now()
-            timers.startSingleTimer(Timeout(botContext.lastUpdateTimestamp), botContext.timeout)
-            context.log.info("Update {} Update count: {}", update, botContext.updateCount)
+            timers.startSingleTimer(
+              Timeout(botContext.lastUpdateTimestamp),
+              botContext.timeout
+            )
+            context.log.info("Update count: {}", botContext.updateCount)
+            context.log.info("Update: {}", update)
+
+            botContext.log = log(context.asInstanceOf[ActorContext[Any]])
+            botContext.update = Some(update)
+            var continue = true
+
+            // Execute middlewares
+            for (
+              middleware <- botContext.bot.middlewares.takeWhile(_ => continue)
+            )
+              continue = middleware.operation(botContext)
+
+            // Check for matching reaction
+            for (reaction <- botContext.bot.reactions.takeWhile(_ => continue))
+              continue = reaction.operation(botContext)
+
+            // Check for active scene
+            botContext.activeScene match {
+              case Some(scene) if continue =>
+                continue = scene
+                  .reactions(botContext.sceneStep.get)
+                  .operation(botContext)
+              case _ => continue = false
+            }
+
             receiveBehavior(botContext)
-          case Timeout(messageTimestamp) if messageTimestamp != botContext.lastUpdateTimestamp =>
+          case Timeout(messageTimestamp)
+              if messageTimestamp != botContext.lastUpdateTimestamp =>
             context.log.info("Timer {}", messageTimestamp)
             receiveBehavior(botContext)
           case _ =>

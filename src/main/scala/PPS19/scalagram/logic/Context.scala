@@ -15,6 +15,7 @@ sealed trait Context {
   var update: Option[Update]
   var from: Option[User]
   var updateCount: Int
+  var log: Any => Unit = _ => {}
 }
 
 object Context {

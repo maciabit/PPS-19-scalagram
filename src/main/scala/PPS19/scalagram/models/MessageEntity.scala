@@ -9,30 +9,30 @@ sealed trait MessageEntity {
 }
 
 object MessageEntity {
-  import io.circe.generic.auto._
 
-  implicit val chatDecoder: Decoder[MessageEntity] = Decoder.instance[MessageEntity] { cursor =>
-    cursor
-      .get[String]("type")
-      .map {
-        case "mention"       => deriveDecoder[Mention]
-        case "hashtag"       => deriveDecoder[Hashtag]
-        case "cashtag"       => deriveDecoder[Cashtag]
-        case "url"           => deriveDecoder[Url]
-        case "email"         => deriveDecoder[Email]
-        case "phone_number"  => deriveDecoder[PhoneNumber]
-        case "bold"          => deriveDecoder[Bold]
-        case "italic"        => deriveDecoder[Italic]
-        case "code"          => deriveDecoder[Code]
-        case "pre"           => deriveDecoder[Pre]
-        case "text_link"     => deriveDecoder[TextLink]
-        case "text_mention"  => deriveDecoder[TextMention]
-        case "underline"     => deriveDecoder[Underline]
-        case "strikethrough" => deriveDecoder[Strikethrough]
-        case _               => deriveDecoder[Unknown]
-      }
-      .flatMap(_.tryDecode(cursor))
-  }
+  implicit val chatDecoder: Decoder[MessageEntity] =
+    Decoder.instance[MessageEntity] { cursor =>
+      cursor
+        .get[String]("type")
+        .map {
+          case "mention"       => deriveDecoder[Mention]
+          case "hashtag"       => deriveDecoder[Hashtag]
+          case "cashtag"       => deriveDecoder[Cashtag]
+          case "url"           => deriveDecoder[Url]
+          case "email"         => deriveDecoder[Email]
+          case "phone_number"  => deriveDecoder[PhoneNumber]
+          case "bold"          => deriveDecoder[Bold]
+          case "italic"        => deriveDecoder[Italic]
+          case "code"          => deriveDecoder[Code]
+          case "pre"           => deriveDecoder[Pre]
+          case "text_link"     => deriveDecoder[TextLink]
+          case "text_mention"  => deriveDecoder[TextMention]
+          case "underline"     => deriveDecoder[Underline]
+          case "strikethrough" => deriveDecoder[Strikethrough]
+          case _               => deriveDecoder[Unknown]
+        }
+        .flatMap(_.tryDecode(cursor))
+    }
 
   /** '@username' */
   case class Mention(offset: Int, length: Int) extends MessageEntity
@@ -59,13 +59,16 @@ object MessageEntity {
   case class Code(offset: Int, length: Int) extends MessageEntity
 
   /** Monowidth block */
-  case class Pre(offset: Int, length: Int, language: Option[String]) extends MessageEntity
+  case class Pre(offset: Int, length: Int, language: Option[String])
+      extends MessageEntity
 
   /** Clickable text URLs */
-  case class TextLink(offset: Int, length: Int, url: String) extends MessageEntity
+  case class TextLink(offset: Int, length: Int, url: String)
+      extends MessageEntity
 
   /** Users without username */
-  case class TextMention(offset: Int, length: Int, user: User) extends MessageEntity
+  case class TextMention(offset: Int, length: Int, user: User)
+      extends MessageEntity
 
   case class Underline(offset: Int, length: Int) extends MessageEntity
 
