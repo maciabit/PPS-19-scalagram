@@ -39,7 +39,6 @@ class BotSuite extends AnyFunSuite {
   }
 
   test("A reaction can be created with the onCommand method") {
-    val bot = Bot(BotToken(""), List(), List(), List())
     Bot.onCommand("/hello") { _ =>
       println("ciao")
     }

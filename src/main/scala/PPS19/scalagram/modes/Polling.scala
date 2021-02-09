@@ -1,8 +1,7 @@
 package PPS19.scalagram.modes
 
 import PPS19.scalagram.akka.{LookForUpdates, UpdateDispatcherActor}
-import PPS19.scalagram.logic.{Bot, BotToken, Middleware}
-import PPS19.scalagram.utils.Props
+import PPS19.scalagram.logic.Bot
 import akka.actor.typed.ActorSystem
 
 import scala.concurrent.duration._
@@ -59,21 +58,4 @@ object Polling {
       system ! LookForUpdates()
     }
   }
-}
-
-object TryBot extends App {
-
-  val middlewares = List(
-    Middleware { context =>
-      context.log("Update received")
-      true
-    }
-  )
-
-  val command = Bot.onCommand("/ciao") { context =>
-    context.log("Hello, world!")
-  }
-
-  val bot = Bot(BotToken(Props.get("token")), middlewares, List(command))
-  bot.launch(Polling(5.seconds))
 }
