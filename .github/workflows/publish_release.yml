@@ -2,14 +2,13 @@
 
 on:
   push:
-    branches:
-      - main
     tags:
       - "[0-9]+.[0-9]+.[0-9]+"
 
 jobs:
   publish_release:
     runs-on: ubuntu-18.04
+    if: github.ref == 'refs/head/main'
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -19,7 +18,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          release_name: ${{ github.ref }}
           draft: false
           prerelease: false
       - name: Upload Release Asset
