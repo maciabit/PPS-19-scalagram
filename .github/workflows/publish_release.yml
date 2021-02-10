@@ -2,32 +2,34 @@
 
 on:
   push:
+    branches:
+      - main
     tags:
       - "[0-9]+.[0-9]+.[0-9]+"
 
 jobs:
   publish_release:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     if: github.ref == 'refs/head/main'
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Create Release
-        uses: actions/create-release@v1
+      - uses: actions/checkout@v2
+      - name: build
+        run: ./gradlew build -x test
+      - name: command
+        run: |
+          ls
+          pwd
+      - name: Create release
+        uses: Roang-zero1/github-create-release-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: command
+        run: |
+          ls
+          pwd
+      - name: Load release artifact
+        uses: Roang-zero1/github-upload-release-artifacts-action@master
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          draft: false
-          prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
+          args: build/libs/PPS-19-scalagram.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: ./build/libs/PPS-19-scalagram.jar
-          asset_name: scalagram.jar
-          asset_content_type: application/java-archive
