@@ -12,7 +12,7 @@ import scala.util.{Failure, Success, Try}
 
 case class SendPhoto(
     token: BotToken,
-    chatId: Either[String, Int],
+    chatId: ChatId,
     photo: InputFile,
     caption: Option[String] = None,
     parseMode: Option[String] = None,
@@ -28,7 +28,7 @@ case class SendPhoto(
   val endpoint: String = "sendPhoto"
 
   val urlParams: Map[String, Any] = Map(
-    "chat_id" -> chatId.fold(l => l, r => r),
+    "chat_id" -> chatId.get,
     "photo" -> (photo match {
       case ExistingMedia(fileId) => fileId
       case RemoteMedia(url)      => url

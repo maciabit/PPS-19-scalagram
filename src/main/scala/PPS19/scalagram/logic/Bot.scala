@@ -2,12 +2,14 @@ package PPS19.scalagram.logic
 
 import PPS19.scalagram.methods._
 import PPS19.scalagram.models.messages.{TelegramMessage, TextMessage}
-import PPS19.scalagram.models.{InputFile, MessageUpdate, ReplyMarkup, Update}
+import PPS19.scalagram.models.{ChatId, InputFile, MessageUpdate, ReplyMarkup, Update}
 import PPS19.scalagram.modes.Mode
 
 import scala.util.Try
 
-case class BotToken(token: String)
+case class BotToken(token: String) {
+  def get: String = token
+}
 
 sealed trait Bot {
   val token: BotToken
@@ -26,7 +28,7 @@ sealed trait Bot {
     GetUpdates(token, offset, limit, timeout, allowedUpdates).call()
 
   def sendMessage(
-      chatId: Either[String, Int],
+      chatId: ChatId,
       text: String,
       parseMode: Option[String] = None,
       entities: Option[Vector[Any]] = None,
@@ -50,7 +52,7 @@ sealed trait Bot {
     ).call()
 
   def sendPhoto(
-      chatId: Either[String, Int],
+      chatId: ChatId,
       photo: InputFile,
       caption: Option[String] = None,
       parseMode: Option[String] = None,
@@ -73,20 +75,20 @@ sealed trait Bot {
       replyMarkup
     ).call()
 
-  def deleteMessage(chatId: Either[String, Int], messageId: Int): Try[Boolean] =
+  def deleteMessage(chatId: ChatId, messageId: Int): Try[Boolean] =
     DeleteMessage(token, chatId, messageId).call()
 
   def pinMessage(
-      chatId: Either[String, Int],
+      chatId: ChatId,
       messageId: Int,
       disableNotification: Option[Boolean]
   ): Try[Boolean] =
     PinMessage(token, chatId, messageId, disableNotification).call()
 
-  def unpinMessage(chatId: Either[String, Int], messageId: Int): Try[Boolean] =
+  def unpinMessage(chatId: ChatId, messageId: Int): Try[Boolean] =
     UnpinMessage(token, chatId, messageId).call()
 
-  def unpinAllMessages(chatId: Either[String, Int]): Try[Boolean] =
+  def unpinAllMessages(chatId: ChatId): Try[Boolean] =
     UnpinAllMessages(token, chatId).call()
 
   def answerCallbackQuery(

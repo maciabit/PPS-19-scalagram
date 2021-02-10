@@ -1,7 +1,7 @@
 package PPS19.scalagram.methods
 
 import PPS19.scalagram.logic.BotToken
-import PPS19.scalagram.marshalling.MapUtils.MapToUrlParams
+import PPS19.scalagram.marshalling.CaseString
 import PPS19.scalagram.models.TelegramError
 import io.circe.Json
 import io.circe.parser.{decode, parse}
@@ -33,19 +33,18 @@ trait TelegramRequest[T] {
         case _         => true
       }
       .map {
-        case (key, Some(value)) => (key, value)
-        case (key, value)       => (key, value)
+        case (key, Some(value)) => (CaseString(key).snakeCase, value.toString)
+        case (key, value)       => (CaseString(key).snakeCase, value.toString)
       }
-      .toUrlQuery
     val multiItem: List[MultiItem] = multipartFormData.map {
       case (key, value) =>
         val file = new File(value)
         requests.MultiItem(key, file, file.getName)
     }.toList
-    val url = s"$TELEGRAM_API_URL${token.token}/$endpoint?$query"
+    val url = s"$TELEGRAM_API_URL${token.get}/$endpoint"
     val req = multiItem match {
-      case Nil => Try(request(url))
-      case _   => Try(request(url, data = requests.MultiPart(multiItem: _*)))
+      case Nil => Try(request(url, params = query))
+      case _   => Try(request(url, params = query, data = requests.MultiPart(multiItem: _*)))
     }
     req match {
       case Success(response) =>
