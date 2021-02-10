@@ -1,32 +1,25 @@
-# This workflow will publish a GitHub release when an annotated tag will be pushed
+# This workflow will publish a GitHub release when an annotated tag is pushed ..
 
 on:
   push:
-    branches:
-      - main
     tags:
       - "[0-9]+.[0-9]+.[0-9]+"
 
 jobs:
   publish_release:
     runs-on: ubuntu-latest
+    # .. only on branch main
     if: github.ref == 'refs/head/main'
     steps:
       - uses: actions/checkout@v2
       - name: build
         run: ./gradlew build -x test
       - name: command
-        run: |
-          ls
-          pwd
       - name: Create release
         uses: Roang-zero1/github-create-release-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: command
-        run: |
-          ls
-          pwd
       - name: Load release artifact
         uses: Roang-zero1/github-upload-release-artifacts-action@master
         with:
