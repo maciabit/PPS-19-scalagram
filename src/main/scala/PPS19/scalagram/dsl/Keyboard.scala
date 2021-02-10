@@ -38,13 +38,13 @@ object ReplyKeyboardMarkupUtils {
 
 object KeyboardButtonUtils {
   implicit class KeyboardButtonList(button: KeyboardButton) {
-    def ::(button2: KeyboardButton) = List(button, button2)
+    def ::(button2: KeyboardButton) = List(button2, button)
   }
 }
 
 object StringUtils {
   implicit class StringList(string: String) {
-    def ::(string2: String) = List(string, string2)
+    def ::(string2: String) = List(string2, string)
   }
 }
 
