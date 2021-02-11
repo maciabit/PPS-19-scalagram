@@ -2,7 +2,7 @@ package PPS19.scalagram.akka
 
 import PPS19.scalagram.logic.Context
 import akka.actor.typed.Behavior
-import akka.actor.typed.scaladsl.{ActorContext, Behaviors}
+import akka.actor.typed.scaladsl.Behaviors
 
 import java.time.LocalDateTime
 
@@ -10,9 +10,6 @@ object WorkerActor {
 
   def apply(context: Context): Behavior[WorkerMessage] =
     receiveBehavior(context)
-
-  private val log = (context: ActorContext[Any]) =>
-    (x: Any) => context.log.info(x.toString)
 
   def receiveBehavior(botContext: Context): Behavior[WorkerMessage] = {
     Behaviors.withTimers { timers =>
@@ -25,10 +22,11 @@ object WorkerActor {
               Timeout(botContext.lastUpdateTimestamp),
               botContext.timeout
             )
-            context.log.info("Update count: {}", botContext.updateCount)
-            context.log.info("Update: {}", update)
+            if (botContext.debug) {
+              context.log.info("Update count: {}", botContext.updateCount)
+              context.log.info("Update: {}", update)
+            }
 
-            botContext.log = log(context.asInstanceOf[ActorContext[Any]])
             botContext.update = Some(update)
             var continue = true
 

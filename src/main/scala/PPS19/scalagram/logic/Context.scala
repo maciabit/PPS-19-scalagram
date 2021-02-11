@@ -8,6 +8,7 @@ import scala.concurrent.duration.{DurationInt, FiniteDuration}
 sealed trait Context {
   val bot: Bot
   val store: Map[String, Any]
+  val debug: Boolean
   var timeout: FiniteDuration
   var lastUpdateTimestamp: LocalDateTime
   var activeScene: Option[Scene]
@@ -15,12 +16,12 @@ sealed trait Context {
   var update: Option[Update]
   var from: Option[User]
   var updateCount: Int
-  var log: Any => Unit = _ => {}
 }
 
 object Context {
-  def apply(bot: Bot): Context = ContextImpl(bot)
-  case class ContextImpl(bot: Bot) extends Context {
+  def apply(bot: Bot, debug: Boolean = false): Context = ContextImpl(bot, debug)
+
+  case class ContextImpl(bot: Bot, debug: Boolean) extends Context {
     override val store: Map[String, Any] = Map()
     override var timeout: FiniteDuration = 1.days
     override var lastUpdateTimestamp: LocalDateTime = LocalDateTime.now()

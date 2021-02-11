@@ -12,18 +12,9 @@ trait Mode {
 
 /** Polling mode for Telegram bots update retrieval */
 sealed trait Polling extends Mode {
-
-  /**
-    * Start polling
-    * @param pollingInterval   Interval at which updates have to be requested (default: 300ms)
-    * @param timeoutDelay      Delay after which a bot, if it has not received updates, forgets the status of the
-    *                          interaction on a certain chat (default: 1 day)
-    */
-  def startPolling(
-      bot: Bot,
-      pollingInterval: FiniteDuration = Polling.defaultPollingInterval,
-      timeoutDelay: FiniteDuration = Polling.defaultTimeoutDelay
-  ): Unit
+  val pollingInterval: FiniteDuration
+  val timeoutDelay: FiniteDuration
+  val debug: Boolean
 }
 
 object Polling {
@@ -33,25 +24,20 @@ object Polling {
 
   def apply(
       pollingInterval: FiniteDuration = Polling.defaultPollingInterval,
-      timeoutDelay: FiniteDuration = Polling.defaultTimeoutDelay
-  ): Polling = PollingImpl(pollingInterval, timeoutDelay)
+      timeoutDelay: FiniteDuration = Polling.defaultTimeoutDelay,
+      debug: Boolean = false
+  ): Polling = PollingImpl(pollingInterval, timeoutDelay, debug)
 
   case class PollingImpl(
       pollingInterval: FiniteDuration,
-      timeoutDelay: FiniteDuration
+      timeoutDelay: FiniteDuration,
+      debug: Boolean
   ) extends Polling {
 
-    override def start(bot: Bot): Unit =
-      startPolling(bot, pollingInterval, timeoutDelay)
-
-    override def startPolling(
-        bot: Bot,
-        pollingInterval: FiniteDuration,
-        timeoutDelay: FiniteDuration
-    ): Unit = {
+    override def start(bot: Bot): Unit = {
       // Create the actor system with an UpdateDispatcherActor as guardian
       val system = ActorSystem(
-        UpdateDispatcherActor(bot, pollingInterval, timeoutDelay),
+        UpdateDispatcherActor(bot, pollingInterval, timeoutDelay, debug),
         "dispatcher"
       )
       // Send a LookForUpdates message to UpdateDispatcherActor to trigger update polling

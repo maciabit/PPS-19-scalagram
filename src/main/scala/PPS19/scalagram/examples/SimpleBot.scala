@@ -10,15 +10,15 @@ object SimpleBot extends App {
 
   val middlewares = List(
     Middleware { context =>
-      context.log("Update received")
+      println("Update received")
       true
     }
   )
 
   val command = Bot.onCommand("/ciao") { context =>
-    context.log("Hello, world!")
+    println("Hello, world!")
   }
 
   val bot = Bot(BotToken(Props.get("token")), middlewares, List(command))
-  bot.launch(Polling(5.seconds))
+  bot.launch(Polling(5.seconds, debug = true))
 }
