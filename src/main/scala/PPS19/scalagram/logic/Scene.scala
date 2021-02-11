@@ -1,14 +1,15 @@
 package PPS19.scalagram.logic
 
 sealed trait Scene {
-  val reactions: List[Reaction]
+  val name: String
+  val steps: List[Step]
 }
 
 object Scene {
 
-  def apply(reactions: Reaction*): SceneImpl = SceneImpl(reactions.toList)
+  def apply(name: String, steps: List[Step]): SceneImpl = SceneImpl(name, steps)
 
-  def unapply(scene: Scene, index: Int): Reaction = scene.reactions(index)
+  def unapply(scene: Scene, index: Int): Step = scene.steps(index)
 
-  case class SceneImpl(reactions: List[Reaction]) extends Scene
+  case class SceneImpl(name: String, steps: List[Step]) extends Scene
 }

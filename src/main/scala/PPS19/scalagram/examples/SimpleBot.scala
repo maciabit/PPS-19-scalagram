@@ -9,7 +9,7 @@ import scala.concurrent.duration.DurationInt
 object SimpleBot extends App {
 
   val middlewares = List(
-    Middleware { context =>
+    Middleware { _ =>
       println("Update received")
       true
     }

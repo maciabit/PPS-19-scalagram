@@ -38,11 +38,9 @@ object WorkerActor {
               continue = op.operation(botContext)
 
             // Check for active scene
-            botContext.activeScene match {
-              case Some(scene) if continue =>
-                continue = scene
-                  .reactions(botContext.sceneStep.get)
-                  .operation(botContext)
+            botContext.sceneStep match {
+              case Some(step) if continue =>
+                continue = step.operation(botContext)
               case _ => continue = false
             }
 
