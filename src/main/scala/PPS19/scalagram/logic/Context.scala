@@ -1,6 +1,6 @@
 package PPS19.scalagram.logic
 
-import PPS19.scalagram.models.{Update, User}
+import PPS19.scalagram.models.{ChatId, MessageUpdate, Update, User}
 
 import java.time.LocalDateTime
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
@@ -8,13 +8,17 @@ import scala.concurrent.duration.{DurationInt, FiniteDuration}
 sealed trait Context {
   val bot: Bot
   val store: Map[String, Any]
+
   val debug: Boolean
   var timeout: FiniteDuration
   var lastUpdateTimestamp: LocalDateTime
+
   var activeScene: Option[Scene]
   var sceneStep: Option[Step]
+
   var update: Option[Update]
-  var from: Option[User]
+  def chat: Option[ChatId]
+  def from: Option[User]
   var updateCount: Int
 
   def enterScene(sceneName: String): Unit
@@ -35,8 +39,17 @@ object Context {
     override var activeScene: Option[Scene] = None
     override var sceneStep: Option[Step] = None
     override var update: Option[Update] = None
-    override var from: Option[User] = None
     override var updateCount: Int = 0
+
+    override def chat: Option[ChatId] = update match {
+      case Some(update) => Some(update.asInstanceOf[MessageUpdate].chatId)
+      case _ => None
+    }
+
+    override def from: Option[User] = update match {
+      case Some(update) => update.asInstanceOf[MessageUpdate].from
+      case _ => None
+    }
 
     private def sceneStepIndex: Option[Int] =
       activeScene.map(_.steps.indexWhere(_ == sceneStep.orNull)) match {

@@ -1,7 +1,7 @@
 package PPS19.scalagram.models
 
 import PPS19.scalagram.marshalling.codecs.DecoderOps
-import PPS19.scalagram.models.UpdateType.{UpdateType}
+import PPS19.scalagram.models.UpdateType.UpdateType
 import PPS19.scalagram.models.messages._
 import cats.syntax.functor._
 import io.circe.Decoder
@@ -29,8 +29,8 @@ trait MessageUpdate extends Update {
   def message: TelegramMessage
   def messageType : UpdateType
   def chatId : ChatId
-  def from: Option[User] = message.isInstanceOf[UserMessage] match {
-    case true  => message.asInstanceOf[UserMessage].from
+  def from: Option[User] = message match {
+    case message: UserMessage => message.from
     case _ => None
   }
 }
