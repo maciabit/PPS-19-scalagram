@@ -28,28 +28,36 @@ trait MessageUpdate extends Update {
   val updateId: Long
   def message: TelegramMessage
   def messageType : UpdateType
+  def chatId : ChatId
+  def from: Option[User] = message.isInstanceOf[UserMessage] match {
+    case true  => message.asInstanceOf[UserMessage].from
+    case _ => None
+  }
 }
 
 
 object MessageUpdate {
-  def unapply(update: MessageUpdate): Option[(Long, TelegramMessage, UpdateType)] =
-    Some(update.updateId, update.message, update.messageType)
+  def unapply(update: MessageUpdate): Option[(Long, TelegramMessage)] =
+    Some(update.updateId, update.message)
 }
 
 final case class MessageReceived(updateId: Long, message: TelegramMessage)
     extends MessageUpdate{
   override def messageType: UpdateType = UpdateType.MessageReceived
+  override def chatId: ChatId = ChatId(message.chat.id)
 }
 
 final case class MessageEdited(updateId: Long, editedMessage: TelegramMessage)
     extends MessageUpdate {
   override def message: TelegramMessage = editedMessage
   override def messageType: UpdateType = UpdateType.MessageEdited
+  override def chatId: ChatId = ChatId(editedMessage.chat.id)
 }
 final case class ChannelPost(updateId: Long, channelPost: TelegramMessage)
     extends MessageUpdate {
   override def message: TelegramMessage = channelPost
   override def messageType: UpdateType = UpdateType.ChannelPost
+  override def chatId: ChatId = ChatId(channelPost.chat.id)
 }
 final case class ChannelPostEdited(
     updateId: Long,
@@ -57,6 +65,7 @@ final case class ChannelPostEdited(
 ) extends MessageUpdate {
   override def message: TelegramMessage = editedChannelPost
   override def messageType: UpdateType = UpdateType.ChannelPostEdited
+  override def chatId: ChatId = ChatId(editedChannelPost.chat.id)
 }
 
 final case class CallbackButtonSelected(updateId: Long, callbackQuery: Callback)

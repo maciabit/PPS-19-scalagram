@@ -127,7 +127,7 @@ object Bot {
     Reaction(
       Trigger { context =>
         context.update match {
-          case Some(MessageUpdate(_, message, _))
+          case Some(MessageUpdate(_, message))
               if message.isInstanceOf[TextMessage] =>
             message.asInstanceOf[TextMessage].text == command
           case _ => false
