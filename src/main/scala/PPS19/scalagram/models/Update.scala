@@ -1,6 +1,7 @@
 package PPS19.scalagram.models
 
 import PPS19.scalagram.marshalling.codecs.DecoderOps
+import PPS19.scalagram.models.UpdateType.{UpdateType}
 import PPS19.scalagram.models.messages._
 import cats.syntax.functor._
 import io.circe.Decoder
@@ -25,8 +26,15 @@ object Update {
 
 trait MessageUpdate extends Update {
   val updateId: Long
-  val message: TelegramMessage
+  def message: TelegramMessage
+  def messageType : UpdateType
+  def chatId : ChatId
+  def from: Option[User] = message.isInstanceOf[UserMessage] match {
+    case true  => message.asInstanceOf[UserMessage].from
+    case _ => None
+  }
 }
+
 
 object MessageUpdate {
   def unapply(update: MessageUpdate): Option[(Long, TelegramMessage)] =
@@ -34,21 +42,30 @@ object MessageUpdate {
 }
 
 final case class MessageReceived(updateId: Long, message: TelegramMessage)
-    extends MessageUpdate
+    extends MessageUpdate{
+  override def messageType: UpdateType = UpdateType.MessageReceived
+  override def chatId: ChatId = ChatId(message.chat.id)
+}
 
 final case class MessageEdited(updateId: Long, editedMessage: TelegramMessage)
     extends MessageUpdate {
-  val message: TelegramMessage = editedMessage
+  override def message: TelegramMessage = editedMessage
+  override def messageType: UpdateType = UpdateType.MessageEdited
+  override def chatId: ChatId = ChatId(editedMessage.chat.id)
 }
 final case class ChannelPost(updateId: Long, channelPost: TelegramMessage)
     extends MessageUpdate {
-  val message: TelegramMessage = channelPost
+  override def message: TelegramMessage = channelPost
+  override def messageType: UpdateType = UpdateType.ChannelPost
+  override def chatId: ChatId = ChatId(channelPost.chat.id)
 }
 final case class ChannelPostEdited(
     updateId: Long,
     editedChannelPost: TelegramMessage
 ) extends MessageUpdate {
-  val message: TelegramMessage = editedChannelPost
+  override def message: TelegramMessage = editedChannelPost
+  override def messageType: UpdateType = UpdateType.ChannelPostEdited
+  override def chatId: ChatId = ChatId(editedChannelPost.chat.id)
 }
 
 final case class CallbackButtonSelected(updateId: Long, callbackQuery: Callback)
