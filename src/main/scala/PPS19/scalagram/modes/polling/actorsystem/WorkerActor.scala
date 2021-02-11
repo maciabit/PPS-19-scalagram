@@ -1,4 +1,4 @@
-package PPS19.scalagram.akka
+package PPS19.scalagram.modes.polling.actorsystem
 
 import PPS19.scalagram.logic.Context
 import akka.actor.typed.Behavior
@@ -30,15 +30,12 @@ object WorkerActor {
             botContext.update = Some(update)
             var continue = true
 
-            // Execute middlewares
+            // Execute middlewares and reactions
             for (
-              middleware <- botContext.bot.middlewares.takeWhile(_ => continue)
+              op <- (botContext.bot.middlewares ::: botContext.bot.reactions)
+                .takeWhile(_ => continue)
             )
-              continue = middleware.operation(botContext)
-
-            // Check for matching reaction
-            for (reaction <- botContext.bot.reactions.takeWhile(_ => continue))
-              continue = reaction.operation(botContext)
+              continue = op.operation(botContext)
 
             // Check for active scene
             botContext.activeScene match {

@@ -1,6 +1,6 @@
-package PPS19.scalagram.modes
+package PPS19.scalagram.modes.polling
 
-import PPS19.scalagram.akka.{LookForUpdates, UpdateDispatcherActor}
+import PPS19.scalagram.modes.polling.actorsystem.{LookForUpdates, UpdateDispatcherActor}
 import PPS19.scalagram.logic.Bot
 import akka.actor.typed.ActorSystem
 

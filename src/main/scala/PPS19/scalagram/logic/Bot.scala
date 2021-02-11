@@ -3,7 +3,7 @@ package PPS19.scalagram.logic
 import PPS19.scalagram.methods._
 import PPS19.scalagram.models.messages.{TelegramMessage, TextMessage}
 import PPS19.scalagram.models.{ChatId, InputFile, MessageUpdate, ReplyMarkup, Update}
-import PPS19.scalagram.modes.Mode
+import PPS19.scalagram.modes.polling.Mode
 
 import scala.util.Try
 
