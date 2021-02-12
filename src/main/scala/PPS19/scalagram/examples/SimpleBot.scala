@@ -18,79 +18,47 @@ object SimpleBot extends App {
   )
 
   val hello = Bot.onMessage("/ciao", "Ciao") { context =>
-    context.chat match {
-      case Some(chatId) =>
-        bot.sendMessage(chatId, "Hello, world!")
-        println("Hello, world!")
-      case _ =>
-    }
+    context.reply("Hello, world!")
+    println("Hello, world!")
   }
 
   val keyboard = Bot.onMessage("/keyboard") { context =>
-    context.chat match {
-      case Some(chatId) =>
-        val k = Some(
-          InlineKeyboardMarkup(
-            List(
-              List(
-                InlineKeyboardButton("Button", callbackData = Some("callback"))
-              )
-            )
+    val k = Some(
+      InlineKeyboardMarkup(
+        List(
+          List(
+            InlineKeyboardButton("Button", callbackData = Some("callback"))
           )
         )
-        bot.sendMessage(chatId, "Here's a keyboard!", replyMarkup = k)
-      case _ =>
-    }
+      )
+    )
+    context.reply( "Here's a keyboard!", replyMarkup = k)
   }
 
   val onCallback = Bot.onCallbackQuery("callback") { context =>
-    context.chat match {
-      case Some(chatId) =>
-        bot.sendMessage(chatId, "Thanks for clicking the button")
-      case _ =>
-    }
+    context.reply("Thanks for clicking the button")
   }
 
   val onPinned = Bot.onMessagePinned { context =>
-    context.chat match {
-      case Some(chatId) =>
-        bot.sendMessage(chatId, "Woa, someone pinned a message \uD83D\uDE32")
-      case _ =>
-    }
+    context.reply("Woa, someone pinned a message \uD83D\uDE32")
   }
 
   val onMessageEdited = Bot.onMessageEdited() { context =>
-    context.chat match {
-      case Some(chatId) =>
-        bot.sendMessage(chatId, "Do you have something to hide?")
-      case _ =>
-    }
+    context.reply("Do you have something to hide?")
   }
 
   val onChatEnter = Bot.onChatEnter { context =>
-    context.chat match {
-      case Some(chatId) =>
-        bot.sendMessage(chatId, "Welcome!")
-      case _ =>
-    }
+    context.reply("Welcome!")
   }
 
   val onChatLeave = Bot.onChatLeave { context =>
-    context.chat match {
-      case Some(chatId) =>
-        bot.sendMessage(chatId, "Goodbye")
-      case _ =>
-    }
+    context.reply("Goodbye")
   }
 
   val enterScene = Bot.onMessage("/scene") { context =>
-    context.chat match {
-      case Some(chatId) =>
-        bot.sendMessage(chatId, "You are now inside a scene")
-        println("You are now inside a scene")
-        context.enterScene("TEST_SCENE")
-      case _ =>
-    }
+    context.reply("You are now inside a scene")
+    println("You are now inside a scene")
+    context.enterScene("TEST_SCENE")
   }
 
   val scene = Scene(
@@ -99,37 +67,25 @@ object SimpleBot extends App {
       Step(
         "FIRST_STEP",
         { context =>
-          context.chat match {
-            case Some(chatId) =>
-              bot.sendMessage(chatId, "First scene step")
-              println("First scene step")
-              context.nextStep()
-            case _ =>
-          }
+          context.reply("First scene step")
+          println("First scene step")
+          context.nextStep()
         }
       ),
       Step(
         "SECOND_STEP",
         { context =>
-          context.chat match {
-            case Some(chatId) =>
-              bot.sendMessage(chatId, "Second scene step")
-              println("Second scene step")
-              context.nextStep()
-            case _ =>
-          }
+          context.reply("Second scene step")
+          println("Second scene step")
+          context.nextStep()
         }
       ),
       Step(
         "THIRD_STEP",
         { context =>
-          context.chat match {
-            case Some(chatId) =>
-              bot.sendMessage(chatId, "Third scene step")
-              println("Third scene step")
-              context.leaveScene()
-            case _ =>
-          }
+          context.reply("Third scene step")
+          println("Third scene step")
+          context.leaveScene()
         }
       )
     )
