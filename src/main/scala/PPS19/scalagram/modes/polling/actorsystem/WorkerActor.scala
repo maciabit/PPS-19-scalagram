@@ -22,10 +22,6 @@ object WorkerActor {
               Timeout(botContext.lastUpdateTimestamp),
               botContext.timeout
             )
-            if (botContext.debug) {
-              context.log.info("Update count: {}", botContext.updateCount)
-              context.log.info("Update: {}", update)
-            }
 
             botContext.update = Some(update)
             var continue = true

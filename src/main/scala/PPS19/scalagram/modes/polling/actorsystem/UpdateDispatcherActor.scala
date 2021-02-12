@@ -12,30 +12,26 @@ object UpdateDispatcherActor {
   def apply(
       bot: Bot,
       interval: FiniteDuration,
-      workerTimeout: FiniteDuration,
-      debug: Boolean = false
+      workerTimeout: FiniteDuration
   ): Behavior[LookForUpdates] =
-    scheduleUpdateBehavior(bot, interval, workerTimeout, debug)
+    scheduleUpdateBehavior(bot, interval, workerTimeout)
 
   private def scheduleUpdateBehavior(
       bot: Bot,
       interval: FiniteDuration,
-      workerTimeout: FiniteDuration,
-      debug: Boolean
+      workerTimeout: FiniteDuration
   ): Behavior[LookForUpdates] =
     Behaviors.withTimers { timers =>
       timers.startTimerAtFixedRate(LookForUpdates(), interval)
-      fetchUpdateBehavior(bot, workerTimeout, debug = debug)
+      fetchUpdateBehavior(bot, workerTimeout)
     }
 
   private def fetchUpdateBehavior(
       bot: Bot,
       workerTimeout: FiniteDuration,
-      nextUpdateId: Option[Long] = None,
-      debug: Boolean
+      nextUpdateId: Option[Long] = None
   ): Behavior[LookForUpdates] =
     Behaviors.receive { (context, _) =>
-      if (debug) context.log.info("Fetching updates")
       // Fetch updates
       val updates = bot.getUpdates(nextUpdateId)
       // Dispatch updates to workers
@@ -52,7 +48,7 @@ object UpdateDispatcherActor {
           val worker = context.child(workerName) match {
             case Some(actor) => actor.asInstanceOf[ActorRef[WorkerMessage]]
             case None =>
-              val botContext = Context(bot, debug)
+              val botContext = Context(bot)
               botContext.timeout = workerTimeout
               context.spawn(WorkerActor(botContext), workerName)
           }
@@ -62,6 +58,6 @@ object UpdateDispatcherActor {
       val updateId =
         if (updates.isFailure || updates.get.isEmpty) nextUpdateId
         else Some(updates.get.last.updateId + 1)
-      fetchUpdateBehavior(bot, workerTimeout, updateId, debug)
+      fetchUpdateBehavior(bot, workerTimeout, updateId)
     }
 }

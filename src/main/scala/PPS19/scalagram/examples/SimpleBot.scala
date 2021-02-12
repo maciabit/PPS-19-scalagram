@@ -32,7 +32,7 @@ object SimpleBot extends App {
         )
       )
     )
-    context.reply( "Here's a keyboard!", replyMarkup = k)
+    context.reply("Here's a keyboard!", replyMarkup = k)
   }
 
   val onCallback = Bot.onCallbackQuery("callback") { context =>
@@ -104,4 +104,5 @@ object SimpleBot extends App {
 
   bot = Bot(BotToken(Props.get("token")), middlewares, reactions, List(scene))
   bot.launch(Polling(5.seconds))
+  println("Bot started")
 }

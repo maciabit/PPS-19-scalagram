@@ -11,7 +11,6 @@ sealed trait Context {
   val bot: Bot
   val store: Map[String, Any]
 
-  val debug: Boolean
   var timeout: FiniteDuration
   var lastUpdateTimestamp: LocalDateTime
 
@@ -37,9 +36,9 @@ sealed trait Context {
 }
 
 object Context {
-  def apply(bot: Bot, debug: Boolean = false): Context = ContextImpl(bot, debug)
+  def apply(bot: Bot): Context = ContextImpl(bot)
 
-  case class ContextImpl(bot: Bot, debug: Boolean) extends Context {
+  case class ContextImpl(bot: Bot) extends Context {
     override val store: Map[String, Any] = Map()
     override var timeout: FiniteDuration = 1.days
     override var lastUpdateTimestamp: LocalDateTime = LocalDateTime.now()
