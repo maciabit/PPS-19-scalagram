@@ -33,6 +33,7 @@ object WorkerActor {
             // Execute middlewares and reactions
             for (
               op <- (botContext.bot.middlewares ::: botContext.bot.reactions)
+                .to(LazyList)
                 .takeWhile(_ => continue)
             )
               continue = op.operation(botContext)

@@ -27,14 +27,14 @@ object Update {
 trait MessageUpdate extends Update {
   val updateId: Long
   def message: TelegramMessage
-  def messageType : UpdateType
-  def chatId : ChatId
-  def from: Option[User] = message match {
-    case message: UserMessage => message.from
-    case _ => None
-  }
+  def messageType: UpdateType
+  def chatId: ChatId
+  def from: Option[User] =
+    message match {
+      case message: UserMessage => message.from
+      case _                    => None
+    }
 }
-
 
 object MessageUpdate {
   def unapply(update: MessageUpdate): Option[(Long, TelegramMessage)] =
@@ -42,7 +42,7 @@ object MessageUpdate {
 }
 
 final case class MessageReceived(updateId: Long, message: TelegramMessage)
-    extends MessageUpdate{
+    extends MessageUpdate {
   override def messageType: UpdateType = UpdateType.MessageReceived
   override def chatId: ChatId = ChatId(message.chat.id)
 }
@@ -53,12 +53,14 @@ final case class MessageEdited(updateId: Long, editedMessage: TelegramMessage)
   override def messageType: UpdateType = UpdateType.MessageEdited
   override def chatId: ChatId = ChatId(editedMessage.chat.id)
 }
+
 final case class ChannelPost(updateId: Long, channelPost: TelegramMessage)
     extends MessageUpdate {
   override def message: TelegramMessage = channelPost
   override def messageType: UpdateType = UpdateType.ChannelPost
   override def chatId: ChatId = ChatId(channelPost.chat.id)
 }
+
 final case class ChannelPostEdited(
     updateId: Long,
     editedChannelPost: TelegramMessage

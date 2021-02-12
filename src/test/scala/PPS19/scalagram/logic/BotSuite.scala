@@ -39,7 +39,7 @@ class BotSuite extends AnyFunSuite {
   }
 
   test("A reaction can be created with the onCommand method") {
-    Bot.onCommand("/hello") { _ =>
+    Bot.onMessage("/hello") { _ =>
       println("ciao")
     }
   }
