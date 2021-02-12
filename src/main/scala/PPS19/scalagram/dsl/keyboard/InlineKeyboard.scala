@@ -9,15 +9,14 @@ import io.circe.Encoder
 
 object InlineKeyboard {
 
-  def apply(rows: Either[KeyboardButton, List[KeyboardButton]]*): InlineKeyboardMarkup = {
-    InlineKeyboardMarkup(keyboardButtonToInline(rows)(_ => InlineKeyboardButton("Pisto")))
-  }
+  def apply(rows: Either[KeyboardButton, List[KeyboardButton]]*): InlineKeyboardMarkup =
+    InlineKeyboardMarkup(keyboardButtonToInline(rows)(b => InlineKeyboardButton(b.text, callbackData = Some(b.text))))
 
   private def keyboardButtonToInline(buttons: Seq[Either[KeyboardButton, List[KeyboardButton]]])(conversion: KeyboardButton => InlineKeyboardButton):
   Seq[Seq[InlineKeyboardButton]] =
-    buttons.map {
+    buttons map {
       case Left(button) => List(conversion(button))
-      case Right(tuple) => tuple.map(conversion)
+      case Right(tuple) => tuple map conversion
     }
 }
 
