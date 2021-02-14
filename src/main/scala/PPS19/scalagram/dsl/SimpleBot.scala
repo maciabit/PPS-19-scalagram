@@ -16,6 +16,7 @@ object SimpleBot extends ComposableBot {
     POLLING interval 300.milliseconds timeoutDelay 1.days debug false
   }
 
+  // with curly brackets the newline syntax is not enabled (wtf)
   reactions (
     << ("/uno")
     >> "uno"
@@ -27,11 +28,13 @@ object SimpleBot extends ComposableBot {
     >> {_ => System.exit(0)}
   )
 
+  // with curly brackets the newline syntax is not enabled (wtf)
   middlewares (
     <-> { c => {
       c.bot.sendMessage(c.chat.get,  "Ciao")
       true
     } }
+
     <-> { c => {
       c.bot.sendMessage(c.chat.get,  "Filippo")
       true
