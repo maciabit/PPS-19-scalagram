@@ -1,12 +1,13 @@
-package PPS19.scalagram.dsl.bot
+package PPS19.scalagram.dsl
 
-import PPS19.scalagram.dsl.bot.WorkingMode.WorkingMode
+import PPS19.scalagram.dsl.mode.WorkingMode.WorkingMode
 import PPS19.scalagram.dsl.middleware.{MiddlewareContainer, MiddlewareContainerConcatenation}
+import PPS19.scalagram.dsl.mode.WorkingMode
 import PPS19.scalagram.dsl.reactions.{ActionObject, ReactionContainer}
 import PPS19.scalagram.logic._
 import PPS19.scalagram.modes.polling.Mode
 
-trait ComposableBot {
+trait DSL {
 
   private var _token: BotToken = _
   private var _bot: Bot = _

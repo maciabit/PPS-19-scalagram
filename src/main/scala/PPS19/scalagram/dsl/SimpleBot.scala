@@ -1,15 +1,14 @@
 package PPS19.scalagram.dsl
 
-import PPS19.scalagram.dsl.bot.ComposableBot
-import PPS19.scalagram.dsl.bot.WorkingMode._
+import PPS19.scalagram.dsl.mode.WorkingMode._
 import PPS19.scalagram.dsl.keyboard.Conversion._
 import PPS19.scalagram.dsl.keyboard.{InlineKeyboard, Keyboard}
 import PPS19.scalagram.dsl.keyboard.StringUtils._
 
 import scala.concurrent.duration.DurationInt
-import PPS19.scalagram.dsl.reactions.Conversions._
+import PPS19.scalagram.dsl.reactions.Action._
 
-object SimpleBot extends ComposableBot {
+object SimpleBot extends DSL {
 
   token {
     "1502535921:AAEmuIayUnTQ0ExsN3R95SyOGYaaX6vgzJs"
