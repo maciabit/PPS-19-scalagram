@@ -1,12 +1,11 @@
 package PPS19.scalagram.dsl
 
+import PPS19.scalagram.dsl.item.keyboard.{InlineKeyboard, Keyboard}
 import PPS19.scalagram.dsl.mode.WorkingMode._
-import PPS19.scalagram.dsl.keyboard.Conversion._
-import PPS19.scalagram.dsl.keyboard.{InlineKeyboard, Keyboard}
-import PPS19.scalagram.dsl.keyboard.StringUtils._
+import reactions.action.Action.ActionConversions._
+import PPS19.scalagram.dsl.item.keyboard.Utils._
 
 import scala.concurrent.duration.DurationInt
-import PPS19.scalagram.dsl.reactions.Action._
 
 object SimpleBot extends DSL {
 
@@ -21,8 +20,8 @@ object SimpleBot extends DSL {
   // with curly brackets the newline syntax is not enabled (wtf)
   // we should try to remove the parenthesis to the first argument
   reactions (
-    << ("/uno")
-    >> "uno"
+    <<("/uno")
+    >>("uno")
 
     << "/due"
     >> "due"

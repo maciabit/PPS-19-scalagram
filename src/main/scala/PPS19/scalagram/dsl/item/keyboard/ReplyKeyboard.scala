@@ -1,6 +1,6 @@
-package PPS19.scalagram.dsl.keyboard
+package PPS19.scalagram.dsl.item.keyboard
 
-import PPS19.scalagram.dsl.keyboard.StringUtils.StringList
+import PPS19.scalagram.dsl.item.keyboard.StringUtils.StringList
 import PPS19.scalagram.logic.{Bot, BotToken}
 import PPS19.scalagram.marshalling.codecs.EncoderOps
 import PPS19.scalagram.models.{ChatId, KeyboardButton, ReplyKeyboardMarkup, ReplyMarkup}
@@ -48,7 +48,7 @@ object Keyboard {
 }
 
 object TryKeyboard extends App {
-  import PPS19.scalagram.dsl.keyboard.Conversion._
+  import PPS19.scalagram.dsl.item.keyboard.Conversion._
   val keyboard = Keyboard(
     "Button 1",
     "Button 2" :: "Button 3"

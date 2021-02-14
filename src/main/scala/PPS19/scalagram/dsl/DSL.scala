@@ -1,13 +1,15 @@
 package PPS19.scalagram.dsl
 
-import PPS19.scalagram.dsl.mode.WorkingMode.WorkingMode
 import PPS19.scalagram.dsl.middleware.{MiddlewareContainer, MiddlewareContainerConcatenation}
 import PPS19.scalagram.dsl.mode.WorkingMode
-import PPS19.scalagram.dsl.reactions.{ActionObject, ReactionContainer}
+import PPS19.scalagram.dsl.mode.WorkingMode.WorkingMode
+import PPS19.scalagram.dsl.reactions.ReactionCollector
+import PPS19.scalagram.dsl.reactions.action.Action.{ActionObject, ActionObjectImpl}
+import PPS19.scalagram.dsl.reactions.trigger.Trigger.Trigger
 import PPS19.scalagram.logic._
 import PPS19.scalagram.modes.polling.Mode
 
-trait DSL {
+trait DSL{
 
   private var _token: BotToken = _
   private var _bot: Bot = _
@@ -22,10 +24,11 @@ trait DSL {
   protected def mode(mode: WorkingMode): Unit = {_mode = mode match {
     case WorkingMode.Polling(interval,delay,debug) => PPS19.scalagram.modes.polling.Polling(interval, delay, debug)
   }}
-  protected def reactions(reactionContainer: ReactionContainer): Unit = {_reactions = reactionContainer.reactions}
+  protected def reactions(reactionContainer: ReactionCollector): Unit = {_reactions = reactionContainer.reactions}
   protected def middlewares(middlewareContainer: MiddlewareContainer): Unit = {_middlewares = middlewareContainer.middlewares}
 
-  protected def <<(trigger: String): ActionObject = ActionObject(trigger, Nil)
+  protected def <<(trigger: Trigger): ActionObject = ActionObjectImpl(trigger, Nil)
+  protected def <~(trigger: Trigger): ActionObject = ActionObjectImpl(trigger, Nil)
   protected def <->(middleware: Context => Boolean): MiddlewareContainerConcatenation = MiddlewareContainerConcatenation(Middleware(middleware) :: Nil)
 
   def start(): Unit = {

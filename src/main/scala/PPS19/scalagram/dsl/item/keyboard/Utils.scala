@@ -1,8 +1,8 @@
-package PPS19.scalagram.dsl.keyboard
+package PPS19.scalagram.dsl.item.keyboard
 
 import PPS19.scalagram.models.KeyboardButton
 
-object Conversion {
+object Utils {
   implicit def buttonToEither(button: KeyboardButton): Either[KeyboardButton, List[KeyboardButton]] =
     Left(button)
 
@@ -14,6 +14,14 @@ object Conversion {
 
   implicit def stringListToButtonEither(list: List[String]): Either[KeyboardButton, List[KeyboardButton]] =
     Right(list.map(string => KeyboardButton(string)))
+
+  implicit class KeyboardButtonList(button: KeyboardButton) {
+    def ::(button2: KeyboardButton) = List(button2, button)
+  }
+
+  implicit class StringList(string: String) {
+    def ::(string2: String) = List(string2, string)
+  }
 }
 
 object KeyboardButtonUtils {
