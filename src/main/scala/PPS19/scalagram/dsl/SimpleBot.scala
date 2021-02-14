@@ -21,7 +21,7 @@ object SimpleBot extends DSL {
   // we should try to remove the parenthesis to the first argument
   reactions (
     <<("/uno")
-    >>("uno")
+    >> "uno"
 
     << "/due"
     >> "due"

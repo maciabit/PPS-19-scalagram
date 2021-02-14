@@ -1,6 +1,5 @@
 package PPS19.scalagram.dsl.item.keyboard
 
-import PPS19.scalagram.dsl.item.keyboard.StringUtils.StringList
 import PPS19.scalagram.logic.{Bot, BotToken}
 import PPS19.scalagram.marshalling.codecs.EncoderOps
 import PPS19.scalagram.models.{ChatId, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, ReplyMarkup}
@@ -21,7 +20,7 @@ object InlineKeyboard {
 }
 
 object TryInlineKeyboard extends App {
-  import PPS19.scalagram.dsl.item.keyboard.Conversion._
+  import PPS19.scalagram.dsl.item.keyboard.Utils._
 
   val keyboard = InlineKeyboard(
     "Button 1",
