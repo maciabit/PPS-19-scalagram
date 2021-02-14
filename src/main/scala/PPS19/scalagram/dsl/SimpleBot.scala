@@ -2,9 +2,12 @@ package PPS19.scalagram.dsl
 
 import PPS19.scalagram.dsl.bot.ComposableBot
 import PPS19.scalagram.dsl.bot.WorkingMode._
+import PPS19.scalagram.dsl.keyboard.Conversion._
+import PPS19.scalagram.dsl.keyboard.{InlineKeyboard, Keyboard}
+import PPS19.scalagram.dsl.keyboard.StringUtils._
 
 import scala.concurrent.duration.DurationInt
-import PPS19.scalagram.dsl.reactions.Conversions.sendMessageConversion
+import PPS19.scalagram.dsl.reactions.Conversions._
 
 object SimpleBot extends ComposableBot {
 
@@ -17,12 +20,22 @@ object SimpleBot extends ComposableBot {
   }
 
   // with curly brackets the newline syntax is not enabled (wtf)
+  // we should try to remove the parenthesis to the first argument
   reactions (
     << ("/uno")
     >> "uno"
 
     << "/due"
     >> "due"
+
+    << "/rk"
+    >> Keyboard(
+      "b1",
+      "Button 2" :: "Button 3"
+    )
+
+    << "/ik"
+    >> InlineKeyboard("A" :: "B" :: "C")
 
     << "/shutdown"
     >> {_ => System.exit(0)}
