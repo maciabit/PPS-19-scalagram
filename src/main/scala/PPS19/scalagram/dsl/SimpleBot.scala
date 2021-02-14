@@ -2,9 +2,9 @@ package PPS19.scalagram.dsl
 
 import PPS19.scalagram.dsl.bot.ComposableBot
 import PPS19.scalagram.dsl.bot.WorkingMode._
-import PPS19.scalagram.dsl.reactions.Conversions.sendMessageConversion
 
 import scala.concurrent.duration.DurationInt
+import PPS19.scalagram.dsl.reactions.Conversions.sendMessageConversion
 
 object SimpleBot extends ComposableBot {
 
@@ -27,12 +27,16 @@ object SimpleBot extends ComposableBot {
     >> {_ => System.exit(0)}
   )
 
-  middlewares {
+  middlewares (
     <-> { c => {
-      c.bot.sendMessage(c.chat.get,  "453")
+      c.bot.sendMessage(c.chat.get,  "Ciao")
       true
     } }
-  }
+    <-> { c => {
+      c.bot.sendMessage(c.chat.get,  "Filippo")
+      true
+    } }
+  )
 
 }
 
