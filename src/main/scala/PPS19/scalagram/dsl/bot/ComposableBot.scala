@@ -26,7 +26,7 @@ trait ComposableBot {
   protected def middlewares(middlewares: Middleware*): Unit = {_middlewares = middlewares.toList}
 
 
-  protected def in(trigger: String): ActionObject = ActionObject(trigger, Nil)
+  protected def <<(trigger: String): ActionObject = ActionObject(trigger, Nil)
   protected def <->(middleware: Context => Boolean): Middleware = Middleware(middleware)
 
 

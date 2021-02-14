@@ -16,9 +16,16 @@ object SimpleBot extends ComposableBot {
     POLLING interval 300.milliseconds timeoutDelay 1.days debug false
   }
 
-  reactions {
-    in ("/uno") >> "uno" << "/due" >> "due" << "/shutdown" >> {_ => System.exit(0)}
-  }
+  reactions (
+    << ("/uno")
+    >> "uno"
+
+    << "/due"
+    >> "due"
+
+    << "/shutdown"
+    >> {_ => System.exit(0)}
+  )
 
   middlewares {
     <-> { c => {
