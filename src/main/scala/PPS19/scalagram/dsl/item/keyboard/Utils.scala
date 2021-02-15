@@ -1,6 +1,7 @@
 package PPS19.scalagram.dsl.item.keyboard
 
-import PPS19.scalagram.models.KeyboardButton
+import PPS19.scalagram.dsl.reactions.action.Action.MessageBuilder
+import PPS19.scalagram.models.{InlineKeyboardMarkup, KeyboardButton, ReplyKeyboardMarkup}
 
 object Utils {
   implicit def buttonToEither(button: KeyboardButton): Either[KeyboardButton, List[KeyboardButton]] =
@@ -19,8 +20,15 @@ object Utils {
     def ::(button2: KeyboardButton) = List(button2, button)
   }
 
-  implicit class StringList(string: String) {
+  implicit class StringExtension(string: String) {
+
     def ::(string2: String) = List(string2, string)
+
+    def -(keyboard: ReplyKeyboardMarkup): MessageBuilder = MessageBuilder(string, None, Some(Left(keyboard)))
+
+    def -(keyboard: InlineKeyboardMarkup): MessageBuilder = MessageBuilder(string, None, Some(Right(keyboard)))
+
+    def -(parseMode: String): MessageBuilder = MessageBuilder(string, Some(parseMode), None)
   }
 }
 

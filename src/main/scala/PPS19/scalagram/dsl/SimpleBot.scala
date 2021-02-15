@@ -4,52 +4,63 @@ import PPS19.scalagram.dsl.item.keyboard.{InlineKeyboard, Keyboard}
 import PPS19.scalagram.dsl.mode.WorkingMode._
 import reactions.action.Action.ActionConversions._
 import PPS19.scalagram.dsl.item.keyboard.Utils._
+import PPS19.scalagram.dsl.reactions.action.Action.{HTML, MarkdownV2}
+import PPS19.scalagram.dsl.reactions.trigger.TriggerList
+import PPS19.scalagram.utils.Props
 
 import scala.concurrent.duration.DurationInt
 
 object SimpleBot extends DSL {
 
-  token {
-    "1502535921:AAEmuIayUnTQ0ExsN3R95SyOGYaaX6vgzJs"
-  }
+  token (
+    Props.get("token")
+  )
 
-  mode {
+  mode (
     POLLING interval 300.milliseconds timeoutDelay 1.days debug false
-  }
+  )
+
+  // with curly brackets the newline syntax is not enabled (wtf)
+  middlewares (
+    <-> { _ =>
+      println("First middleware")
+      true
+    }
+
+    <-> { _ =>
+      println("Second middleware")
+      true
+    }
+  )
 
   // with curly brackets the newline syntax is not enabled (wtf)
   // we should try to remove the parenthesis to the first argument
   reactions (
-    <<("/uno")
+    TriggerList(Nil)
+
+    << "/uno"
     >> "uno"
 
     << "/due"
     >> "due"
 
     << "/rk"
-    >> Keyboard(
-      "b1",
+    >> "Reply keyboard" - Keyboard(
+      "Button 1",
       "Button 2" :: "Button 3"
     )
 
     << "/ik"
-    >> InlineKeyboard("A" :: "B" :: "C")
+    >> "Inline keyboard" - InlineKeyboard("A" :: "B" :: "C")
+
+    << "/html"
+    >> "Keyboard with <b>HTML</b>" - HTML - InlineKeyboard("A" :: "B" :: "C")
+
+    << "/md"
+    >> "Keyboard with *Markdown*" - MarkdownV2 - InlineKeyboard("A" :: "B" :: "C")
 
     << "/shutdown"
     >> {_ => System.exit(0)}
-  )
-
-  // with curly brackets the newline syntax is not enabled (wtf)
-  middlewares (
-    <-> { c => {
-      c.bot.sendMessage(c.chat.get,  "Ciao")
-      true
-    } }
-
-    <-> { c => {
-      c.bot.sendMessage(c.chat.get,  "Filippo")
-      true
-    } }
   )
 
 }

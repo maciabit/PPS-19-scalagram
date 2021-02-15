@@ -6,6 +6,10 @@ trait MiddlewareContainer {
   def middlewares: List[Middleware]
 }
 
-case class MiddlewareContainerConcatenation(middlewares: List[Middleware]) extends MiddlewareContainer {
-  def <->(middleware: Context => Boolean): MiddlewareContainerConcatenation = MiddlewareContainerConcatenation(middlewares appended Middleware(middleware))
+case class MiddlewareContainerConcatenation(middlewares: List[Middleware])
+    extends MiddlewareContainer {
+  def <->(middleware: Context => Boolean): MiddlewareContainerConcatenation =
+    MiddlewareContainerConcatenation(
+      middlewares appended Middleware(middleware)
+    )
 }

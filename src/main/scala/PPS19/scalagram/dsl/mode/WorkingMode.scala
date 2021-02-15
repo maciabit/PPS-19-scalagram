@@ -1,6 +1,7 @@
 package PPS19.scalagram.dsl.mode
 
 import scala.concurrent.duration.FiniteDuration
+import PPS19.scalagram.modes.polling.Polling.{defaultPollingInterval, defaultTimeoutDelay}
 
 object WorkingMode {
 
@@ -11,10 +12,8 @@ object WorkingMode {
   sealed trait WorkingMode
 
   case class Polling(
-      pollingInterval: FiniteDuration =
-        PPS19.scalagram.modes.polling.Polling.defaultPollingInterval,
-      timeoutDelay: FiniteDuration =
-        PPS19.scalagram.modes.polling.Polling.defaultTimeoutDelay,
+      pollingInterval: FiniteDuration = defaultPollingInterval,
+      timeoutDelay: FiniteDuration = defaultTimeoutDelay,
       debug: Boolean = false
   ) extends WorkingMode {
     def interval(_pollingInterval: FiniteDuration): Polling =
