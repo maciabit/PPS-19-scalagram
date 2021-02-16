@@ -1,8 +1,25 @@
 package PPS19.scalagram.logic
 
 import PPS19.scalagram.methods._
-import PPS19.scalagram.models.messages.{TelegramMessage, TextMessage}
-import PPS19.scalagram.models.{ChatId, InputFile, MessageUpdate, ReplyMarkup, Update}
+import PPS19.scalagram.models.messages.{
+  ChatMemberRemoved,
+  ChatMembersAdded,
+  MessagePinned,
+  TelegramMessage,
+  TextMessage
+}
+import PPS19.scalagram.models.{
+  CallbackButtonSelected,
+  ChannelPost,
+  ChannelPostEdited,
+  ChatId,
+  InputFile,
+  MessageEdited,
+  MessageReceived,
+  MessageUpdate,
+  ReplyMarkup,
+  Update
+}
 import PPS19.scalagram.modes.polling.Mode
 
 import scala.util.Try
@@ -123,13 +140,108 @@ object Bot {
       reactions: List[Reaction]
   ) extends Bot
 
-  def onCommand(command: String)(action: Context => Unit): Reaction = {
+  def onMessage(texts: String*)(action: Context => Unit): Reaction = {
+    Reaction(
+      Trigger { context =>
+        context.update match {
+          case Some(MessageReceived(_, message))
+              if message.isInstanceOf[TextMessage] =>
+            texts.isEmpty || texts.contains(
+              message.asInstanceOf[TextMessage].text
+            )
+          case Some(ChannelPost(_, channelPost))
+              if channelPost.isInstanceOf[TextMessage] =>
+            texts.isEmpty || texts.contains(
+              channelPost.asInstanceOf[TextMessage].text
+            )
+          case _ => false
+        }
+      },
+      action
+    )
+  }
+
+  def onMessageEdited(texts: String*)(action: Context => Unit): Reaction = {
+    Reaction(
+      Trigger { context =>
+        context.update match {
+          case Some(MessageEdited(_, editedMessage))
+              if editedMessage.isInstanceOf[TextMessage] =>
+            texts.isEmpty || texts.contains(
+              editedMessage.asInstanceOf[TextMessage].text
+            )
+          case Some(ChannelPostEdited(_, editedChannelPost))
+              if editedChannelPost.isInstanceOf[TextMessage] =>
+            texts.isEmpty || texts.contains(
+              editedChannelPost.asInstanceOf[TextMessage].text
+            )
+          case _ => false
+        }
+      },
+      action
+    )
+  }
+
+  def onCallbackQuery(query: String)(action: Context => Unit): Reaction = {
+    Reaction(
+      Trigger { context =>
+        context.update match {
+          case Some(CallbackButtonSelected(_, callbackQuery))
+              if callbackQuery.message.orNull.isInstanceOf[TextMessage] =>
+            callbackQuery.message.get.asInstanceOf[TextMessage].text == query
+          case _ => false
+        }
+      },
+      action
+    )
+  }
+
+  def onMatch(regex: String)(action: Context => Unit): Reaction = {
     Reaction(
       Trigger { context =>
         context.update match {
           case Some(MessageUpdate(_, message))
               if message.isInstanceOf[TextMessage] =>
-            message.asInstanceOf[TextMessage].text == command
+            regex.r.matches(message.asInstanceOf[TextMessage].text)
+          case _ => false
+        }
+      },
+      action
+    )
+  }
+
+  def onChatEnter(action: Context => Unit): Reaction = {
+    Reaction(
+      Trigger { context =>
+        context.update match {
+          case Some(MessageReceived(_, message)) =>
+            message.isInstanceOf[ChatMembersAdded]
+          case _ => false
+        }
+      },
+      action
+    )
+  }
+
+  def onChatLeave(action: Context => Unit): Reaction = {
+    Reaction(
+      Trigger { context =>
+        context.update match {
+          case Some(MessageReceived(_, message)) =>
+            message.isInstanceOf[ChatMemberRemoved]
+          case _ => false
+        }
+      },
+      action
+    )
+  }
+
+  def onMessagePinned(action: Context => Unit): Reaction = {
+    Reaction(
+      Trigger { context =>
+        context.update match {
+          case Some(MessageReceived(_, message)) =>
+            message.isInstanceOf[MessagePinned]
           case _ => false
         }
       },

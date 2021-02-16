@@ -1,6 +1,7 @@
 package PPS19.scalagram.examples
 
 import PPS19.scalagram.logic.{Bot, BotToken, Middleware, Scene, Step}
+import PPS19.scalagram.models.{InlineKeyboardButton, InlineKeyboardMarkup}
 import PPS19.scalagram.modes.polling.Polling
 import PPS19.scalagram.utils.Props
 
@@ -16,55 +17,92 @@ object SimpleBot extends App {
     }
   )
 
-  val hello = Bot.onCommand("/ciao") { context =>
-    context.chat match {
-      case Some(chatId) =>
-        bot.sendMessage(chatId, "Hello, world!")
-        println("Hello, world!")
-      case _ =>
-    }
+  val hello = Bot.onMessage("/ciao", "Ciao") { context =>
+    context.reply("Hello, world!")
+    println("Hello, world!")
   }
 
-  val enterScene = Bot.onCommand("/scene") { context =>
-    context.chat match {
-      case Some(chatId) =>
-        bot.sendMessage(chatId, "You are now inside a scene")
-        println("You are now inside a scene")
-        context.enterScene("TEST_SCENE")
-      case _ =>
-    }
+  val keyboard = Bot.onMessage("/keyboard") { context =>
+    val k = Some(
+      InlineKeyboardMarkup(
+        List(
+          List(
+            InlineKeyboardButton("Button", callbackData = Some("callback"))
+          )
+        )
+      )
+    )
+    context.reply("Here's a keyboard!", replyMarkup = k)
   }
 
-  val scene = Scene("TEST_SCENE", List(
-    Step("FIRST_STEP", { context =>
-      context.chat match {
-        case Some(chatId) =>
-          bot.sendMessage(chatId, "First scene step")
+  val onCallback = Bot.onCallbackQuery("callback") { context =>
+    context.reply("Thanks for clicking the button")
+  }
+
+  val onPinned = Bot.onMessagePinned { context =>
+    context.reply("Woa, someone pinned a message \uD83D\uDE32")
+  }
+
+  val onMessageEdited = Bot.onMessageEdited() { context =>
+    context.reply("Do you have something to hide?")
+  }
+
+  val onChatEnter = Bot.onChatEnter { context =>
+    context.reply("Welcome!")
+  }
+
+  val onChatLeave = Bot.onChatLeave { context =>
+    context.reply("Goodbye")
+  }
+
+  val enterScene = Bot.onMessage("/scene") { context =>
+    context.reply("You are now inside a scene")
+    println("You are now inside a scene")
+    context.enterScene("TEST_SCENE")
+  }
+
+  val scene = Scene(
+    "TEST_SCENE",
+    List(
+      Step(
+        "FIRST_STEP",
+        { context =>
+          context.reply("First scene step")
           println("First scene step")
           context.nextStep()
-        case _ =>
-      }
-    }),
-    Step("SECOND_STEP", { context =>
-      context.chat match {
-        case Some(chatId) =>
-          bot.sendMessage(chatId, "Second scene step")
+        }
+      ),
+      Step(
+        "SECOND_STEP",
+        { context =>
+          context.reply("Second scene step")
           println("Second scene step")
           context.nextStep()
-        case _ =>
-      }
-    }),
-    Step("THIRD_STEP", { context =>
-      context.chat match {
-        case Some(chatId) =>
-          bot.sendMessage(chatId, "Third scene step")
+        }
+      ),
+      Step(
+        "THIRD_STEP",
+        { context =>
+          context.reply("Third scene step")
           println("Third scene step")
           context.leaveScene()
-        case _ =>
-      }
-    })
-  ))
+        }
+      )
+    )
+  )
 
-  bot = Bot(BotToken(Props.get("token")), middlewares, List(hello, enterScene), List(scene))
+  val reactions = List(
+    hello,
+    keyboard,
+    onCallback,
+    onPinned,
+    onMessageEdited,
+    onChatEnter,
+    onChatLeave,
+    enterScene
+  )
+
+  bot = Bot(BotToken(Props.get("token")), middlewares, reactions, List(scene))
   bot.launch(Polling(5.seconds))
+  println("Bot started")
 }

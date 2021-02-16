@@ -1,15 +1,16 @@
 package PPS19.scalagram.logic
 
-import PPS19.scalagram.models.{ChatId, MessageUpdate, Update, User}
+import PPS19.scalagram.models.messages.TelegramMessage
+import PPS19.scalagram.models.{ChatId, MessageUpdate, ReplyMarkup, Update, User}
 
 import java.time.LocalDateTime
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
+import scala.util.{Failure, Try}
 
 sealed trait Context {
   val bot: Bot
   val store: Map[String, Any]
 
-  val debug: Boolean
   var timeout: FiniteDuration
   var lastUpdateTimestamp: LocalDateTime
 
@@ -19,6 +20,11 @@ sealed trait Context {
   var update: Option[Update]
   def chat: Option[ChatId]
   def from: Option[User]
+  def reply(
+    text: String,
+    parseMode: Option[String] = None,
+    replyMarkup: Option[ReplyMarkup] = None
+  ): Try[TelegramMessage]
   var updateCount: Int
 
   def enterScene(sceneName: String): Unit
@@ -30,9 +36,9 @@ sealed trait Context {
 }
 
 object Context {
-  def apply(bot: Bot, debug: Boolean = false): Context = ContextImpl(bot, debug)
+  def apply(bot: Bot): Context = ContextImpl(bot)
 
-  case class ContextImpl(bot: Bot, debug: Boolean) extends Context {
+  case class ContextImpl(bot: Bot) extends Context {
     override val store: Map[String, Any] = Map()
     override var timeout: FiniteDuration = 1.days
     override var lastUpdateTimestamp: LocalDateTime = LocalDateTime.now()
@@ -85,5 +91,15 @@ object Context {
         case Some(scene) => scene.steps.find(_.name == stepName)
         case _           => None
       }
+
+    override def reply(
+      text: String,
+      parseMode: Option[String] = None,
+      replyMarkup: Option[ReplyMarkup] = None
+    ): Try[TelegramMessage] = chat match {
+      case Some(chatId) =>
+        bot.sendMessage(chatId, text, parseMode, replyMarkup = replyMarkup)
+      case _ => Failure(new IllegalStateException("Cannot send message: context.chatId is None."))
+    }
   }
 }
