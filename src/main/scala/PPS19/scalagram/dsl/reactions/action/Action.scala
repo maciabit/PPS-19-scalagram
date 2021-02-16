@@ -41,7 +41,7 @@ object Action {
   case class ActionObjectImpl(trigger: Trigger, reactions: List[Reaction])
       extends ActionObject {
     override def >>(action: Action): TriggerList =
-      TriggerList(Bot.onCommand(trigger) { action } :: reactions)
+      TriggerList(Bot.onMessage(trigger) { action } :: reactions)
   }
 
   object ActionConversions {

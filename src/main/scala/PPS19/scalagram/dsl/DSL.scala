@@ -31,8 +31,8 @@ trait DSL {
 
   protected def mode(mode: WorkingMode): Unit = {
     _mode = mode match {
-      case WorkingMode.Polling(interval, delay, debug) =>
-        Polling(interval, delay, debug)
+      case WorkingMode.Polling(interval, delay) =>
+        Polling(interval, delay)
     }
   }
 

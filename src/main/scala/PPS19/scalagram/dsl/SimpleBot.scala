@@ -17,7 +17,7 @@ object SimpleBot extends DSL {
   )
 
   mode (
-    POLLING interval 300.milliseconds timeoutDelay 1.days debug false
+    POLLING interval 300.milliseconds timeoutDelay 1.days
   )
 
   // with curly brackets the newline syntax is not enabled (wtf)

@@ -13,17 +13,13 @@ object WorkingMode {
 
   case class Polling(
       pollingInterval: FiniteDuration = defaultPollingInterval,
-      timeoutDelay: FiniteDuration = defaultTimeoutDelay,
-      debug: Boolean = false
+      timeoutDelay: FiniteDuration = defaultTimeoutDelay
   ) extends WorkingMode {
     def interval(_pollingInterval: FiniteDuration): Polling =
-      Polling(_pollingInterval, this.timeoutDelay, this.debug)
+      Polling(_pollingInterval, this.timeoutDelay)
 
     def timeoutDelay(_timeoutDelay: FiniteDuration): Polling =
-      Polling(this.pollingInterval, _timeoutDelay, this.debug)
-
-    def debug(_debug: Boolean): Polling =
-      Polling(this.pollingInterval, this.timeoutDelay, _debug)
+      Polling(this.pollingInterval, _timeoutDelay)
   }
 
   case class Webhook() extends WorkingMode
