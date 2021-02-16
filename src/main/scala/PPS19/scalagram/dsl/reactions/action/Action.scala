@@ -12,17 +12,22 @@ import PPS19.scalagram.models.{
 
 object Action {
 
-  val HTML = "HTML"
-  val Markdown = "Markdown"
-  val MarkdownV2 = "MarkdownV2"
-
   type Action = Context => Unit
 
   trait ActionObject extends ReactionCollector {
     def >>(action: Action): TriggerList
   }
 
-  case class MessageBuilder private (
+  def HTML(message: String): MessageBuilder =
+    MessageBuilder(message, Some("HTML"), None)
+
+  def Markdown(message: String): MessageBuilder =
+    MessageBuilder(message, Some("Markdown"), None)
+
+  def MarkdownV2(message: String): MessageBuilder =
+    MessageBuilder(message, Some("MarkdownV2"), None)
+
+  case class MessageBuilder protected[Action] (
       message: String,
       parseMode: Option[String],
       keyboard: Option[Either[ReplyKeyboardMarkup, InlineKeyboardMarkup]]
@@ -34,8 +39,6 @@ object Action {
     def -(inlineKeyboard: InlineKeyboardMarkup): MessageBuilder =
       MessageBuilder(message, parseMode, Some(Right(inlineKeyboard)))
 
-    def -(parseMode: String): MessageBuilder =
-      MessageBuilder(message, Some(parseMode), keyboard)
   }
 
   case class ActionObjectImpl(trigger: Trigger, reactions: List[Reaction])
