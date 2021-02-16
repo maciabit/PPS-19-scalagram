@@ -27,7 +27,7 @@ object SimpleBot extends App {
       InlineKeyboardMarkup(
         List(
           List(
-            InlineKeyboardButton("Button", callbackData = Some("callback"))
+            InlineKeyboardButton.callback("Button", "callback")
           )
         )
       )

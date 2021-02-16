@@ -2,7 +2,7 @@ package PPS19.scalagram.dsl.item.keyboard
 
 import PPS19.scalagram.logic.{Bot, BotToken}
 import PPS19.scalagram.marshalling.codecs.EncoderOps
-import PPS19.scalagram.models.{ChatId, KeyboardButton, ReplyKeyboardMarkup, ReplyMarkup}
+import PPS19.scalagram.models.{ChatId, ReplyKeyboardButton, ReplyKeyboardMarkup, ReplyMarkup}
 import PPS19.scalagram.utils.Props
 import io.circe.Encoder
 
@@ -37,7 +37,7 @@ object ReplyKeyboardMarkupUtils {
 
 object Keyboard {
 
-  def apply(rows: Either[KeyboardButton, List[KeyboardButton]]*): ReplyKeyboardMarkup = {
+  def apply(rows: Either[ReplyKeyboardButton, List[ReplyKeyboardButton]]*): ReplyKeyboardMarkup = {
     val keyboard = rows.map {
       case Left(button) => List(button)
       case Right(tuple) => tuple

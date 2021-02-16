@@ -1,20 +1,20 @@
 package PPS19.scalagram.dsl.item.keyboard
 
 import PPS19.scalagram.dsl.reactions.action.Action.MessageBuilder
-import PPS19.scalagram.models.{InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, ReplyKeyboardMarkup}
+import PPS19.scalagram.models.{InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardButton, ReplyKeyboardMarkup}
 
 object Utils {
-  implicit def buttonToEither(button: KeyboardButton): Either[KeyboardButton, List[KeyboardButton]] =
+  implicit def buttonToEither(button: ReplyKeyboardButton): Either[ReplyKeyboardButton, List[ReplyKeyboardButton]] =
     Left(button)
 
-  implicit def listToEither(list: List[KeyboardButton]): Either[KeyboardButton, List[KeyboardButton]] =
+  implicit def listToEither(list: List[ReplyKeyboardButton]): Either[ReplyKeyboardButton, List[ReplyKeyboardButton]] =
     Right(list)
 
-  implicit def stringToButtonEither(string: String): Either[KeyboardButton, List[KeyboardButton]] =
-    Left(KeyboardButton(string))
+  implicit def stringToButtonEither(string: String): Either[ReplyKeyboardButton, List[ReplyKeyboardButton]] =
+    Left(ReplyKeyboardButton(string))
 
-  implicit def stringListToButtonEither(list: List[String]): Either[KeyboardButton, List[KeyboardButton]] =
-    Right(list.map(string => KeyboardButton(string)))
+  implicit def stringListToButtonEither(list: List[String]): Either[ReplyKeyboardButton, List[ReplyKeyboardButton]] =
+    Right(list.map(string => ReplyKeyboardButton(string)))
 
   implicit def buttonToEither(button: InlineKeyboardButton): Either[InlineKeyboardButton, List[InlineKeyboardButton]] =
     Left(button)
@@ -28,8 +28,8 @@ object Utils {
   implicit def stringListToInlineButtonEither(list: List[String]): Either[InlineKeyboardButton, List[InlineKeyboardButton]] =
     Right(list.map(string => InlineKeyboardButton(string, callbackData = Some(string))))
 
-  implicit class KeyboardButtonList(button: KeyboardButton) {
-    def ::(button2: KeyboardButton) = List(button2, button)
+  implicit class KeyboardButtonList(button: ReplyKeyboardButton) {
+    def ::(button2: ReplyKeyboardButton) = List(button2, button)
   }
 
   implicit class InlineKeyboardButtonList(button: InlineKeyboardButton) {
@@ -63,8 +63,8 @@ object InlineKeyboardButtonUtils {
 }
 
 object KeyboardButtonUtils {
-  implicit class KeyboardButtonList(button: KeyboardButton) {
-    def ::(button2: KeyboardButton) = List(button2, button)
+  implicit class KeyboardButtonList(button: ReplyKeyboardButton) {
+    def ::(button2: ReplyKeyboardButton) = List(button2, button)
   }
 }
 
