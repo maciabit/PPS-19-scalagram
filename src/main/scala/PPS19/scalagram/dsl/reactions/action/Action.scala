@@ -23,7 +23,7 @@ object Action {
   def MarkdownV2(message: String): MessageContainer =
     MessageContainer(message, Some("MarkdownV2"), None)
 
-  case class MessageContainer protected[Action](
+  case class MessageContainer protected[Action] (
       message: String,
       parseMode: Option[String],
       keyboard: Option[Either[ReplyKeyboardMarkup, InlineKeyboardMarkup]]

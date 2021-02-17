@@ -38,7 +38,11 @@ class MethodsSuite extends AnyFunSuite with BeforeAndAfterEach {
 
   test("A message formatted as Markdown can be sent") {
     val res = bot
-      .sendMessage(chatId, "Test message in Markdown *bold* _italic_ ~strikethrough~", Some("MarkdownV2"))
+      .sendMessage(
+        chatId,
+        "Test message in Markdown *bold* _italic_ ~strikethrough~",
+        Some("MarkdownV2")
+      )
     if (res.isFailure) println(res)
     assert(res.isSuccess)
   }

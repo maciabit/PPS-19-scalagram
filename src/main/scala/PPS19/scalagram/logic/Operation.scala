@@ -24,11 +24,11 @@ case class Middleware(operation: Context => Boolean) extends Operation
 case class Trigger(matches: Context => Boolean)
 
 /**
- * An operation that only executes if the given trigger passes.
- * If executed, it always terminates update processing
- * @param trigger: function to pass for the action to be executed
- * @param action: function to be executed
- */
+  * An operation that only executes if the given trigger passes.
+  * If executed, it always terminates update processing
+  * @param trigger: function to pass for the action to be executed
+  * @param action: function to be executed
+  */
 case class Reaction(trigger: Trigger, action: Context => Unit)
     extends Operation {
   def operation: Context => Boolean =

@@ -20,12 +20,13 @@ object ReplyMarkup {
 trait KeyboardMarkup extends ReplyMarkup
 
 object KeyboardMarkup {
-  implicit val encodeKeyboardMarkup: Encoder[KeyboardMarkup] = Encoder.instance {
-    case inlineKeyboardMarkup: InlineKeyboardMarkup =>
-      inlineKeyboardMarkup.asJson.deepDropNullValues
-    case replyKeyboardMarkup: ReplyKeyboardMarkup =>
-      replyKeyboardMarkup.asJson.deepDropNullValues
-  }
+  implicit val encodeKeyboardMarkup: Encoder[KeyboardMarkup] =
+    Encoder.instance {
+      case inlineKeyboardMarkup: InlineKeyboardMarkup =>
+        inlineKeyboardMarkup.asJson.deepDropNullValues
+      case replyKeyboardMarkup: ReplyKeyboardMarkup =>
+        replyKeyboardMarkup.asJson.deepDropNullValues
+    }
 }
 
 case class InlineKeyboardMarkup(inlineKeyboard: Seq[Seq[InlineKeyboardButton]])

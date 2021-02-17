@@ -1,6 +1,11 @@
 package PPS19.scalagram.dsl
 
-import PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer.{Callback, CurrentChatInlineQuery, InlineQuery, Url}
+import PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer.{
+  Callback,
+  CurrentChatInlineQuery,
+  InlineQuery,
+  Url
+}
 import PPS19.scalagram.dsl.keyboard.KeyboardUtils._
 import PPS19.scalagram.logic.{Bot, BotToken}
 import PPS19.scalagram.models.ChatId
@@ -20,7 +25,11 @@ class DSLSuite extends AnyFunSuite {
       "Button 1",
       "Button 2" :: "Button 3"
     )
-    val res = bot.sendMessage(chatId, "Test ReplyKeyboard DSL", replyMarkup = Some(keyboard))
+    val res = bot.sendMessage(
+      chatId,
+      "Test ReplyKeyboard DSL",
+      replyMarkup = Some(keyboard)
+    )
     assert(res.isSuccess)
   }
 
@@ -29,13 +38,19 @@ class DSLSuite extends AnyFunSuite {
       "Button 1",
       "Button 2" :: "Button 3",
       Callback("Callback button" -> "data"),
-      Url("Link1" -> "http://www.google.it") :: Url("Link2" -> "http://www.youtube.com"),
+      Url("Link1" -> "http://www.google.it") :: Url(
+        "Link2" -> "http://www.youtube.com"
+      ),
       Callback("Callback button" -> "data") :: "Button",
       "Button" :: Callback("Callback button" -> "data"),
       InlineQuery("Inline query" -> "asd"),
       CurrentChatInlineQuery("Inline query current chat" -> "asd")
     )
-    val res = bot.sendMessage(chatId, "Test InlineKeyboard DSL", replyMarkup = Some(inlineKeyboard))
+    val res = bot.sendMessage(
+      chatId,
+      "Test InlineKeyboard DSL",
+      replyMarkup = Some(inlineKeyboard)
+    )
     assert(res.isSuccess)
   }
 

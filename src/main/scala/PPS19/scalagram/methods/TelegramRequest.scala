@@ -44,7 +44,10 @@ trait TelegramRequest[T] {
     val url = s"$TELEGRAM_API_URL${token.get}/$endpoint"
     val req = multiItem match {
       case Nil => Try(request(url, params = query))
-      case _   => Try(request(url, params = query, data = requests.MultiPart(multiItem: _*)))
+      case _ =>
+        Try(
+          request(url, params = query, data = requests.MultiPart(multiItem: _*))
+        )
     }
     req match {
       case Success(response) =>

@@ -21,9 +21,9 @@ sealed trait Context {
   def chat: Option[ChatId]
   def from: Option[User]
   def reply(
-    text: String,
-    parseMode: Option[String] = None,
-    replyMarkup: Option[ReplyMarkup] = None
+      text: String,
+      parseMode: Option[String] = None,
+      replyMarkup: Option[ReplyMarkup] = None
   ): Try[TelegramMessage]
   var updateCount: Int
 
@@ -47,15 +47,17 @@ object Context {
     override var update: Option[Update] = None
     override var updateCount: Int = 0
 
-    override def chat: Option[ChatId] = update match {
-      case Some(update) => Some(update.asInstanceOf[MessageUpdate].chatId)
-      case _ => None
-    }
+    override def chat: Option[ChatId] =
+      update match {
+        case Some(update) => Some(update.asInstanceOf[MessageUpdate].chatId)
+        case _            => None
+      }
 
-    override def from: Option[User] = update match {
-      case Some(update) => update.asInstanceOf[MessageUpdate].from
-      case _ => None
-    }
+    override def from: Option[User] =
+      update match {
+        case Some(update) => update.asInstanceOf[MessageUpdate].from
+        case _            => None
+      }
 
     private def sceneStepIndex: Option[Int] =
       activeScene.map(_.steps.indexWhere(_ == sceneStep.orNull)) match {
@@ -93,13 +95,19 @@ object Context {
       }
 
     override def reply(
-      text: String,
-      parseMode: Option[String] = None,
-      replyMarkup: Option[ReplyMarkup] = None
-    ): Try[TelegramMessage] = chat match {
-      case Some(chatId) =>
-        bot.sendMessage(chatId, text, parseMode, replyMarkup = replyMarkup)
-      case _ => Failure(new IllegalStateException("Cannot send message: context.chatId is None."))
-    }
+        text: String,
+        parseMode: Option[String] = None,
+        replyMarkup: Option[ReplyMarkup] = None
+    ): Try[TelegramMessage] =
+      chat match {
+        case Some(chatId) =>
+          bot.sendMessage(chatId, text, parseMode, replyMarkup = replyMarkup)
+        case _ =>
+          Failure(
+            new IllegalStateException(
+              "Cannot send message: context.chatId is None."
+            )
+          )
+      }
   }
 }

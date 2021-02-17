@@ -7,7 +7,7 @@ trait KeyboardButton {
   val text: String
 }
 
-case class InlineKeyboardButton (
+case class InlineKeyboardButton(
     text: String,
     url: Option[String] = None,
     callbackData: Option[String] = None,
@@ -26,11 +26,20 @@ object InlineKeyboardButton {
   def callback(text: String, callbackData: String): InlineKeyboardButton =
     InlineKeyboardButton(text, callbackData = Some(callbackData))
 
-  def switchInlineQuery(text: String, switchInlineQuery: String): InlineKeyboardButton =
+  def switchInlineQuery(
+      text: String,
+      switchInlineQuery: String
+  ): InlineKeyboardButton =
     InlineKeyboardButton(text, switchInlineQuery = Some(switchInlineQuery))
 
-  def switchInlineQueryCurrentChat(text: String, switchInlineQueryCurrentChat: String): InlineKeyboardButton =
-    InlineKeyboardButton(text, switchInlineQueryCurrentChat = Some(switchInlineQueryCurrentChat))
+  def switchInlineQueryCurrentChat(
+      text: String,
+      switchInlineQueryCurrentChat: String
+  ): InlineKeyboardButton =
+    InlineKeyboardButton(
+      text,
+      switchInlineQueryCurrentChat = Some(switchInlineQueryCurrentChat)
+    )
 
   def pay(text: String): InlineKeyboardButton =
     InlineKeyboardButton(text, pay = Some(true))

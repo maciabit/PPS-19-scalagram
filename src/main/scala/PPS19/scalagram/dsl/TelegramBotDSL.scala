@@ -1,10 +1,16 @@
 package PPS19.scalagram.dsl
 
-import PPS19.scalagram.dsl.middleware.{MiddlewareContainer, MiddlewareContainerConcatenation}
+import PPS19.scalagram.dsl.middleware.{
+  MiddlewareContainer,
+  MiddlewareContainerConcatenation
+}
 import PPS19.scalagram.dsl.mode.WorkingMode
 import PPS19.scalagram.dsl.mode.WorkingMode.WorkingMode
 import PPS19.scalagram.dsl.reactions.ReactionCollector
-import PPS19.scalagram.dsl.reactions.action.Action.{ActionObject, ActionObjectImpl}
+import PPS19.scalagram.dsl.reactions.action.Action.{
+  ActionObject,
+  ActionObjectImpl
+}
 import PPS19.scalagram.logic._
 import PPS19.scalagram.modes.polling.{Mode, Polling}
 

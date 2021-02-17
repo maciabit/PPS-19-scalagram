@@ -8,13 +8,19 @@ object KeyboardUtils {
   implicit def stringToMessageContainer(string: String): MessageContainer =
     MessageContainer(string, None, None)
 
-  implicit def stringToButtonContainer(string: String): KeyboardButtonContainer =
+  implicit def stringToButtonContainer(
+      string: String
+  ): KeyboardButtonContainer =
     KeyboardButtonContainer(string, callbackData = Some(string))
 
   implicit def stringToButtonRow(string: String): KeyboardRow =
-    KeyboardRowImpl(Seq(KeyboardButtonContainer(string, callbackData = Some(string))))
+    KeyboardRowImpl(
+      Seq(KeyboardButtonContainer(string, callbackData = Some(string)))
+    )
 
-  implicit def buttonContainerToButtonRow(buttonContainer: KeyboardButtonContainer): KeyboardRow =
+  implicit def buttonContainerToButtonRow(
+      buttonContainer: KeyboardButtonContainer
+  ): KeyboardRow =
     KeyboardRowImpl(Seq(buttonContainer))
 
   def Keyboard(rows: KeyboardRow*): ReplyKeyboardMarkup =
