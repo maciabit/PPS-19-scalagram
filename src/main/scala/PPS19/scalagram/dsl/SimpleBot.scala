@@ -1,7 +1,7 @@
 package PPS19.scalagram.dsl
 
-import PPS19.scalagram.dsl.item.keyboard.Utils._
-import PPS19.scalagram.dsl.item.keyboard.{InlineKeyboard, Keyboard}
+import PPS19.scalagram.dsl.item.keyboard.KeyboardButtonContainer.Callback
+import PPS19.scalagram.dsl.item.keyboard.KeyboardUtils.{InlineKeyboard, Keyboard, buttonContainerToButtonRow, stringToButtonContainer, stringToButtonRow, stringToMessageContainer}
 import PPS19.scalagram.dsl.mode.WorkingMode._
 import PPS19.scalagram.dsl.reactions.action.Action.ActionConversions._
 import PPS19.scalagram.dsl.reactions.action.Action.{HTML, MarkdownV2}
@@ -51,7 +51,7 @@ object SimpleBot extends DSL {
 
     << "/ik"
     >> "Inline keyboard" - InlineKeyboard(
-      "Button 1",
+      Callback("Button 1" -> "data"),
       "Button 2" :: "Button 3"
     )
 

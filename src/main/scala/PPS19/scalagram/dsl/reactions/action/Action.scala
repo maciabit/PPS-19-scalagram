@@ -4,11 +4,7 @@ import PPS19.scalagram.dsl.reactions.ReactionCollector
 import PPS19.scalagram.dsl.reactions.trigger.Trigger.Trigger
 import PPS19.scalagram.dsl.reactions.trigger.TriggerList
 import PPS19.scalagram.logic.{Bot, Context, Reaction}
-import PPS19.scalagram.models.{
-  InlineKeyboardMarkup,
-  ReplyKeyboardMarkup,
-  ReplyMarkup
-}
+import PPS19.scalagram.models.{InlineKeyboardMarkup, ReplyKeyboardMarkup}
 
 object Action {
 
@@ -18,26 +14,26 @@ object Action {
     def >>(action: Action): TriggerList
   }
 
-  def HTML(message: String): MessageBuilder =
-    MessageBuilder(message, Some("HTML"), None)
+  def HTML(message: String): MessageContainer =
+    MessageContainer(message, Some("HTML"), None)
 
-  def Markdown(message: String): MessageBuilder =
-    MessageBuilder(message, Some("Markdown"), None)
+  def Markdown(message: String): MessageContainer =
+    MessageContainer(message, Some("Markdown"), None)
 
-  def MarkdownV2(message: String): MessageBuilder =
-    MessageBuilder(message, Some("MarkdownV2"), None)
+  def MarkdownV2(message: String): MessageContainer =
+    MessageContainer(message, Some("MarkdownV2"), None)
 
-  case class MessageBuilder protected[Action] (
+  case class MessageContainer protected[Action](
       message: String,
       parseMode: Option[String],
       keyboard: Option[Either[ReplyKeyboardMarkup, InlineKeyboardMarkup]]
   ) {
 
-    def -(replyKeyboard: ReplyKeyboardMarkup): MessageBuilder =
-      MessageBuilder(message, parseMode, Some(Left(replyKeyboard)))
+    def -(replyKeyboard: ReplyKeyboardMarkup): MessageContainer =
+      MessageContainer(message, parseMode, Some(Left(replyKeyboard)))
 
-    def -(inlineKeyboard: InlineKeyboardMarkup): MessageBuilder =
-      MessageBuilder(message, parseMode, Some(Right(inlineKeyboard)))
+    def -(inlineKeyboard: InlineKeyboardMarkup): MessageContainer =
+      MessageContainer(message, parseMode, Some(Right(inlineKeyboard)))
 
   }
 
@@ -55,7 +51,7 @@ object Action {
         }
 
     implicit def messageBuilderToAction(
-        messageBuilder: MessageBuilder
+        messageBuilder: MessageContainer
     ): Action =
       context =>
         if (context.chat.nonEmpty) {
