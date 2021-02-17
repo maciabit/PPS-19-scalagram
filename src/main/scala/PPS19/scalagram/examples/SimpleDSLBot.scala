@@ -1,16 +1,16 @@
-package PPS19.scalagram.dsl
+package PPS19.scalagram.examples
 
-import PPS19.scalagram.dsl.item.keyboard.KeyboardButtonContainer.Callback
-import PPS19.scalagram.dsl.item.keyboard.KeyboardUtils.{InlineKeyboard, Keyboard, buttonContainerToButtonRow, stringToButtonContainer, stringToButtonRow, stringToMessageContainer}
+import PPS19.scalagram.dsl.TelegramBotDSL
+import PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer.Callback
+import PPS19.scalagram.dsl.keyboard.KeyboardUtils._
 import PPS19.scalagram.dsl.mode.WorkingMode._
 import PPS19.scalagram.dsl.reactions.action.Action.ActionConversions._
 import PPS19.scalagram.dsl.reactions.action.Action.{HTML, MarkdownV2}
-import PPS19.scalagram.dsl.reactions.trigger.TriggerList
 import PPS19.scalagram.utils.Props
 
 import scala.concurrent.duration.DurationInt
 
-object SimpleBot extends DSL {
+object SimpleDSLBot extends TelegramBotDSL {
 
   token (
     Props.get("token")
@@ -32,10 +32,9 @@ object SimpleBot extends DSL {
     }
   )
 
-  // with curly brackets the newline syntax is not enabled (wtf)
-  // we should try to remove the parenthesis to the first argument
   reactions (
-    TriggerList(Nil)
+    |>
+    >> "Hello"
 
     << "/uno"
     >> "uno"
@@ -67,7 +66,7 @@ object SimpleBot extends DSL {
 
 }
 
-object TestDSL extends App {
-  SimpleBot.start()
-  println("Bot started!")
+object SimpleDSLBotMain extends App {
+  SimpleDSLBot.start()
+  println("Bot started")
 }

@@ -1,4 +1,4 @@
-package PPS19.scalagram.dsl.item.keyboard
+package PPS19.scalagram.dsl.keyboard
 
 import PPS19.scalagram.dsl.reactions.action.Action.MessageContainer
 import PPS19.scalagram.models.{InlineKeyboardMarkup, ReplyKeyboardMarkup}

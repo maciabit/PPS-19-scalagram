@@ -1,7 +1,7 @@
 package PPS19.scalagram.dsl
 
-import PPS19.scalagram.dsl.item.keyboard.KeyboardButtonContainer.{Callback, CurrentChatInlineQuery, InlineQuery, Url}
-import PPS19.scalagram.dsl.item.keyboard.KeyboardUtils.{InlineKeyboard, Keyboard, buttonContainerToButtonRow, stringToButtonContainer, stringToButtonRow}
+import PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer.{Callback, CurrentChatInlineQuery, InlineQuery, Url}
+import PPS19.scalagram.dsl.keyboard.KeyboardUtils._
 import PPS19.scalagram.logic.{Bot, BotToken}
 import PPS19.scalagram.models.ChatId
 import PPS19.scalagram.utils.Props
