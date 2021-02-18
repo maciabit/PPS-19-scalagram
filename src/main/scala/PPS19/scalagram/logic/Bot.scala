@@ -161,6 +161,10 @@ object Bot {
     )
   }
 
+  def onStart(action: Context => Unit): Reaction = onMessage("/start")(action)
+
+  def onHelp(action: Context => Unit): Reaction = onMessage("/help")(action)
+
   def onMessageEdited(texts: String*)(action: Context => Unit): Reaction = {
     Reaction(
       Trigger { context =>

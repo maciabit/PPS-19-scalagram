@@ -17,6 +17,16 @@ object SimpleBot extends App {
     }
   )
 
+  val start = Bot.onStart { context =>
+    context.reply("Thanks for starting me")
+    println("Start")
+  }
+
+  val help = Bot.onHelp { context =>
+    context.reply("Here is some useful info")
+    println("Help")
+  }
+
   val hello = Bot.onMessage("/ciao", "Ciao") { context =>
     context.reply("Hello, world!")
     println("Hello, world!")
@@ -92,6 +102,8 @@ object SimpleBot extends App {
   )
 
   val reactions = List(
+    start,
+    help,
     hello,
     keyboard,
     onCallback,
