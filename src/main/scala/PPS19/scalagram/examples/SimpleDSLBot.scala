@@ -7,6 +7,7 @@ import PPS19.scalagram.dsl.keyboard.KeyboardUtils._
 import PPS19.scalagram.dsl.mode.WorkingMode._
 import PPS19.scalagram.dsl.reactions.ReactionConversions._
 import PPS19.scalagram.dsl.reactions.ReactionUtils._
+import PPS19.scalagram.dsl.reactions.ReactionUtils.StringExtension
 import PPS19.scalagram.utils.Props
 
 import scala.concurrent.duration.DurationInt
@@ -38,11 +39,25 @@ object SimpleDSLBot extends TelegramBotDSL {
     !!
     >> "Hello"
 
-    << "/uno"
+    << ("/uno" | "uno" | "no")
     >> "uno"
 
     << "/due"
-    >> "due"
+    >> { context =>
+      context.reply("due")
+    }
+
+    <~ "callback"
+    >> "Callback"
+
+    <* "Message"
+    >> "Message edited"
+
+    <* ("Message" | "Message2" | "Message3")
+    >> "Message edited"
+
+    <# "boh"
+    >> "Regex"
 
     << "/rk"
     >> "Reply keyboard" - Keyboard(

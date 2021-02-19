@@ -7,6 +7,8 @@ case class TriggerList(reactions: List[Reaction]) extends ReactionContainer {
 
   def ?? : ReactionObject = ReactionObject(reactions, OnHelp())
 
+  // TODO add parameterless versions of << and <*
+
   def <<(trigger: String): VarArgReactionObject =
     VarArgReactionObject(reactions, OnMessage(trigger), trigger)
 
@@ -18,6 +20,9 @@ case class TriggerList(reactions: List[Reaction]) extends ReactionContainer {
 
   def <*(trigger: String): VarArgReactionObject =
     VarArgReactionObject(reactions, OnMessageEdited(trigger), trigger)
+
+  def <*(triggers: List[String]): VarArgReactionObject =
+    VarArgReactionObject(reactions, OnMessageEdited(triggers:_*), triggers:_*)
 
   def <^ : ReactionObject = ReactionObject(reactions, OnMessagePinned())
 

@@ -26,4 +26,12 @@ object ReactionUtils {
 
   }
 
+  implicit class StringExtension(string: String) {
+    def |(string2: String) = List(string2, string)
+  }
+
+  implicit class ListExtension(list: List[String]) {
+    def |(string: String): List[String] = string +: list
+  }
+
 }
