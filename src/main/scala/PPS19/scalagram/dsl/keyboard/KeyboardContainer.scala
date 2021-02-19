@@ -11,5 +11,5 @@ case class KeyboardRowImpl(buttons: Seq[KeyboardButtonContainer])
     extends KeyboardRow {
 
   override def ::(button: KeyboardButtonContainer): KeyboardRow =
-    KeyboardRowImpl(buttons :+ button)
+    KeyboardRowImpl(button +: buttons)
 }
