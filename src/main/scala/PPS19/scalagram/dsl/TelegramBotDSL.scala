@@ -1,17 +1,11 @@
 package PPS19.scalagram.dsl
 
-import PPS19.scalagram.dsl.middleware.{
-  MiddlewareContainer,
-  MiddlewareContainerConcatenation
-}
+import PPS19.scalagram.dsl.middleware.{MiddlewareContainer, MiddlewareContainerConcatenation}
 import PPS19.scalagram.dsl.mode.WorkingMode
 import PPS19.scalagram.dsl.mode.WorkingMode.WorkingMode
-import PPS19.scalagram.dsl.reactions.ReactionCollector
-import PPS19.scalagram.dsl.reactions.action.Action.{
-  ActionObject,
-  ActionObjectImpl
-}
+import PPS19.scalagram.dsl.reactions.{ReactionContainer, ReactionObject}
 import PPS19.scalagram.logic._
+import PPS19.scalagram.logic.reactions.OnStart
 import PPS19.scalagram.modes.polling.{Mode, Polling}
 
 trait TelegramBotDSL {
@@ -34,7 +28,7 @@ trait TelegramBotDSL {
     }
   }
 
-  protected def reactions(reactionContainer: ReactionCollector): Unit = {
+  protected def reactions(reactionContainer: ReactionContainer): Unit = {
     _reactions = reactionContainer.reactions
   }
 
@@ -42,7 +36,7 @@ trait TelegramBotDSL {
     _middlewares = middlewareContainer.middlewares
   }
 
-  protected def |> : ActionObject = ActionObjectImpl("/start", Nil)
+  protected def !! : ReactionObject = ReactionObject(Nil, OnStart())
 
   protected def <->(
       middleware: Context => Boolean

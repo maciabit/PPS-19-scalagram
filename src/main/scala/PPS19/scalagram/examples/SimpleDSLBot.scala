@@ -2,10 +2,11 @@ package PPS19.scalagram.examples
 
 import PPS19.scalagram.dsl.TelegramBotDSL
 import PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer.Callback
+import PPS19.scalagram.dsl.keyboard.KeyboardConversions._
 import PPS19.scalagram.dsl.keyboard.KeyboardUtils._
 import PPS19.scalagram.dsl.mode.WorkingMode._
-import PPS19.scalagram.dsl.reactions.action.Action.ActionConversions._
-import PPS19.scalagram.dsl.reactions.action.Action.{HTML, MarkdownV2}
+import PPS19.scalagram.dsl.reactions.ReactionConversions._
+import PPS19.scalagram.dsl.reactions.ReactionUtils._
 import PPS19.scalagram.utils.Props
 
 import scala.concurrent.duration.DurationInt
@@ -33,7 +34,8 @@ object SimpleDSLBot extends TelegramBotDSL {
   )
 
   reactions (
-    |>
+
+    !!
     >> "Hello"
 
     << "/uno"
@@ -59,9 +61,6 @@ object SimpleDSLBot extends TelegramBotDSL {
 
     << "/md"
     >> MarkdownV2("Keyboard with *Markdown*") - InlineKeyboard("A" :: "B" :: "C")
-
-    << "/shutdown"
-    >> {_ => System.exit(0)}
   )
 
 }
