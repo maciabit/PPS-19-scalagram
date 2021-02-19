@@ -1,25 +1,9 @@
 package PPS19.scalagram.logic
 
+import PPS19.scalagram.logic.reactions.{OnCallbackQuery, OnChatEnter, OnChatLeave, OnHelp, OnMatch, OnMessage, OnMessageEdited, OnMessagePinned, OnStart}
 import PPS19.scalagram.methods._
-import PPS19.scalagram.models.messages.{
-  ChatMemberRemoved,
-  ChatMembersAdded,
-  MessagePinned,
-  TelegramMessage,
-  TextMessage
-}
-import PPS19.scalagram.models.{
-  CallbackButtonSelected,
-  ChannelPost,
-  ChannelPostEdited,
-  ChatId,
-  InputFile,
-  MessageEdited,
-  MessageReceived,
-  MessageUpdate,
-  ReplyMarkup,
-  Update
-}
+import PPS19.scalagram.models.messages.{ChatMemberRemoved, ChatMembersAdded, MessagePinned, TelegramMessage, TextMessage}
+import PPS19.scalagram.models.{CallbackButtonSelected, ChannelPost, ChannelPostEdited, ChatId, InputFile, MessageEdited, MessageReceived, MessageUpdate, ReplyMarkup, Update}
 import PPS19.scalagram.modes.polling.Mode
 
 import scala.util.Try
@@ -140,116 +124,28 @@ object Bot {
       reactions: List[Reaction]
   ) extends Bot
 
-  def onMessage(texts: String*)(action: Context => Unit): Reaction = {
-    Reaction(
-      Trigger { context =>
-        context.update match {
-          case Some(MessageReceived(_, message))
-              if message.isInstanceOf[TextMessage] =>
-            texts.isEmpty || texts.contains(
-              message.asInstanceOf[TextMessage].text
-            )
-          case Some(ChannelPost(_, channelPost))
-              if channelPost.isInstanceOf[TextMessage] =>
-            texts.isEmpty || texts.contains(
-              channelPost.asInstanceOf[TextMessage].text
-            )
-          case _ => false
-        }
-      },
-      action
-    )
-  }
+  def onMessage(texts: String*)(action: Context => Unit): Reaction =
+    OnMessage(texts:_*).build(action)
 
-  def onStart(action: Context => Unit): Reaction = onMessage("/start")(action)
+  def onStart(action: Context => Unit): Reaction = OnStart().build(action)
 
-  def onHelp(action: Context => Unit): Reaction = onMessage("/help")(action)
+  def onHelp(action: Context => Unit): Reaction = OnHelp().build(action)
 
-  def onMessageEdited(texts: String*)(action: Context => Unit): Reaction = {
-    Reaction(
-      Trigger { context =>
-        context.update match {
-          case Some(MessageEdited(_, editedMessage))
-              if editedMessage.isInstanceOf[TextMessage] =>
-            texts.isEmpty || texts.contains(
-              editedMessage.asInstanceOf[TextMessage].text
-            )
-          case Some(ChannelPostEdited(_, editedChannelPost))
-              if editedChannelPost.isInstanceOf[TextMessage] =>
-            texts.isEmpty || texts.contains(
-              editedChannelPost.asInstanceOf[TextMessage].text
-            )
-          case _ => false
-        }
-      },
-      action
-    )
-  }
+  def onMessageEdited(texts: String*)(action: Context => Unit): Reaction =
+    OnMessageEdited(texts:_*).build(action)
 
-  def onCallbackQuery(query: String)(action: Context => Unit): Reaction = {
-    Reaction(
-      Trigger { context =>
-        context.update match {
-          case Some(CallbackButtonSelected(_, callbackQuery))
-              if callbackQuery.message.orNull.isInstanceOf[TextMessage] =>
-            callbackQuery.message.get.asInstanceOf[TextMessage].text == query
-          case _ => false
-        }
-      },
-      action
-    )
-  }
+  def onCallbackQuery(query: String)(action: Context => Unit): Reaction =
+    OnCallbackQuery(query).build(action)
 
-  def onMatch(regex: String)(action: Context => Unit): Reaction = {
-    Reaction(
-      Trigger { context =>
-        context.update match {
-          case Some(MessageUpdate(_, message))
-              if message.isInstanceOf[TextMessage] =>
-            regex.r.matches(message.asInstanceOf[TextMessage].text)
-          case _ => false
-        }
-      },
-      action
-    )
-  }
+  def onMatch(regex: String)(action: Context => Unit): Reaction =
+    OnMatch(regex).build(action)
 
-  def onChatEnter(action: Context => Unit): Reaction = {
-    Reaction(
-      Trigger { context =>
-        context.update match {
-          case Some(MessageReceived(_, message)) =>
-            message.isInstanceOf[ChatMembersAdded]
-          case _ => false
-        }
-      },
-      action
-    )
-  }
+  def onChatEnter(action: Context => Unit): Reaction =
+    OnChatEnter().build(action)
 
-  def onChatLeave(action: Context => Unit): Reaction = {
-    Reaction(
-      Trigger { context =>
-        context.update match {
-          case Some(MessageReceived(_, message)) =>
-            message.isInstanceOf[ChatMemberRemoved]
-          case _ => false
-        }
-      },
-      action
-    )
-  }
+  def onChatLeave(action: Context => Unit): Reaction =
+    OnChatLeave().build(action)
 
-  def onMessagePinned(action: Context => Unit): Reaction = {
-    Reaction(
-      Trigger { context =>
-        context.update match {
-          case Some(MessageReceived(_, message)) =>
-            message.isInstanceOf[MessagePinned]
-          case _ => false
-        }
-      },
-      action
-    )
-  }
+  def onMessagePinned(action: Context => Unit): Reaction =
+    OnMessagePinned().build(action)
 }
