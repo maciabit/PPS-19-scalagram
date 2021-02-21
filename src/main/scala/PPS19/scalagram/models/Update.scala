@@ -9,31 +9,51 @@ import io.circe.generic.semiauto.deriveDecoder
 
 sealed trait Update {
   val updateId: Long
+  //noinspection MutatorLikeMethodIsParameterless
+  def updateType: UpdateType
 }
 
 object Update {
-  final case class Unknown(updateId: Long) extends Update
-
   implicit val updateDecoder: Decoder[Update] = List[Decoder[Update]](
     deriveDecoder[MessageReceived].widen,
     deriveDecoder[MessageEdited].widen,
     deriveDecoder[ChannelPost].widen,
     deriveDecoder[ChannelPostEdited].widen,
     deriveDecoder[CallbackButtonSelected].widen,
-    deriveDecoder[Unknown].widen
+    deriveDecoder[UnknownUpdate].widen
   ).reduceLeft(_.or(_)).camelCase
 }
 
-trait MessageUpdate extends Update {
-  val updateId: Long
+trait ChatUpdate extends Update {
+  def chat: Chat
+}
+
+abstract class MessageUpdate extends ChatUpdate {
+
   def message: TelegramMessage
-  def messageType: UpdateType
-  def chatId: ChatId
+
+  def chat: Chat = message.chat
+
   def from: Option[User] =
     message match {
       case message: UserMessage => message.from
       case _                    => None
     }
+
+  override def updateType: UpdateType = {
+    message match {
+      case _: UserMessage =>
+        this match {
+          case _: MessageReceived   => UpdateType.MessageReceived
+          case _: ChannelPost       => UpdateType.ChannelPostReceived
+          case _: MessageEdited     => UpdateType.MessageEdited
+          case _: ChannelPostEdited => UpdateType.ChannelPostEdited
+        }
+      case _: MessagePinned     => UpdateType.MessagePinned
+      case _: ChatMembersAdded  => UpdateType.ChatMembersAdded
+      case _: ChatMemberRemoved => UpdateType.ChatMemberRemoved
+    }
+  }
 }
 
 object MessageUpdate {
@@ -41,24 +61,23 @@ object MessageUpdate {
     Some(update.updateId, update.message)
 }
 
-final case class MessageReceived(updateId: Long, message: TelegramMessage)
-    extends MessageUpdate {
-  override def messageType: UpdateType = UpdateType.MessageReceived
-  override def chatId: ChatId = ChatId(message.chat.id)
-}
+final case class MessageReceived(
+    updateId: Long,
+    message: TelegramMessage
+) extends MessageUpdate
 
-final case class MessageEdited(updateId: Long, editedMessage: TelegramMessage)
-    extends MessageUpdate {
+final case class MessageEdited(
+    updateId: Long,
+    editedMessage: TelegramMessage
+) extends MessageUpdate {
   override def message: TelegramMessage = editedMessage
-  override def messageType: UpdateType = UpdateType.MessageEdited
-  override def chatId: ChatId = ChatId(editedMessage.chat.id)
 }
 
-final case class ChannelPost(updateId: Long, channelPost: TelegramMessage)
-    extends MessageUpdate {
+final case class ChannelPost(
+    updateId: Long,
+    channelPost: TelegramMessage
+) extends MessageUpdate {
   override def message: TelegramMessage = channelPost
-  override def messageType: UpdateType = UpdateType.ChannelPost
-  override def chatId: ChatId = ChatId(channelPost.chat.id)
 }
 
 final case class ChannelPostEdited(
@@ -66,9 +85,22 @@ final case class ChannelPostEdited(
     editedChannelPost: TelegramMessage
 ) extends MessageUpdate {
   override def message: TelegramMessage = editedChannelPost
-  override def messageType: UpdateType = UpdateType.ChannelPostEdited
-  override def chatId: ChatId = ChatId(editedChannelPost.chat.id)
 }
 
-final case class CallbackButtonSelected(updateId: Long, callbackQuery: Callback)
-    extends Update
+final case class CallbackButtonSelected(
+    updateId: Long,
+    callbackQuery: Callback
+) extends ChatUpdate {
+
+  override def updateType: UpdateType = UpdateType.CallbackSelected
+
+  override def chat: Chat =
+    callbackQuery.message match {
+      case Some(telegramMessage) => telegramMessage.chat
+      case _                     => UnknownChat()
+    }
+}
+
+final case class UnknownUpdate(updateId: Long) extends Update {
+  override def updateType: UpdateType = UpdateType.Unknown
+}

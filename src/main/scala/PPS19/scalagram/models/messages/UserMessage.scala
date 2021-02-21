@@ -1,4 +1,5 @@
 package PPS19.scalagram.models.messages
+
 import PPS19.scalagram.models._
 import cats.syntax.functor._
 import io.circe.Decoder

@@ -77,6 +77,19 @@ object SimpleDSLBot extends TelegramBotDSL {
     >> MarkdownV2("Keyboard with *Markdown*") - InlineKeyboard("A" :: "B" :: "C")
   )
 
+  /*scenes (
+
+    scene("").steps (
+      step("")
+      >>("")
+    )
+
+    scene("").steps (
+      step("")
+        >>("")
+    )
+  )*/
+
 }
 
 object SimpleDSLBotMain extends App {

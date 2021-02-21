@@ -3,34 +3,34 @@ package PPS19.scalagram.dsl.reactions
 import PPS19.scalagram.logic.reactions.{ReactionBuilder, VarArgReactionBuilder}
 import PPS19.scalagram.logic.{Context, Reaction}
 
-trait ReactionObject extends ReactionContainer {
+trait PartialReactionContainer extends ReactionContainer {
   val reactions: List[Reaction]
   val reactionBuilder: ReactionBuilder
-  def >>(action: Context => Unit): TriggerList =
-    TriggerList(reactionBuilder.build(action) :: reactions)
+  def >>(action: Context => Unit): TotalReactionContainer =
+    TotalReactionContainer(reactionBuilder.build(action) :: reactions)
 }
 
-object ReactionObject {
+object PartialReactionContainer {
   def apply(
       reactions: List[Reaction],
       reactionBuilder: ReactionBuilder
-  ): ReactionObject = ReactionObjectImpl(reactions, reactionBuilder)
+  ): PartialReactionContainer = PartialReactionContainerImpl(reactions, reactionBuilder)
 
-  private case class ReactionObjectImpl(
+  private case class PartialReactionContainerImpl(
       reactions: List[Reaction],
       reactionBuilder: ReactionBuilder
-  ) extends ReactionObject
+  ) extends PartialReactionContainer
 }
 
-case class VarArgReactionObject(
+case class VarArgReactionContainer(
     reactions: List[Reaction],
     reactionBuilder: VarArgReactionBuilder,
     triggers: String*
-) extends ReactionObject {
+) extends PartialReactionContainer {
 
-  def ::(trigger: String): VarArgReactionObject = {
+  def ::(trigger: String): VarArgReactionContainer = {
     val newTriggers = triggers :+ trigger
-    VarArgReactionObject(
+    VarArgReactionContainer(
       reactions,
       reactionBuilder.fromStrings(newTriggers: _*),
       newTriggers: _*
