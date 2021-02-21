@@ -11,8 +11,7 @@ case class OnMatch(string: String) extends SingleArgReactionBuilder {
     Reaction(
       Trigger { context =>
         context.update match {
-          case Some(MessageUpdate(_, message))
-            if message.isInstanceOf[TextMessage] =>
+          case Some(MessageUpdate(_, message)) if message.isInstanceOf[TextMessage] =>
             string.r.matches(message.asInstanceOf[TextMessage].text)
           case _ => false
         }

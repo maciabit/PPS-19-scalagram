@@ -38,8 +38,7 @@ object UpdateDispatcherActor {
       for (update <- updates.getOrElse(List.empty)) {
         val chatId = update match {
           case MessageUpdate(_, message) => Some(message.chat.id)
-          case CallbackButtonSelected(_, callbackQuery)
-              if callbackQuery.message.isDefined =>
+          case CallbackButtonSelected(_, callbackQuery) if callbackQuery.message.isDefined =>
             Some(callbackQuery.message.get.chat.id)
           case _ => None
         }

@@ -29,8 +29,7 @@ case class Trigger(matches: Context => Boolean)
   * @param trigger: function to pass for the action to be executed
   * @param action: function to be executed
   */
-case class Reaction(trigger: Trigger, action: Context => Unit)
-    extends Operation {
+case class Reaction(trigger: Trigger, action: Context => Unit) extends Operation {
   def operation: Context => Boolean =
     context =>
       if (trigger.matches(context)) {

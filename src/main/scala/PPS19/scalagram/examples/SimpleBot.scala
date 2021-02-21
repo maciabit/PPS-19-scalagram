@@ -18,22 +18,18 @@ object SimpleBot extends App {
   )
 
   val reactions = List(
-
     Bot.onStart { context =>
       context.reply("Thanks for starting me")
       println("Start")
     },
-
     Bot.onHelp { context =>
       context.reply("Here is some useful info")
       println("Help")
     },
-
     Bot.onMessage("/ciao", "Ciao") { context =>
       context.reply("Hello, world!")
       println("Hello, world!")
     },
-
     Bot.onMessage("/keyboard") { context =>
       val k = Some(
         InlineKeyboardMarkup(
@@ -46,28 +42,22 @@ object SimpleBot extends App {
       )
       context.reply("Here's a keyboard!", replyMarkup = k)
     },
-
     Bot.onCallbackQuery("callback") { context =>
       println("callback")
       context.reply("Thanks for clicking the button")
     },
-
     Bot.onMessagePinned { context =>
       context.reply("Woa, someone pinned a message \uD83D\uDE32")
     },
-
     Bot.onMessageEdited() { context =>
       context.reply("Do you have something to hide?")
     },
-
     Bot.onChatEnter { context =>
       context.reply("Welcome!")
     },
-
     Bot.onChatLeave { context =>
       context.reply("Goodbye")
     },
-
     Bot.onMessage("/scene") { context =>
       context.reply("You are now inside a scene")
       println("You are now inside a scene")

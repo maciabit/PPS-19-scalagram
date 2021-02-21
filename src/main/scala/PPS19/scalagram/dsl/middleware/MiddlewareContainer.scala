@@ -11,8 +11,7 @@ object MiddlewareContainer {
   def apply(middlewares: List[Middleware]): MiddlewareContainer =
     MiddlewareContainerImpl(middlewares)
 
-  private case class MiddlewareContainerImpl(middlewares: List[Middleware])
-    extends MiddlewareContainer {
+  private case class MiddlewareContainerImpl(middlewares: List[Middleware]) extends MiddlewareContainer {
     def <->(middleware: Context => Boolean): MiddlewareContainerImpl =
       MiddlewareContainerImpl(
         middlewares appended Middleware(middleware)

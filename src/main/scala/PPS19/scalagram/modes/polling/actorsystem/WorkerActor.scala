@@ -42,8 +42,7 @@ object WorkerActor {
             }
 
             receiveBehavior(botContext)
-          case Timeout(messageTimestamp)
-              if messageTimestamp != botContext.lastUpdateTimestamp =>
+          case Timeout(messageTimestamp) if messageTimestamp != botContext.lastUpdateTimestamp =>
             context.log.info("Timer {}", messageTimestamp)
             receiveBehavior(botContext)
           case _ =>

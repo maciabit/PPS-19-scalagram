@@ -3,14 +3,12 @@ import io.circe._
 
 object codecs {
 
-  private[PPS19] implicit class DecoderOps[A](private val decoder: Decoder[A])
-      extends AnyVal {
+  private[PPS19] implicit class DecoderOps[A](private val decoder: Decoder[A]) extends AnyVal {
     def camelCase: Decoder[A] =
       decoder.prepare(c => c.focus.map(camelKeys(_).hcursor).getOrElse(c))
   }
 
-  private[PPS19] implicit class EncoderOps[A](private val encoder: Encoder[A])
-      extends AnyVal {
+  private[PPS19] implicit class EncoderOps[A](private val encoder: Encoder[A]) extends AnyVal {
     def snakeCase: Encoder[A] =
       encoder.mapJson(j =>
         parser

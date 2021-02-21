@@ -13,7 +13,7 @@ case class TotalReactionContainer(reactions: List[Reaction]) extends ReactionCon
     VarArgReactionContainer(reactions, OnMessage(trigger), trigger)
 
   def <<(triggers: List[String]): VarArgReactionContainer =
-    VarArgReactionContainer(reactions, OnMessage(triggers: _*), triggers:_*)
+    VarArgReactionContainer(reactions, OnMessage(triggers: _*), triggers: _*)
 
   def <~(trigger: String): PartialReactionContainer =
     PartialReactionContainer(reactions, OnCallbackQuery(trigger))
@@ -22,7 +22,7 @@ case class TotalReactionContainer(reactions: List[Reaction]) extends ReactionCon
     VarArgReactionContainer(reactions, OnMessageEdited(trigger), trigger)
 
   def <*(triggers: List[String]): VarArgReactionContainer =
-    VarArgReactionContainer(reactions, OnMessageEdited(triggers:_*), triggers:_*)
+    VarArgReactionContainer(reactions, OnMessageEdited(triggers: _*), triggers: _*)
 
   def <^ : PartialReactionContainer = PartialReactionContainer(reactions, OnMessagePinned())
 

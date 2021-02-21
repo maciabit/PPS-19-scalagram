@@ -7,8 +7,7 @@ import requests.Requester
 
 import scala.util.{Success, Try}
 
-case class UnpinAllMessages(token: BotToken, chatId: ChatId)
-    extends TelegramRequest[Boolean] {
+case class UnpinAllMessages(token: BotToken, chatId: ChatId) extends TelegramRequest[Boolean] {
 
   val request: Requester = requests.post
 

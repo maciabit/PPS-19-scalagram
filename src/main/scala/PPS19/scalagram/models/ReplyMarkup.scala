@@ -29,8 +29,7 @@ object KeyboardMarkup {
     }
 }
 
-case class InlineKeyboardMarkup(inlineKeyboard: Seq[Seq[InlineKeyboardButton]])
-    extends KeyboardMarkup
+case class InlineKeyboardMarkup(inlineKeyboard: Seq[Seq[InlineKeyboardButton]]) extends KeyboardMarkup
 
 case class ReplyKeyboardMarkup(
     keyboard: Seq[Seq[ReplyKeyboardButton]],

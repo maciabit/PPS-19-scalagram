@@ -1,10 +1,7 @@
 package PPS19.scalagram.dsl.mode
 
 import scala.concurrent.duration.FiniteDuration
-import PPS19.scalagram.modes.polling.Polling.{
-  defaultPollingInterval,
-  defaultTimeoutDelay
-}
+import PPS19.scalagram.modes.polling.Polling.{defaultPollingInterval, defaultTimeoutDelay}
 
 object WorkingMode {
 
