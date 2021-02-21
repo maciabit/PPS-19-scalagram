@@ -6,8 +6,7 @@ import PPS19.scalagram.dsl.keyboard.KeyboardConversions._
 import PPS19.scalagram.dsl.keyboard.KeyboardUtils._
 import PPS19.scalagram.dsl.mode.WorkingMode._
 import PPS19.scalagram.dsl.reactions.ReactionConversions._
-import PPS19.scalagram.dsl.reactions.ReactionUtils._
-import PPS19.scalagram.dsl.reactions.ReactionUtils.StringExtension
+import PPS19.scalagram.dsl.reactions.ReactionUtils.{StringExtension, _}
 import PPS19.scalagram.utils.Props
 
 import scala.concurrent.duration.DurationInt
@@ -77,6 +76,19 @@ object SimpleDSLBot extends TelegramBotDSL {
     << "/md"
     >> MarkdownV2("Keyboard with *Markdown*") - InlineKeyboard("A" :: "B" :: "C")
   )
+
+  /*scenes (
+
+    scene("").steps (
+      step("")
+      >>("")
+    )
+
+    scene("").steps (
+      step("")
+        >>("")
+    )
+  )*/
 
 }
 

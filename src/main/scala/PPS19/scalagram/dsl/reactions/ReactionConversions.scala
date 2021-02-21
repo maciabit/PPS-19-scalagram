@@ -7,7 +7,7 @@ object ReactionConversions {
   implicit def stringToSendMessage(string: String): Context => Unit =
     context =>
       if (context.chat.nonEmpty) {
-        context.bot.sendMessage(context.chat.get, string)
+        context.bot.sendMessage(context.chat.get.chatId, string)
       }
 
   implicit def messageBuilderToAction(
@@ -16,7 +16,7 @@ object ReactionConversions {
     context =>
       if (context.chat.nonEmpty) {
         context.bot.sendMessage(
-          context.chat.get,
+          context.chat.get.chatId,
           messageBuilder.message,
           messageBuilder.parseMode,
           replyMarkup = messageBuilder.keyboard match {

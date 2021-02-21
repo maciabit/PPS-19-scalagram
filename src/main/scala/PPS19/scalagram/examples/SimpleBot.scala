@@ -8,7 +8,7 @@ import PPS19.scalagram.utils.Props
 import scala.concurrent.duration.DurationInt
 
 object SimpleBot extends App {
-  var bot = Bot(BotToken(Props.get("token")))
+  val botToken = BotToken(Props.get("token"))
 
   val middlewares = List(
     Middleware { _ =>
@@ -17,59 +17,63 @@ object SimpleBot extends App {
     }
   )
 
-  val start = Bot.onStart { context =>
-    context.reply("Thanks for starting me")
-    println("Start")
-  }
+  val reactions = List(
 
-  val help = Bot.onHelp { context =>
-    context.reply("Here is some useful info")
-    println("Help")
-  }
+    Bot.onStart { context =>
+      context.reply("Thanks for starting me")
+      println("Start")
+    },
 
-  val hello = Bot.onMessage("/ciao", "Ciao") { context =>
-    context.reply("Hello, world!")
-    println("Hello, world!")
-  }
+    Bot.onHelp { context =>
+      context.reply("Here is some useful info")
+      println("Help")
+    },
 
-  val keyboard = Bot.onMessage("/keyboard") { context =>
-    val k = Some(
-      InlineKeyboardMarkup(
-        List(
+    Bot.onMessage("/ciao", "Ciao") { context =>
+      context.reply("Hello, world!")
+      println("Hello, world!")
+    },
+
+    Bot.onMessage("/keyboard") { context =>
+      val k = Some(
+        InlineKeyboardMarkup(
           List(
-            InlineKeyboardButton.callback("Button", "callback")
+            List(
+              InlineKeyboardButton.callback("Button", "callback")
+            )
           )
         )
       )
-    )
-    context.reply("Here's a keyboard!", replyMarkup = k)
-  }
+      context.reply("Here's a keyboard!", replyMarkup = k)
+    },
 
-  val onCallback = Bot.onCallbackQuery("callback") { context =>
-    context.reply("Thanks for clicking the button")
-  }
+    Bot.onCallbackQuery("callback") { context =>
+      println("callback")
+      context.reply("Thanks for clicking the button")
+    },
 
-  val onPinned = Bot.onMessagePinned { context =>
-    context.reply("Woa, someone pinned a message \uD83D\uDE32")
-  }
+    Bot.onMessagePinned { context =>
+      context.reply("Woa, someone pinned a message \uD83D\uDE32")
+    },
 
-  val onMessageEdited = Bot.onMessageEdited() { context =>
-    context.reply("Do you have something to hide?")
-  }
+    Bot.onMessageEdited() { context =>
+      context.reply("Do you have something to hide?")
+    },
 
-  val onChatEnter = Bot.onChatEnter { context =>
-    context.reply("Welcome!")
-  }
+    Bot.onChatEnter { context =>
+      context.reply("Welcome!")
+    },
 
-  val onChatLeave = Bot.onChatLeave { context =>
-    context.reply("Goodbye")
-  }
+    Bot.onChatLeave { context =>
+      context.reply("Goodbye")
+    },
 
-  val enterScene = Bot.onMessage("/scene") { context =>
-    context.reply("You are now inside a scene")
-    println("You are now inside a scene")
-    context.enterScene("TEST_SCENE")
-  }
+    Bot.onMessage("/scene") { context =>
+      context.reply("You are now inside a scene")
+      println("You are now inside a scene")
+      context.enterScene("TEST_SCENE")
+    }
+  )
 
   val scene = Scene(
     "TEST_SCENE",
@@ -101,20 +105,9 @@ object SimpleBot extends App {
     )
   )
 
-  val reactions = List(
-    start,
-    help,
-    hello,
-    keyboard,
-    onCallback,
-    onPinned,
-    onMessageEdited,
-    onChatEnter,
-    onChatLeave,
-    enterScene
-  )
+  val scenes = List(scene)
 
-  bot = Bot(BotToken(Props.get("token")), middlewares, reactions, List(scene))
-  bot.launch(Polling(5.seconds))
+  val bot = Bot(botToken, middlewares, reactions, scenes)
+  bot.launch(Polling(300.milliseconds))
   println("Bot started")
 }

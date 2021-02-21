@@ -6,6 +6,7 @@ import io.circe.generic.semiauto.deriveDecoder
 
 sealed trait Chat {
   def id: Long
+  def chatId: ChatId = ChatId(id)
 }
 
 object Chat {
@@ -46,3 +47,7 @@ final case class Channel(
     title: Option[String],
     username: Option[String]
 ) extends Chat
+
+final case class UnknownChat() extends Chat {
+  override val id: Long = -1
+}

@@ -1,7 +1,7 @@
 package PPS19.scalagram.logic
 
+import PPS19.scalagram.models._
 import PPS19.scalagram.models.messages.TelegramMessage
-import PPS19.scalagram.models.{ChatId, MessageUpdate, ReplyMarkup, Update, User}
 
 import java.time.LocalDateTime
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
@@ -18,7 +18,7 @@ sealed trait Context {
   var sceneStep: Option[Step]
 
   var update: Option[Update]
-  def chat: Option[ChatId]
+  def chat: Option[Chat]
   def from: Option[User]
   def reply(
       text: String,
@@ -47,16 +47,16 @@ object Context {
     override var update: Option[Update] = None
     override var updateCount: Int = 0
 
-    override def chat: Option[ChatId] =
+    override def chat: Option[Chat] =
       update match {
-        case Some(update) => Some(update.asInstanceOf[MessageUpdate].chatId)
-        case _            => None
+        case Some(update: ChatUpdate) => Some(update.chat)
+        case _                        => None
       }
 
     override def from: Option[User] =
       update match {
-        case Some(update) => update.asInstanceOf[MessageUpdate].from
-        case _            => None
+        case Some(update: MessageUpdate) => update.from
+        case _                           => None
       }
 
     private def sceneStepIndex: Option[Int] =
@@ -100,8 +100,13 @@ object Context {
         replyMarkup: Option[ReplyMarkup] = None
     ): Try[TelegramMessage] =
       chat match {
-        case Some(chatId) =>
-          bot.sendMessage(chatId, text, parseMode, replyMarkup = replyMarkup)
+        case Some(chat) =>
+          bot.sendMessage(
+            chat.chatId,
+            text,
+            parseMode,
+            replyMarkup = replyMarkup
+          )
         case _ =>
           Failure(
             new IllegalStateException(

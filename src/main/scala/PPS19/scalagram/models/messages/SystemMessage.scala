@@ -5,7 +5,7 @@ import cats.implicits.toFunctorOps
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
 
-trait SystemMessage extends TelegramMessage {}
+trait SystemMessage extends TelegramMessage
 
 object SystemMessage {
   implicit val systemMessageDecoder: Decoder[SystemMessage] =
