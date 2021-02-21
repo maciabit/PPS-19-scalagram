@@ -46,3 +46,11 @@ dependencies {
     // Need scala-xml at test runtime
     testRuntimeOnly("org.scala-lang.modules:scala-xml_2.13:1.2.0")
 }
+
+tasks.compileScala.configure {
+    dependsOn(tasks.getByName("checkScalafmt"))
+}
+
+tasks.compileTestScala.configure {
+    dependsOn(tasks.getByName("checkTestScalafmt"))
+}
