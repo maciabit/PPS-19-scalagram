@@ -10,34 +10,7 @@ on:
     - cron: "0 4 * * SUN"
 
 jobs:
-  preliminary_build:
-    runs-on: ubuntu-latest
-    env:
-      token-name: BOT_TOKEN_ubuntu_14
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 14
-      - name: Create application.properties file with the bot's token
-        shell: bash
-        run: |
-          SECRET_VALUE=${{secrets[env.token-name]}}
-          mkdir -p src/main/resources
-          echo token=$SECRET_VALUE > src/main/resources/application.properties
-      - name: Build with Gradle
-        run: ./gradlew build -x test
-      - name: Test (safe) with Gradle
-        uses: nick-invision/retry@v2
-        with:
-          timeout_minutes: 10
-          max_attempts: 5
-          shell: bash
-          command: ./gradlew test
-
   build:
-    needs: preliminary_build
     strategy:
       fail-fast: false
       matrix:
