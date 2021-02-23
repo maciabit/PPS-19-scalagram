@@ -15,7 +15,14 @@ plugins {
 
     // Apply the Scalafmt plugin to add tasks related to code formatting
     id("cz.alenkacz.gradle.scalafmt") version "1.14.0"
+
+    // Import GitSemVer plugin
+    id ("org.danilopianini.git-sensitive-semantic-versioning") version "0.1.0"
 }
+
+//gitSemVer {
+//    version = computeGitSemVer() // THIS IS MANDATORY, AND MUST BE LAST IN BLOCK
+//}
 
 repositories {
     // Use mavenCentral for resolving dependencies.
