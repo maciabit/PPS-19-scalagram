@@ -17,14 +17,19 @@ trait Operation {
   */
 case class Middleware(operation: Context => Boolean) extends Operation
 
+/**
+  * A trigger that, based on the bot's context, may return true or false
+  * @param matches: function to be executed
+  */
 case class Trigger(matches: Context => Boolean)
 
 /**
-  * An operation that always terminates update processing
+  * An operation that only executes if the given trigger passes.
+  * If executed, it always terminates update processing
+  * @param trigger: function to pass for the action to be executed
   * @param action: function to be executed
   */
-case class Reaction(trigger: Trigger, action: Context => Unit)
-    extends Operation {
+case class Reaction(trigger: Trigger, action: Context => Unit) extends Operation {
   def operation: Context => Boolean =
     context =>
       if (trigger.matches(context)) {
@@ -33,4 +38,17 @@ case class Reaction(trigger: Trigger, action: Context => Unit)
       } else {
         true
       }
+}
+
+/**
+  * An operation that always returns false.
+  * Used inside Scenes.
+  * @param action: function to be executed
+  */
+case class Step(name: String, action: Context => Unit) extends Operation {
+  def operation: Context => Boolean =
+    context => {
+      action(context)
+      false
+    }
 }

@@ -59,16 +59,13 @@ object MessageEntity {
   case class Code(offset: Int, length: Int) extends MessageEntity
 
   /** Monowidth block */
-  case class Pre(offset: Int, length: Int, language: Option[String])
-      extends MessageEntity
+  case class Pre(offset: Int, length: Int, language: Option[String]) extends MessageEntity
 
   /** Clickable text URLs */
-  case class TextLink(offset: Int, length: Int, url: String)
-      extends MessageEntity
+  case class TextLink(offset: Int, length: Int, url: String) extends MessageEntity
 
   /** Users without username */
-  case class TextMention(offset: Int, length: Int, user: User)
-      extends MessageEntity
+  case class TextMention(offset: Int, length: Int, user: User) extends MessageEntity
 
   case class Underline(offset: Int, length: Int) extends MessageEntity
 

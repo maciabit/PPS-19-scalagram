@@ -1,4 +1,4 @@
-package PPS19.scalagram.akka
+package PPS19.scalagram.modes.polling.actorsystem
 
 import PPS19.scalagram.models.Update
 

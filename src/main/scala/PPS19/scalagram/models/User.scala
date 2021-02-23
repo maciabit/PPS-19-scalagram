@@ -31,22 +31,22 @@ final case class HumanUser(
     id: Int,
     isBot: Boolean = false,
     firstName: String,
-    lastName: Option[String],
-    username: Option[String],
-    languageCode: Option[String],
-    canJoinGroups: Option[Boolean],
-    canReadAllGroupMessages: Option[Boolean],
-    supportsInlineQueries: Option[Boolean]
+    lastName: Option[String] = None,
+    username: Option[String] = None,
+    languageCode: Option[String] = None,
+    canJoinGroups: Option[Boolean] = None,
+    canReadAllGroupMessages: Option[Boolean] = None,
+    supportsInlineQueries: Option[Boolean] = None
 ) extends User
 
 final case class BotUser(
     id: Int,
     isBot: Boolean = true,
     firstName: String,
-    lastName: Option[String],
-    username: Option[String],
-    languageCode: Option[String],
-    canJoinGroups: Option[Boolean],
-    canReadAllGroupMessages: Option[Boolean],
-    supportsInlineQueries: Option[Boolean]
+    lastName: Option[String] = None,
+    username: Option[String] = None,
+    languageCode: Option[String] = None,
+    canJoinGroups: Option[Boolean] = None,
+    canReadAllGroupMessages: Option[Boolean] = None,
+    supportsInlineQueries: Option[Boolean] = None
 ) extends User

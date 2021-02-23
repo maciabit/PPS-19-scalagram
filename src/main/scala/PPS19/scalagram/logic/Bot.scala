@@ -1,13 +1,43 @@
 package PPS19.scalagram.logic
 
+import PPS19.scalagram.logic.reactions.{
+  OnCallbackQuery,
+  OnChatEnter,
+  OnChatLeave,
+  OnHelp,
+  OnMatch,
+  OnMessage,
+  OnMessageEdited,
+  OnMessagePinned,
+  OnStart
+}
 import PPS19.scalagram.methods._
-import PPS19.scalagram.models.messages.{TelegramMessage, TextMessage}
-import PPS19.scalagram.models.{InputFile, MessageUpdate, ReplyMarkup, Update}
-import PPS19.scalagram.modes.Mode
+import PPS19.scalagram.models.messages.{
+  ChatMemberRemoved,
+  ChatMembersAdded,
+  MessagePinned,
+  TelegramMessage,
+  TextMessage
+}
+import PPS19.scalagram.models.{
+  CallbackButtonSelected,
+  ChannelPost,
+  ChannelPostEdited,
+  ChatId,
+  InputFile,
+  MessageEdited,
+  MessageReceived,
+  MessageUpdate,
+  ReplyMarkup,
+  Update
+}
+import PPS19.scalagram.modes.polling.Mode
 
 import scala.util.Try
 
-case class BotToken(token: String)
+case class BotToken(token: String) {
+  def get: String = token
+}
 
 sealed trait Bot {
   val token: BotToken
@@ -26,7 +56,7 @@ sealed trait Bot {
     GetUpdates(token, offset, limit, timeout, allowedUpdates).call()
 
   def sendMessage(
-      chatId: Either[String, Int],
+      chatId: ChatId,
       text: String,
       parseMode: Option[String] = None,
       entities: Option[Vector[Any]] = None,
@@ -50,7 +80,7 @@ sealed trait Bot {
     ).call()
 
   def sendPhoto(
-      chatId: Either[String, Int],
+      chatId: ChatId,
       photo: InputFile,
       caption: Option[String] = None,
       parseMode: Option[String] = None,
@@ -73,20 +103,20 @@ sealed trait Bot {
       replyMarkup
     ).call()
 
-  def deleteMessage(chatId: Either[String, Int], messageId: Int): Try[Boolean] =
+  def deleteMessage(chatId: ChatId, messageId: Int): Try[Boolean] =
     DeleteMessage(token, chatId, messageId).call()
 
   def pinMessage(
-      chatId: Either[String, Int],
+      chatId: ChatId,
       messageId: Int,
       disableNotification: Option[Boolean]
   ): Try[Boolean] =
     PinMessage(token, chatId, messageId, disableNotification).call()
 
-  def unpinMessage(chatId: Either[String, Int], messageId: Int): Try[Boolean] =
+  def unpinMessage(chatId: ChatId, messageId: Int): Try[Boolean] =
     UnpinMessage(token, chatId, messageId).call()
 
-  def unpinAllMessages(chatId: Either[String, Int]): Try[Boolean] =
+  def unpinAllMessages(chatId: ChatId): Try[Boolean] =
     UnpinAllMessages(token, chatId).call()
 
   def answerCallbackQuery(
@@ -121,17 +151,28 @@ object Bot {
       reactions: List[Reaction]
   ) extends Bot
 
-  def onCommand(command: String)(action: Context => Unit): Reaction = {
-    Reaction(
-      Trigger { context =>
-        context.update match {
-          case Some(MessageUpdate(_, message))
-              if message.isInstanceOf[TextMessage] =>
-            message.asInstanceOf[TextMessage].text == command
-          case _ => false
-        }
-      },
-      action
-    )
-  }
+  def onMessage(texts: String*)(action: Context => Unit): Reaction =
+    OnMessage(texts: _*).build(action)
+
+  def onStart(action: Context => Unit): Reaction = OnStart().build(action)
+
+  def onHelp(action: Context => Unit): Reaction = OnHelp().build(action)
+
+  def onMessageEdited(texts: String*)(action: Context => Unit): Reaction =
+    OnMessageEdited(texts: _*).build(action)
+
+  def onCallbackQuery(query: String)(action: Context => Unit): Reaction =
+    OnCallbackQuery(query).build(action)
+
+  def onMatch(regex: String)(action: Context => Unit): Reaction =
+    OnMatch(regex).build(action)
+
+  def onChatEnter(action: Context => Unit): Reaction =
+    OnChatEnter().build(action)
+
+  def onChatLeave(action: Context => Unit): Reaction =
+    OnChatLeave().build(action)
+
+  def onMessagePinned(action: Context => Unit): Reaction =
+    OnMessagePinned().build(action)
 }

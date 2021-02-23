@@ -12,7 +12,7 @@ import org.scalatestplus.junit.JUnitRunner
 class KeyboardSuite extends AnyFunSuite with BeforeAndAfterEach {
 
   private val bot = Bot(BotToken(Props.get("token")))
-  private val groupChatId = Left("-1001286594106")
+  private val chatId = ChatId("-1001286594106")
 
   override def beforeEach(): Unit = {
     Thread.sleep(3000)
@@ -21,9 +21,10 @@ class KeyboardSuite extends AnyFunSuite with BeforeAndAfterEach {
   // Response Keyboard
 
   test("A message with a single button Response Keyboard can be sent") {
-    val keyboard = Some(ReplyKeyboardMarkup(Seq(Seq(KeyboardButton("Button")))))
+    val keyboard =
+      Some(ReplyKeyboardMarkup(Seq(Seq(ReplyKeyboardButton("Button")))))
     val message = bot.sendMessage(
-      groupChatId,
+      chatId,
       "Single button keyboard",
       replyMarkup = keyboard
     )
@@ -33,11 +34,13 @@ class KeyboardSuite extends AnyFunSuite with BeforeAndAfterEach {
   test("A message with a column of buttons Response Keyboard can be sent") {
     val keyboard = Some(
       ReplyKeyboardMarkup(
-        Seq(Seq(KeyboardButton("Button 1"), KeyboardButton("Button 2")))
+        Seq(
+          Seq(ReplyKeyboardButton("Button 1"), ReplyKeyboardButton("Button 2"))
+        )
       )
     )
     val message = bot.sendMessage(
-      groupChatId,
+      chatId,
       "Row of buttons keyboard",
       replyMarkup = keyboard
     )
@@ -47,11 +50,14 @@ class KeyboardSuite extends AnyFunSuite with BeforeAndAfterEach {
   test("A message with a row of buttons Response Keyboard can be sent") {
     val keyboard = Some(
       ReplyKeyboardMarkup(
-        Seq(Seq(KeyboardButton("Button 1")), Seq(KeyboardButton("Button 2")))
+        Seq(
+          Seq(ReplyKeyboardButton("Button 1")),
+          Seq(ReplyKeyboardButton("Button 2"))
+        )
       )
     )
     val message = bot.sendMessage(
-      groupChatId,
+      chatId,
       "Column of buttons keyboard",
       replyMarkup = keyboard
     )
@@ -62,13 +68,13 @@ class KeyboardSuite extends AnyFunSuite with BeforeAndAfterEach {
     val keyboard = Some(
       ReplyKeyboardMarkup(
         Seq(
-          Seq(KeyboardButton("Button 1"), KeyboardButton("Button 2")),
-          Seq(KeyboardButton("Button 3"), KeyboardButton("Button 4"))
+          Seq(ReplyKeyboardButton("Button 1"), ReplyKeyboardButton("Button 2")),
+          Seq(ReplyKeyboardButton("Button 3"), ReplyKeyboardButton("Button 4"))
         )
       )
     )
     val message = bot.sendMessage(
-      groupChatId,
+      chatId,
       "Grid of buttons keyboard",
       replyMarkup = keyboard
     )
@@ -78,7 +84,7 @@ class KeyboardSuite extends AnyFunSuite with BeforeAndAfterEach {
   test("A Response Keyboard can be removed") {
     val keyboard = Some(ReplyKeyboardRemove())
     val message = bot.sendMessage(
-      groupChatId,
+      chatId,
       "Removing response keyboard",
       replyMarkup = keyboard
     )
@@ -94,26 +100,17 @@ class KeyboardSuite extends AnyFunSuite with BeforeAndAfterEach {
       InlineKeyboardMarkup(
         Seq(
           Seq(
-            // Link button
-            InlineKeyboardButton(
-              "Link",
-              url = Some("https://www.youtube.com/")
-            ),
-            // Callback button
-            InlineKeyboardButton("Callback", callbackData = Some("Callback")),
-            // Switch inline button (current chat)
-            InlineKeyboardButton(
-              "Inline chat",
-              switchInlineQueryCurrentChat = Some("HI")
-            ),
-            // Switch inline button (inline query)
-            InlineKeyboardButton("Inline query", switchInlineQuery = Some(""))
+            InlineKeyboardButton.url("Link", "https://www.youtube.com/"),
+            InlineKeyboardButton.callback("Callback", "Callback"),
+            InlineKeyboardButton
+              .switchInlineQueryCurrentChat("Inline chat", "HI"),
+            InlineKeyboardButton.switchInlineQuery("Inline query", "")
           )
         )
       )
     )
     val message = bot.sendMessage(
-      groupChatId,
+      chatId,
       "Various Inline Buttons",
       replyMarkup = keyboard
     )
@@ -125,7 +122,7 @@ class KeyboardSuite extends AnyFunSuite with BeforeAndAfterEach {
   test("A message that displays a reply interface to the user can be sent") {
     val keyboard = Some(ForceReply())
     val message = bot.sendMessage(
-      groupChatId,
+      chatId,
       "You all must answer me",
       replyMarkup = keyboard
     )

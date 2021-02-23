@@ -25,8 +25,8 @@ object Callback {
 final case class CallbackQuery(
     id: String,
     from: User,
-    message: Option[TelegramMessage],
-    inlineMessageId: Option[String],
+    message: Option[TelegramMessage] = None,
+    inlineMessageId: Option[String] = None,
     chatInstance: String,
     data: Option[String] = None,
     gameShortName: Option[String] = None

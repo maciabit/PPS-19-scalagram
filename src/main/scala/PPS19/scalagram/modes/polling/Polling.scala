@@ -1,6 +1,6 @@
-package PPS19.scalagram.modes
+package PPS19.scalagram.modes.polling
 
-import PPS19.scalagram.akka.{LookForUpdates, UpdateDispatcherActor}
+import PPS19.scalagram.modes.polling.actorsystem.{LookForUpdates, UpdateDispatcherActor}
 import PPS19.scalagram.logic.Bot
 import akka.actor.typed.ActorSystem
 
@@ -12,18 +12,8 @@ trait Mode {
 
 /** Polling mode for Telegram bots update retrieval */
 sealed trait Polling extends Mode {
-
-  /**
-    * Start polling
-    * @param pollingInterval   Interval at which updates have to be requested (default: 300ms)
-    * @param timeoutDelay      Delay after which a bot, if it has not received updates, forgets the status of the
-    *                          interaction on a certain chat (default: 1 day)
-    */
-  def startPolling(
-      bot: Bot,
-      pollingInterval: FiniteDuration = Polling.defaultPollingInterval,
-      timeoutDelay: FiniteDuration = Polling.defaultTimeoutDelay
-  ): Unit
+  val pollingInterval: FiniteDuration
+  val timeoutDelay: FiniteDuration
 }
 
 object Polling {
@@ -41,14 +31,7 @@ object Polling {
       timeoutDelay: FiniteDuration
   ) extends Polling {
 
-    override def start(bot: Bot): Unit =
-      startPolling(bot, pollingInterval, timeoutDelay)
-
-    override def startPolling(
-        bot: Bot,
-        pollingInterval: FiniteDuration,
-        timeoutDelay: FiniteDuration
-    ): Unit = {
+    override def start(bot: Bot): Unit = {
       // Create the actor system with an UpdateDispatcherActor as guardian
       val system = ActorSystem(
         UpdateDispatcherActor(bot, pollingInterval, timeoutDelay),

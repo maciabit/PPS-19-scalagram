@@ -1,6 +1,5 @@
 package PPS19.scalagram.marshalling
 
-import PPS19.scalagram.marshalling.MapUtils._
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
@@ -18,16 +17,5 @@ class MarshallingSuite extends AnyFunSuite {
     val c = "camelCase"
     val s = CaseString(c)
     assert(s.snakeCase == "camel_case")
-  }
-
-  test("A map[key, value] can be converted to snakecase string") {
-    val map = Map(
-      "chatId" -> -10053564,
-      "text" -> "lorem ipsium",
-      "booleanField" -> true
-    )
-    assert(
-      map.toUrlQuery == "chat_id=-10053564&text=lorem ipsium&boolean_field=true"
-    )
   }
 }

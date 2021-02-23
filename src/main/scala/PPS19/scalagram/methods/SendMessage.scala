@@ -2,7 +2,7 @@ package PPS19.scalagram.methods
 
 import PPS19.scalagram.logic.BotToken
 import PPS19.scalagram.marshalling.codecs.EncoderOps
-import PPS19.scalagram.models.ReplyMarkup
+import PPS19.scalagram.models.{ChatId, ReplyMarkup}
 import PPS19.scalagram.models.messages.TelegramMessage
 import io.circe.parser._
 import io.circe.{Encoder, Json}
@@ -12,7 +12,7 @@ import scala.util.{Failure, Success, Try}
 
 case class SendMessage(
     token: BotToken,
-    chatId: Either[String, Int],
+    chatId: ChatId,
     text: String,
     parseMode: Option[String] = None,
     entities: Option[Vector[Any]] = None,
@@ -28,7 +28,7 @@ case class SendMessage(
   val endpoint: String = "sendMessage"
 
   val urlParams: Map[String, Any] = Map(
-    "chat_id" -> chatId.fold(l => l, r => r),
+    "chat_id" -> chatId.get,
     "text" -> text,
     "parse_mode" -> parseMode,
     "entities" -> entities,

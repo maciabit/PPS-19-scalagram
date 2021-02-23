@@ -42,7 +42,7 @@ dependencies {
     implementation("io.circe:circe-generic_2.13:0.14.0-M3")
 
     // Use Akka for the polling infrastructure
-    implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation("org.slf4j:slf4j-nop:1.7.30")
     implementation("com.typesafe.akka:akka-actor-typed_2.13:2.6.11")
 
     // Use Scalatest for testing our library
@@ -52,4 +52,12 @@ dependencies {
 
     // Need scala-xml at test runtime
     testRuntimeOnly("org.scala-lang.modules:scala-xml_2.13:1.2.0")
+}
+
+tasks.compileScala.configure {
+    dependsOn(tasks.getByName("checkScalafmt"))
+}
+
+tasks.compileTestScala.configure {
+    dependsOn(tasks.getByName("checkTestScalafmt"))
 }
