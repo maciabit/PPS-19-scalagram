@@ -49,5 +49,4 @@ class DSLSuite extends AnyFunSuite {
     )
     assert(res.isSuccess)
   }
-
 }
