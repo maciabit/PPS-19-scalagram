@@ -12,19 +12,31 @@ plugins {
 
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
+
+    // Apply the Scalafmt plugin to add tasks related to code formatting
+    id("cz.alenkacz.gradle.scalafmt") version "1.14.0"
 }
 
 repositories {
-    // Use jcenter for resolving dependencies.
-    // You can declare any Maven/Ivy/file repository here.
-    //jcenter()
-
+    // Use mavenCentral for resolving dependencies.
     mavenCentral()
 }
 
 dependencies {
     // Use Scala 2.13 in our library project
     implementation("org.scala-lang:scala-library:2.13.2")
+
+    // Use requests to perform HTTP requests
+    implementation("com.lihaoyi:requests_2.13:0.6.5")
+
+    // Use Circe to perform object <-> JSON conversions
+    implementation("io.circe:circe-core_2.13:0.14.0-M3")
+    implementation("io.circe:circe-parser_2.13:0.14.0-M3")
+    implementation("io.circe:circe-generic_2.13:0.14.0-M3")
+
+    // Use Akka for the polling infrastructure
+    implementation("org.slf4j:slf4j-nop:1.7.30")
+    implementation("com.typesafe.akka:akka-actor-typed_2.13:2.6.11")
 
     // Use Scalatest for testing our library
     testImplementation("junit:junit:null")
@@ -33,4 +45,12 @@ dependencies {
 
     // Need scala-xml at test runtime
     testRuntimeOnly("org.scala-lang.modules:scala-xml_2.13:1.2.0")
+}
+
+tasks.compileScala.configure {
+    dependsOn(tasks.getByName("checkScalafmt"))
+}
+
+tasks.compileTestScala.configure {
+    dependsOn(tasks.getByName("checkTestScalafmt"))
 }

@@ -6,3 +6,11 @@
 
 # Ignore Gradle build output directory
 build
+
+.idea
+
+# Mac
+.DS_Store
+
+# Ignore configuration stored in application.properties
+application.properties
