@@ -20,9 +20,9 @@ plugins {
     id("org.danilopianini.git-sensitive-semantic-versioning") version "0.1.0"
 }
 
-gitSemVer {
-    version = computeGitSemVer()
-}
+//gitSemVer {
+//    version = computeGitSemVer()
+//}
 
 repositories {
     // Use mavenCentral for resolving dependencies.
