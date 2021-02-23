@@ -1,5 +1,7 @@
 # This workflow will publish a GitHub release when an annotated pull request is made ..
 
+name: Publish and release
+
 on:
   pull_request:
     tags:
