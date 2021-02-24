@@ -1,36 +1,9 @@
 package PPS19.scalagram.logic
 
-import PPS19.scalagram.logic.reactions.{
-  OnCallbackQuery,
-  OnChatEnter,
-  OnChatLeave,
-  OnHelp,
-  OnMatch,
-  OnMessage,
-  OnMessageEdited,
-  OnMessagePinned,
-  OnStart
-}
+import PPS19.scalagram.logic.reactions._
 import PPS19.scalagram.methods._
-import PPS19.scalagram.models.messages.{
-  ChatMemberRemoved,
-  ChatMembersAdded,
-  MessagePinned,
-  TelegramMessage,
-  TextMessage
-}
-import PPS19.scalagram.models.{
-  CallbackButtonSelected,
-  ChannelPost,
-  ChannelPostEdited,
-  ChatId,
-  InputFile,
-  MessageEdited,
-  MessageReceived,
-  MessageUpdate,
-  ReplyMarkup,
-  Update
-}
+import PPS19.scalagram.models.messages.TelegramMessage
+import PPS19.scalagram.models.{ChatId, InputFile, ReplyMarkup, Update}
 import PPS19.scalagram.modes.polling.Mode
 
 import scala.util.Try

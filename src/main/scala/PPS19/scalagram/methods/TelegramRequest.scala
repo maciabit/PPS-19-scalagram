@@ -26,8 +26,10 @@ trait TelegramRequest[T] {
 
   def parseSuccessResponse(json: Json): Try[T]
 
-  def call(): Try[T] = {
-    val query = urlParams
+  def endpointUrl = s"$TELEGRAM_API_URL${token.get}/$endpoint"
+
+  def computedUrlParams: Map[String, String] =
+    urlParams
       .filter {
         case (_, None) => false
         case _         => true
@@ -36,26 +38,27 @@ trait TelegramRequest[T] {
         case (key, Some(value)) => (CaseString(key).snakeCase, value.toString)
         case (key, value)       => (CaseString(key).snakeCase, value.toString)
       }
-    val multiItem: List[MultiItem] = multipartFormData.map {
+
+  def computedMultipartFormData: List[MultiItem] =
+    multipartFormData.map {
       case (key, value) =>
         val file = new File(value)
         requests.MultiItem(key, file, file.getName)
     }.toList
-    val url = s"$TELEGRAM_API_URL${token.get}/$endpoint"
-    val req = multiItem match {
-      case Nil => Try(request(url, params = query))
+
+  def call(): Try[T] = {
+    val req = computedMultipartFormData match {
+      case Nil => Try(request(endpointUrl, params = computedUrlParams))
       case _ =>
-        Try(
-          request(url, params = query, data = requests.MultiPart(multiItem: _*))
-        )
+        Try(request(endpointUrl, params = computedUrlParams, data = requests.MultiPart(computedMultipartFormData: _*)))
     }
     req match {
       case Success(response) =>
         val json = parse(response.text()).getOrElse(Json.Null)
-        json.findAllByKey("ok").head.toString() match {
-          case "false" =>
-            Failure(decode[TelegramError](json.toString()).getOrElse(null))
-          case "true" => parseSuccessResponse(json.findAllByKey("result").head)
+        json.findAllByKey("ok") match {
+          case list: List[Json] if list.nonEmpty && list.head.toString() == "true" =>
+            parseSuccessResponse(json.findAllByKey("result").head)
+          case _ => Failure(decode[TelegramError](json.toString()).getOrElse(null))
         }
       case Failure(e) => Failure(e)
     }

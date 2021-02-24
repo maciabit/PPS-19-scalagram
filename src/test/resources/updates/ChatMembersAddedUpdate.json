@@ -1,0 +1,50 @@
+{
+  "update_id": 0,
+  "message": {
+    "message_id": 0,
+    "from": {
+      "id": 0,
+      "is_bot": false,
+      "first_name": "John",
+      "username": "JohnDoe"
+    },
+    "chat": {
+      "id": 0,
+      "title": "Title",
+      "type": "supergroup"
+    },
+    "date": 0,
+    "new_chat_participant": {
+      "id": 0,
+      "is_bot": false,
+      "first_name": "Jane",
+      "username": "JaneDoeBot"
+    },
+    "new_chat_member": {
+      "id": 0,
+      "is_bot": false,
+      "first_name": "Jane",
+      "username": "JaneDoeBot"
+    },
+    "new_chat_members": [
+      {
+        "id": 0,
+        "is_bot": false,
+        "first_name": "Jane",
+        "username": "JaneDoeBot"
+      },
+      {
+        "id": 0,
+        "is_bot": false,
+        "first_name": "Bob",
+        "username": "BobSmith"
+      },
+      {
+        "id": 0,
+        "is_bot": false,
+        "first_name": "Mario",
+        "username": "MarioRossi"
+      }
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "inline_keyboard": [
+    [
+      {
+        "text": "Link",
+        "url": "https://www.youtube.com/"
+      },
+      {
+        "text": "Callback",
+        "callback_data": "Callback"
+      },
+      {
+        "text": "Inline chat",
+        "switch_inline_query_current_chat": "HI"
+      },
+      {
+        "text": "Inline query",
+        "switch_inline_query": ""
+      }
+    ]
+  ]
+}

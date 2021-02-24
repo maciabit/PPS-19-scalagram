@@ -29,8 +29,9 @@ case class EditMessage(
   val urlParams: Map[String, Any] = Map(
     "chat_id" -> chatId.get,
     "text" -> text,
-    "inlineMessageId" -> parseMode,
     "message_id" -> messageId,
+    "inline_message_id" -> inlineMessageId,
+    "parse_mode" -> parseMode,
     "entities" -> entities,
     "disable_web_page_preview" -> disablePreview,
     "reply_markup" -> (replyMarkup match {

@@ -1,0 +1,14 @@
+{
+  "update_id": 0,
+  "channel_post": {
+    "message_id": 0,
+    "author_signature": "Signature",
+    "chat": {
+      "id": 0,
+      "title": "Title",
+      "type": "channel"
+    },
+    "date": 0,
+    "text": "message"
+  }
+}
