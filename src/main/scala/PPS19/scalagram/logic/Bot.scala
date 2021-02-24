@@ -79,6 +79,28 @@ sealed trait Bot {
       replyMarkup
     ).call()
 
+  def editMessage(
+      chatId: ChatId,
+      text: String,
+      messageId: Option[Integer] = None,
+      inlineMessageId: Option[String] = None,
+      parseMode: Option[String] = None,
+      entities: Option[Vector[Any]] = None,
+      disablePreview: Option[Boolean] = None,
+      replyMarkup: Option[ReplyMarkup] = None
+  ): Try[TelegramMessage] =
+    EditMessage(
+      token,
+      chatId,
+      text,
+      messageId,
+      inlineMessageId,
+      parseMode,
+      entities,
+      disablePreview,
+      replyMarkup
+    ).call()
+
   def sendPhoto(
       chatId: ChatId,
       photo: InputFile,

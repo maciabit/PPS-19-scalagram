@@ -14,6 +14,7 @@ case class EditMessage(
     token: BotToken,
     chatId: ChatId,
     text: String,
+    messageId: Option[Integer] = None,
     inlineMessageId: Option[String] = None,
     parseMode: Option[String] = None,
     entities: Option[Vector[Any]] = None,
@@ -29,6 +30,7 @@ case class EditMessage(
     "chat_id" -> chatId.get,
     "text" -> text,
     "inlineMessageId" -> parseMode,
+    "message_id" -> messageId,
     "entities" -> entities,
     "disable_web_page_preview" -> disablePreview,
     "reply_markup" -> (replyMarkup match {

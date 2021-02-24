@@ -25,6 +25,11 @@ class MethodsSuite extends AnyFunSuite with BeforeAndAfterEach {
     assert(bot.sendMessage(chatId, "Test message").isSuccess)
   }
 
+  test("A message can be edited") {
+    val msg = bot.sendMessage(chatId, "Message to modify")
+    assert(bot.editMessage(chatId, "Message has beed correctly modified", Some(msg.get.messageId)).isSuccess)
+  }
+
   test("A message formatted as HTML can be sent") {
     val res = bot
       .sendMessage(
