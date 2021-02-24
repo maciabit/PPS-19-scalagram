@@ -7,6 +7,7 @@ import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
 
 import java.nio.file.{Files, Paths}
+import scala.reflect.io.File
 
 @RunWith(classOf[JUnitRunner])
 class KeyboardSuite extends AnyFunSuite {
@@ -29,25 +30,25 @@ class KeyboardSuite extends AnyFunSuite {
   test("A single button Response Keyboard can be properly encoded") {
     testReplyMarkupEncoding(
       ReplyKeyboardMarkup(Seq(Seq(ReplyKeyboardButton("Button")))),
-      "reply_markup/SingleButtonKeyboard.json"
+      s"reply_markup${File.separator}SingleButtonKeyboard.json"
     )
   }
 
-  test("A message with a column of buttons Response Keyboard can be sent") {
+  test("A column of buttons Response Keyboard can be properly encoded") {
     testReplyMarkupEncoding(
       ReplyKeyboardMarkup(Seq(Seq(ReplyKeyboardButton("Button 1")), Seq(ReplyKeyboardButton("Button 2")))),
-      "reply_markup/ColumnOfButtonsKeyboard.json"
+      s"reply_markup${File.separator}ColumnOfButtonsKeyboard.json"
     )
   }
 
-  test("A message with a row of buttons Response Keyboard can be sent") {
+  test("A row of buttons Response Keyboard can be properly encoded") {
     testReplyMarkupEncoding(
       ReplyKeyboardMarkup(Seq(Seq(ReplyKeyboardButton("Button 1"), ReplyKeyboardButton("Button 2")))),
-      "reply_markup/RowOfButtonsKeyboard.json"
+      s"reply_markup${File.separator}RowOfButtonsKeyboard.json"
     )
   }
 
-  test("A message with a grid of buttons Response Keyboard can be sent") {
+  test("A grid of buttons Response Keyboard can be properly encoded") {
     testReplyMarkupEncoding(
       ReplyKeyboardMarkup(
         Seq(
@@ -55,17 +56,17 @@ class KeyboardSuite extends AnyFunSuite {
           Seq(ReplyKeyboardButton("Button 3"), ReplyKeyboardButton("Button 4"))
         )
       ),
-      "reply_markup/GridOfButtonsKeyboard.json"
+      s"reply_markup${File.separator}GridOfButtonsKeyboard.json"
     )
   }
 
   test("A Response Keyboard can be removed") {
-    testReplyMarkupEncoding(ReplyKeyboardRemove(), "reply_markup/RemoveKeyboard.json")
+    testReplyMarkupEncoding(ReplyKeyboardRemove(), s"reply_markup${File.separator}RemoveKeyboard.json")
   }
 
   // Inline Keyboard
 
-  test("URL Buttons, Callback Buttons and Switch to Inline Buttons can be sent in an Inline Keyboard") {
+  test("URL Buttons, Callback Buttons and Switch to Inline Buttons can be properly encoded in an Inline Keyboard") {
     testReplyMarkupEncoding(
       InlineKeyboardMarkup(
         Seq(
@@ -77,13 +78,13 @@ class KeyboardSuite extends AnyFunSuite {
           )
         )
       ),
-      "reply_markup/CustomButtonsKeyboard.json"
+      s"reply_markup${File.separator}CustomButtonsKeyboard.json"
     )
   }
 
   // Force reply
 
-  test("A message that displays a reply interface to the user can be sent") {
-    testReplyMarkupEncoding(ForceReply(), "reply_markup/ForceReply.json")
+  test("A message that displays a reply interface to the user can be properly encoded") {
+    testReplyMarkupEncoding(ForceReply(), s"reply_markup${File.separator}ForceReply.json")
   }
 }
