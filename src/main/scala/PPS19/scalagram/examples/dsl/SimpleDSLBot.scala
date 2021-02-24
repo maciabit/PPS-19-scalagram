@@ -13,68 +13,67 @@ import scala.concurrent.duration.DurationInt
 
 object SimpleDSLBot extends TelegramBotDSL {
 
-  token (
+  token(
     Props.get("token")
   )
 
-  mode (
+  mode(
     POLLING interval 300.milliseconds timeoutDelay 1.days
   )
 
-  middlewares (
-    <-> { _ =>
-      println("First middleware")
+  middlewares(
+    <-> { context =>
+      println(context.update.get)
       true
     }
 
-    <-> { _ =>
-      println("Second middleware")
-      true
-    }
+      <-> { _ =>
+        println("Second middleware")
+        true
+      }
   )
 
-  reactions (
-
+  reactions(
     !!
-    >> "Hello"
+      >> "Hello"
 
-    << ("/uno" | "uno" | "no")
-    >> "uno"
+      << ("/uno" | "uno" | "no")
+      >> "uno"
 
-    << "/due"
-    >> { context =>
-      context.reply("due")
-    }
+      << "/due"
+      >> { context =>
+        context.reply("due")
+      }
 
-    <~ "callback"
-    >> "Callback"
+      <~ "callback"
+      >> "Callback"
 
-    <* "Message"
-    >> "Message edited"
+      <* "Message"
+      >> "Message edited"
 
-    <* ("Message" | "Message2" | "Message3")
-    >> "Message edited"
+      <* ("Message" | "Message2" | "Message3")
+      >> "Message edited"
 
-    <# "boh"
-    >> "Regex"
+      <# "boh"
+      >> "Regex"
 
-    << "/rk"
-    >> "Reply keyboard" - Keyboard(
-      "Button 1",
-      "Button 2" :: "Button 3"
-    )
+      << "/rk"
+      >> "Reply keyboard" - Keyboard(
+        "Button 1",
+        "Button 2" :: "Button 3"
+      )
 
-    << "/ik"
-    >> "Inline keyboard" - InlineKeyboard(
-      Callback("Button 1" -> "data"),
-      "Button 2" :: "Button 3"
-    )
+      << "/ik"
+      >> "Inline keyboard" - InlineKeyboard(
+        Callback("Button 1" -> "data"),
+        "Button 2" :: "Button 3"
+      )
 
-    << "/html"
-    >> HTML("Keyboard with <b>HTML</b>") - InlineKeyboard("A" :: "B" :: "C")
+      << "/html"
+      >> HTML("Keyboard with <b>HTML</b>") - InlineKeyboard("A" :: "B" :: "C")
 
-    << "/md"
-    >> MarkdownV2("Keyboard with *Markdown*") - InlineKeyboard("A" :: "B" :: "C")
+      << "/md"
+      >> MarkdownV2("Keyboard with *Markdown*") - InlineKeyboard("A" :: "B" :: "C")
   )
 
   /*scenes (
