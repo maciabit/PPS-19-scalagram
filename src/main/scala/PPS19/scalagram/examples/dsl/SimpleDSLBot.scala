@@ -13,17 +13,17 @@ import scala.concurrent.duration.DurationInt
 
 object SimpleDSLBot extends TelegramBotDSL {
 
-  token (
+  token(
     Props.get("token")
   )
 
-  mode (
+  mode(
     POLLING interval 300.milliseconds timeoutDelay 1.days
   )
 
-  middlewares (
-    <-> { _ =>
-      println("First middleware")
+  middlewares(
+    <-> { context =>
+      println(context.update.get)
       true
     }
 
@@ -33,8 +33,7 @@ object SimpleDSLBot extends TelegramBotDSL {
     }
   )
 
-  reactions (
-
+  reactions(
     !!
     >> "Hello"
 
