@@ -1,0 +1,30 @@
+{
+  "update_id": 0,
+  "message": {
+    "message_id": 0,
+    "from": {
+      "id": 0,
+      "is_bot": false,
+      "first_name": "John",
+      "username": "JohnDoe"
+    },
+    "chat": {
+      "id": 0,
+      "title": "Title",
+      "type": "supergroup"
+    },
+    "date": 0,
+    "left_chat_participant": {
+      "id": 0,
+      "is_bot": false,
+      "first_name": "Jane",
+      "username": "JaneDoeBot"
+    },
+    "left_chat_member": {
+      "id": 0,
+      "is_bot": false,
+      "first_name": "Jane",
+      "username": "JaneDoeBot"
+    }
+  }
+}

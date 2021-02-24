@@ -2,7 +2,6 @@ package PPS19.scalagram.models
 
 import io.circe.Encoder
 import io.circe.generic.auto._
-import io.circe.generic.semiauto.deriveEncoder
 import io.circe.syntax._
 
 sealed trait ReplyMarkup
