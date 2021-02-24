@@ -38,6 +38,15 @@ class ReactionsSuite extends AnyFunSuite {
     assert(res1 && res2)
   }
 
+  test(
+    "An OnMessage reaction fails if the message passed as parameter is the wrong type"
+  ) {
+    context.update = Some(MessageEdited(0, TextMessage(0, chat, 0, "/messageEdited")))
+    var res = false;
+    OnMessage("").build(_ => res = true).operation(context)
+    assert(res == false)
+  }
+
   test("An OnStart reaction can be created and used") {
     context.update = Some(MessageReceived(0, TextMessage(0, chat, 0, "/start")))
     var res = false
@@ -45,11 +54,25 @@ class ReactionsSuite extends AnyFunSuite {
     assert(res)
   }
 
+  test("An OnStart reaction fails if the message passed as parameter is the wrong type") {
+    context.update = Some(MessageEdited(0, TextMessage(0, chat, 0, "/messageEdited")))
+    var res = false
+    OnStart().build(_ => res = true).operation(context)
+    assert(res == false)
+  }
+
   test("An OnHelp reaction can be created and used") {
     context.update = Some(MessageReceived(0, TextMessage(0, chat, 0, "/help")))
     var res = false
     OnHelp().build(_ => res = true).operation(context)
     assert(res)
+  }
+
+  test("An OnHelp reaction fails if the message passed as parameter is the wrong type") {
+    context.update = Some(MessageEdited(0, TextMessage(0, chat, 0, "/messageEdited")))
+    var res = false
+    OnHelp().build(_ => res = true).operation(context)
+    assert(res == false)
   }
 
   test("An OnMessageEdited reaction that matches any string can be created and used") {
@@ -76,11 +99,25 @@ class ReactionsSuite extends AnyFunSuite {
     assert(res1 && res2)
   }
 
+  test("An OnMessageEdited reaction fails if the message passed as parameter is the wrong type") {
+    context.update = Some(MessageReceived(0, TextMessage(0, chat, 0, "message")))
+    var res = false
+    OnMessageEdited("/messageEdited").build(_ => res = true).operation(context)
+    assert(res == false)
+  }
+
   test("An OnMessagePinned reaction can be created and used") {
     context.update = Some(MessageReceived(0, MessagePinned(0, chat, 0, TextMessage(0, chat, 0, "messagePinned"))))
     var res = false
     OnMessagePinned().build(_ => res = true).operation(context)
     assert(res)
+  }
+
+  test("An OnMessagePinned reaction fails if the message passed as parameter is the wrong type") {
+    context.update = Some(MessageReceived(0, TextMessage(0, chat, 0, "message")))
+    var res = false
+    OnMessagePinned().build(_ => res = true).operation(context)
+    assert(res == false)
   }
 
   test("An OnMatch reaction can be created and used") {
@@ -92,6 +129,15 @@ class ReactionsSuite extends AnyFunSuite {
     assert(res)
   }
 
+  test("An OnMatch reaction fails if the message passed as parameter is the wrong type") {
+    context.update = Some(MessageEdited(0, TextMessage(0, chat, 0, "/messageEdited2")))
+    var res = false
+    OnMatch(
+      "^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$"
+    ).build(_ => res = true).operation(context)
+    assert(res == false)
+  }
+
   test("An OnChatLeave reaction can be created and used") {
     context.update = Some(MessageReceived(0, ChatMemberRemoved(0, chat, 0, HumanUser(0, firstName = "Bob"))))
     var res = false
@@ -99,11 +145,25 @@ class ReactionsSuite extends AnyFunSuite {
     assert(res)
   }
 
+  test("An OnChatLeave reaction fails if the message passed as parameter is the wrong type") {
+    context.update = Some(MessageReceived(0, ChatMembersAdded(0, chat, 0, Seq(HumanUser(0, firstName = "Bob")))))
+    var res = false
+    OnChatLeave().build(_ => res = true).operation(context)
+    assert(res == false)
+  }
+
   test("An OnChatEnter reaction can be created and used") {
     context.update = Some(MessageReceived(0, ChatMembersAdded(0, chat, 0, Seq(HumanUser(0, firstName = "Bob")))))
     var res = false
     OnChatEnter().build(_ => res = true).operation(context)
     assert(res)
+  }
+
+  test("An OnChatEnter reaction fails if the message passed as parameter is the wrong type") {
+    context.update = Some(MessageReceived(0, ChatMemberRemoved(0, chat, 0, HumanUser(0, firstName = "Bob"))))
+    var res = false
+    OnChatEnter().build(_ => res = true).operation(context)
+    assert(res == false)
   }
 
   test("An OnCallbackQuery reaction can be created and used") {
@@ -116,5 +176,12 @@ class ReactionsSuite extends AnyFunSuite {
     var res = false
     OnCallbackQuery("data").build(_ => res = true).operation(context)
     assert(res)
+  }
+
+  test("An OnCallbackQuery reaction fails if the message passed as parameter is the wrong type") {
+    context.update = Some(MessageReceived(0, TextMessage(0, chat, 0, "message")))
+    var res = false
+    OnCallbackQuery("data").build(_ => res = true).operation(context)
+    assert(res == false)
   }
 }
