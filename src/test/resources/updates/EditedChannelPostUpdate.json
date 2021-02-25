@@ -1,0 +1,19 @@
+{
+  "update_id": 0,
+  "edited_channel_post": {
+    "message_id": 0,
+    "sender_chat": {
+      "id": 0,
+      "title": "Title",
+      "type": "channel"
+    },
+    "chat": {
+      "id": 0,
+      "title": "Title",
+      "type": "channel"
+    },
+    "date": 0,
+    "edit_date": 0,
+    "text": "message edited"
+  }
+}

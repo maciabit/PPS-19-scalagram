@@ -1,0 +1,28 @@
+{
+  "update_id": 0,
+  "message": {
+    "message_id": 0,
+    "chat": {
+      "id": 0,
+      "title": "Title",
+      "type": "supergroup"
+    },
+    "date": 0,
+    "photo": [
+      {
+        "file_id": "id",
+        "file_unique_id": "id",
+        "file_size": 0,
+        "width": 0,
+        "height": 0
+      },
+      {
+        "file_id": "id",
+        "file_unique_id": "id",
+        "file_size": 0,
+        "width": 0,
+        "height": 0
+      }
+    ]
+  }
+}

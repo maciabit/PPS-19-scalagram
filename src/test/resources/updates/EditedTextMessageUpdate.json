@@ -1,0 +1,21 @@
+{
+  "update_id": 0,
+  "edited_message": {
+    "message_id": 0,
+    "from": {
+      "id": 0,
+      "is_bot": false,
+      "first_name": "John",
+      "last_name": "Doe",
+      "username": "JohnDoe"
+    },
+    "chat": {
+      "id": 0,
+      "title": "Title",
+      "type": "supergroup"
+    },
+    "date": 0,
+    "edit_date": 0,
+    "text": "message edited"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "update_id": 0,
+  "message": {
+    "message_id": 0,
+    "chat": {
+      "id": 0,
+      "title": "Title",
+      "type": "supergroup"
+    },
+    "date": 0,
+    "text": "Tesxt"
+  }
+}
