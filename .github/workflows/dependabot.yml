@@ -1,0 +1,11 @@
+# This workflow will automatically update dependencies via Dependabot
+
+name: Dependabot is checking for updates
+
+version: 2
+
+updates:
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "daily"
