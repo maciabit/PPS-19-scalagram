@@ -10,14 +10,22 @@ plugins {
     // Apply the scala plugin to add support for Scala
     scala
 
-    // Apply the java-library plugin for API and implementation separation.
+    // Apply the java-library plugin for API and implementation separation
     `java-library`
+
+    // Plugins needed in order to make Maven Central Gradle plugin works
+    java
+    `maven-publish`
 
     // Apply the Scalafmt plugin to add tasks related to code formatting
     id("cz.alenkacz.gradle.scalafmt") version "1.14.0"
 
     // Import GitSemVer plugin
     id("org.danilopianini.git-sensitive-semantic-versioning") version "0.1.0"
+
+    // Import Maven Central Gradle plugin
+    id ("org.danilopianini.publish-on-central") version "0.4.0"
+
 }
 
 //gitSemVer {
@@ -61,3 +69,78 @@ tasks.compileScala.configure {
 tasks.compileTestScala.configure {
     dependsOn(tasks.getByName("checkTestScalafmt"))
 }
+
+group = "io.github.maciabit"
+
+publishOnCentral {
+    // The following values are the default, if they are ok with you, just omit them
+    //rojectDescription = "No description provided"
+    //projectLongName = project.name
+    //licenseName = "Apache License, Version 2.0"
+    //licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0"
+    projectUrl = "https://github.com/maciabit/${project.name}"
+    scmConnection = "git:git@github.com:maciabit/${project.name}"
+    /*
+     * The plugin is pre-configured to fetch credentials for Maven Central from the environment
+     * Username from: MAVEN_CENTRAL_USERNAME
+     * Password from: MAVEN_CENTRAL_PASSWORD
+     *
+     * In case of failure, it falls back to properties mavenCentralUsername and mavenCentralPassword respectively
+     */
+    /*
+     * This publication can be sent to other destinations, e.g. GitHub
+    repository("https://maven.pkg.github.com/OWNER/REPOSITORY", "GitHub") {
+        user = System.getenv("GITHUB_USERNAME")
+        password = System.getenv("GITHUB_TOKEN")
+    }
+    */
+    /*
+     * You may also want to configure publications created by other plugins
+     * like the one that goes on Central. Typically, for instance, for publishing
+     * Gradle plugins to Maven Central.
+     * It can be done as follows.
+
+    publishing {
+        publications {
+            withType<MavenPublication> {
+                configurePomForMavenCentral()
+            }
+        }
+    }
+    */
+}
+/*
+ * Developers and contributors must be added manually
+ */
+publishing {
+    publications {
+        withType<MavenPublication> {
+            pom {
+                developers {
+                    developer {
+                        name.set("Mattia Rossi")
+                        email.set("mattia.rossi15@studio.unibo.it")
+                        url.set("https://github.com/maciabit")
+                    }
+                }
+            }
+        }
+    }
+}
+/*
+ * The plugin automatically adds every publication to the list of objects to sign
+ * The configuration of the signing process is left to the user, though,
+ * as in a normal Gradle build.
+ * In the following example, in-memory signing is configured.
+ * For further options, please refer to: https://docs.gradle.org/current/userguide/signing_plugin.html
+ */
+signing {
+    val signingKey: String? by project
+    val signingPassword: String? by project
+    useInMemoryPgpKeys(signingKey, signingPassword)
+}
+
+/*val scaladocJar by tasks.registering(Jar::class) {
+    this.archiveCLassifier.set("scaladoc")
+    from(tasks.scaladoc.get().outputDirectory)
+}*/
