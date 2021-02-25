@@ -1,7 +1,5 @@
 # This workflow will automatically update dependencies via Dependabot
 
-name: Dependabot is checking for updates
-
 version: 2
 
 updates:
