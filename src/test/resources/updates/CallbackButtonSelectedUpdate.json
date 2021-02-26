@@ -5,7 +5,10 @@
     "from": {
       "id": 0,
       "is_bot": false,
-      "first_name": "John"
+      "first_name": "John",
+      "last_name": "Doe",
+      "username": "JohnDoe",
+      "language_code": "it"
     },
     "message": {
       "message_id": 0,

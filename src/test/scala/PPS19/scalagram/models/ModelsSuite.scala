@@ -19,7 +19,7 @@ class ModelsSuite extends AnyFunSuite {
       )
     )
     val messageDecoded = decode[Update](messageString)
-    assert(messageDecoded.isRight)
+    assert(messageDecoded.isRight && messageDecoded.getOrElse(null).getClass != UnknownUpdate)
   }
 
   test("A CallbackButtonSelected update can be decoded") {

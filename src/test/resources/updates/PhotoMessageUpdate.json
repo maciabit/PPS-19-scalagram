@@ -8,6 +8,15 @@
       "type": "supergroup"
     },
     "date": 0,
+    "forward_from": {
+      "id": 0,
+      "is_bot": false,
+      "first_name": "John",
+      "last_name": "Doe",
+      "username": "JohnDoe",
+      "language_code": "it"
+    },
+    "forward_date": 0,
     "photo": [
       {
         "file_id": "id",
@@ -23,6 +32,7 @@
         "width": 0,
         "height": 0
       }
-    ]
+    ],
+    "caption": "caption"
   }
 }
