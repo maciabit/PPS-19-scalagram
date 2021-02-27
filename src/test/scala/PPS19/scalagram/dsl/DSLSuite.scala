@@ -3,9 +3,9 @@ package PPS19.scalagram.dsl
 import PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer.{Callback, CurrentChatInlineQuery, InlineQuery, Url}
 import PPS19.scalagram.dsl.keyboard.KeyboardConversions._
 import PPS19.scalagram.dsl.keyboard.KeyboardUtils._
-import PPS19.scalagram.logic.{Bot, BotToken}
-import PPS19.scalagram.models.ChatId
-import PPS19.scalagram.utils.Props
+import PPS19.scalagram.marshalling.codecs.EncoderOps
+import PPS19.scalagram.models._
+import io.circe.Encoder
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
@@ -13,40 +13,58 @@ import org.scalatestplus.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class DSLSuite extends AnyFunSuite {
 
-  val bot: Bot = Bot(BotToken(Props.get("token")))
-  val chatId: ChatId = ChatId("-1001286594106")
-
-  test("A Reply Keyboard can be created with the DSL and sent in a message") {
-    val keyboard = Keyboard(
+  test("A Reply Keyboard created with the DSL equals one created without it") {
+    val dslKeyboard = Keyboard(
       "Button 1",
       "Button 2" :: "Button 3"
     )
-    val res = bot.sendMessage(
-      chatId,
-      "Test ReplyKeyboard DSL",
-      replyMarkup = Some(keyboard)
+    val standardKeyboard = ReplyKeyboardMarkup(
+      Seq(
+        Seq(ReplyKeyboardButton("Button 1")),
+        Seq(
+          ReplyKeyboardButton("Button 2"),
+          ReplyKeyboardButton("Button 3")
+        )
+      )
     )
-    assert(res.isSuccess)
+    assert(Encoder[ReplyMarkup].snakeCase(dslKeyboard) == Encoder[ReplyMarkup].snakeCase(standardKeyboard))
   }
 
-  test("An Inline Keyboard can be created with the DSL and sent in a message") {
-    val inlineKeyboard = InlineKeyboard(
+  test("An Inline Keyboard created with the DSL equals one created without it") {
+    val dslInlineKeyboard = InlineKeyboard(
       "Button 1",
       "Button 2" :: "Button 3",
       Callback("Callback button" -> "data"),
-      Url("Link1" -> "http://www.google.it") :: Url(
-        "Link2" -> "http://www.youtube.com"
-      ),
+      Url("Link1" -> "http://www.google.it") :: Url("Link2" -> "http://www.youtube.com"),
       Callback("Callback button" -> "data") :: "Button",
       "Button" :: Callback("Callback button" -> "data"),
       InlineQuery("Inline query" -> "asd"),
       CurrentChatInlineQuery("Inline query current chat" -> "asd")
     )
-    val res = bot.sendMessage(
-      chatId,
-      "Test InlineKeyboard DSL",
-      replyMarkup = Some(inlineKeyboard)
+    val standardInlineKeyboard = InlineKeyboardMarkup(
+      Seq(
+        Seq(InlineKeyboardButton("Button 1", callbackData = Some("Button 1"))),
+        Seq(
+          InlineKeyboardButton("Button 2", callbackData = Some("Button 2")),
+          InlineKeyboardButton("Button 3", callbackData = Some("Button 3"))
+        ),
+        Seq(InlineKeyboardButton.callback("Callback button", "data")),
+        Seq(
+          InlineKeyboardButton.url("Link1", "http://www.google.it"),
+          InlineKeyboardButton.url("Link2", "http://www.youtube.com")
+        ),
+        Seq(
+          InlineKeyboardButton.callback("Callback button", "data"),
+          InlineKeyboardButton("Button", callbackData = Some("Button"))
+        ),
+        Seq(
+          InlineKeyboardButton("Button", callbackData = Some("Button")),
+          InlineKeyboardButton.callback("Callback button", "data")
+        ),
+        Seq(InlineKeyboardButton.switchInlineQuery("Inline query", "asd")),
+        Seq(InlineKeyboardButton.switchInlineQueryCurrentChat("Inline query current chat", "asd"))
+      )
     )
-    assert(res.isSuccess)
+    assert(Encoder[ReplyMarkup].snakeCase(dslInlineKeyboard) == Encoder[ReplyMarkup].snakeCase(standardInlineKeyboard))
   }
 }

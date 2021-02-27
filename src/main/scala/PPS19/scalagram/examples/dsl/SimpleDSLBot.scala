@@ -65,7 +65,7 @@ object SimpleDSLBot extends TelegramBotDSL {
 
     << "/ik"
     >> "Inline keyboard" - InlineKeyboard(
-      Callback("Button 1" -> "data"),
+      Callback("Button 1" -> "callback"),
       "Button 2" :: "Button 3"
     )
 
@@ -98,9 +98,9 @@ object SimpleDSLBot extends TelegramBotDSL {
     }
   )
 
-  scenes (
+  scenes(
 
-    scene (
+    scene(
       "FIRST_SCENE"
 
       <| "FIRST_STEP"
@@ -125,7 +125,7 @@ object SimpleDSLBot extends TelegramBotDSL {
       }
     )
 
-    scene (
+    scene(
       "SECOND_SCENE"
       <| "ONLY_STEP"
       >> { context =>

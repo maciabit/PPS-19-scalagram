@@ -17,14 +17,7 @@ case class KeyboardButtonContainer(
     ReplyKeyboardButton(text, requestContact, requestLocation)
 
   def toInlineKeyboardButton: InlineKeyboardButton =
-    InlineKeyboardButton(
-      text,
-      url,
-      callbackData,
-      switchInlineQuery,
-      switchInlineQueryCurrentChat,
-      pay
-    )
+    InlineKeyboardButton(text, url, callbackData, switchInlineQuery, switchInlineQueryCurrentChat, pay)
 }
 
 object KeyboardButtonContainer {
@@ -39,10 +32,7 @@ object KeyboardButtonContainer {
     KeyboardButtonContainer(tuple._1, switchInlineQuery = Some(tuple._2))
 
   def CurrentChatInlineQuery(tuple: (String, String)): KeyboardButtonContainer =
-    KeyboardButtonContainer(
-      tuple._1,
-      switchInlineQueryCurrentChat = Some(tuple._2)
-    )
+    KeyboardButtonContainer(tuple._1, switchInlineQueryCurrentChat = Some(tuple._2))
 
   def Payment(text: String): KeyboardButtonContainer =
     KeyboardButtonContainer(text, pay = Some(true))
