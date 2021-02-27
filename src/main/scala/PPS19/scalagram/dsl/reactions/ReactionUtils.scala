@@ -1,5 +1,6 @@
 package PPS19.scalagram.dsl.reactions
 
+import PPS19.scalagram.dsl.scenes.steps.PartialStepContainer
 import PPS19.scalagram.models.{InlineKeyboardMarkup, ReplyKeyboardMarkup}
 
 object ReactionUtils {
@@ -27,7 +28,10 @@ object ReactionUtils {
   }
 
   implicit class StringExtension(string: String) {
+
     def |(string2: String) = List(string2, string)
+
+    def <|(stepName: String): PartialStepContainer = PartialStepContainer(string, stepName, Nil)
   }
 
   implicit class ListExtension(list: List[String]) {

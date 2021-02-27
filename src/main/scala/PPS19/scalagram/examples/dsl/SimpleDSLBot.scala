@@ -74,20 +74,66 @@ object SimpleDSLBot extends TelegramBotDSL {
 
     << "/md"
     >> MarkdownV2("Keyboard with *Markdown*") - InlineKeyboard("A" :: "B" :: "C")
+
+    << "/scene1"
+    >> { context =>
+      context.reply("You are now inside a scene")
+      println("You are now inside a scene")
+      context.enterScene("FIRST_SCENE")
+      println(context.activeScene)
+    }
+
+    << "/scene2"
+    >> { context =>
+      context.reply("You are now inside a scene\nType /back to exit")
+      println("You are now inside a scene")
+      context.enterScene("SECOND_SCENE")
+      println(context.activeScene)
+    }
+
+    << "/back"
+    >> { context =>
+      context.leaveScene()
+      context.reply("Ready")
+    }
   )
 
-  /*scenes (
+  scenes (
 
-    scene("").steps (
-      step("")
-      >>("")
+    scene (
+      "FIRST_SCENE"
+
+      <| "FIRST_STEP"
+      >> { context =>
+        context.reply("First scene step")
+        println("First scene step")
+        context.nextStep()
+      }
+
+      <| "SECOND_STEP"
+      >> { context =>
+        context.reply("Second scene step")
+        println("Second scene step")
+        context.nextStep()
+      }
+
+      <| "THIRD_STEP"
+      >> { context =>
+        context.reply("Third scene step")
+        println("Third scene step")
+        context.leaveScene()
+      }
     )
 
-    scene("").steps (
-      step("")
-        >>("")
+    scene (
+      "SECOND_SCENE"
+      <| "ONLY_STEP"
+      >> { context =>
+        context.reply("This scene has only one step")
+        println("Scene step")
+      }
     )
-  )*/
+  )
 
 }
 

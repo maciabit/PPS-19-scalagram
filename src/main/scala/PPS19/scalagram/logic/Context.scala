@@ -7,9 +7,9 @@ import java.time.LocalDateTime
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.util.{Failure, Try}
 
-sealed trait Context {
+trait Context {
   val bot: Bot
-  val store: Map[String, Any]
+  var store: Map[String, Any]
 
   var timeout: FiniteDuration
   var lastUpdateTimestamp: LocalDateTime
@@ -39,7 +39,7 @@ object Context {
   def apply(bot: Bot): Context = ContextImpl(bot)
 
   case class ContextImpl(bot: Bot) extends Context {
-    override val store: Map[String, Any] = Map()
+    override var store: Map[String, Any] = Map()
     override var timeout: FiniteDuration = 1.days
     override var lastUpdateTimestamp: LocalDateTime = LocalDateTime.now()
     override var activeScene: Option[Scene] = None
