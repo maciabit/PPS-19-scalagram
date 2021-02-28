@@ -1,25 +1,20 @@
 package PPS19.scalagram.models
 
-import java.nio.file.{Files, Paths}
-
-import io.circe.parser.decode
+import io.circe.jawn.decode
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
+
+import java.nio.file.{Files, Paths}
 
 @RunWith(classOf[JUnitRunner])
 class ModelsSuite extends AnyFunSuite {
 
   private def testUpdateDecoding(expectedJsonPath: String): Unit = {
-    val messageString = new String(
-      Files.readAllBytes(
-        Paths.get(
-          getClass.getClassLoader.getResource(expectedJsonPath).toURI
-        )
-      )
-    )
-    val messageDecoded = decode[Update](messageString)
-    assert(messageDecoded.isRight && messageDecoded.getOrElse(null).getClass != UnknownUpdate)
+    val messageString =
+      new String(Files.readAllBytes(Paths.get(getClass.getClassLoader.getResource(expectedJsonPath).toURI)))
+    val decodedMessage = decode[Update](messageString)
+    assert(decodedMessage.isRight && decodedMessage.getOrElse(null).getClass != UnknownUpdate.getClass)
   }
 
   test("A CallbackButtonSelected update can be decoded") {

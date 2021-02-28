@@ -14,7 +14,13 @@ case class OnMessage(strings: String*) extends VarArgReactionBuilder {
           case Some(update: MessageUpdate)
               if update.updateType == UpdateType.MessageReceived ||
                 update.updateType == UpdateType.ChannelPostReceived =>
-            strings.isEmpty || strings.contains(update.message.asInstanceOf[TextMessage].text)
+            val message = update.message.asInstanceOf[TextMessage].text
+            val stringToMatch =
+              if (message.startsWith("/") && context.bot.user.isDefined)
+                message.replace(s"@${context.bot.user.get.username}", "").trim
+              else
+                message
+            strings.isEmpty || strings.contains(stringToMatch)
           case _ => false
         }
       },

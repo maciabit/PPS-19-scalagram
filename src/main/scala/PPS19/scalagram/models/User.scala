@@ -21,7 +21,7 @@ object User {
 
   def apply(
       id: Int,
-      isBot: Boolean,
+      isBot: Boolean = false,
       firstName: String,
       lastName: Option[String] = None,
       username: Option[String] = None,

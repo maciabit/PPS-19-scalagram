@@ -6,7 +6,7 @@ import PPS19.scalagram.models.messages.TelegramMessage
 import PPS19.scalagram.models.{ChatId, InputFile, ReplyMarkup, Update, User}
 import PPS19.scalagram.modes.polling.Mode
 
-import scala.util.Try
+import scala.util.{Success, Try}
 
 case class BotToken(token: String) {
   def get: String = token
@@ -17,7 +17,10 @@ trait Bot {
   val middlewares: List[Middleware]
   val reactions: List[Reaction]
   val scenes: List[Scene]
-  val user: User = getMe.get
+  val user: Option[User] = getMe match {
+    case Success(user) => Some(user)
+    case _             => None
+  }
 
   def launch(mode: Mode): Unit = mode.start(this)
 

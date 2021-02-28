@@ -11,15 +11,15 @@ import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
 class ReactionsSuite extends AnyFunSuite {
-  val bot: Bot = Bot(BotToken(Props.get("token")))
-  val chat: Chat = Supergroup(-1001286594106L, None, None)
+  val bot: Bot = Bot(BotToken(""))
+  val chat: Chat = Supergroup(0, None, None)
   val context: Context = Context(bot)
 
-  def testReaction(update: Update, reaction: ReactionBuilder, flag: Boolean = true): Assertion = {
+  def testReaction(update: Update, reaction: ReactionBuilder, expectedRes: Boolean = true): Assertion = {
     context.update = Some(update)
     var res = false
     reaction.build(_ => res = true).operation(context)
-    assert(res == flag)
+    assert(res == expectedRes)
   }
 
   test("An OnMessage reaction that matches any string can be created and used") {
@@ -41,7 +41,7 @@ class ReactionsSuite extends AnyFunSuite {
   test(
     "An OnMessage reaction fails if the message passed as parameter is the wrong type"
   ) {
-    testReaction(MessageEdited(0, TextMessage(0, chat, 0, "/messageEdited")), OnMessage(), false)
+    testReaction(MessageEdited(0, TextMessage(0, chat, 0, "/messageEdited")), OnMessage(), expectedRes = false)
   }
 
   test("An OnStart reaction can be created and used") {
@@ -49,7 +49,7 @@ class ReactionsSuite extends AnyFunSuite {
   }
 
   test("An OnStart reaction fails if the message passed as parameter is the wrong type") {
-    testReaction(MessageEdited(0, TextMessage(0, chat, 0, "/messageEdited")), OnStart(), false)
+    testReaction(MessageEdited(0, TextMessage(0, chat, 0, "/messageEdited")), OnStart(), expectedRes = false)
   }
 
   test("An OnHelp reaction can be created and used") {
@@ -57,7 +57,7 @@ class ReactionsSuite extends AnyFunSuite {
   }
 
   test("An OnHelp reaction fails if the message passed as parameter is the wrong type") {
-    testReaction(MessageEdited(0, TextMessage(0, chat, 0, "/messageEdited")), OnHelp(), false)
+    testReaction(MessageEdited(0, TextMessage(0, chat, 0, "/messageEdited")), OnHelp(), expectedRes = false)
   }
 
   test("An OnMessageEdited reaction that matches any string can be created and used") {
@@ -80,7 +80,11 @@ class ReactionsSuite extends AnyFunSuite {
   }
 
   test("An OnMessageEdited reaction fails if the message passed as parameter is the wrong type") {
-    testReaction(MessageReceived(0, TextMessage(0, chat, 0, "message")), OnMessageEdited("/messageEdited"), false)
+    testReaction(
+      MessageReceived(0, TextMessage(0, chat, 0, "message")),
+      OnMessageEdited("/messageEdited"),
+      expectedRes = false
+    )
   }
 
   test("An OnMessagePinned reaction can be created and used") {
@@ -91,7 +95,7 @@ class ReactionsSuite extends AnyFunSuite {
   }
 
   test("An OnMessagePinned reaction fails if the message passed as parameter is the wrong type") {
-    testReaction(MessageReceived(0, TextMessage(0, chat, 0, "message")), OnMessagePinned(), false)
+    testReaction(MessageReceived(0, TextMessage(0, chat, 0, "message")), OnMessagePinned(), expectedRes = false)
   }
 
   test("An OnMatch reaction can be created and used") {
@@ -109,31 +113,31 @@ class ReactionsSuite extends AnyFunSuite {
       OnMatch(
         "^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$"
       ),
-      false
+      expectedRes = false
     )
   }
 
   test("An OnChatLeave reaction can be created and used") {
-    testReaction(MessageReceived(0, ChatMemberRemoved(0, chat, 0, HumanUser(0, firstName = "Bob"))), OnChatLeave())
+    testReaction(MessageReceived(0, ChatMemberRemoved(0, chat, 0, User(0, firstName = "Bob"))), OnChatLeave())
   }
 
   test("An OnChatLeave reaction fails if the message passed as parameter is the wrong type") {
     testReaction(
-      MessageReceived(0, ChatMembersAdded(0, chat, 0, Seq(HumanUser(0, firstName = "Bob")))),
+      MessageReceived(0, ChatMembersAdded(0, chat, 0, Seq(User(0, firstName = "Bob")))),
       OnChatLeave(),
-      false
+      expectedRes = false
     )
   }
 
   test("An OnChatEnter reaction can be created and used") {
-    testReaction(MessageReceived(0, ChatMembersAdded(0, chat, 0, Seq(HumanUser(0, firstName = "Bob")))), OnChatEnter())
+    testReaction(MessageReceived(0, ChatMembersAdded(0, chat, 0, Seq(User(0, firstName = "Bob")))), OnChatEnter())
   }
 
   test("An OnChatEnter reaction fails if the message passed as parameter is the wrong type") {
     testReaction(
-      MessageReceived(0, ChatMemberRemoved(0, chat, 0, HumanUser(0, firstName = "Bob"))),
+      MessageReceived(0, ChatMemberRemoved(0, chat, 0, User(0, firstName = "Bob"))),
       OnChatEnter(),
-      false
+      expectedRes = false
     )
   }
 
@@ -141,7 +145,7 @@ class ReactionsSuite extends AnyFunSuite {
     testReaction(
       CallbackButtonSelected(
         0,
-        CallbackQuery("", HumanUser(0, firstName = "Bob"), chatInstance = "", data = Some("data"))
+        CallbackQuery("", User(0, firstName = "Bob"), chatInstance = "", data = Some("data"))
       ),
       OnCallbackQuery("data")
     )
@@ -151,7 +155,7 @@ class ReactionsSuite extends AnyFunSuite {
     testReaction(
       MessageReceived(0, TextMessage(0, chat, 0, "message")),
       OnCallbackQuery("data"),
-      false
+      expectedRes = false
     )
   }
 }

@@ -7,7 +7,6 @@ import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
 
 import java.nio.file.{Files, Paths}
-import scala.reflect.io.File
 
 @RunWith(classOf[JUnitRunner])
 class KeyboardSuite extends AnyFunSuite {
