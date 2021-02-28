@@ -14,9 +14,7 @@ case class OnMessage(strings: String*) extends VarArgReactionBuilder {
           case Some(update: MessageUpdate)
               if update.updateType == UpdateType.MessageReceived ||
                 update.updateType == UpdateType.ChannelPostReceived =>
-            strings.isEmpty || strings.contains(
-              update.message.asInstanceOf[TextMessage].text
-            )
+            strings.isEmpty || strings.contains(update.message.asInstanceOf[TextMessage].text)
           case _ => false
         }
       },
