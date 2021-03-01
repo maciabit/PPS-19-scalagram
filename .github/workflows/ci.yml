@@ -14,8 +14,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu, windows, macos]
-        java_version: [8, 11, 14]
+        os: [ubuntu]
+        java_version: [11, 14]
     runs-on: ${{matrix.os}}-latest
     env:
       token-name: BOT_TOKEN_${{matrix.os}}_${{matrix.java_version}}
