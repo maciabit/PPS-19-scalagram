@@ -46,7 +46,7 @@ jobs:
           shell: bash
           command: ./gradlew test > output/test/${{env.log-name-test}}
       - name: Upload output errors as Artifact
-        if: success()
+        if: failure()
         uses: actions/upload-artifact@v2
         with:
           name: artifact-errors
