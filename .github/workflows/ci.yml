@@ -45,10 +45,11 @@ jobs:
           max_attempts: 5
           shell: bash
           command: ./gradlew test > output/test/${{env.log-name-test}}
-      - name: Upload Artifact
+      - name: Upload output errors as Artifact
+        if: success()
         uses: actions/upload-artifact@v2
         with:
-          name: my-artifact
+          name: artifact-errors
           path: |
             output/test/${{env.log-name-test}}
             output/build/${{env.log-name-build}}
