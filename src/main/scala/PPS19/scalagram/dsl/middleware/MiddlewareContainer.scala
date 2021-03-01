@@ -4,7 +4,7 @@ import PPS19.scalagram.logic.{Context, Middleware}
 
 trait MiddlewareContainer {
   def middlewares: List[Middleware]
-  def <->(middleware: Context => Boolean): MiddlewareContainer
+  def <>(middleware: Context => Boolean): MiddlewareContainer
 }
 
 object MiddlewareContainer {
@@ -12,7 +12,7 @@ object MiddlewareContainer {
     MiddlewareContainerImpl(middlewares)
 
   private case class MiddlewareContainerImpl(middlewares: List[Middleware]) extends MiddlewareContainer {
-    def <->(middleware: Context => Boolean): MiddlewareContainerImpl =
+    def <>(middleware: Context => Boolean): MiddlewareContainerImpl =
       MiddlewareContainerImpl(
         middlewares appended Middleware(middleware)
       )

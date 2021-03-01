@@ -7,7 +7,7 @@ object WorkingMode {
 
   def POLLING: Polling = Polling()
 
-  def WEBHOOK: Webhook = Webhook()
+  //def WEBHOOK: Webhook = Webhook()
 
   sealed trait WorkingMode
 
@@ -22,6 +22,6 @@ object WorkingMode {
       Polling(this.pollingInterval, _timeoutDelay)
   }
 
-  case class Webhook() extends WorkingMode
+  //case class Webhook() extends WorkingMode
 
 }

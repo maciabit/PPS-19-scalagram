@@ -26,8 +26,7 @@ trait TelegramBotDSL {
 
   protected def mode(mode: WorkingMode): Unit = {
     _mode = mode match {
-      case WorkingMode.Polling(interval, delay) =>
-        Polling(interval, delay)
+      case WorkingMode.Polling(interval, delay) => Polling(interval, delay)
     }
   }
 
@@ -45,7 +44,7 @@ trait TelegramBotDSL {
 
   protected def !! : PartialReactionContainer = PartialReactionContainer(Nil, OnStart())
 
-  protected def <->(
+  protected def <>(
       middleware: Context => Boolean
   ): MiddlewareContainer =
     MiddlewareContainer(Middleware(middleware) :: Nil)

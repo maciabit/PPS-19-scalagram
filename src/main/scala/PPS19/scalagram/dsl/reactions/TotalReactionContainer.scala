@@ -5,9 +5,10 @@ import PPS19.scalagram.logic.reactions._
 
 case class TotalReactionContainer(reactions: List[Reaction]) extends ReactionContainer {
 
-  def ?? : PartialReactionContainer = PartialReactionContainer(reactions, OnHelp())
+  //def <@(): PartialReactionContainer = PartialReactionContainer(reactions, OnHelp())
 
-  // TODO add parameterless versions of << and <*
+  /*def <<(): VarArgReactionContainer =
+    VarArgReactionContainer(reactions, OnMessage())*/
 
   def <<(trigger: String): VarArgReactionContainer =
     VarArgReactionContainer(reactions, OnMessage(trigger), trigger)
@@ -18,19 +19,21 @@ case class TotalReactionContainer(reactions: List[Reaction]) extends ReactionCon
   def <~(trigger: String): PartialReactionContainer =
     PartialReactionContainer(reactions, OnCallbackQuery(trigger))
 
-  def <*(trigger: String): VarArgReactionContainer =
+  def <*(): VarArgReactionContainer =
+    VarArgReactionContainer(reactions, OnMessageEdited())
+
+  def <*(trigger: String = ""): VarArgReactionContainer =
     VarArgReactionContainer(reactions, OnMessageEdited(trigger), trigger)
 
   def <*(triggers: List[String]): VarArgReactionContainer =
     VarArgReactionContainer(reactions, OnMessageEdited(triggers: _*), triggers: _*)
 
-  def <^ : PartialReactionContainer = PartialReactionContainer(reactions, OnMessagePinned())
+  def <#(regex: String): PartialReactionContainer = PartialReactionContainer(reactions, OnMatch(regex))
 
-  def <+ : PartialReactionContainer = PartialReactionContainer(reactions, OnChatEnter())
+  /*def <^(): PartialReactionContainer = PartialReactionContainer(reactions, OnMessagePinned())
 
-  def :> : PartialReactionContainer = PartialReactionContainer(reactions, OnChatLeave())
+  def <+(): PartialReactionContainer = PartialReactionContainer(reactions, OnChatEnter())
 
-  def <#(regex: String): PartialReactionContainer =
-    PartialReactionContainer(reactions, OnMatch(regex))
+  def </(): PartialReactionContainer = PartialReactionContainer(reactions, OnChatLeave())*/
 
 }

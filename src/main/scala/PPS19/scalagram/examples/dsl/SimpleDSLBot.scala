@@ -22,12 +22,12 @@ object SimpleDSLBot extends TelegramBotDSL {
   )
 
   middlewares(
-    <-> { context =>
+    <> { context =>
       println(context.update.get)
       true
     }
 
-    <-> { _ =>
+    <> { _ =>
       println("Second middleware")
       true
     }
@@ -51,8 +51,8 @@ object SimpleDSLBot extends TelegramBotDSL {
     <* "Message"
     >> "Message edited"
 
-    <* ("Message" | "Message2" | "Message3")
-    >> "Message edited"
+    <* ("Message1" | "Message2" | "Message3")
+    >> "MessageN edited"
 
     <# "boh"
     >> "Regex"
@@ -96,6 +96,24 @@ object SimpleDSLBot extends TelegramBotDSL {
       context.leaveScene()
       context.reply("Ready")
     }
+
+    /*<@ ()
+    >> "Help"
+
+    << ()
+    >> "What?"
+
+    <* ()
+    >> "Any message edited"
+
+    <^ ()
+    >> "Message pinned"
+
+    <+ ()
+    >> "Welcome"
+
+    </ ()
+    >> "Goodbye"*/
   )
 
   scenes(
