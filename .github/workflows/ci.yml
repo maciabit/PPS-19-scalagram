@@ -31,12 +31,11 @@ jobs:
           SECRET_VALUE=${{secrets[env.token-name]}}
           mkdir -p src/main/resources
           echo token=$SECRET_VALUE > src/main/resources/application.properties
-      - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v2
+      - name: 'Download Artifact'
+        uses: actions/download-artifact@v2
         with:
-          name: artifact
-          path: artifact.txt
-          retention-days: 5
+          name: my-artifact
+          path: output/
       - name: Build with Gradle
         run: ./gradlew build -x test
       - name: Test (safe) with Gradle
