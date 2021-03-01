@@ -22,7 +22,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: mkdir -p output/test
-      - run: echo hello > output/test/world.txt
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
@@ -33,18 +32,20 @@ jobs:
           SECRET_VALUE=${{secrets[env.token-name]}}
           mkdir -p src/main/resources
           echo token=$SECRET_VALUE > src/main/resources/application.properties
-      - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v2
-        with:
-          name: my-artifact
-          path: output/test/world.txt
-          retention-days: 5
       - name: Build with Gradle
-        run: ./gradlew build -x test
+        run: ./gradlew build -x test > output/test/job-build.log
       - name: Test (safe) with Gradle
         uses: nick-invision/retry@v2
         with:
           timeout_minutes: 10
           max_attempts: 5
           shell: bash
-          command: ./gradlew test
+          command: ./gradlew test > output/test/job-test.log
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact
+          path: |
+            output/test/job-build.log
+            output/test/job-test.log
+          retention-days: 5
