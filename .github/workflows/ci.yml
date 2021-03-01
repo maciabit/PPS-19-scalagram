@@ -31,6 +31,11 @@ jobs:
           SECRET_VALUE=${{secrets[env.token-name]}}
           mkdir -p src/main/resources
           echo token=$SECRET_VALUE > src/main/resources/application.properties
+      - name: Archive job results
+        uses: actions/upload-artifact@v2
+        with:
+          name: job-result
+          path: .github/output/job.log
       - name: Build with Gradle
         run: ./gradlew build -x test
       - name: Test (safe) with Gradle
