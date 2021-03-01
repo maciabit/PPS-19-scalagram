@@ -19,9 +19,13 @@ jobs:
     runs-on: ${{matrix.os}}-latest
     env:
       token-name: BOT_TOKEN_${{matrix.os}}_${{matrix.java_version}}
+      log-name-test: test-${{matrix.os}}-${{matrix.java_version}}.log
+      log-name-build: build-${{matrix.os}}-${{matrix.java_version}}.log
     steps:
       - uses: actions/checkout@v2
-      - run: mkdir -p output/test
+      - run: |
+          mkdir -p output/build
+          mkdir -p output/test
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
@@ -33,19 +37,19 @@ jobs:
           mkdir -p src/main/resources
           echo token=$SECRET_VALUE > src/main/resources/application.properties
       - name: Build with Gradle
-        run: ./gradlew build -x test > output/test/job-build.log
+        run: ./gradlew build -x test > output/build/env.log-name-build
       - name: Test (safe) with Gradle
         uses: nick-invision/retry@v2
         with:
           timeout_minutes: 10
           max_attempts: 5
           shell: bash
-          command: ./gradlew test > output/test/job-test.log
+          command: ./gradlew test > output/test/env.log-name-test
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: my-artifact
           path: |
-            output/test/job-build.log
-            output/test/job-test.log
+            output/test/env.log-name-test
+            output/build/env.log-name-build
           retention-days: 5
