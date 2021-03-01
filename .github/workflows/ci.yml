@@ -35,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: job-result
-          path: .github/output/job.log
+          path: output/job.log
       - name: Build with Gradle
         run: ./gradlew build -x test
       - name: Test (safe) with Gradle
