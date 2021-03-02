@@ -44,7 +44,7 @@ jobs:
         with:
           name: buid-errors
           path: output/build/${{env.log-build}}
-          retention-days: 5
+          retention-days: 2
       - name: Test (safe) with Gradle
         uses: nick-invision/retry@v2
         with:

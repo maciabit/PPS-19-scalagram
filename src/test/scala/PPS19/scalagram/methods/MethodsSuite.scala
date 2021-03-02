@@ -40,7 +40,7 @@ class MethodsSuite extends AnyFunSuite {
       "editMessageText",
       Map(
         "chat_id" -> chatId.get.toString,
-        "message_idfsdfdsf" -> "0",
+        "message_id" -> "0",
         "text" -> "message",
         "parse_mode" -> "HTML",
         "inline_message_id" -> "0"
