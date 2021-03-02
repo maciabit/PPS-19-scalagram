@@ -44,12 +44,12 @@ jobs:
         with:
           name: buid-errors
           path: output/build/${{env.log-build}}
-          retention-days: 2
+          retention-days: 14
       - name: Test (safe) with Gradle
         uses: nick-invision/retry@v2
         with:
           timeout_minutes: 10
-          max_attempts: 5
+          max_attempts: 2
           shell: bash
           command: ./gradlew test > output/test/${{env.log-test}}
       - name: Upload output errors as artifact if test has failed
@@ -58,4 +58,4 @@ jobs:
         with:
           name: test-errors
           path: output/test/${{env.log-test}}
-          retention-days: 5
+          retention-days: 14

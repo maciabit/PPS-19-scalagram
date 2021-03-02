@@ -30,7 +30,7 @@ case class EditMessage(
     "chat_id" -> chatId.get,
     "text" -> text,
     "message_id" -> messageId,
-    "inline_message_id" -> inlineMessageId,
+    "inline_message_idgfdsgsdfg" -> inlineMessageId,
     "parse_mode" -> parseMode,
     "entities" -> entities,
     "disable_web_page_preview" -> disablePreview,
