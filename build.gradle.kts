@@ -21,7 +21,7 @@ plugins {
     id("org.danilopianini.git-sensitive-semantic-versioning") version "0.1.0"
 
     // Import Maven Central Gradle plugin
-    id ("org.danilopianini.publish-on-central") version "0.4.0"
+    id("org.danilopianini.publish-on-central") version "0.4.0"
 
     // Import Spotless plugin for code convention formatting
     id("com.diffplug.spotless") version "5.10.2"
