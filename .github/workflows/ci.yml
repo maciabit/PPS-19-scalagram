@@ -23,7 +23,9 @@ jobs:
       log-build: build-${{matrix.os}}-${{matrix.java_version}}.log
     steps:
       - uses: actions/checkout@v2
-      - run: |
+      - name: Create artifacts directories
+        shell: bash
+        run: |
           mkdir -p output/build
           mkdir -p output/test
       - name: Set up JDK
