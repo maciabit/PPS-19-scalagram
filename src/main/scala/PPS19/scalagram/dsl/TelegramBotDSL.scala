@@ -26,7 +26,7 @@ trait TelegramBotDSL {
 
   protected def mode(mode: WorkingMode): Unit = {
     _mode = mode match {
-      case WorkingModegf.Polling(interval, delay) =>
+      case WorkingMode.Polling(interval, delay) =>
         Polling(interval, delay)
     }
   }
