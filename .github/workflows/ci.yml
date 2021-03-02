@@ -14,8 +14,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu, windows, macos]
-        java_version: [8, 11, 14]
+        os: [ubuntu]
+        java_version: [11, 14]
     runs-on: ${{matrix.os}}-latest
     env:
       token-name: BOT_TOKEN_${{matrix.os}}_${{matrix.java_version}}
@@ -38,6 +38,13 @@ jobs:
           echo token=$SECRET_VALUE > src/main/resources/application.properties
       - name: Build with Gradle
         run: ./gradlew build -x test > output/build/${{env.log-build}}
+      - name: Upload output errors as artifact if build has failed
+        if: ${{failure()}}
+        uses: actions/upload-artifact@v2
+        with:
+          name: buid-errors
+          path: output/build/${{env.log-build}}
+          retention-days: 5
       - name: Test (safe) with Gradle
         uses: nick-invision/retry@v2
         with:
@@ -45,12 +52,10 @@ jobs:
           max_attempts: 5
           shell: bash
           command: ./gradlew test > output/test/${{env.log-test}}
-      - name: Upload output errors as Artifact
-        if: failure()
+      - name: Upload output errors as artifact if test has failed
+        if: ${{failure()}}
         uses: actions/upload-artifact@v2
         with:
-          name: artifact-errors
-          path: |
-            output/test/${{env.log-test}}
-            output/build/${{env.log-build}}
+          name: test-errors
+          path: output/test/${{env.log-test}}
           retention-days: 5

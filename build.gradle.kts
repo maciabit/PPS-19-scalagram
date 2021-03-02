@@ -29,6 +29,8 @@ plugins {
     // Import Gradle Scoverage plugin
     id("org.scoverage") version "5.0.0"
 
+    // Import Gradle Scalafix plugin
+    //id("io.github.cosmicsilence.scalafix") version "0.1.5"
 }
 
 //gitSemVer {
