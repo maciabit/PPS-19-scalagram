@@ -1,0 +1,9 @@
+{
+  "id" : 0,
+  "is_bot" : false,
+  "first_name" : "John",
+  "username" : "JohnDoeBot",
+  "can_join_groups" : true,
+  "can_read_all_group_messages" : false,
+  "supports_inline_queries" : false
+}

@@ -29,27 +29,60 @@ object User {
       canJoinGroups: Option[Boolean] = None,
       canReadAllGroupMessages: Option[Boolean] = None,
       supportsInlineQueries: Option[Boolean] = None
-  ): User =
-    UserImpl(
-      id,
-      isBot,
-      firstName,
-      lastName,
-      username,
-      languageCode,
-      canJoinGroups,
-      canReadAllGroupMessages,
-      supportsInlineQueries
-    )
+  ): User = {
+    if (isBot) {
+      BotUser(
+        id,
+        isBot,
+        firstName,
+        lastName,
+        username,
+        languageCode,
+        canJoinGroups,
+        canReadAllGroupMessages,
+        supportsInlineQueries
+      )
+    } else {
+      HumanUser(
+        id,
+        isBot,
+        firstName,
+        lastName,
+        username,
+        languageCode,
+        canJoinGroups,
+        canReadAllGroupMessages,
+        supportsInlineQueries
+      )
+    }
+  }
 
-  /**
-    * Decodes chat based on the `type` value of the input Json
-    */
-  implicit val userDecoder: Decoder[User] = List[Decoder[User]](
-    deriveDecoder[UserImpl].widen
-  ).reduceLeft(_.or(_)).camelCase
+  implicit val userDecoder: Decoder[User] =
+    Decoder
+      .instance[User] { cursor =>
+        cursor
+          .get[Boolean]("isBot")
+          .map {
+            case true  => deriveDecoder[BotUser]
+            case false => deriveDecoder[HumanUser]
+          }
+          .flatMap(_.tryDecode(cursor))
+      }
+      .camelCase
 
-  private final case class UserImpl(
+  private final case class HumanUser(
+      id: Int,
+      isBot: Boolean,
+      firstName: String,
+      lastName: Option[String] = None,
+      username: Option[String] = None,
+      languageCode: Option[String] = None,
+      canJoinGroups: Option[Boolean] = None,
+      canReadAllGroupMessages: Option[Boolean] = None,
+      supportsInlineQueries: Option[Boolean] = None
+  ) extends User
+
+  private final case class BotUser(
       id: Int,
       isBot: Boolean,
       firstName: String,

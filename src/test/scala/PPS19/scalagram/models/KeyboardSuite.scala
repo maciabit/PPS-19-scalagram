@@ -5,21 +5,14 @@ import io.circe.{Encoder, Json, parser}
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
-
-import java.nio.file.{Files, Paths}
+import PPS19.scalagram.models.Utils.getJsonString
 
 @RunWith(classOf[JUnitRunner])
 class KeyboardSuite extends AnyFunSuite {
 
   private def testReplyMarkupEncoding(r: ReplyMarkup, expectedJsonPath: String): Unit = {
     val keyboardJson = Encoder[ReplyMarkup].snakeCase(r)
-    val expectedJsonString = new String(
-      Files.readAllBytes(
-        Paths.get(
-          getClass.getClassLoader.getResource(expectedJsonPath).toURI
-        )
-      )
-    )
+    val expectedJsonString = getJsonString(expectedJsonPath)
     val expectedJson = parser.parse(expectedJsonString).getOrElse(Json.Null)
     assert(keyboardJson == expectedJson)
   }
