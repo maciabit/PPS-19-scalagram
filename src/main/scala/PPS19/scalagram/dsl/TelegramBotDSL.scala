@@ -11,13 +11,13 @@ import PPS19.scalagram.modes.polling.Mode
 
 trait TelegramBotDSL {
 
-  private var _token: BotToken = _
-  private var _bot: Bot = _
+  protected[dsl] var _token: BotToken = _
+  protected[dsl] var _bot: Bot = _
 
-  private var _mode: Mode = _
-  private var _middlewares: List[Middleware] = Nil
-  private var _reactions: List[Reaction] = Nil
-  private var _scenes: List[Scene] = Nil
+  protected[dsl] var _mode: Mode = _
+  protected[dsl] var _middlewares: List[Middleware] = Nil
+  protected[dsl] var _reactions: List[Reaction] = Nil
+  protected[dsl] var _scenes: List[Scene] = Nil
 
   protected def token(string: String): Unit = {
     _token = BotToken(string)

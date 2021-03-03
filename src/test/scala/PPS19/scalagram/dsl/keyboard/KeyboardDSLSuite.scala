@@ -1,5 +1,6 @@
-package PPS19.scalagram.dsl
+package PPS19.scalagram.dsl.keyboard
 
+import PPS19.scalagram.dsl._
 import PPS19.scalagram.marshalling.codecs.EncoderOps
 import PPS19.scalagram.models._
 import io.circe.Encoder
@@ -8,7 +9,7 @@ import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class DSLSuite extends AnyFunSuite {
+class KeyboardDSLSuite extends AnyFunSuite {
 
   test("A Reply Keyboard created with the DSL equals one created without it") {
     val dslKeyboard = Keyboard(
