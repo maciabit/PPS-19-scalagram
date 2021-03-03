@@ -1,8 +1,5 @@
 package PPS19.scalagram.dsl
 
-import PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer.{Callback, CurrentChatInlineQuery, InlineQuery, Url}
-import PPS19.scalagram.dsl.keyboard.KeyboardConversions._
-import PPS19.scalagram.dsl.keyboard.KeyboardUtils._
 import PPS19.scalagram.marshalling.codecs.EncoderOps
 import PPS19.scalagram.models._
 import io.circe.Encoder

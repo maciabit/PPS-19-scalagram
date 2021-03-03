@@ -1,12 +1,6 @@
 package PPS19.scalagram.examples.dsl
 
-import PPS19.scalagram.dsl.TelegramBotDSL
-import PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer.Callback
-import PPS19.scalagram.dsl.keyboard.KeyboardConversions._
-import PPS19.scalagram.dsl.keyboard.KeyboardUtils._
-import PPS19.scalagram.dsl.mode.WorkingMode._
-import PPS19.scalagram.dsl.reactions.ReactionConversions._
-import PPS19.scalagram.dsl.reactions.ReactionUtils.{StringExtension, _}
+import PPS19.scalagram.dsl._
 import PPS19.scalagram.utils.Props
 
 import scala.concurrent.duration.DurationInt
@@ -18,7 +12,7 @@ object SimpleDSLBot extends TelegramBotDSL {
   )
 
   mode(
-    POLLING interval 300.milliseconds timeoutDelay 1.days
+    Polling interval 300.milliseconds timeoutDelay 1.days
   )
 
   middlewares(
@@ -117,7 +111,6 @@ object SimpleDSLBot extends TelegramBotDSL {
   )
 
   scenes(
-
     scene(
       "FIRST_SCENE"
 
@@ -143,8 +136,9 @@ object SimpleDSLBot extends TelegramBotDSL {
       }
     )
 
-    scene(
+    scene (
       "SECOND_SCENE"
+
       <| "ONLY_STEP"
       >> { context =>
         context.reply("This scene has only one step")
