@@ -15,7 +15,7 @@ class KeyboardDSLSuite extends AnyFunSuite {
     val dslKeyboard = Keyboard(
       "Button 1",
       "Button 2" :: "Button 3"
-    )
+    ).withOneTime.withResize.withSelective
     val standardKeyboard = ReplyKeyboardMarkup(
       Seq(
         Seq(ReplyKeyboardButton("Button 1")),
@@ -23,7 +23,10 @@ class KeyboardDSLSuite extends AnyFunSuite {
           ReplyKeyboardButton("Button 2"),
           ReplyKeyboardButton("Button 3")
         )
-      )
+      ),
+      Some(true),
+      Some(true),
+      Some(true)
     )
     assert(Encoder[ReplyMarkup].snakeCase(dslKeyboard) == Encoder[ReplyMarkup].snakeCase(standardKeyboard))
   }

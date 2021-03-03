@@ -13,11 +13,11 @@ case class TotalReactionContainer(reactions: List[Reaction]) extends ReactionCon
     PartialReactionContainer(reactions, OnMessage())
   }
 
-  def <<(trigger: String): VarArgReactionContainer =
-    VarArgReactionContainer(reactions, OnMessage(trigger), trigger)
+  def <<(trigger: String): PartialReactionContainer =
+    PartialReactionContainer(reactions, OnMessage(trigger))
 
-  def <<(triggers: List[String]): VarArgReactionContainer =
-    VarArgReactionContainer(reactions, OnMessage(triggers: _*), triggers: _*)
+  def <<(triggers: List[String]): PartialReactionContainer =
+    PartialReactionContainer(reactions, OnMessage(triggers: _*))
 
   def <~(trigger: String): PartialReactionContainer =
     PartialReactionContainer(reactions, OnCallbackQuery(trigger))
@@ -27,11 +27,11 @@ case class TotalReactionContainer(reactions: List[Reaction]) extends ReactionCon
     PartialReactionContainer(reactions, OnMessageEdited())
   }
 
-  def <*(trigger: String): VarArgReactionContainer =
-    VarArgReactionContainer(reactions, OnMessageEdited(trigger), trigger)
+  def <*(trigger: String): PartialReactionContainer =
+    PartialReactionContainer(reactions, OnMessageEdited(trigger))
 
-  def <*(triggers: List[String]): VarArgReactionContainer =
-    VarArgReactionContainer(reactions, OnMessageEdited(triggers: _*), triggers: _*)
+  def <*(triggers: List[String]): PartialReactionContainer =
+    PartialReactionContainer(reactions, OnMessageEdited(triggers: _*))
 
   def <#(regex: String): PartialReactionContainer = PartialReactionContainer(reactions, OnMatch(regex))
 
