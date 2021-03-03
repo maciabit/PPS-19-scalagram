@@ -74,15 +74,14 @@ spotless {
     }
 }
 
+scoverage {
+    excludedPackages.addAll("PPS19.scalagram.examples", "PPS19.scalagram.examples.dsl")
+}
 
-// Run compileScala only if all target files are correctly formatted
+// Run compileScala only if source files are properly formatted
 tasks.compileScala.configure {
    dependsOn(tasks.getByName("spotlessCheck"))
 }
-
-//tasks.compileTestScala.configure {
-  //  dependsOn(tasks.getByName("checkTestScalafmt"))
-//}
 
 group = "io.github.maciabit"
 
