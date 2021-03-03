@@ -19,8 +19,15 @@ jobs:
     runs-on: ${{matrix.os}}-latest
     env:
       token-name: BOT_TOKEN_${{matrix.os}}_${{matrix.java_version}}
+      log-test: test-${{matrix.os}}-${{matrix.java_version}}.log
+      log-build: build-${{matrix.os}}-${{matrix.java_version}}.log
     steps:
       - uses: actions/checkout@v2
+      - name: Create artifacts directories
+        shell: bash
+        run: |
+          mkdir -p output/build
+          mkdir -p output/test
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
@@ -32,11 +39,25 @@ jobs:
           mkdir -p src/main/resources
           echo token=$SECRET_VALUE > src/main/resources/application.properties
       - name: Build with Gradle
-        run: ./gradlew build -x test
+        run: ./gradlew build -x test > output/build/${{env.log-build}}
+      - name: Upload output errors as artifact if build has failed
+        if: ${{failure()}}
+        uses: actions/upload-artifact@v2
+        with:
+          name: buid-errors
+          path: output/build/${{env.log-build}}
+          retention-days: 14
       - name: Test (safe) with Gradle
         uses: nick-invision/retry@v2
         with:
           timeout_minutes: 10
-          max_attempts: 5
+          max_attempts: 2
           shell: bash
-          command: ./gradlew test
+          command: ./gradlew test > output/test/${{env.log-test}}
+      - name: Upload output errors as artifact if test has failed
+        if: ${{failure()}}
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-errors
+          path: output/test/${{env.log-test}}
+          retention-days: 14

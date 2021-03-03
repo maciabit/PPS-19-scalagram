@@ -17,15 +17,20 @@ plugins {
     java
     `maven-publish`
 
-    // Apply the Scalafmt plugin to add tasks related to code formatting
-    id("cz.alenkacz.gradle.scalafmt") version "1.14.0"
-
     // Import GitSemVer plugin
     id("org.danilopianini.git-sensitive-semantic-versioning") version "0.1.0"
 
     // Import Maven Central Gradle plugin
-    id ("org.danilopianini.publish-on-central") version "0.4.0"
+    id("org.danilopianini.publish-on-central") version "0.4.0"
 
+    // Import Spotless plugin for code convention formatting
+    id("com.diffplug.spotless") version "5.10.2"
+
+    // Import Gradle Scoverage plugin
+    id("org.scoverage") version "5.0.0"
+
+    // Import Gradle Scalafix plugin
+    //id("io.github.cosmicsilence.scalafix") version "0.1.5"
 }
 
 //gitSemVer {
@@ -62,13 +67,22 @@ dependencies {
     testRuntimeOnly("org.scala-lang.modules:scala-xml_2.13:1.2.0")
 }
 
-tasks.compileScala.configure {
-    dependsOn(tasks.getByName("checkScalafmt"))
+spotless {
+    scala {
+        scalafmt("2.5.0").configFile(".scalafmt.conf")
+        targetExclude("src/main/scala/PPS19/scalagram/examples/dsl/")
+    }
 }
 
-tasks.compileTestScala.configure {
-    dependsOn(tasks.getByName("checkTestScalafmt"))
+
+// Run compileScala only if all target files are correctly formatted
+tasks.compileScala.configure {
+   dependsOn(tasks.getByName("spotlessCheck"))
 }
+
+//tasks.compileTestScala.configure {
+  //  dependsOn(tasks.getByName("checkTestScalafmt"))
+//}
 
 group = "io.github.maciabit"
 
