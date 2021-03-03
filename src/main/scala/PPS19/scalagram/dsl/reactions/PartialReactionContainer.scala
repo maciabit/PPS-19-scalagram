@@ -7,7 +7,7 @@ trait PartialReactionContainer extends ReactionContainer {
   val reactions: List[Reaction]
   val reactionBuilder: ReactionBuilder
   def >>(action: Context => Unit): TotalReactionContainer =
-    TotalReactionContainer(reactionBuilder.build(action) :: reactions)
+    TotalReactionContainer(reactions :+ reactionBuilder.build(action))
 }
 
 object PartialReactionContainer {

@@ -43,7 +43,7 @@ object SimpleDSLBot extends TelegramBotDSL {
     >> "Callback"
 
     <* "Message"
-    >> "Message edited"
+    >> "'Message' edited"
 
     <* ("Message1" | "Message2" | "Message3")
     >> "MessageN edited"
@@ -91,23 +91,20 @@ object SimpleDSLBot extends TelegramBotDSL {
       context.reply("Ready")
     }
 
-    /*<@ ()
-    >> "Help"
-
-    << ()
+    << *
     >> "What?"
 
-    <* ()
+    <* *
     >> "Any message edited"
 
-    <^ ()
+    <^ *
     >> "Message pinned"
 
-    <+ ()
+    <+ *
     >> "Welcome"
 
-    </ ()
-    >> "Goodbye"*/
+    </ *
+    >> "Goodbye"
   )
 
   scenes(

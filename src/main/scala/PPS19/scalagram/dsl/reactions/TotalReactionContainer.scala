@@ -1,5 +1,6 @@
 package PPS19.scalagram.dsl.reactions
 
+import PPS19.scalagram.dsl.Star
 import PPS19.scalagram.logic.Reaction
 import PPS19.scalagram.logic.reactions._
 
@@ -7,8 +8,10 @@ case class TotalReactionContainer(reactions: List[Reaction]) extends ReactionCon
 
   //def <@(): PartialReactionContainer = PartialReactionContainer(reactions, OnHelp())
 
-  /*def <<(): VarArgReactionContainer =
-    VarArgReactionContainer(reactions, OnMessage())*/
+  def <<(* : Star): PartialReactionContainer = {
+    *.s()
+    PartialReactionContainer(reactions, OnMessage())
+  }
 
   def <<(trigger: String): VarArgReactionContainer =
     VarArgReactionContainer(reactions, OnMessage(trigger), trigger)
@@ -19,10 +22,12 @@ case class TotalReactionContainer(reactions: List[Reaction]) extends ReactionCon
   def <~(trigger: String): PartialReactionContainer =
     PartialReactionContainer(reactions, OnCallbackQuery(trigger))
 
-  def <*(): VarArgReactionContainer =
-    VarArgReactionContainer(reactions, OnMessageEdited())
+  def <*(* : Star): PartialReactionContainer = {
+    *.s()
+    PartialReactionContainer(reactions, OnMessageEdited())
+  }
 
-  def <*(trigger: String = ""): VarArgReactionContainer =
+  def <*(trigger: String): VarArgReactionContainer =
     VarArgReactionContainer(reactions, OnMessageEdited(trigger), trigger)
 
   def <*(triggers: List[String]): VarArgReactionContainer =
@@ -30,10 +35,19 @@ case class TotalReactionContainer(reactions: List[Reaction]) extends ReactionCon
 
   def <#(regex: String): PartialReactionContainer = PartialReactionContainer(reactions, OnMatch(regex))
 
-  /*def <^(): PartialReactionContainer = PartialReactionContainer(reactions, OnMessagePinned())
+  def <^(* : Star): PartialReactionContainer = {
+    *.s()
+    PartialReactionContainer(reactions, OnMessagePinned())
+  }
 
-  def <+(): PartialReactionContainer = PartialReactionContainer(reactions, OnChatEnter())
+  def <+(* : Star): PartialReactionContainer = {
+    *.s()
+    PartialReactionContainer(reactions, OnChatEnter())
+  }
 
-  def </(): PartialReactionContainer = PartialReactionContainer(reactions, OnChatLeave())*/
+  def </(* : Star): PartialReactionContainer = {
+    *.s()
+    PartialReactionContainer(reactions, OnChatLeave())
+  }
 
 }

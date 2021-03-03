@@ -9,6 +9,13 @@ import PPS19.scalagram.models.{InlineKeyboardMarkup, ReplyKeyboardMarkup}
 
 package object dsl {
 
+  // Value used to indicate that a reaction should match any update of the given type
+  sealed trait Star {
+    def s(): Unit = {}
+  }
+  private case class StarImpl() extends Star
+  val * : Star = StarImpl()
+
   // Conversions for Reactions DSL
 
   implicit def stringToSendMessage(string: String): Context => Unit =
