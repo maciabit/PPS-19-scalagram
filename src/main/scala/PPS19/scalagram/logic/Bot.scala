@@ -134,10 +134,8 @@ object Bot {
       scenes: List[Scene] = List.empty
   ): Bot = BotImpl(token, middlewares, scenes, reactions)
 
-  def unapply(
-      bot: Bot
-  ): Option[(BotToken, List[Middleware], List[Scene], List[Reaction])] =
-    Some(bot.token, bot.middlewares, bot.scenes, bot.reactions)
+  def unapply(bot: Bot): Option[(BotToken, List[Middleware], List[Reaction], List[Scene])] =
+    Some(bot.token, bot.middlewares, bot.reactions, bot.scenes)
 
   case class BotImpl(
       token: BotToken,

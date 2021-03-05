@@ -20,28 +20,26 @@ class BotSuite extends AnyFunSuite {
     assert(!middleware.operation(context))
   }
 
-  test("A reaction always returns false") {
+  test("A Reaction always returns false") {
     val trigger = Trigger(_ => true)
     val reaction = Reaction(trigger, _ => {})
     assert(!reaction.operation(context))
   }
 
-  test("A Bot can be created") {
-    val token = BotToken("<TOKEN>")
-    val middlewares = List(Middleware(_ => true))
-    val scenes =
-      List(Scene("<SCENE_NAME>", List(Step("<ACTION_NAME>", _ => {}))))
-    val reactions = List(Reaction(Trigger(_ => true), _ => {}))
-    val bot = Bot(token, middlewares, reactions, scenes)
-    assert(bot.token == token)
-    assert(bot.middlewares == middlewares)
-    assert(bot.scenes == scenes)
-    assert(bot.reactions == reactions)
+  test("A Step always returns false") {
+    val step = Step("name", _ => {})
+    assert(!step.operation(context))
   }
 
-  test("A reaction can be created with the onCommand method") {
-    Bot.onMessage("/hello") { _ =>
-      println("ciao")
-    }
+  test("Bot creation and extractor method are working as intended") {
+    val token = BotToken("<TOKEN>")
+    val middlewares = List(Middleware(_ => true))
+    val scenes = List(Scene("<SCENE_NAME>", List(Step("<ACTION_NAME>", _ => {}))))
+    val reactions = List(Reaction(Trigger(_ => true), _ => {}))
+    val bot = Bot(token, middlewares, reactions, scenes)
+    assert(bot match {
+      case Bot(t, m, r, s) if t == token && m == middlewares && r == reactions && s == scenes => true
+      case _                                                                                  => false
+    })
   }
 }

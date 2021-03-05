@@ -14,7 +14,8 @@ class KeyboardDSLSuite extends AnyFunSuite {
   test("A Reply Keyboard created with the DSL equals one created without it") {
     val dslKeyboard = Keyboard(
       "Button 1",
-      "Button 2" :: "Button 3"
+      "Button 2" :: "Button 3",
+      Contact("Contact") :: Location("Location")
     ).withOneTime.withResize.withSelective
     val standardKeyboard = ReplyKeyboardMarkup(
       Seq(
@@ -22,6 +23,10 @@ class KeyboardDSLSuite extends AnyFunSuite {
         Seq(
           ReplyKeyboardButton("Button 2"),
           ReplyKeyboardButton("Button 3")
+        ),
+        Seq(
+          ReplyKeyboardButton("Contact", requestContact = Some(true)),
+          ReplyKeyboardButton("Location", requestLocation = Some(true))
         )
       ),
       Some(true),

@@ -3,11 +3,7 @@ package PPS19.scalagram.logic.reactions
 import PPS19.scalagram.logic.{Context, Reaction, Trigger}
 import PPS19.scalagram.models.CallbackButtonSelected
 
-case class OnCallbackQuery(string: String) extends SingleArgReactionBuilder {
-
-  override def fromString(string: String): OnCallbackQuery =
-    OnCallbackQuery(string)
-
+case class OnCallbackQuery(string: String) extends ReactionBuilder {
   override def build(action: Context => Unit): Reaction =
     Reaction(
       Trigger { context =>

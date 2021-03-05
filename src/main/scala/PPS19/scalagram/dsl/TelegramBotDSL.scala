@@ -49,8 +49,12 @@ trait TelegramBotDSL {
   protected def scene(stepContainer: TotalStepContainer): SceneContainer =
     SceneContainer(Scene(stepContainer.sceneName, stepContainer.steps) :: Nil)
 
-  def start(): Unit = {
+  protected[dsl] def build(): Unit = {
     _bot = Bot(_token, _middlewares, _reactions, _scenes)
+  }
+
+  def start(): Unit = {
+    build()
     _mode.start(_bot)
   }
 }

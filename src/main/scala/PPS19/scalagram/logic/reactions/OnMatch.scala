@@ -3,10 +3,7 @@ import PPS19.scalagram.logic.{Context, Reaction, Trigger}
 import PPS19.scalagram.models.MessageUpdate
 import PPS19.scalagram.models.messages.TextMessage
 
-case class OnMatch(string: String) extends SingleArgReactionBuilder {
-
-  override def fromString(string: String): OnMatch = OnMatch(string)
-
+case class OnMatch(string: String) extends ReactionBuilder {
   override def build(action: Context => Unit): Reaction =
     Reaction(
       Trigger { context =>

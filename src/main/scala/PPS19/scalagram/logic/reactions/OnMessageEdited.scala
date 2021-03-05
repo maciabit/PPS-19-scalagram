@@ -4,10 +4,7 @@ import PPS19.scalagram.logic.{Context, Reaction, Trigger}
 import PPS19.scalagram.models.messages.TextMessage
 import PPS19.scalagram.models.{MessageUpdate, UpdateType}
 
-case class OnMessageEdited(strings: String*) extends VarArgReactionBuilder {
-
-  override def fromStrings(strings: String*): OnMessageEdited = OnMessageEdited(strings: _*)
-
+case class OnMessageEdited(strings: String*) extends ReactionBuilder {
   override def build(action: Context => Unit): Reaction =
     Reaction(
       Trigger { context =>

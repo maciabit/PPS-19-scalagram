@@ -1,5 +1,7 @@
 package PPS19.scalagram.logic
 
+import PPS19.scalagram.models.{MessageReceived, Supergroup, User}
+import PPS19.scalagram.models.messages.TextMessage
 import org.junit.runner.RunWith
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.funsuite.AnyFunSuite
@@ -21,6 +23,15 @@ class ContextSuite extends AnyFunSuite with BeforeAndAfterEach {
 
   override def beforeEach(): Unit = {
     context = Context(bot)
+  }
+
+  test("If available, update chat and user can be accessed straight from the context") {
+    val chat = Supergroup(0, None, None)
+    val user = User(0, isBot = false, "John", Some("Doe"), Some("johndoe"))
+    val update = MessageReceived(0, TextMessage(0, Supergroup(0, None, None), 0, "message", from = Some(user)))
+    assert(context.chat.isEmpty && context.from.isEmpty)
+    context.update = Some(update)
+    assert(context.chat.contains(chat) && context.from.contains(user))
   }
 
   test("The enterScene method works as intended") {
