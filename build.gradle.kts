@@ -30,7 +30,11 @@ plugins {
     id("org.scoverage") version "5.0.0"
 
     // Import Gradle Scalafix plugin
-    //id("io.github.cosmicsilence.scalafix") version "0.1.5"
+    id("io.github.cosmicsilence.scalafix") version "0.1.5"
+}
+
+scalafix {
+    autoConfigureSemanticdb = false
 }
 
 //gitSemVer {
@@ -65,6 +69,9 @@ dependencies {
 
     // Need scala-xml at test runtime
     testRuntimeOnly("org.scala-lang.modules:scala-xml_2.13:1.2.0")
+
+    // Since semanticdb for scalafix isn't autoconfigure, the dependency needs to be specified
+    scalafix("org.scalameta:semanticdb-scalac_2.13.4")
 }
 
 spotless {
