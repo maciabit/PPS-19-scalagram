@@ -32,12 +32,6 @@ plugins {
     // Import Gradle Scoverage plugin
     id("org.scoverage") version "5.0.0"
 
-    // Import Gradle Scalafix plugin
-    id("io.github.cosmicsilence.scalafix") version "0.1.5"
-}
-
-scalafix {
-    autoConfigureSemanticdb = false
 }
 
 //gitSemVer {
@@ -72,9 +66,6 @@ dependencies {
 
     // Need scala-xml at test runtime
     testRuntimeOnly("org.scala-lang.modules:scala-xml_2.13:1.2.0")
-
-    // Since semanticdb for scalafix isn't autoconfigure, the dependency needs to be specified
-    scalafix("org.scalameta:semanticdb-scalac_2.13.4:4.4.0")
 }
 
 spotless {
@@ -180,4 +171,10 @@ signing {
 /*val scaladocJar by tasks.registering(Jar::class) {
     this.archiveCLassifier.set("scaladoc")
     from(tasks.scaladoc.get().outputDirectory)
+}*/
+
+/*tasks.withType<ScalaCompile>().configureEach {
+    scalaCompileOptions.apply {
+        additionalParameters = listOf("-Xfatal-warnings", "-Ywarn-unused")
+    }
 }*/
