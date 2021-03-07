@@ -1,0 +1,114 @@
+{
+  "update_id": 0,
+  "message": {
+    "message_id": 0,
+    "from": {
+      "id": 0,
+      "is_bot": false,
+      "first_name": "John",
+      "last_name": "Doe",
+      "username": "JohnDoe",
+      "language_code": "it"
+    },
+    "chat": {
+      "id": 0,
+      "username": "name",
+      "type": "private"
+    },
+    "date": 0,
+    "forward_from": {
+      "id": 0,
+      "is_bot": false,
+      "first_name": "Original",
+      "last_name": "Sender",
+      "username": "OriginalSender"
+    },
+    "forward_date": 0,
+    "text": "Text",
+    "entities": [
+      {
+        "offset": 0,
+        "length": 0,
+        "type": "mention"
+      },
+      {
+        "offset": 0,
+        "length": 0,
+        "type": "hashtag"
+      },
+      {
+        "offset": 0,
+        "length": 0,
+        "type": "cashtag"
+      },
+      {
+        "offset": 0,
+        "length": 0,
+        "type": "url"
+      },
+      {
+        "offset": 0,
+        "length": 0,
+        "type": "email"
+      },
+      {
+        "offset": 0,
+        "length": 0,
+        "type": "phone_number"
+      },
+      {
+        "offset": 0,
+        "length": 0,
+        "type": "bold"
+      },
+      {
+        "offset": 0,
+        "length": 0,
+        "type": "italic"
+      },
+      {
+        "offset": 0,
+        "length": 0,
+        "type": "code"
+      },
+      {
+        "offset": 0,
+        "length": 0,
+        "type": "pre"
+      },
+      {
+        "offset": 0,
+        "length": 0,
+        "type": "text_link",
+        "url": "https://jsonplaceholder.typicode.com/"
+      },
+      {
+        "offset": 0,
+        "length": 0,
+        "type": "text_mention",
+        "user": {
+          "id": 0,
+          "is_bot": false,
+          "first_name": "Original",
+          "last_name": "Sender",
+          "username": "OriginalSender"
+        }
+      },
+      {
+        "offset": 0,
+        "length": 0,
+        "type": "underline"
+      },
+      {
+        "offset": 0,
+        "length": 0,
+        "type": "strikethrough"
+      },
+      {
+        "offset": 0,
+        "length": 0,
+        "type": "wrong_value"
+      }
+    ]
+  }
+}
