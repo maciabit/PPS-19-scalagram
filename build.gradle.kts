@@ -17,6 +17,9 @@ plugins {
     java
     `maven-publish`
 
+    // Plugin needed for signing artifacts
+    signing
+
     // Import GitSemVer plugin
     id("org.danilopianini.git-sensitive-semantic-versioning") version "0.1.0"
 
@@ -71,7 +74,7 @@ dependencies {
     testRuntimeOnly("org.scala-lang.modules:scala-xml_2.13:1.2.0")
 
     // Since semanticdb for scalafix isn't autoconfigure, the dependency needs to be specified
-    scalafix("org.scalameta:semanticdb-scalac_2.13.4")
+    scalafix("org.scalameta:semanticdb-scalac_2.13.4:4.4.0")
 }
 
 spotless {
@@ -120,7 +123,7 @@ publishOnCentral {
      * like the one that goes on Central. Typically, for instance, for publishing
      * Gradle plugins to Maven Central.
      * It can be done as follows.
-
+    */
     publishing {
         publications {
             withType<MavenPublication> {
@@ -128,11 +131,9 @@ publishOnCentral {
             }
         }
     }
-    */
+
 }
-/*
- * Developers and contributors must be added manually
- */
+
 publishing {
     publications {
         withType<MavenPublication> {
@@ -142,6 +143,21 @@ publishing {
                         name.set("Mattia Rossi")
                         email.set("mattia.rossi15@studio.unibo.it")
                         url.set("https://github.com/maciabit")
+                    }
+                    developer {
+                        name.set("Gianni Tumedei")
+                        email.set("gianni.tumedei@studio.unibo.it")
+                        url.set("https://github.com/gianni-tumedei-studio-unibo")
+                    }
+                    developer {
+                        name.set("Francesco Boschi")
+                        email.set("francesco.boschi2@studio.unibo.it")
+                        url.set("https://github.com/FrancescoBoschi")
+                    }
+                    developer {
+                        name.set("Filippo Pistocchi")
+                        email.set("filippo.pistocchi4@studio.unibo.it")
+                        url.set("https://github.com/pistocchifilippo")
                     }
                 }
             }
