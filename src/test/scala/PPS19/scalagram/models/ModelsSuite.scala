@@ -5,6 +5,7 @@ import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
 import PPS19.scalagram.models.Utils.getJsonString
+import PPS19.scalagram.models.messages.{CallbackQuery, TextMessage}
 
 @RunWith(classOf[JUnitRunner])
 class ModelsSuite extends AnyFunSuite {
@@ -32,11 +33,11 @@ class ModelsSuite extends AnyFunSuite {
   }
 
   test("A EditedChannelPost update can be decoded") {
-    testUpdateDecoding(s"updates/EditedChannelPostUpdate.json")
+    testUpdateDecoding(s"updates/ChannelPostEditedUpdate.json")
   }
 
   test("A EditedTextMessage update can be decoded") {
-    testUpdateDecoding(s"updates/EditedTextMessageUpdate.json")
+    testUpdateDecoding(s"updates/MessageEditedUpdate.json")
   }
 
   test("A MessagePinned update can be decoded") {
@@ -48,7 +49,7 @@ class ModelsSuite extends AnyFunSuite {
   }
 
   test("A TextMessage update can be decoded") {
-    testUpdateDecoding(s"updates/TextMessageUpdate.json")
+    testUpdateDecoding(s"updates/MessageReceivedUpdate.json")
   }
 
   test("A BotUser update can be decoded") {
@@ -62,4 +63,23 @@ class ModelsSuite extends AnyFunSuite {
     val decodedUser = decode[User](userString)
     assert(decodedUser.isRight && !decodedUser.getOrElse(null).isBot)
   }
+
+  test("A ChatId containing a String can be decoded") {
+    val chatId: ChatId = ChatId("@JohnDoe")
+    assert(chatId.get.isInstanceOf[String])
+  }
+
+  test("A CallbackButtonSelected update can be created") {
+    val update: CallbackButtonSelected = CallbackButtonSelected(
+      0,
+      CallbackQuery(
+        "0",
+        User(0, isBot = false, "John"),
+        chatInstance = "0",
+        message = Some(TextMessage(0, Supergroup(id = 0), 0, "Message"))
+      )
+    )
+    assert(update.updateType == UpdateType.CallbackSelected && update.chat.isInstanceOf[Supergroup])
+  }
+
 }

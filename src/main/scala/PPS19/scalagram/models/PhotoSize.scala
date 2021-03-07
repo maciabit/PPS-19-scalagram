@@ -19,7 +19,7 @@ object PhotoSize {
     */
   implicit val photoSizeDecoder: Decoder[PhotoSize] = List[Decoder[PhotoSize]](
     deriveDecoder[Size].widen
-  ).reduceLeft(_.or(_))
+  ).head
 }
 final case class Size(
     fileId: String,

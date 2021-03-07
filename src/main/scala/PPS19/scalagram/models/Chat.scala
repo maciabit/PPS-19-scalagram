@@ -29,23 +29,23 @@ object Chat {
 
 final case class PrivateChat(
     id: Long,
-    username: Option[String],
-    firstName: Option[String],
-    lastName: Option[String]
+    username: Option[String] = None,
+    firstName: Option[String] = None,
+    lastName: Option[String] = None
 ) extends Chat
 
-final case class Group(id: Long, title: Option[String]) extends Chat
+final case class Group(id: Long, title: Option[String] = None) extends Chat
 
 final case class Supergroup(
     id: Long,
-    title: Option[String],
-    username: Option[String]
+    title: Option[String] = None,
+    username: Option[String] = None
 ) extends Chat
 
 final case class Channel(
     id: Long,
-    title: Option[String],
-    username: Option[String]
+    title: Option[String] = None,
+    username: Option[String] = None
 ) extends Chat
 
 final case class UnknownChat() extends Chat {

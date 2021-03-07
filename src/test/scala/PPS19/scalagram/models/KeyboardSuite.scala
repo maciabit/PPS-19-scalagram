@@ -1,6 +1,7 @@
 package PPS19.scalagram.models
 
 import PPS19.scalagram.marshalling.codecs.EncoderOps
+import PPS19.scalagram.models
 import io.circe.{Encoder, Json, parser}
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
@@ -58,7 +59,9 @@ class KeyboardSuite extends AnyFunSuite {
 
   // Inline Keyboard
 
-  test("URL Buttons, Callback Buttons and Switch to Inline Buttons can be properly encoded in an Inline Keyboard") {
+  test(
+    "URL Buttons, Callback Buttons, Switch to Inline Buttons and Pay Buttons can be properly encoded in an Inline Keyboard"
+  ) {
     testReplyMarkupEncoding(
       InlineKeyboardMarkup(
         Seq(
@@ -66,7 +69,8 @@ class KeyboardSuite extends AnyFunSuite {
             InlineKeyboardButton.url("Link", "https://www.youtube.com/"),
             InlineKeyboardButton.callback("Callback", "Callback"),
             InlineKeyboardButton.switchInlineQueryCurrentChat("Inline chat", "HI"),
-            InlineKeyboardButton.switchInlineQuery("Inline query", "")
+            InlineKeyboardButton.switchInlineQuery("Inline query", ""),
+            InlineKeyboardButton.pay("$$$")
           )
         )
       ),
