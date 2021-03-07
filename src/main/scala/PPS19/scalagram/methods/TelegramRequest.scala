@@ -24,7 +24,7 @@ trait TelegramRequest[T] {
 
   val multipartFormData: Map[String, String] = Map.empty
 
-  def parseSuccessResponse(json: Json): Try[T]
+  def parseSuccessfulResponse(json: Json): Try[T]
 
   def endpointUrl = s"$TELEGRAM_API_URL${token.get}/$endpoint"
 
@@ -57,7 +57,7 @@ trait TelegramRequest[T] {
         val json = parse(response.text()).getOrElse(Json.Null)
         json.findAllByKey("ok") match {
           case list: List[Json] if list.nonEmpty && list.head.toString() == "true" =>
-            parseSuccessResponse(json.findAllByKey("result").head)
+            parseSuccessfulResponse(json.findAllByKey("result").head)
           case _ => Failure(decode[TelegramError](json.toString()).getOrElse(null))
         }
       case Failure(e) => Failure(e)

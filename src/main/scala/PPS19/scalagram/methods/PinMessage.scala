@@ -24,5 +24,5 @@ case class PinMessage(
     "disable_notification" -> disableNotification
   )
 
-  def parseSuccessResponse(json: Json): Try[Boolean] = Success(true)
+  def parseSuccessfulResponse(json: Json): Try[Boolean] = Success(true)
 }

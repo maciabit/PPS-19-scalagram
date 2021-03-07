@@ -54,7 +54,7 @@ case class SendPhoto(
     })
   ).filter(item => item._2 != null)
 
-  def parseSuccessResponse(json: Json): Try[TelegramMessage] =
+  def parseSuccessfulResponse(json: Json): Try[TelegramMessage] =
     decode[TelegramMessage](json.toString()) match {
       case Right(message) => Success(message)
       case Left(error)    => Failure(error)

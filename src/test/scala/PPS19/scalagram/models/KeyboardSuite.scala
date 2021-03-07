@@ -5,7 +5,7 @@ import io.circe.{Encoder, Json, parser}
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
-import PPS19.scalagram.models.Utils.getJsonString
+import PPS19.scalagram.TestingUtils.getJsonString
 
 @RunWith(classOf[JUnitRunner])
 class KeyboardSuite extends AnyFunSuite {

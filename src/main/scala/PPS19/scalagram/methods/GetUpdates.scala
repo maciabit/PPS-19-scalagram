@@ -27,8 +27,9 @@ case class GetUpdates(
     "allowed_Updates" -> allowedUpdates
   )
 
-  def parseSuccessResponse(json: Json): Try[List[Update]] = {
-    val updates = json.asArray.get
+  def parseSuccessfulResponse(json: Json): Try[List[Update]] = {
+    val updates = json.asArray
+      .getOrElse(Vector.empty)
       .map { update => decode[Update](update.toString()) }
       .collect { case Right(update) => update }
       .toList

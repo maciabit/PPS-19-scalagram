@@ -27,5 +27,5 @@ case class AnswerCallbackQuery(
     "cache_time" -> cacheTime
   )
 
-  def parseSuccessResponse(json: Json): Try[Boolean] = Success(true)
+  def parseSuccessfulResponse(json: Json): Try[Boolean] = Success(true)
 }

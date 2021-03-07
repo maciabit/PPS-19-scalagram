@@ -41,7 +41,7 @@ case class EditMessage(
     })
   )
 
-  def parseSuccessResponse(json: Json): Try[TelegramMessage] =
+  def parseSuccessfulResponse(json: Json): Try[TelegramMessage] =
     decode[TelegramMessage](json.toString()) match {
       case Right(message) => Success(message)
       case Left(error)    => Failure(error)

@@ -17,5 +17,5 @@ case class UnpinAllMessages(token: BotToken, chatId: ChatId) extends TelegramReq
     "chat_id" -> chatId.get
   )
 
-  def parseSuccessResponse(json: Json): Try[Boolean] = Success(true)
+  def parseSuccessfulResponse(json: Json): Try[Boolean] = Success(true)
 }

@@ -117,7 +117,7 @@ class ReactionsSuite extends AnyFunSuite {
     )
   }
 
-  test("An OnMessageEdited reaction fails if the message passed as parameter is the wrong type") {
+  test("An OnMessageEdited reaction fails if the message passed as parameter is of the wrong type") {
     testReaction(
       MessageReceived(0, TextMessage(0, chat, 0, "message")),
       OnMessageEdited("edited message"),
@@ -134,9 +134,17 @@ class ReactionsSuite extends AnyFunSuite {
     )
   }
 
-  test("An OnMessagePinned reaction fails if the message passed as parameter is the wrong type") {
+  test("An OnMessagePinned reaction fails if the message passed as parameter is of the wrong type") {
+    // Same update class, different message class
     testReaction(
       MessageReceived(0, TextMessage(0, chat, 0, "message")),
+      OnMessagePinned(),
+      Bot.onMessagePinned,
+      expectedRes = false
+    )
+    // Different update class
+    testReaction(
+      CallbackButtonSelected(0, CallbackQuery("", User(0, firstName = "Bob"), chatInstance = "")),
       OnMessagePinned(),
       Bot.onMessagePinned,
       expectedRes = false
@@ -155,9 +163,21 @@ class ReactionsSuite extends AnyFunSuite {
     )
   }
 
-  test("An OnMatch reaction fails if the message passed as parameter is the wrong type") {
+  test("An OnMatch reaction fails if the message passed as parameter is of the wrong type") {
+    // Same update class, different message class
     testReaction(
       MessageEdited(0, TextMessage(0, chat, 0, "edited message")),
+      OnMatch(
+        "^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$"
+      ),
+      Bot.onMatch(
+        "^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$"
+      ),
+      expectedRes = false
+    )
+    // Different update class
+    testReaction(
+      CallbackButtonSelected(0, CallbackQuery("", User(0, firstName = "Bob"), chatInstance = "")),
       OnMatch(
         "^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$"
       ),
@@ -176,9 +196,17 @@ class ReactionsSuite extends AnyFunSuite {
     )
   }
 
-  test("An OnChatEnter reaction fails if the message passed as parameter is the wrong type") {
+  test("An OnChatEnter reaction fails if the message passed as parameter is of the wrong type") {
+    // Same update class, different message class
     testReaction(
       MessageReceived(0, ChatMemberRemoved(0, chat, 0, User(0, firstName = "Bob"))),
+      OnChatEnter(),
+      Bot.onChatEnter,
+      expectedRes = false
+    )
+    // Different update class
+    testReaction(
+      CallbackButtonSelected(0, CallbackQuery("", User(0, firstName = "Bob"), chatInstance = "")),
       OnChatEnter(),
       Bot.onChatEnter,
       expectedRes = false
@@ -193,9 +221,17 @@ class ReactionsSuite extends AnyFunSuite {
     )
   }
 
-  test("An OnChatLeave reaction fails if the message passed as parameter is the wrong type") {
+  test("An OnChatLeave reaction fails if the message passed as parameter is of the wrong type") {
+    // Same update class, different message class
     testReaction(
       MessageReceived(0, ChatMembersAdded(0, chat, 0, Seq(User(0, firstName = "Bob")))),
+      OnChatLeave(),
+      Bot.onChatLeave,
+      expectedRes = false
+    )
+    // Different update class
+    testReaction(
+      CallbackButtonSelected(0, CallbackQuery("", User(0, firstName = "Bob"), chatInstance = "")),
       OnChatLeave(),
       Bot.onChatLeave,
       expectedRes = false
@@ -213,7 +249,7 @@ class ReactionsSuite extends AnyFunSuite {
     )
   }
 
-  test("An OnCallbackQuery reaction fails if the message passed as parameter is the wrong type") {
+  test("An OnCallbackQuery reaction fails if the message passed as parameter is of the wrong type") {
     testReaction(
       MessageReceived(0, TextMessage(0, chat, 0, "message")),
       OnCallbackQuery("data"),

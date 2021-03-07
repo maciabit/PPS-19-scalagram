@@ -22,5 +22,5 @@ case class UnpinMessage(
     "message_id" -> messageId
   )
 
-  def parseSuccessResponse(json: Json): Try[Boolean] = Success(true)
+  def parseSuccessfulResponse(json: Json): Try[Boolean] = Success(true)
 }

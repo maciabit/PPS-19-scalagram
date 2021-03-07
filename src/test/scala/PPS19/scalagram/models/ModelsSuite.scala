@@ -4,7 +4,7 @@ import io.circe.jawn.decode
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
-import PPS19.scalagram.models.Utils.getJsonString
+import PPS19.scalagram.TestingUtils.getJsonString
 
 @RunWith(classOf[JUnitRunner])
 class ModelsSuite extends AnyFunSuite {
