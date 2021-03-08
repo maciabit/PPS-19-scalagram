@@ -7,7 +7,7 @@ import PPS19.scalagram.utils.Props
 
 import scala.concurrent.duration.DurationInt
 
-object SimpleBot extends App {
+private[examples] object SimpleBot extends App {
   val botToken = BotToken(Props.get("token"))
 
   val middlewares = List(
