@@ -10,8 +10,14 @@ import io.circe.Decoder
   * Used by [[PPS19.scalagram.models.messages.UserMessage]], [[PPS19.scalagram.models.messages.SystemMessage]].
   */
 trait TelegramMessage {
+
+  /** Unique message identifier inside a chat. */
   def messageId: Int
+
+  /** Conversation the message belongs to. */
   val chat: Chat
+
+  /** Date the message was sent in Unix time. */
   def date: Int
 }
 

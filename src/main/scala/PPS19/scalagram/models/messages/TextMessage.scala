@@ -15,7 +15,7 @@ import PPS19.scalagram.models._
   * @param forwardSignature     (Optional) Signature of the original message author, for forwarded messages.
   * @param forwardSenderName    (Optional) Sender's name of the original message, for forwarded messages.
   * @param forwardDate          (Optional) Date the original message was sent in Unix time, for forwarded messages.
-  * @param replyToMessage       (Optional) The original message, for replies.
+  * @param replyToMessage       (Optional) Date the original message was sent in Unix time, for forwarded messages.
   * @param editDate             (Optional) Date the message was last edited in Unix time.
   * @param authorSignature      (Optional) Signature of the message author.
   * @param viaBot               (Optional) Bot through which the message was sent, for messages sent via bot.

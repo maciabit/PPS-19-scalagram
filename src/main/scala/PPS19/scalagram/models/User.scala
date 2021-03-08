@@ -1,7 +1,6 @@
 package PPS19.scalagram.models
 
 import PPS19.scalagram.marshalling.codecs.DecoderOps
-import cats.syntax.functor._
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
 
