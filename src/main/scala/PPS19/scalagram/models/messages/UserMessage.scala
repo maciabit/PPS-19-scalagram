@@ -5,6 +5,12 @@ import cats.syntax.functor._
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
 
+/** Defines a generic message sent by a user, human or bot.
+  *
+  * Used by [[PPS19.scalagram.models.messages.TextMessage]], [[PPS19.scalagram.models.messages.PhotoMessage]].
+  *
+  * Extends [[PPS19.scalagram.models.messages.TelegramMessage]].
+  */
 trait UserMessage extends TelegramMessage {
 
   def from: Option[User]
@@ -30,6 +36,7 @@ trait UserMessage extends TelegramMessage {
   def viaBot: Option[User]
 }
 
+/** Companion object for UserMessage. Used as container for implicit methods. */
 object UserMessage {
   implicit val userMessageDecoder: Decoder[UserMessage] =
     List[Decoder[UserMessage]](

@@ -2,6 +2,17 @@ package PPS19.scalagram.dsl.keyboard
 
 import PPS19.scalagram.models.{InlineKeyboardButton, ReplyKeyboardButton}
 
+/**
+ *
+ * @param text 
+ * @param url
+ * @param callbackData
+ * @param switchInlineQuery
+ * @param switchInlineQueryCurrentChat
+ * @param pay
+ * @param requestContact
+ * @param requestLocation
+ */
 case class KeyboardButtonContainer(
     text: String,
     url: Option[String] = None,
