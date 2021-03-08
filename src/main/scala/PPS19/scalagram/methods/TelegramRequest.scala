@@ -10,24 +10,41 @@ import requests.{MultiItem, Requester}
 import java.io.File
 import scala.util.{Failure, Success, Try}
 
+/**
+  * A request to the Telegram APIs.
+  * @tparam T Type of the response returned from the request.
+  */
 trait TelegramRequest[T] {
 
+  /** Official Telegram API URL. */
   val TELEGRAM_API_URL = "https://api.telegram.org/bot"
 
+  /** Token of the bot that will make the request. */
   val token: BotToken
 
+  /** Type of the request. */
   val request: Requester
 
+  /** Request endpoint. */
   val endpoint: String
 
+  /** Query parameters for the request. */
   val urlParams: Map[String, Any]
 
+  /** Multipart form data for the request. */
   val multipartFormData: Map[String, String] = Map.empty
 
+  /** Attempts to parse a successful response to the request.
+    *
+    * @param json Response JSON.
+    * @return Response parsed into an object.
+    */
   def parseSuccessfulResponse(json: Json): Try[T]
 
+  /** Complete endpoint URL for the request, obtained by combining [[TelegramRequest.TELEGRAM_API_URL]], [[TelegramRequest.token]] and [[TelegramRequest.endpoint]]. */
   def endpointUrl = s"$TELEGRAM_API_URL${token.get}/$endpoint"
 
+  /** Maps [[TelegramRequest.urlParams]] to snake case keys and string values, conforming to Telegram API standards. */
   def computedUrlParams: Map[String, String] =
     urlParams
       .filter {
@@ -39,6 +56,7 @@ trait TelegramRequest[T] {
         case (key, value)       => (CaseString(key).snakeCase, value.toString)
       }
 
+  /** Maps [[TelegramRequest.multipartFormData]] to a list of MultiItem objects. */
   def computedMultipartFormData: List[MultiItem] =
     multipartFormData.map {
       case (key, value) =>
@@ -46,6 +64,10 @@ trait TelegramRequest[T] {
         requests.MultiItem(key, file, file.getName)
     }.toList
 
+  /** Executes the request.
+    *
+    * @return Response as parsed from [[TelegramRequest.parseSuccessfulResponse()]].
+    */
   def call(): Try[T] = {
     val req = computedMultipartFormData match {
       case Nil => Try(request(endpointUrl, params = computedUrlParams))

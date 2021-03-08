@@ -7,6 +7,12 @@ import requests.Requester
 
 import scala.util.{Success, Try}
 
+/** Use this method to delete a message, including service messages.
+  *
+  * @param token     Token of the bot that will perform the requets.
+  * @param chatId    Unique identifier for the target chat or username of the target channel (in the format @channelusername).
+  * @param messageId Identifier of the message to delete
+  */
 case class DeleteMessage(
     token: BotToken,
     chatId: ChatId,
