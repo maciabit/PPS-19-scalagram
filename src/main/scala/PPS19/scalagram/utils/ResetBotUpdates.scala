@@ -1,6 +1,7 @@
 package PPS19.scalagram.utils
 
-import PPS19.scalagram.logic.{Bot, BotToken}
+import PPS19.scalagram.logic.Bot
+import PPS19.scalagram.models.BotToken
 
 import scala.util.{Failure, Success}
 

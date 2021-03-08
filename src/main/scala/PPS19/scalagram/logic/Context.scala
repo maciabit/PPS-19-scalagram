@@ -7,38 +7,89 @@ import java.time.LocalDateTime
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.util.{Failure, Try}
 
+/** Execution context of a bot.
+  * There is exactly one instance of [[Context]] for each pair of [[Bot]] and [[Chat]].
+  */
 trait Context {
+
+  /** Bot instance that this context refers to. */
   val bot: Bot
+
+  /** Map that can be used to store context specific data. */
   var store: Map[String, Any]
 
+  /** Timeout that must pass without receiving any update for the context to get destroyed. */
   var timeout: FiniteDuration
+
+  /** Timestamp of the last update. */
   var lastUpdateTimestamp: LocalDateTime
 
+  /** Active scene. */
   var activeScene: Option[Scene]
+
+  /** Active scene step. */
   var sceneStep: Option[Step]
 
+  /** Current update. */
   var update: Option[Update]
+
+  /** Chat that this context refers to */
   def chat: Option[Chat]
+
+  /** User that triggered the last update */
   def from: Option[User]
+
+  /** Shortcut to send a message in the context chat.
+    *
+    * @param text        Text of the message to be sent, 1-4096 characters after entities parsing.
+    * @param parseMode   Mode for parsing entities in the message text.
+    *                    See [[https://core.telegram.org/bots/api#formatting-options formatting options]] for more details.
+    * @param replyMarkup Additional interface options.
+    *                    Can receive an instance of [[PPS19.scalagram.models.ReplyKeyboardMarkup]], [[PPS19.scalagram.models.InlineKeyboardMarkup]],
+    *                    [[PPS19.scalagram.models.ReplyKeyboardRemove]] or [[PPS19.scalagram.models.ForceReply]].
+    * @return
+    */
   def reply(
       text: String,
       parseMode: Option[String] = None,
       replyMarkup: Option[ReplyMarkup] = None
   ): Try[TelegramMessage]
+
+  /** Number of processed updates since the context was created. */
   var updateCount: Int
 
+  /** Enters a scene.
+    *
+    * @param sceneName Name of the scene to activate.
+    */
   def enterScene(sceneName: String): Unit
+
+  /** Leaves the currently active scene. */
   def leaveScene(): Unit
 
+  /** Moves to the next step of the currently active scene. */
   def nextStep(): Unit
+
+  /** Activates a step of the currently active scene.
+    *
+    * @param index Index of the step to activate.
+    */
   def goToStep(index: Int): Unit
+
+  /** Activates a step of the currently active scene.
+    *
+    * @param stepName Name of the step to activate.
+    */
   def goToStep(stepName: String): Unit
 }
 
+/** Companion object for the Context trait. */
 object Context {
+
+  /** Creates a new context for the given bot instance. */
   def apply(bot: Bot): Context = ContextImpl(bot)
 
-  case class ContextImpl(bot: Bot) extends Context {
+  private case class ContextImpl(bot: Bot) extends Context {
     override var store: Map[String, Any] = Map()
     override var timeout: FiniteDuration = 1.days
     override var lastUpdateTimestamp: LocalDateTime = LocalDateTime.now()
