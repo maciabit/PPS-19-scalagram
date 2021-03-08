@@ -1,6 +1,7 @@
 package PPS19.scalagram.dsl
 
-import PPS19.scalagram.logic.{Bot, BotToken, Context, Middleware}
+import PPS19.scalagram.logic.{Bot, Context, Middleware}
+import PPS19.scalagram.models.BotToken
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner

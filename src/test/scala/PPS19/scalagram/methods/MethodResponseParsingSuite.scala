@@ -1,8 +1,7 @@
 package PPS19.scalagram.methods
 
 import PPS19.scalagram.TestingUtils
-import PPS19.scalagram.logic.BotToken
-import PPS19.scalagram.models.{ChatId, RemoteMedia}
+import PPS19.scalagram.models.{BotToken, ChatId, RemoteMedia}
 import io.circe.Json
 import io.circe.parser.parse
 import org.junit.runner.RunWith

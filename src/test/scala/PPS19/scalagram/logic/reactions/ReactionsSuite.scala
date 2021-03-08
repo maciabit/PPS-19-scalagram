@@ -1,6 +1,6 @@
 package PPS19.scalagram.logic.reactions
 
-import PPS19.scalagram.logic.{Bot, BotToken, Context, Reaction}
+import PPS19.scalagram.logic.{Bot, Context, Reaction}
 import PPS19.scalagram.models._
 import PPS19.scalagram.models.messages._
 import org.junit.runner.RunWith

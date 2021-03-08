@@ -5,15 +5,15 @@ import PPS19.scalagram.models.messages.TextMessage
 
 /** A reaction that only gets executed if the update is a message that matches the given regular expression.
   *
-  * @param string Regular expression that an incoming message must match for the action to be triggered.
+  * @param regex Regular expression that an incoming message must match for the action to be triggered.
   */
-case class OnMatch(string: String) extends ReactionBuilder {
+case class OnMatch(regex: String) extends ReactionBuilder {
   override def build(action: Context => Unit): Reaction =
     Reaction(
       Trigger { context =>
         context.update match {
           case Some(MessageUpdate(_, message)) if message.isInstanceOf[TextMessage] =>
-            string.r.matches(message.asInstanceOf[TextMessage].text)
+            regex.r.matches(message.asInstanceOf[TextMessage].text)
           case _ => false
         }
       },

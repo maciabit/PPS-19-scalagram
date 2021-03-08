@@ -1,5 +1,6 @@
 package PPS19.scalagram.logic
 
+import PPS19.scalagram.models.BotToken
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner

@@ -1,8 +1,7 @@
 package PPS19.scalagram.methods
 
-import PPS19.scalagram.logic.BotToken
 import PPS19.scalagram.marshalling.CaseString
-import PPS19.scalagram.models.TelegramError
+import PPS19.scalagram.models.{BotToken, TelegramError}
 import io.circe.Json
 import io.circe.parser.{decode, parse}
 import requests.{MultiItem, Requester}

@@ -1,7 +1,6 @@
 package PPS19.scalagram.methods
 
-import PPS19.scalagram.logic.BotToken
-import PPS19.scalagram.models.Update
+import PPS19.scalagram.models.{BotToken, Update}
 import io.circe.Json
 import io.circe.parser._
 import requests.Requester
