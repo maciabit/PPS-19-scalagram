@@ -7,7 +7,7 @@ import io.circe.generic.semiauto.deriveDecoder
 
 /** Defines a generic message sent by a user, human or bot.
   *
-  * Used by [[PPS19.scalagram.models.messages.TextMessage]], [[PPS19.scalagram.models.messages.PhotoMessage]].
+  * Used by [[PPS19.scalagram.models.messages.TextMessage]] and [[PPS19.scalagram.models.messages.PhotoMessage]].
   *
   * Extends [[PPS19.scalagram.models.messages.TelegramMessage]].
   */
