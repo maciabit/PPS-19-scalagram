@@ -1,6 +1,6 @@
 package PPS19.scalagram
 
-import PPS19.scalagram.dsl.keyboard.{KeyboardButtonContainer, KeyboardRow, KeyboardRowImpl}
+import PPS19.scalagram.dsl.keyboard.{KeyboardButtonContainer, KeyboardRow}
 import PPS19.scalagram.dsl.mode.PollingModeContainer
 import PPS19.scalagram.dsl.reactions.MessageContainer
 import PPS19.scalagram.dsl.scenes.steps.PartialStepContainer
@@ -49,10 +49,10 @@ package object dsl {
     Callback(string -> string)
 
   implicit def stringToButtonRow(string: String): KeyboardRow =
-    KeyboardRowImpl(Seq(Callback(string -> string)))
+    KeyboardRow(Seq(Callback(string -> string)))
 
   implicit def buttonContainerToButtonRow(buttonContainer: KeyboardButtonContainer): KeyboardRow =
-    KeyboardRowImpl(Seq(buttonContainer))
+    KeyboardRow(Seq(buttonContainer))
 
   // Keyboard DSL methods
 
