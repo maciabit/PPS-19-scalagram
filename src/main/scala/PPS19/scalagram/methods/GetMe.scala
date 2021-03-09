@@ -16,11 +16,9 @@ case class GetMe(token: BotToken) extends TelegramRequest[User] {
   override val endpoint: String = "getMe"
   override val urlParams: Map[String, Any] = Map.empty
 
-  override def parseSuccessfulResponse(json: Json): Try[User] = {
-    println(json.toString())
+  override def parseSuccessfulResponse(json: Json): Try[User] =
     decode[User](json.toString()) match {
       case Right(message) => Success(message)
       case Left(error)    => Failure(error)
     }
-  }
 }
