@@ -3,7 +3,7 @@
 name: Publish Jars on Maven Central
 
 on:
-  push:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -22,9 +22,8 @@ jobs:
       - name: Create application.properties file with the bot's token
         shell: bash
         run: |
-          SECRET_VALUE=${{secrets[env.token-name]}}
           mkdir -p src/main/resources
-          echo token=$SECRET_VALUE > src/main/resources/application.properties
+          echo token=hello > src/main/resources/application.properties
       - name: Build with Gradle
         run: ./gradlew build
       - name: Publish on Maven Central
