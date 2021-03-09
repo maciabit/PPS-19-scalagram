@@ -133,15 +133,15 @@ object SimpleDSLBot extends TelegramBotDSL {
       }
     )
 
-    scene (
-      "SECOND_SCENE"
+      scene (
+        "SECOND_SCENE"
 
-      <| "ONLY_STEP"
-      >> { context =>
-        context.reply("This scene has only one step")
-        println("Scene step")
-      }
-    )
+        <| "ONLY_STEP"
+        >> { context =>
+          context.reply("This scene has only one step")
+          println("Scene step")
+        }
+      )
   )
 
 }
