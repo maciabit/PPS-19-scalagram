@@ -24,7 +24,7 @@ plugins {
     id("org.danilopianini.git-sensitive-semantic-versioning") version "0.1.0"
 
     // Import Maven Central Gradle plugin
-    id("org.danilopianini.publish-on-central") version "0.4.0"
+    id("org.danilopianini.publish-on-central") version "0.4.2"
 
     // Import Spotless plugin for code convention formatting
     id("com.diffplug.spotless") version "5.10.2"
@@ -88,11 +88,6 @@ tasks.compileScala.configure {
 group = "io.github.maciabit"
 
 publishOnCentral {
-    // The following values are the default, if they are ok with you, just omit them
-    //rojectDescription = "No description provided"
-    //projectLongName = project.name
-    //licenseName = "Apache License, Version 2.0"
-    //licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0"
     projectUrl = "https://github.com/maciabit/${project.name}"
     scmConnection = "git:git@github.com:maciabit/${project.name}"
     /*
@@ -107,22 +102,7 @@ publishOnCentral {
     repository("https://maven.pkg.github.com/OWNER/REPOSITORY", "GitHub") {
         user = System.getenv("GITHUB_USERNAME")
         password = System.getenv("GITHUB_TOKEN")
-    }
-    */
-    /*
-     * You may also want to configure publications created by other plugins
-     * like the one that goes on Central. Typically, for instance, for publishing
-     * Gradle plugins to Maven Central.
-     * It can be done as follows.
-    */
-    publishing {
-        publications {
-            withType<MavenPublication> {
-                configurePomForMavenCentral()
-            }
-        }
-    }
-
+    }*/
 }
 
 publishing {
@@ -155,13 +135,7 @@ publishing {
         }
     }
 }
-/*
- * The plugin automatically adds every publication to the list of objects to sign
- * The configuration of the signing process is left to the user, though,
- * as in a normal Gradle build.
- * In the following example, in-memory signing is configured.
- * For further options, please refer to: https://docs.gradle.org/current/userguide/signing_plugin.html
- */
+
 signing {
     val signingKey: String? by project
     val signingPassword: String? by project

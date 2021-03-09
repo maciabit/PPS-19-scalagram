@@ -1,0 +1,25 @@
+# This workflow will publish project's Jars on Maven Central
+
+name: Publish Jars on Maven Central
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      MAVEN_CENTRAL_USERNAME: ${{secrets[MAVEN_CENTRAL_USERNAME]}}
+      MAVEN_CENTRAL_PASSWORD: ${{secrets[MAVEN_CENTRAL_PASSWORD]}}
+      ORG_GRADLE_PROJECT_signingKey: ${{secrets[ORG_GRADLE_PROJECT_SIGNINGKEY]}}
+      ORG_GRADLE_PROJECT_signingPassword: ${{secrets[ORG_GRADLE_PROJECT_SIGNINGPASSWORD]}}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 14
+      - name: Build with Gradle
+        run: ./gradlew build
+      - name: Publish on Maven Central
+        run: ./gradlew publishAllPublicationsToMavenCentralRepository
