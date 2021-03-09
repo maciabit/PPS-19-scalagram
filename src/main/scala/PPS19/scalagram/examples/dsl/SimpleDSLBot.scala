@@ -21,127 +21,127 @@ object SimpleDSLBot extends TelegramBotDSL {
       true
     }
 
-    <> { _ =>
-      println("Second middleware")
-      true
-    }
+      <> { _ =>
+        println("Second middleware")
+        true
+      }
   )
 
   reactions(
     !!
-    >> "Hello"
+      >> "Hello"
 
-    << ("/uno" | "uno" | "no")
-    >> "uno"
+      << ("/uno" | "uno" | "no")
+      >> "uno"
 
-    << "/due"
-    >> { context =>
-      context.reply("due")
-    }
+      << "/due"
+      >> { context =>
+        context.reply("due")
+      }
 
-    <~ "callback"
-    >> "Callback"
+      <~ "callback"
+      >> "Callback"
 
-    <* "Message"
-    >> "'Message' edited"
+      <* "Message"
+      >> "'Message' edited"
 
-    <* ("Message1" | "Message2" | "Message3")
-    >> "MessageN edited"
+      <* ("Message1" | "Message2" | "Message3")
+      >> "MessageN edited"
 
-    <# "boh"
-    >> "Regex"
+      <# "boh"
+      >> "Regex"
 
-    << "/rk"
-    >> "Reply keyboard" - Keyboard(
-      "Button 1",
-      "Button 2" :: "Button 3"
-    )
+      << "/rk"
+      >> "Reply keyboard" - Keyboard(
+        "Button 1",
+        "Button 2" :: "Button 3"
+      )
 
-    << "/ik"
-    >> "Inline keyboard" - InlineKeyboard(
-      Callback("Button 1" -> "callback"),
-      "Button 2" :: "Button 3"
-    )
+      << "/ik"
+      >> "Inline keyboard" - InlineKeyboard(
+        Callback("Button 1" -> "callback"),
+        "Button 2" :: "Button 3"
+      )
 
-    << "/html"
-    >> HTML("Keyboard with <b>HTML</b>") - InlineKeyboard("A" :: "B" :: "C")
+      << "/html"
+      >> HTML("Keyboard with <b>HTML</b>") - InlineKeyboard("A" :: "B" :: "C")
 
-    << "/md"
-    >> MarkdownV2("Keyboard with *Markdown*") - InlineKeyboard("A" :: "B" :: "C")
+      << "/md"
+      >> MarkdownV2("Keyboard with *Markdown*") - InlineKeyboard("A" :: "B" :: "C")
 
-    << "/scene1"
-    >> { context =>
-      context.reply("You are now inside a scene")
-      println("You are now inside a scene")
-      context.enterScene("FIRST_SCENE")
-      println(context.activeScene)
-    }
+      << "/scene1"
+      >> { context =>
+        context.reply("You are now inside a scene")
+        println("You are now inside a scene")
+        context.enterScene("FIRST_SCENE")
+        println(context.activeScene)
+      }
 
-    << "/scene2"
-    >> { context =>
-      context.reply("You are now inside a scene\nType /back to exit")
-      println("You are now inside a scene")
-      context.enterScene("SECOND_SCENE")
-      println(context.activeScene)
-    }
+      << "/scene2"
+      >> { context =>
+        context.reply("You are now inside a scene\nType /back to exit")
+        println("You are now inside a scene")
+        context.enterScene("SECOND_SCENE")
+        println(context.activeScene)
+      }
 
-    << "/back"
-    >> { context =>
-      context.leaveScene()
-      context.reply("Ready")
-    }
+      << "/back"
+      >> { context =>
+        context.leaveScene()
+        context.reply("Ready")
+      }
 
-    << *
-    >> "What?"
+      << *
+      >> "What?"
 
-    <* *
-    >> "Any message edited"
+      <* *
+      >> "Any message edited"
 
-    <^ *
-    >> "Message pinned"
+      <^ *
+      >> "Message pinned"
 
-    <+ *
-    >> "Welcome"
+      <+ *
+      >> "Welcome"
 
-    </ *
-    >> "Goodbye"
+      </ *
+      >> "Goodbye"
   )
 
   scenes(
     scene(
       "FIRST_SCENE"
 
-      <| "FIRST_STEP"
-      >> { context =>
-        context.reply("First scene step")
-        println("First scene step")
-        context.nextStep()
-      }
+        <| "FIRST_STEP"
+        >> { context =>
+          context.reply("First scene step")
+          println("First scene step")
+          context.nextStep()
+        }
 
-      <| "SECOND_STEP"
-      >> { context =>
-        context.reply("Second scene step")
-        println("Second scene step")
-        context.nextStep()
-      }
+        <| "SECOND_STEP"
+        >> { context =>
+          context.reply("Second scene step")
+          println("Second scene step")
+          context.nextStep()
+        }
 
-      <| "THIRD_STEP"
-      >> { context =>
-        context.reply("Third scene step")
-        println("Third scene step")
-        context.leaveScene()
-      }
+        <| "THIRD_STEP"
+        >> { context =>
+          context.reply("Third scene step")
+          println("Third scene step")
+          context.leaveScene()
+        }
     )
 
-    scene (
-      "SECOND_SCENE"
+      scene (
+        "SECOND_SCENE"
 
-      <| "ONLY_STEP"
-      >> { context =>
-        context.reply("This scene has only one step")
-        println("Scene step")
-      }
-    )
+          <| "ONLY_STEP"
+          >> { context =>
+            context.reply("This scene has only one step")
+            println("Scene step")
+          }
+      )
   )
 
 }
