@@ -7,23 +7,60 @@ import PPS19.scalagram.dsl.scenes.steps.PartialStepContainer
 import PPS19.scalagram.logic.Context
 import PPS19.scalagram.models.{InlineKeyboardMarkup, ReplyKeyboardMarkup}
 
+/** Provides all the required methods, class extensions and implicit conversions needed to build a bot using the Scalagram DSL.
+  * It is advised to import all of the contents of this package in the file used to define the bot.
+  */
 package object dsl {
 
-  // Value used to indicate that a reaction should match any update of the given type
+  /** Trait used to implement the [[*]] wildcard. */
   sealed trait Star {
     def s(): Unit = {}
   }
   private case class StarImpl() extends Star
+
+  /** Value used to indicate that a reaction should match any update of the given type */
   val * : Star = StarImpl()
 
-  // Conversions for Reactions DSL
+  // Conversions for the reactions DSL
 
+  /** Implicit conversion from [[String]] to [[Context => Unit]].
+    * This conversion enables the use of the following syntax:
+    * {{{
+    * reactions(
+    *   << "Message"
+    *   >> "Reply"
+    * )}}}
+    * as a shortcut, instead of:
+    * {{{
+    * reactions(
+    *   << "Message"
+    *   >> { context =>
+    *     context.reply("Reply")
+    *   }
+    * )}}}
+    */
   implicit def stringToSendMessage(string: String): Context => Unit =
     context =>
       if (context.chat.nonEmpty) {
         context.bot.sendMessage(context.chat.get.chatId, string)
       }
 
+  /** Implicit conversion from [[MessageContainer]] to [[Context => Unit]].
+    * This conversion enables the use of the following syntax:
+    * {{{
+    * reactions(
+    *   << "Message"
+    *   >> "Reply" - Keyboard("Button")
+    * )}}}
+    * as a shortcut, instead of:
+    * {{{
+    * reactions(
+    *   << "Message"
+    *   >> { context =>
+    *     context.reply("Reply", Some(Keyboard("Button")))
+    *   }
+    * )}}}
+    */
   implicit def messageBuilderToAction(messageBuilder: MessageContainer): Context => Unit =
     context =>
       if (context.chat.nonEmpty) {
@@ -40,17 +77,39 @@ package object dsl {
         )
       }
 
-  // Conversions for keyboard DSL
+  // Conversions for the keyboard DSL
 
+  /** Implicit conversion from [[String]] to [[MessageContainer]], that enables the following syntax:
+    * {{{
+    *  reactions(
+    *    << "Message"
+    *    >> "Reply" - Keyboard("Button")
+    *  )}}}
+    * as a shortcut, instead of:
+    * {{{
+    *  reactions(
+    *    << "Message"
+    *    >> MessageContainer("Reply", None, Some(Left(Keyboard("Button"))))
+    *  )}}}
+    */
   implicit def stringToMessageContainer(string: String): MessageContainer =
     MessageContainer(string, None, None)
 
+  /** Implicit conversion from [[String]] to [[KeyboardButtonContainer]], that enables the use of the syntax
+    * {{{Keyboard("Button")}}} as a shortcut, instead of {{{Keyboard(KeyboardButtonContainer("Button"))}}}
+    */
   implicit def stringToButtonContainer(string: String): KeyboardButtonContainer =
     Callback(string -> string)
 
+  /** Implicit conversion from [[String]] to [[KeyboardRow]], that enables the use of the syntax
+    * {{{Keyboard("Button")}}} as a shortcut, instead of {{{Keyboard(KeyboardRow(KeyboardButtonContainer("Button")))}}}
+    */
   implicit def stringToButtonRow(string: String): KeyboardRow =
     KeyboardRow(Seq(Callback(string -> string)))
 
+  /** Implicit conversion from [[String]] to [[KeyboardButtonContainer]], that enables the use of the syntax
+    * {{{Keyboard("Button")}}} as a shortcut, instead of {{{Keyboard(KeyboardRow(KeyboardButtonContainer("Button")))}}}
+    */
   implicit def buttonContainerToButtonRow(buttonContainer: KeyboardButtonContainer): KeyboardRow =
     KeyboardRow(Seq(buttonContainer))
 
@@ -102,14 +161,20 @@ package object dsl {
 
   // Extension classes
 
+  /** String extension for the Scalagram DSL. */
   implicit class StringExtension(string: String) {
 
+    /** Creates a [[List]] from this string and the one given as a parameter. */
     def |(string2: String) = List(string2, string)
 
+    /** Creates a [[PartialStepContainer]] with this string as name. */
     def <|(stepName: String): PartialStepContainer = PartialStepContainer(string, stepName, Nil)
   }
 
+  /** List extension for the Scalagram DSL. */
   implicit class ListExtension(list: List[String]) {
+
+    /** Alias for [[list.appended]]. */
     def |(string: String): List[String] = string +: list
   }
 
