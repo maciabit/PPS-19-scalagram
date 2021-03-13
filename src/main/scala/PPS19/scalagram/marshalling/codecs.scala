@@ -1,6 +1,9 @@
 package PPS19.scalagram.marshalling
 import io.circe._
 
+/** Object used as container of implicits for Circe Decoder and Encoder.
+  * Used to transform object or json fields writing style.
+  */
 object codecs {
 
   private[PPS19] implicit class DecoderOps[A](private val decoder: Decoder[A]) extends AnyVal {
