@@ -17,44 +17,55 @@ object ScenesBot extends TelegramBotDSL {
 
   reactions(
     !!
-      >>
-        """Hi! I will ask you some questions and generate your bio! Type
-    |/bio to start.
-    |""".stripMargin
+    >> """Hi! I will ask you some questions and generate your bio!
+      |Type /bio to start.
+      |""".stripMargin
 
-      << "/bio"
-      >> { context =>
-        context.reply("Bio scene has started! Tell me your first name")
-        context.enterScene("BIO_SCENE")
-      }
+    << "/bio"
+    >> { context =>
+      context.reply("Bio scene has started! Tell me your first name")
+      context.enterScene("BIO_SCENE")
+    }
   )
 
   scenes(
     scene(
-      "Bio_Scene"
+      "BIO_SCENE"
 
-        <| "Name_Step"
-        >> { context =>
-          context.reply(s"""Okay ${context.update
-            .asInstanceOf[MessageUpdate]
-            .message
-            .asInstanceOf[TextMessage]
-            .text}! Now tell me your last name""")
-          context.store += "Name" -> context.update.asInstanceOf[MessageUpdate].message.asInstanceOf[TextMessage].text
-          context.nextStep()
+      <| "Name_Step"
+      >> { context =>
+        val name = context.payload match {
+          case m: TextMessage => m.text
+          case _ => ""
         }
-
-        <| "LastName_Step"
-        >> { context =>
-        context.reply("Got it. When were you born?")
-        context.store += "Lastname" -> context.update.asInstanceOf[MessageUpdate].message.asInstanceOf[TextMessage].text
+        context.store += "name" -> name
+        context.reply(s"Okay, $name. Now tell me your last name.")
         context.nextStep()
       }
 
-        <| "Birthday_Step"
-        >> { context =>
-        context.reply("Last question. When were you born?")
-        context.store += "Birthday" -> context.update.asInstanceOf[MessageUpdate].message.asInstanceOf[TextMessage].text
+      <| "LastName_Step"
+      >> { context =>
+        val lastName = context.payload match {
+          case m: TextMessage => m.text
+          case _ => ""
+        }
+        context.store += "lastName" -> lastName
+        context.reply("Got it. Last question: when were you born?")
+        context.nextStep()
+      }
+
+      <| "Birthday_Step"
+      >> { context =>
+        val birthDate = context.payload match {
+          case m: TextMessage => m.text
+          case _ => ""
+        }
+        val identityCard =
+          s"""Name: ${context.store("name")}
+             |Surname: ${context.store("lastName")}
+             |Birth date: $birthDate""".stripMargin
+        context.reply("Here is your ID")
+        context.reply(identityCard)
         context.leaveScene()
       }
     )
