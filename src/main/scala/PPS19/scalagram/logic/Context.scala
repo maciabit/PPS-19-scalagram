@@ -10,12 +10,12 @@ import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.util.Try
 
 /** Execution context of a bot.
-  * There is exactly one instance of [[Context]] for each pair of [[Bot]] and [[Chat]].
+  * There is exactly one instance of [[Context]] for each pair of [[Scalagram]] and [[Chat]].
   */
 trait Context {
 
   /** Bot instance that this context refers to. */
-  val bot: Bot
+  val bot: Scalagram
 
   /** Map that can be used to store context specific data. */
   var store: Map[String, Any]
@@ -92,9 +92,9 @@ trait Context {
 object Context {
 
   /** Creates a new context for the given bot instance. */
-  def apply(bot: Bot): Context = ContextImpl(bot)
+  def apply(bot: Scalagram): Context = ContextImpl(bot)
 
-  private case class ContextImpl(bot: Bot) extends Context {
+  private case class ContextImpl(bot: Scalagram) extends Context {
     override var store: Map[String, Any] = Map()
     override var timeout: FiniteDuration = 1.days
     override var lastUpdateTimestamp: LocalDateTime = LocalDateTime.now()

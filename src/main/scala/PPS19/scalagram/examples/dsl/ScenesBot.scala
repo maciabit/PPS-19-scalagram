@@ -5,7 +5,7 @@ import PPS19.scalagram.models.payloads.TextMessage
 import PPS19.scalagram.models.updates.MessageUpdate
 import PPS19.scalagram.utils.Props
 
-object ScenesBot extends TelegramBotDSL {
+object ScenesBot extends ScalagramDSL {
 
   token(
     Props.get("token")

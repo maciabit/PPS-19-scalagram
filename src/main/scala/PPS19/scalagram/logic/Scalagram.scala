@@ -11,7 +11,7 @@ import PPS19.scalagram.modes.polling.Mode
 import scala.util.{Success, Try}
 
 /** A bot created with the Scalagram library */
-trait Bot {
+trait Scalagram {
 
   /** The bot's token */
   val token: BotToken
@@ -246,7 +246,7 @@ trait Bot {
 }
 
 /** Companion object for Bot. */
-object Bot {
+object Scalagram {
 
   /** Creates a bot with the given parameters.
     *
@@ -260,18 +260,18 @@ object Bot {
       middlewares: List[Middleware] = List.empty,
       reactions: List[Reaction] = List.empty,
       scenes: List[Scene] = List.empty
-  ): Bot = BotImpl(token, middlewares, scenes, reactions)
+  ): Scalagram = ScalagramImpl(token, middlewares, scenes, reactions)
 
   /** Extractor function for the Bot trait. */
-  def unapply(bot: Bot): Option[(BotToken, List[Middleware], List[Reaction], List[Scene])] =
+  def unapply(bot: Scalagram): Option[(BotToken, List[Middleware], List[Reaction], List[Scene])] =
     Some(bot.token, bot.middlewares, bot.reactions, bot.scenes)
 
-  private case class BotImpl(
+  private case class ScalagramImpl(
       token: BotToken,
       middlewares: List[Middleware],
       scenes: List[Scene],
       reactions: List[Reaction]
-  ) extends Bot
+  ) extends Scalagram
 
   /** A reaction that only gets executed if the update is a message equal to one of the given strings.
     *

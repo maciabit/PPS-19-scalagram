@@ -1,6 +1,6 @@
 package PPS19.scalagram.logic.reactions
 
-import PPS19.scalagram.logic.{Bot, Context, Reaction}
+import PPS19.scalagram.logic.{Scalagram, Context, Reaction}
 import PPS19.scalagram.models._
 import PPS19.scalagram.models.payloads._
 import PPS19.scalagram.models.updates.{CallbackButtonSelected, MessageEdited, MessageReceived, Update}
@@ -11,7 +11,7 @@ import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
 class ReactionsSuite extends AnyFunSuite {
-  val bot: Bot = Bot(BotToken(""))
+  val bot: Scalagram = Scalagram(BotToken(""))
   val chat: Chat = Supergroup(0, None, None)
   val context: Context = Context(bot)
 
@@ -33,7 +33,7 @@ class ReactionsSuite extends AnyFunSuite {
     testReaction(
       MessageReceived(0, TextMessage(0, chat, 0, "message")),
       OnMessage(),
-      Bot.onMessage()
+      Scalagram.onMessage()
     )
   }
 
@@ -41,14 +41,14 @@ class ReactionsSuite extends AnyFunSuite {
     testReaction(
       MessageReceived(0, TextMessage(0, chat, 0, "message")),
       OnMessage("message"),
-      Bot.onMessage("message")
+      Scalagram.onMessage("message")
     )
   }
 
   test("An OnMessage reaction that matches multiple strings works as intended") {
     val onMessage = OnMessage("message", "another message")
     val botOnMessage: (Context => Unit) => Reaction =
-      Bot.onMessage("message", "another message")
+      Scalagram.onMessage("message", "another message")
     testReaction(
       MessageReceived(0, TextMessage(0, chat, 0, "message")),
       onMessage,
@@ -65,7 +65,7 @@ class ReactionsSuite extends AnyFunSuite {
     testReaction(
       MessageEdited(0, TextMessage(0, chat, 0, "edited message")),
       OnMessage(),
-      Bot.onMessage(),
+      Scalagram.onMessage(),
       expectedRes = false
     )
   }
@@ -74,7 +74,7 @@ class ReactionsSuite extends AnyFunSuite {
     testReaction(
       MessageReceived(0, TextMessage(0, chat, 0, "/start")),
       OnStart(),
-      Bot.onStart
+      Scalagram.onStart
     )
   }
 
@@ -82,7 +82,7 @@ class ReactionsSuite extends AnyFunSuite {
     testReaction(
       MessageReceived(0, TextMessage(0, chat, 0, "/help")),
       OnHelp(),
-      Bot.onHelp
+      Scalagram.onHelp
     )
   }
 
@@ -90,7 +90,7 @@ class ReactionsSuite extends AnyFunSuite {
     testReaction(
       MessageEdited(0, TextMessage(0, chat, 0, "edited message")),
       OnMessageEdited(),
-      Bot.onMessageEdited()
+      Scalagram.onMessageEdited()
     )
   }
 
@@ -98,14 +98,14 @@ class ReactionsSuite extends AnyFunSuite {
     testReaction(
       MessageEdited(0, TextMessage(0, chat, 0, "edited message")),
       OnMessageEdited("edited message"),
-      Bot.onMessageEdited("edited message")
+      Scalagram.onMessageEdited("edited message")
     )
   }
 
   test("An OnMessageEdited reaction that matches multiple strings works as intended") {
     val onMessageEdited = OnMessageEdited("edited message", "edited message 2")
     val botOnMessageEdited: (Context => Unit) => Reaction =
-      Bot.onMessageEdited("edited message", "edited message 2")
+      Scalagram.onMessageEdited("edited message", "edited message 2")
     testReaction(
       MessageEdited(0, TextMessage(0, chat, 0, "edited message")),
       onMessageEdited,
@@ -122,7 +122,7 @@ class ReactionsSuite extends AnyFunSuite {
     testReaction(
       MessageReceived(0, TextMessage(0, chat, 0, "message")),
       OnMessageEdited("edited message"),
-      Bot.onMessageEdited("edited message"),
+      Scalagram.onMessageEdited("edited message"),
       expectedRes = false
     )
   }
@@ -131,7 +131,7 @@ class ReactionsSuite extends AnyFunSuite {
     testReaction(
       MessageReceived(0, MessagePinned(0, chat, 0, TextMessage(0, chat, 0, "messagePinned"))),
       OnMessagePinned(),
-      Bot.onMessagePinned
+      Scalagram.onMessagePinned
     )
   }
 
@@ -140,14 +140,14 @@ class ReactionsSuite extends AnyFunSuite {
     testReaction(
       MessageReceived(0, TextMessage(0, chat, 0, "message")),
       OnMessagePinned(),
-      Bot.onMessagePinned,
+      Scalagram.onMessagePinned,
       expectedRes = false
     )
     // Different update class
     testReaction(
       CallbackButtonSelected(0, CallbackQuery("", User(0, firstName = "Bob"), chatInstance = "")),
       OnMessagePinned(),
-      Bot.onMessagePinned,
+      Scalagram.onMessagePinned,
       expectedRes = false
     )
   }
@@ -158,7 +158,7 @@ class ReactionsSuite extends AnyFunSuite {
       OnMatch(
         "^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$"
       ),
-      Bot.onMatch(
+      Scalagram.onMatch(
         "^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$"
       )
     )
@@ -171,7 +171,7 @@ class ReactionsSuite extends AnyFunSuite {
       OnMatch(
         "^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$"
       ),
-      Bot.onMatch(
+      Scalagram.onMatch(
         "^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$"
       ),
       expectedRes = false
@@ -182,7 +182,7 @@ class ReactionsSuite extends AnyFunSuite {
       OnMatch(
         "^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$"
       ),
-      Bot.onMatch(
+      Scalagram.onMatch(
         "^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$"
       ),
       expectedRes = false
@@ -193,7 +193,7 @@ class ReactionsSuite extends AnyFunSuite {
     testReaction(
       MessageReceived(0, ChatMembersAdded(0, chat, 0, Seq(User(0, firstName = "Bob")))),
       OnChatEnter(),
-      Bot.onChatEnter
+      Scalagram.onChatEnter
     )
   }
 
@@ -202,14 +202,14 @@ class ReactionsSuite extends AnyFunSuite {
     testReaction(
       MessageReceived(0, ChatMemberRemoved(0, chat, 0, User(0, firstName = "Bob"))),
       OnChatEnter(),
-      Bot.onChatEnter,
+      Scalagram.onChatEnter,
       expectedRes = false
     )
     // Different update class
     testReaction(
       CallbackButtonSelected(0, CallbackQuery("", User(0, firstName = "Bob"), chatInstance = "")),
       OnChatEnter(),
-      Bot.onChatEnter,
+      Scalagram.onChatEnter,
       expectedRes = false
     )
   }
@@ -218,7 +218,7 @@ class ReactionsSuite extends AnyFunSuite {
     testReaction(
       MessageReceived(0, ChatMemberRemoved(0, chat, 0, User(0, firstName = "Bob"))),
       OnChatLeave(),
-      Bot.onChatLeave
+      Scalagram.onChatLeave
     )
   }
 
@@ -227,14 +227,14 @@ class ReactionsSuite extends AnyFunSuite {
     testReaction(
       MessageReceived(0, ChatMembersAdded(0, chat, 0, Seq(User(0, firstName = "Bob")))),
       OnChatLeave(),
-      Bot.onChatLeave,
+      Scalagram.onChatLeave,
       expectedRes = false
     )
     // Different update class
     testReaction(
       CallbackButtonSelected(0, CallbackQuery("", User(0, firstName = "Bob"), chatInstance = "")),
       OnChatLeave(),
-      Bot.onChatLeave,
+      Scalagram.onChatLeave,
       expectedRes = false
     )
   }
@@ -246,7 +246,7 @@ class ReactionsSuite extends AnyFunSuite {
         CallbackQuery("", User(0, firstName = "Bob"), chatInstance = "", data = Some("data"))
       ),
       OnCallbackQuery("data"),
-      Bot.onCallbackQuery("data")
+      Scalagram.onCallbackQuery("data")
     )
   }
 
@@ -254,7 +254,7 @@ class ReactionsSuite extends AnyFunSuite {
     testReaction(
       MessageReceived(0, TextMessage(0, chat, 0, "message")),
       OnCallbackQuery("data"),
-      Bot.onCallbackQuery("data"),
+      Scalagram.onCallbackQuery("data"),
       expectedRes = false
     )
   }

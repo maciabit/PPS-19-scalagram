@@ -1,13 +1,13 @@
 package PPS19.scalagram.modes.polling
 
-import PPS19.scalagram.logic.Bot
+import PPS19.scalagram.logic.Scalagram
 import PPS19.scalagram.modes.polling.actorsystem.{LookForUpdates, UpdateDispatcherActor}
 import akka.actor.typed.ActorSystem
 
 import scala.concurrent.duration._
 
 trait Mode {
-  def start(bot: Bot): Unit
+  def start(bot: Scalagram): Unit
 }
 
 /** Polling mode for Telegram bots update retrieval */
@@ -31,7 +31,7 @@ object Polling {
       timeoutDelay: FiniteDuration
   ) extends Polling {
 
-    override def start(bot: Bot): Unit = {
+    override def start(bot: Scalagram): Unit = {
       // Create the actor system with an UpdateDispatcherActor as guardian
       val system = ActorSystem(
         UpdateDispatcherActor(bot, pollingInterval, timeoutDelay),

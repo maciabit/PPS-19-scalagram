@@ -1,4 +1,4 @@
-package PPS19.scalagram.dsl.reactions
+package PPS19.scalagram.dsl.reaction
 
 import PPS19.scalagram.dsl._
 import PPS19.scalagram.logic.Context
@@ -12,7 +12,7 @@ class ReactionsDSLSuite extends AnyFunSuite {
 
   test("An OnStart reaction created with the DSL equals one created without it") {
     val f: Context => Unit = _ => {}
-    object TestDSL extends TelegramBotDSL {
+    object TestDSL extends ScalagramDSL {
       reactions(!!.>>(f))
     }
     val reaction = OnStart().build(f)
@@ -23,7 +23,7 @@ class ReactionsDSLSuite extends AnyFunSuite {
     val f1: Context => Unit = _ => {}
     val f2: Context => Unit = _ => {}
     val f3: Context => Unit = _ => {}
-    object TestDSL extends TelegramBotDSL {
+    object TestDSL extends ScalagramDSL {
       reactions(
         !!.>>(f1)
           .<<(*)
@@ -46,7 +46,7 @@ class ReactionsDSLSuite extends AnyFunSuite {
     val f1: Context => Unit = _ => {}
     val f2: Context => Unit = _ => {}
     val f3: Context => Unit = _ => {}
-    object TestDSL extends TelegramBotDSL {
+    object TestDSL extends ScalagramDSL {
       reactions(
         !!.>>(f1)
           .<*(*)
@@ -67,7 +67,7 @@ class ReactionsDSLSuite extends AnyFunSuite {
 
   test("An OnCallback reaction created with the DSL equals one created without it") {
     val f: Context => Unit = _ => {}
-    object TestDSL extends TelegramBotDSL {
+    object TestDSL extends ScalagramDSL {
       reactions(!!.>>(f).<~("").>>(f))
     }
     val reaction = OnCallbackQuery("").build(f)
@@ -76,7 +76,7 @@ class ReactionsDSLSuite extends AnyFunSuite {
 
   test("An OnMessagePinned reaction created with the DSL equals one created without it") {
     val f: Context => Unit = _ => {}
-    object TestDSL extends TelegramBotDSL {
+    object TestDSL extends ScalagramDSL {
       reactions(!!.>>(f).<^(*).>>(f))
     }
     val reaction = OnMessagePinned().build(f)
@@ -85,7 +85,7 @@ class ReactionsDSLSuite extends AnyFunSuite {
 
   test("An OnChatEnter reaction created with the DSL equals one created without it") {
     val f: Context => Unit = _ => {}
-    object TestDSL extends TelegramBotDSL {
+    object TestDSL extends ScalagramDSL {
       reactions(!!.>>(f).<+(*).>>(f))
     }
     val reaction = OnChatEnter().build(f)
@@ -94,7 +94,7 @@ class ReactionsDSLSuite extends AnyFunSuite {
 
   test("An OnChatLeave reaction created with the DSL equals one created without it") {
     val f: Context => Unit = _ => {}
-    object TestDSL extends TelegramBotDSL {
+    object TestDSL extends ScalagramDSL {
       reactions(!!.>>(f).</(*).>>(f))
     }
     val reaction = OnChatLeave().build(f)
@@ -103,7 +103,7 @@ class ReactionsDSLSuite extends AnyFunSuite {
 
   test("An OnMatch reaction created with the DSL equals one created without it") {
     val f: Context => Unit = _ => {}
-    object TestDSL extends TelegramBotDSL {
+    object TestDSL extends ScalagramDSL {
       reactions(!!.>>(f).<#("").>>(f))
     }
     val reaction = OnMatch("").build(f)

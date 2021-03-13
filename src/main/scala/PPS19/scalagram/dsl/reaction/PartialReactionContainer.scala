@@ -1,10 +1,10 @@
-package PPS19.scalagram.dsl.reactions
+package PPS19.scalagram.dsl.reaction
 
 import PPS19.scalagram.logic.reactions.ReactionBuilder
 import PPS19.scalagram.logic.{Context, Reaction}
 
 /** Container that has list of reactions and a partially defined reaction.
-  * A [[PartialReactionContainer]] cannot be passed to a bot's [[PPS19.scalagram.dsl.TelegramBotDSL.reactions()]] method,
+  * A [[PartialReactionContainer]] cannot be passed to a bot's [[PPS19.scalagram.dsl.ScalagramDSL.reactions()]] method,
   * because it includes a reaction that is not totally defined.
   * A partially defined reaction can be terminated by concatenating an action using the [[>>]] method.
   *

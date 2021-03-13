@@ -5,7 +5,7 @@ import PPS19.scalagram.utils.Props
 
 import scala.concurrent.duration.DurationInt
 
-object SimpleDSLBot extends TelegramBotDSL {
+object SimpleDSLBot extends ScalagramDSL {
 
   token(
     Props.get("token")

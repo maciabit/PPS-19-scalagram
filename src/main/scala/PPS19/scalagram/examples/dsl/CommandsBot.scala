@@ -7,7 +7,7 @@ import PPS19.scalagram.utils.Props
 
 import scala.util.Random
 
-object CommandsBot extends TelegramBotDSL {
+object CommandsBot extends ScalagramDSL {
 
   token(
     Props.get("token")

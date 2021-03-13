@@ -2,19 +2,18 @@ package PPS19.scalagram.dsl
 
 import PPS19.scalagram.dsl.middleware.MiddlewareContainer
 import PPS19.scalagram.dsl.mode.{PollingModeContainer, WorkingModeContainer}
-import PPS19.scalagram.dsl.reactions.{PartialReactionContainer, TotalReactionContainer}
-import PPS19.scalagram.dsl.scenes.SceneContainer
-import PPS19.scalagram.dsl.scenes.steps.TotalStepContainer
+import PPS19.scalagram.dsl.reaction.{PartialReactionContainer, TotalReactionContainer}
+import PPS19.scalagram.dsl.scene.{SceneContainer, TotalStepContainer}
 import PPS19.scalagram.logic._
 import PPS19.scalagram.logic.reactions.OnStart
 import PPS19.scalagram.logic.scenes.Scene
 import PPS19.scalagram.models.BotToken
 import PPS19.scalagram.modes.polling.Mode
 
-trait TelegramBotDSL {
+trait ScalagramDSL {
 
   protected[dsl] var _token: BotToken = _
-  protected[dsl] var _bot: Bot = _
+  protected[dsl] var _bot: Scalagram = _
 
   protected[dsl] var _mode: Mode = _
   protected[dsl] var _middlewares: List[Middleware] = Nil
@@ -52,7 +51,7 @@ trait TelegramBotDSL {
     SceneContainer(Scene(stepContainer.sceneName, stepContainer.steps) :: Nil)
 
   protected[dsl] def build(): Unit = {
-    _bot = Bot(_token, _middlewares, _reactions, _scenes)
+    _bot = Scalagram(_token, _middlewares, _reactions, _scenes)
   }
 
   def start(): Unit = {

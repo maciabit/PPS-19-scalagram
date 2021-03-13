@@ -20,7 +20,7 @@ class ContextSuite extends AnyFunSuite with BeforeAndAfterEach {
       Step("STEP3", _ => {})
     )
   )
-  val bot: Bot = Bot(BotToken(""), List(), List(), List(scene))
+  val bot: Scalagram = Scalagram(BotToken(""), List(), List(), List(scene))
   var context: Context = _
 
   override def beforeEach(): Unit = {

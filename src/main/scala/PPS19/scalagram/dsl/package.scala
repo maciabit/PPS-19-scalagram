@@ -2,8 +2,8 @@ package PPS19.scalagram
 
 import PPS19.scalagram.dsl.keyboard.{KeyboardButtonContainer, KeyboardRow}
 import PPS19.scalagram.dsl.mode.PollingModeContainer
-import PPS19.scalagram.dsl.reactions.MessageContainer
-import PPS19.scalagram.dsl.scenes.steps.PartialStepContainer
+import PPS19.scalagram.dsl.reaction.MessageContainer
+import PPS19.scalagram.dsl.scene.PartialStepContainer
 import PPS19.scalagram.logic.Context
 import PPS19.scalagram.models.{InlineKeyboardMarkup, ReplyKeyboardMarkup}
 

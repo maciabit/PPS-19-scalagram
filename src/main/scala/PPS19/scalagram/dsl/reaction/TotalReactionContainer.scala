@@ -1,11 +1,11 @@
-package PPS19.scalagram.dsl.reactions
+package PPS19.scalagram.dsl.reaction
 
 import PPS19.scalagram.dsl.Star
 import PPS19.scalagram.logic.Reaction
 import PPS19.scalagram.logic.reactions._
 
 /** Container that has list of reactions.
-  * A [[TotalReactionContainer]] can be passed to a bot's [[PPS19.scalagram.dsl.TelegramBotDSL.reactions()]] method.
+  * A [[TotalReactionContainer]] can be passed to a bot's [[PPS19.scalagram.dsl.ScalagramDSL.reactions()]] method.
   * To concatenate another action, this container offers various methods depending on the type of action, such as [[<<]]
   *
   * @param reactions Reactions to include in the container

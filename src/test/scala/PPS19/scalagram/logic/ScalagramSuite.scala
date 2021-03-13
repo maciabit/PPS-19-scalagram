@@ -7,9 +7,9 @@ import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class BotSuite extends AnyFunSuite {
+class ScalagramSuite extends AnyFunSuite {
 
-  val bot: Bot = Bot(BotToken(""), List(), List(), List())
+  val bot: Scalagram = Scalagram(BotToken(""), List(), List(), List())
   val context: Context = Context(bot)
 
   test("A Middleware can return true") {
@@ -38,10 +38,10 @@ class BotSuite extends AnyFunSuite {
     val middlewares = List(Middleware(_ => true))
     val scenes = List(Scene("<SCENE_NAME>", List(Step("<ACTION_NAME>", _ => {}))))
     val reactions = List(Reaction(Trigger(_ => true), _ => {}))
-    val bot = Bot(token, middlewares, reactions, scenes)
+    val bot = Scalagram(token, middlewares, reactions, scenes)
     assert(bot match {
-      case Bot(t, m, r, s) if t == token && m == middlewares && r == reactions && s == scenes => true
-      case _                                                                                  => false
+      case Scalagram(t, m, r, s) if t == token && m == middlewares && r == reactions && s == scenes => true
+      case _                                                                                        => false
     })
   }
 }

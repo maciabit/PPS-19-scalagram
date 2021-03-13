@@ -1,4 +1,4 @@
-package PPS19.scalagram.dsl.scenes
+package PPS19.scalagram.dsl.scene
 
 import PPS19.scalagram.dsl._
 import PPS19.scalagram.logic
@@ -14,7 +14,7 @@ class ScenesDSLSuite extends AnyFunSuite {
   test("A scene list created with the DSL equals one created without it") {
     val f1: Context => Unit = _ => {}
     val f2: Context => Unit = _ => {}
-    object TestDSL extends TelegramBotDSL {
+    object TestDSL extends ScalagramDSL {
       scenes(
         scene("1".<|("S1").>>(f1).<|("S2").>>(f2)).scene("2".<|("S1").>>(f1))
       )

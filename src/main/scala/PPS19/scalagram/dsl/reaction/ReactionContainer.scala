@@ -1,4 +1,4 @@
-package PPS19.scalagram.dsl.reactions
+package PPS19.scalagram.dsl.reaction
 
 import PPS19.scalagram.logic.Reaction
 

@@ -1,6 +1,6 @@
 package PPS19.scalagram.modes.polling.actorsystem
 
-import PPS19.scalagram.logic.{Bot, Context}
+import PPS19.scalagram.logic.{Scalagram, Context}
 import PPS19.scalagram.models.updates.{CallbackButtonSelected, MessageUpdate}
 import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed.{ActorRef, Behavior}
@@ -10,14 +10,14 @@ import scala.concurrent.duration._
 object UpdateDispatcherActor {
 
   def apply(
-      bot: Bot,
+      bot: Scalagram,
       interval: FiniteDuration,
       workerTimeout: FiniteDuration
   ): Behavior[LookForUpdates] =
     scheduleUpdateBehavior(bot, interval, workerTimeout)
 
   private def scheduleUpdateBehavior(
-      bot: Bot,
+      bot: Scalagram,
       interval: FiniteDuration,
       workerTimeout: FiniteDuration
   ): Behavior[LookForUpdates] =
@@ -27,7 +27,7 @@ object UpdateDispatcherActor {
     }
 
   private def fetchUpdateBehavior(
-      bot: Bot,
+      bot: Scalagram,
       workerTimeout: FiniteDuration,
       nextUpdateId: Option[Long] = None
   ): Behavior[LookForUpdates] =

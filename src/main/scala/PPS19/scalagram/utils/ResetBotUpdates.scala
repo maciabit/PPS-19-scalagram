@@ -1,13 +1,13 @@
 package PPS19.scalagram.utils
 
-import PPS19.scalagram.logic.Bot
+import PPS19.scalagram.logic.Scalagram
 import PPS19.scalagram.models.BotToken
 
 import scala.util.{Failure, Success}
 
 /** Script used to reset bot updates. */
 object ResetBotUpdates extends App {
-  private val bot = Bot(BotToken(Props.get("token")))
+  private val bot = Scalagram(BotToken(Props.get("token")))
   bot.getUpdates(Some(-1)) match {
     case Failure(_) => println("Reset updates failed")
     case Success(updates) if updates.nonEmpty =>

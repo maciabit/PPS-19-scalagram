@@ -1,6 +1,5 @@
-package PPS19.scalagram.dsl.scenes
+package PPS19.scalagram.dsl.scene
 
-import PPS19.scalagram.dsl.scenes.steps.TotalStepContainer
 import PPS19.scalagram.logic.scenes.Scene
 
 /** Container used to build a list of [[Scene]].
