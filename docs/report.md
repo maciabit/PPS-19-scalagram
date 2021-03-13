@@ -12,15 +12,39 @@ Requisiti (delle varie tipologie, ossia: 1) business, 2) utente, 3) funzionali, 
 
 ### Business
 
-Questa sezione è dedicata alla analisi e definizione dei requisiti di business che caratterizzeranno il sistema. L'approccio utilizzato per la definizione del modello è basato sulla filosofia **Domain Driven Design** (DDD). 
+Questa sezione è dedicata all'analisi e definizione dei requisiti di business che caratterizzeranno il sistema. L'approccio utilizzato per la definizione del modello è basato sulla filosofia **Domain Driven Design** (DDD). 
 
 È importante asserire sin da subito che l'oggetto dello studio del modello del dominio sono state le [Telegram Bot API](https://core.telegram.org/bots/api).
 
 #### Knowledge crunching
+
 #### Ubiquitous language
 ### Utente
 ### Funzionali
+
+- Definire il comportamento di un bot telegram mediante il DSL proposto in maniera dichiarativa.
+    1. Definire il **token** del bot in questione.
+    2. Definire la **modalità** di esecuzione del bot (e.g. Polling o Webhook), ed i rispettivi parametri, quali l'intervallo di polling ed il timeout delay.
+    3. Definire l'insieme di **middleware** assegnandone il rispettivo contesto di attivazione e la conseguente reazione.
+    4. Definire un inseme di **reactions** secondo le seguenti sintassi proposte
+        - uno
+        - due
+
+#### User stories
+
+Si sono sviluppate user stories al fine di poter definire dettagliatamente i principali casi d'uso del framework da parte di un utente finale utilizzatore. Questo passaggio sarà cruciale per poter sviluppare in seguito un domain specific language (DSL) che andrà a ricalcare le user stories con una nuova sintassi dichiarativa, sviluppata ad hoc per venire in contro alle esigente di un utilizzatore.
+
+Questa fase di studio ha portato al seguente output.
+
+- User story generale
+- User story che specifica le reactions
+- User story che specifica i middleware
+- User story che specifica le scene
+
 #### DSL
+
+Comparare la user story con i pezzi di codice/pseudocodice del DSL.
+
 ### Non funzionali
 ### Implementazione
 
@@ -28,11 +52,16 @@ Questa sezione è dedicata alla analisi e definizione dei requisiti di business 
 Design architetturale (architettura complessiva, descrizione di pattern architetturali usati, componenti del sistema distribuito, scelte tecnologiche cruciali ai fini architetturali -- corredato da pochi ma efficaci diagrammi)
 
 ### Bounded context [Pistocchi]
+
+Lo studio del problema ha portato a definire tre aree critiche per la definizione del sistema, le quali necessitano un importante isolamento, al fine di garantire indipendenza e chiara suddivisione dei moduli durante la fase di sviluppo. Una corretta suddivisione dei bounded context in fase iniziale permetterà di scomporre in maniera più chiara il lavoro.
+
+Queste decisioni impatteranno in maniera significativa successivamente, quando sarà necessario organizzare e scomporre i moduli di basso livello.
+
 ![BoundedContext](img/BoundedContext.png)
 
 
 ### DSL e user story [Pistocchi]
-
+Architettura del dsl?
 
 ## Design Detail
 Design di dettaglio (scelte rilevanti, pattern di progettazione, organizzazione del codice -- corredato da pochi ma efficaci diagrammi)
