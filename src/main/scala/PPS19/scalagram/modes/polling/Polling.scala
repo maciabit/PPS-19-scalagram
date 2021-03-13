@@ -1,7 +1,7 @@
 package PPS19.scalagram.modes.polling
 
-import PPS19.scalagram.modes.polling.actorsystem.{LookForUpdates, UpdateDispatcherActor}
 import PPS19.scalagram.logic.Bot
+import PPS19.scalagram.modes.polling.actorsystem.{LookForUpdates, UpdateDispatcherActor}
 import akka.actor.typed.ActorSystem
 
 import scala.concurrent.duration._

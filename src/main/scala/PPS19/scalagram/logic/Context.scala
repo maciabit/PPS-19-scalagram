@@ -1,7 +1,8 @@
 package PPS19.scalagram.logic
 
 import PPS19.scalagram.models._
-import PPS19.scalagram.models.messages.TelegramMessage
+import PPS19.scalagram.models.payloads.TelegramMessage
+import PPS19.scalagram.models.updates.{ChatUpdate, MessageUpdate, Update}
 
 import java.time.LocalDateTime
 import scala.concurrent.duration.{DurationInt, FiniteDuration}

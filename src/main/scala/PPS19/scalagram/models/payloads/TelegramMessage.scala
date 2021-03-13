@@ -1,4 +1,4 @@
-package PPS19.scalagram.models.messages
+package PPS19.scalagram.models.payloads
 
 import PPS19.scalagram.marshalling.codecs.DecoderOps
 import PPS19.scalagram.models.Chat
@@ -7,9 +7,9 @@ import io.circe.Decoder
 
 /** Defines a generic message sent in Telegram, by a user or by the system.
   *
-  * Used by [[PPS19.scalagram.models.messages.UserMessage]], [[PPS19.scalagram.models.messages.SystemMessage]].
+  * Used by [[PPS19.scalagram.models.payloads.UserMessage]], [[PPS19.scalagram.models.payloads.SystemMessage]].
   */
-trait TelegramMessage {
+trait TelegramMessage extends Payload {
 
   /** Unique message identifier inside a chat. */
   def messageId: Int

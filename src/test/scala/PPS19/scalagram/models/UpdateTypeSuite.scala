@@ -1,11 +1,10 @@
 package PPS19.scalagram.models
 
-import PPS19.scalagram.models.UpdateType.{UpdateType}
-import PPS19.scalagram.models.messages.{CallbackQuery, ChatMemberRemoved, ChatMembersAdded, MessagePinned, TextMessage}
+import PPS19.scalagram.models.payloads._
+import PPS19.scalagram.models.updates._
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
-import PPS19.scalagram.models.Supergroup
 
 @RunWith(classOf[JUnitRunner])
 class UpdateTypeSuite extends AnyFunSuite {
@@ -16,11 +15,11 @@ class UpdateTypeSuite extends AnyFunSuite {
 
   test("A CallbackButtonSelected UpdateType can be properly set") {
     val update: CallbackButtonSelected = CallbackButtonSelected(0, CallbackQuery("0", botUser, chatInstance = "0"))
-    assert(update.updateType == UpdateType.CallbackSelected && update.chat.isInstanceOf[UnknownChat])
+    assert(update.updateType == UpdateType.CallbackSelected && update.chat == UnknownChat)
   }
 
   test("A Channel Post UpdateType can be properly set") {
-    val update: ChannelPost = ChannelPost(0, TextMessage(0, chat, 0, "Message"))
+    val update: ChannelPostReceived = ChannelPostReceived(0, TextMessage(0, chat, 0, "Message"))
     assert(update.updateType == UpdateType.ChannelPostReceived)
   }
 

@@ -1,4 +1,4 @@
-package PPS19.scalagram.models
+package PPS19.scalagram.models.updates
 
 /** Enumeration representing the type of an update, can be either "MessageReceived", "ChannelPostReceived",
   * "MessageEdited", "ChannelPostEdited" "CallbackSelected", "MessagePinned", "ChatMembersAdded", "ChatMemberRemoved"

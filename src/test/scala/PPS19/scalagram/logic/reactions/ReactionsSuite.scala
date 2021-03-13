@@ -2,7 +2,8 @@ package PPS19.scalagram.logic.reactions
 
 import PPS19.scalagram.logic.{Bot, Context, Reaction}
 import PPS19.scalagram.models._
-import PPS19.scalagram.models.messages._
+import PPS19.scalagram.models.payloads._
+import PPS19.scalagram.models.updates.{CallbackButtonSelected, MessageEdited, MessageReceived, Update}
 import org.junit.runner.RunWith
 import org.scalatest.Assertion
 import org.scalatest.funsuite.AnyFunSuite

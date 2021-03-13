@@ -1,4 +1,4 @@
-package PPS19.scalagram.models.messages
+package PPS19.scalagram.models.payloads
 
 import PPS19.scalagram.models.{Chat, User}
 import cats.implicits.toFunctorOps
@@ -7,9 +7,9 @@ import io.circe.generic.semiauto.deriveDecoder
 
 /** Defines a generic message sent by Telegram, considered the system.
   *
-  * Used by [[PPS19.scalagram.models.messages.MessagePinned]], [[PPS19.scalagram.models.messages.ChatMembersAdded]], [[PPS19.scalagram.models.messages.ChatMemberRemoved]].
+  * Used by [[PPS19.scalagram.models.payloads.MessagePinned]], [[PPS19.scalagram.models.payloads.ChatMembersAdded]], [[PPS19.scalagram.models.payloads.ChatMemberRemoved]].
   *
-  * Extends [[PPS19.scalagram.models.messages.TelegramMessage]].
+  * Extends [[PPS19.scalagram.models.payloads.TelegramMessage]].
   */
 trait SystemMessage extends TelegramMessage
 
@@ -30,7 +30,7 @@ object SystemMessage {
   * @param date          Date the message was sent in Unix time.
   * @param pinnedMessage The message added to the list of pinned messages in a chat.
   *
-  *                      Extends [[PPS19.scalagram.models.messages.SystemMessage]].
+  *                      Extends [[PPS19.scalagram.models.payloads.SystemMessage]].
   */
 final case class MessagePinned(
     messageId: Int,
@@ -46,7 +46,7 @@ final case class MessagePinned(
   * @param date           Date the message was sent in Unix time.
   * @param newChatMembers The users added to the group or supergroup.
   *
-  *                       Extends [[PPS19.scalagram.models.messages.SystemMessage]].
+  *                       Extends [[PPS19.scalagram.models.payloads.SystemMessage]].
   */
 final case class ChatMembersAdded(
     messageId: Int,
@@ -62,7 +62,7 @@ final case class ChatMembersAdded(
   * @param date           Date the message was sent in Unix time.
   * @param leftChatMember The user removed from the group or supergroup.
   *
-  *                       Extends [[PPS19.scalagram.models.messages.SystemMessage]].
+  *                       Extends [[PPS19.scalagram.models.payloads.SystemMessage]].
   */
 final case class ChatMemberRemoved(
     messageId: Int,

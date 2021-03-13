@@ -2,16 +2,7 @@ package PPS19.scalagram.dsl.reactions
 
 import PPS19.scalagram.dsl._
 import PPS19.scalagram.logic.Context
-import PPS19.scalagram.logic.reactions.{
-  OnCallbackQuery,
-  OnChatEnter,
-  OnChatLeave,
-  OnMatch,
-  OnMessage,
-  OnMessageEdited,
-  OnMessagePinned,
-  OnStart
-}
+import PPS19.scalagram.logic.reactions._
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner

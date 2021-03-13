@@ -1,7 +1,7 @@
 package PPS19.scalagram.dsl.scenes
 
 import PPS19.scalagram.dsl._
-import PPS19.scalagram.logic.{Context, Middleware, Scene, Step}
+import PPS19.scalagram.logic.{Context, Scene, Step}
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner

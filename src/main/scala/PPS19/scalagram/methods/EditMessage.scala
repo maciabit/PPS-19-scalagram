@@ -1,8 +1,8 @@
 package PPS19.scalagram.methods
 
 import PPS19.scalagram.marshalling.codecs.EncoderOps
+import PPS19.scalagram.models.payloads.TelegramMessage
 import PPS19.scalagram.models.{BotToken, ChatId, ReplyMarkup}
-import PPS19.scalagram.models.messages.TelegramMessage
 import io.circe.parser.decode
 import io.circe.{Encoder, Json}
 import requests.Requester

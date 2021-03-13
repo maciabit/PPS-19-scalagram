@@ -1,4 +1,4 @@
-package PPS19.scalagram.models.messages
+package PPS19.scalagram.models.payloads
 
 import PPS19.scalagram.models._
 import cats.syntax.functor._
@@ -7,9 +7,9 @@ import io.circe.generic.semiauto.deriveDecoder
 
 /** Defines a generic message sent by a user, human or bot.
   *
-  * Used by [[PPS19.scalagram.models.messages.TextMessage]] and [[PPS19.scalagram.models.messages.PhotoMessage]].
+  * Used by [[PPS19.scalagram.models.payloads.TextMessage]] and [[PPS19.scalagram.models.payloads.PhotoMessage]].
   *
-  * Extends [[PPS19.scalagram.models.messages.TelegramMessage]].
+  * Extends [[PPS19.scalagram.models.payloads.TelegramMessage]].
   */
 trait UserMessage extends TelegramMessage {
 

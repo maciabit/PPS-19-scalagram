@@ -1,7 +1,8 @@
 package PPS19.scalagram.logic
 
-import PPS19.scalagram.models.{BotToken, MessageReceived, Supergroup, User}
-import PPS19.scalagram.models.messages.TextMessage
+import PPS19.scalagram.models.payloads.TextMessage
+import PPS19.scalagram.models.updates.MessageReceived
+import PPS19.scalagram.models.{BotToken, Supergroup, User}
 import org.junit.runner.RunWith
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.funsuite.AnyFunSuite

@@ -1,7 +1,8 @@
 package PPS19.scalagram.dsl.mode
 
-import scala.concurrent.duration.FiniteDuration
 import PPS19.scalagram.modes.polling.Polling.{defaultPollingInterval, defaultTimeoutDelay}
+
+import scala.concurrent.duration.FiniteDuration
 
 /** Container used to build a bot's working mode.
   *

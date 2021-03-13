@@ -1,7 +1,7 @@
 package PPS19.scalagram.modes.polling.actorsystem
 
 import PPS19.scalagram.logic.{Bot, Context}
-import PPS19.scalagram.models.{CallbackButtonSelected, MessageUpdate}
+import PPS19.scalagram.models.updates.{CallbackButtonSelected, MessageUpdate}
 import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed.{ActorRef, Behavior}
 

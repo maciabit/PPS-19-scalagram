@@ -1,8 +1,8 @@
 package PPS19.scalagram.examples.dsl
 
 import PPS19.scalagram.dsl._
-import PPS19.scalagram.models.MessageUpdate
-import PPS19.scalagram.models.messages.{ChatMemberRemoved, ChatMembersAdded}
+import PPS19.scalagram.models.payloads.{ChatMemberRemoved, ChatMembersAdded}
+import PPS19.scalagram.models.updates.MessageUpdate
 import PPS19.scalagram.utils.Props
 
 import scala.util.Random

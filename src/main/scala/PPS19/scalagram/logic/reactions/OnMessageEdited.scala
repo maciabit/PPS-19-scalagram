@@ -1,8 +1,8 @@
 package PPS19.scalagram.logic.reactions
 
 import PPS19.scalagram.logic.{Context, Reaction, Trigger}
-import PPS19.scalagram.models.messages.TextMessage
-import PPS19.scalagram.models.{MessageUpdate, UpdateType}
+import PPS19.scalagram.models.payloads.TextMessage
+import PPS19.scalagram.models.updates.{MessageUpdate, UpdateType}
 
 /** A reaction that only gets executed if the update is an edited message equal to one of the given strings.
   *
