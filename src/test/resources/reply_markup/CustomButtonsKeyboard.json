@@ -16,6 +16,10 @@
       {
         "text": "Inline query",
         "switch_inline_query": ""
+      },
+      {
+        "text": "$$$",
+        "pay": true
       }
     ]
   ]

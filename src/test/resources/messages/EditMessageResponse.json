@@ -1,0 +1,17 @@
+{
+  "message_id" : 0,
+  "from" : {
+    "id" : 0,
+    "is_bot" : false,
+    "first_name" : "John",
+    "username" : "johndoe"
+  },
+  "chat" : {
+    "id" : 0,
+    "title" : "Scala&NodeBots",
+    "type" : "supergroup"
+  },
+  "date" : 0,
+  "edit_date" : 0,
+  "text" : "edited test message"
+}

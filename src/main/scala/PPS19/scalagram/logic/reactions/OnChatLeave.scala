@@ -3,6 +3,7 @@ import PPS19.scalagram.logic.{Context, Reaction, Trigger}
 import PPS19.scalagram.models.MessageReceived
 import PPS19.scalagram.models.messages.ChatMemberRemoved
 
+/** A reaction that gets executed when a user leaves a chat. */
 case class OnChatLeave() extends ReactionBuilder {
   override def build(action: Context => Unit): Reaction =
     Reaction(

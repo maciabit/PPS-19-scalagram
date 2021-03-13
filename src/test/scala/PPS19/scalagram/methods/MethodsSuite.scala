@@ -1,7 +1,6 @@
 package PPS19.scalagram.methods
 
-import PPS19.scalagram.logic.BotToken
-import PPS19.scalagram.models.{ChatId, RemoteMedia, UploadMedia}
+import PPS19.scalagram.models.{BotToken, ChatId, RemoteMedia, UploadMedia}
 import org.junit.runner.RunWith
 import org.scalatest.Assertion
 import org.scalatest.funsuite.AnyFunSuite

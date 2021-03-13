@@ -1,39 +1,27 @@
 package PPS19.scalagram.dsl.reactions
 
-import PPS19.scalagram.logic.reactions.{ReactionBuilder, VarArgReactionBuilder}
+import PPS19.scalagram.logic.reactions.ReactionBuilder
 import PPS19.scalagram.logic.{Context, Reaction}
 
-trait PartialReactionContainer extends ReactionContainer {
-  val reactions: List[Reaction]
-  val reactionBuilder: ReactionBuilder
-  def >>(action: Context => Unit): TotalReactionContainer =
-    TotalReactionContainer(reactionBuilder.build(action) :: reactions)
-}
-
-object PartialReactionContainer {
-  def apply(
-      reactions: List[Reaction],
-      reactionBuilder: ReactionBuilder
-  ): PartialReactionContainer = PartialReactionContainerImpl(reactions, reactionBuilder)
-
-  private case class PartialReactionContainerImpl(
-      reactions: List[Reaction],
-      reactionBuilder: ReactionBuilder
-  ) extends PartialReactionContainer
-}
-
-case class VarArgReactionContainer(
+/** Container that has list of reactions and a partially defined reaction.
+  * A [[PartialReactionContainer]] cannot be passed to a bot's [[PPS19.scalagram.dsl.TelegramBotDSL.reactions()]] method,
+  * because it includes a reaction that is not totally defined.
+  * A partially defined reaction can be terminated by concatenating an action using the [[>>]] method.
+  *
+  * @param reactions       Reactions to include in the container
+  * @param reactionBuilder Builder for the partially defined reaction
+  *
+  *                        Extends [[ReactionContainer]].
+  */
+case class PartialReactionContainer(
     reactions: List[Reaction],
-    reactionBuilder: VarArgReactionBuilder,
-    triggers: String*
-) extends PartialReactionContainer {
+    reactionBuilder: ReactionBuilder
+) extends ReactionContainer {
 
-  def ::(trigger: String): VarArgReactionContainer = {
-    val newTriggers = triggers :+ trigger
-    VarArgReactionContainer(
-      reactions,
-      reactionBuilder.fromStrings(newTriggers: _*),
-      newTriggers: _*
-    )
-  }
+  /** Creates a [[TotalReactionContainer]] with the actions from this container, plus a new one obtained by combining [[reactionBuilder]] and the given action
+    *
+    * @param action Function to be executed by the new reaction
+    */
+  def >>(action: Context => Unit): TotalReactionContainer =
+    TotalReactionContainer(reactions :+ reactionBuilder.build(action))
 }

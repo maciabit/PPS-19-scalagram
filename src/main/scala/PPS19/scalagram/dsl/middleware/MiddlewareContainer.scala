@@ -2,19 +2,16 @@ package PPS19.scalagram.dsl.middleware
 
 import PPS19.scalagram.logic.{Context, Middleware}
 
-trait MiddlewareContainer {
-  def middlewares: List[Middleware]
-  def <->(middleware: Context => Boolean): MiddlewareContainer
-}
+/** Container used to build a list of [[Middleware]].
+  *
+  * @param middlewares List of [[Middleware]] to put inside of this container
+  */
+case class MiddlewareContainer(middlewares: List[Middleware]) {
 
-object MiddlewareContainer {
-  def apply(middlewares: List[Middleware]): MiddlewareContainer =
-    MiddlewareContainerImpl(middlewares)
-
-  private case class MiddlewareContainerImpl(middlewares: List[Middleware]) extends MiddlewareContainer {
-    def <->(middleware: Context => Boolean): MiddlewareContainerImpl =
-      MiddlewareContainerImpl(
-        middlewares appended Middleware(middleware)
-      )
-  }
+  /** Creates a copy of this [[MiddlewareContainer]] with an additional middleware appended at the end.
+    *
+    * @param middleware Operation that the new middleware will perform
+    */
+  def <>(middleware: Context => Boolean): MiddlewareContainer =
+    MiddlewareContainer(middlewares :+ Middleware(middleware))
 }

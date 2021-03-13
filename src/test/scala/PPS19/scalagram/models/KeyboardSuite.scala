@@ -1,26 +1,18 @@
 package PPS19.scalagram.models
 
+import PPS19.scalagram.TestingUtils.getJsonString
 import PPS19.scalagram.marshalling.codecs.EncoderOps
 import io.circe.{Encoder, Json, parser}
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
 
-import java.nio.file.{Files, Paths}
-import scala.reflect.io.File
-
 @RunWith(classOf[JUnitRunner])
 class KeyboardSuite extends AnyFunSuite {
 
   private def testReplyMarkupEncoding(r: ReplyMarkup, expectedJsonPath: String): Unit = {
     val keyboardJson = Encoder[ReplyMarkup].snakeCase(r)
-    val expectedJsonString = new String(
-      Files.readAllBytes(
-        Paths.get(
-          getClass.getClassLoader.getResource(expectedJsonPath).toURI
-        )
-      )
-    )
+    val expectedJsonString = getJsonString(expectedJsonPath)
     val expectedJson = parser.parse(expectedJsonString).getOrElse(Json.Null)
     assert(keyboardJson == expectedJson)
   }
@@ -66,7 +58,9 @@ class KeyboardSuite extends AnyFunSuite {
 
   // Inline Keyboard
 
-  test("URL Buttons, Callback Buttons and Switch to Inline Buttons can be properly encoded in an Inline Keyboard") {
+  test(
+    "URL Buttons, Callback Buttons, Switch to Inline Buttons and Pay Buttons can be properly encoded in an Inline Keyboard"
+  ) {
     testReplyMarkupEncoding(
       InlineKeyboardMarkup(
         Seq(
@@ -74,7 +68,8 @@ class KeyboardSuite extends AnyFunSuite {
             InlineKeyboardButton.url("Link", "https://www.youtube.com/"),
             InlineKeyboardButton.callback("Callback", "Callback"),
             InlineKeyboardButton.switchInlineQueryCurrentChat("Inline chat", "HI"),
-            InlineKeyboardButton.switchInlineQuery("Inline query", "")
+            InlineKeyboardButton.switchInlineQuery("Inline query", ""),
+            InlineKeyboardButton.pay("$$$")
           )
         )
       ),

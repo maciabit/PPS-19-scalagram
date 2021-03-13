@@ -1,12 +1,6 @@
 package PPS19.scalagram.examples.dsl
 
-import PPS19.scalagram.dsl.TelegramBotDSL
-import PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer.Callback
-import PPS19.scalagram.dsl.keyboard.KeyboardConversions._
-import PPS19.scalagram.dsl.keyboard.KeyboardUtils._
-import PPS19.scalagram.dsl.mode.WorkingMode._
-import PPS19.scalagram.dsl.reactions.ReactionConversions._
-import PPS19.scalagram.dsl.reactions.ReactionUtils.{StringExtension, _}
+import PPS19.scalagram.dsl._
 import PPS19.scalagram.utils.Props
 
 import scala.concurrent.duration.DurationInt
@@ -18,16 +12,16 @@ private[dsl] object SimpleDSLBot extends TelegramBotDSL {
   )
 
   mode(
-    POLLING interval 300.milliseconds timeoutDelay 1.days
+    Polling interval 300.milliseconds timeoutDelay 1.days
   )
 
   middlewares(
-    <-> { context =>
+    <> { context =>
       println(context.update.get)
       true
     }
 
-    <-> { _ =>
+    <> { _ =>
       println("Second middleware")
       true
     }
@@ -49,10 +43,10 @@ private[dsl] object SimpleDSLBot extends TelegramBotDSL {
     >> "Callback"
 
     <* "Message"
-    >> "Message edited"
+    >> "'Message' edited"
 
-    <* ("Message" | "Message2" | "Message3")
-    >> "Message edited"
+    <* ("Message1" | "Message2" | "Message3")
+    >> "MessageN edited"
 
     <# "boh"
     >> "Regex"
@@ -96,10 +90,24 @@ private[dsl] object SimpleDSLBot extends TelegramBotDSL {
       context.leaveScene()
       context.reply("Ready")
     }
+
+    << *
+    >> "What?"
+
+    <* *
+    >> "Any message edited"
+
+    <^ *
+    >> "Message pinned"
+
+    <+ *
+    >> "Welcome"
+
+    </ *
+    >> "Goodbye"
   )
 
   scenes(
-
     scene(
       "FIRST_SCENE"
 
@@ -125,14 +133,15 @@ private[dsl] object SimpleDSLBot extends TelegramBotDSL {
       }
     )
 
-    scene(
-      "SECOND_SCENE"
-      <| "ONLY_STEP"
-      >> { context =>
-        context.reply("This scene has only one step")
-        println("Scene step")
-      }
-    )
+      scene (
+        "SECOND_SCENE"
+
+        <| "ONLY_STEP"
+        >> { context =>
+          context.reply("This scene has only one step")
+          println("Scene step")
+        }
+      )
   )
 
 }

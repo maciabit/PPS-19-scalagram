@@ -5,7 +5,7 @@
     "chat": {
       "id": 0,
       "title": "Title",
-      "type": "supergroup"
+      "type": "group"
     },
     "date": 0,
     "forward_from": {

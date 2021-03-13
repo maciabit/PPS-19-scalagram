@@ -2,14 +2,9 @@ package PPS19.scalagram.logic.reactions
 
 import PPS19.scalagram.logic.{Context, Reaction}
 
+/** A factory for the [[Reaction]] class. */
 trait ReactionBuilder {
+
+  /** Creates a reaction for the given action function. */
   def build(action: Context => Unit): Reaction
-}
-
-trait SingleArgReactionBuilder extends ReactionBuilder {
-  def fromString(string: String): SingleArgReactionBuilder
-}
-
-trait VarArgReactionBuilder extends ReactionBuilder {
-  def fromStrings(strings: String*): VarArgReactionBuilder
 }

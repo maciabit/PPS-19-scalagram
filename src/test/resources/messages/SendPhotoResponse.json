@@ -1,0 +1,24 @@
+{
+  "message_id" : 0,
+  "from" : {
+    "id" : 0,
+    "is_bot" : false,
+    "first_name" : "John",
+    "username" : "johndoe"
+  },
+  "chat" : {
+    "id" : 0,
+    "title" : "Title",
+    "type" : "supergroup"
+  },
+  "date" : 0,
+  "photo" : [
+    {
+      "file_id" : "qwertyuiopasdfghjklzxcvbnm",
+      "file_unique_id" : "qwertyuiop",
+      "file_size" : 0,
+      "width" : 0,
+      "height" : 0
+    }
+  ]
+}

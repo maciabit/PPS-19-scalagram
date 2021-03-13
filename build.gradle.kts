@@ -33,17 +33,21 @@ dependencies {
     testRuntimeOnly("org.scala-lang.modules:scala-xml_2.13:1.2.0")
 }
 
-/*tasks.withType<ScalaCompile>().configureEach {
+tasks.withType<ScalaCompile>().configureEach {
     scalaCompileOptions.apply {
-        additionalParameters = listOf("-Xfatal-warnings", "-Ywarn-unused")
+        additionalParameters = listOf("-Xfatal-warnings", "-Ywarn-unused", "-feature", "-language:implicitConversions")
     }
-}*/
+}
 
 spotless {
     scala {
         scalafmt("2.5.0").configFile(".scalafmt.conf")
         targetExclude("src/main/scala/PPS19/scalagram/examples/dsl/")
     }
+}
+
+scoverage {
+    excludedPackages.addAll("PPS19.scalagram.examples", "PPS19.scalagram.examples.dsl")
 }
 
 tasks.compileScala.configure {

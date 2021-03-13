@@ -2,8 +2,7 @@ package PPS19.scalagram.models
 
 import io.circe.Decoder
 
-/** Type of chat, can be either "private", "group", "supergroup" or "channel"
-  */
+/** Enumeration representing the type of a chat, can be either "private", "group", "supergroup" or "channel" */
 object ChatType extends Enumeration {
   type ChatType = Value
   val Private, Group, Supergroup, Channel = Value

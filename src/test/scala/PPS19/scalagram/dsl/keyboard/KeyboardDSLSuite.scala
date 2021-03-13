@@ -1,8 +1,6 @@
-package PPS19.scalagram.dsl
+package PPS19.scalagram.dsl.keyboard
 
-import PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer.{Callback, CurrentChatInlineQuery, InlineQuery, Url}
-import PPS19.scalagram.dsl.keyboard.KeyboardConversions._
-import PPS19.scalagram.dsl.keyboard.KeyboardUtils._
+import PPS19.scalagram.dsl._
 import PPS19.scalagram.marshalling.codecs.EncoderOps
 import PPS19.scalagram.models._
 import io.circe.Encoder
@@ -11,21 +9,29 @@ import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class DSLSuite extends AnyFunSuite {
+class KeyboardDSLSuite extends AnyFunSuite {
 
   test("A Reply Keyboard created with the DSL equals one created without it") {
     val dslKeyboard = Keyboard(
       "Button 1",
-      "Button 2" :: "Button 3"
-    )
+      "Button 2" :: "Button 3",
+      Contact("Contact") :: Location("Location")
+    ).withOneTime.withResize.withSelective
     val standardKeyboard = ReplyKeyboardMarkup(
       Seq(
         Seq(ReplyKeyboardButton("Button 1")),
         Seq(
           ReplyKeyboardButton("Button 2"),
           ReplyKeyboardButton("Button 3")
+        ),
+        Seq(
+          ReplyKeyboardButton("Contact", requestContact = Some(true)),
+          ReplyKeyboardButton("Location", requestLocation = Some(true))
         )
-      )
+      ),
+      Some(true),
+      Some(true),
+      Some(true)
     )
     assert(Encoder[ReplyMarkup].snakeCase(dslKeyboard) == Encoder[ReplyMarkup].snakeCase(standardKeyboard))
   }

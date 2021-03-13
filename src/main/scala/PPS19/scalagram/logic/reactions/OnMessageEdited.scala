@@ -4,10 +4,12 @@ import PPS19.scalagram.logic.{Context, Reaction, Trigger}
 import PPS19.scalagram.models.messages.TextMessage
 import PPS19.scalagram.models.{MessageUpdate, UpdateType}
 
-case class OnMessageEdited(strings: String*) extends VarArgReactionBuilder {
-
-  override def fromStrings(strings: String*): OnMessageEdited = OnMessageEdited(strings: _*)
-
+/** A reaction that only gets executed if the update is an edited message equal to one of the given strings.
+  *
+  * @param strings Messages that allow the action to be triggered.
+  *                If no messages are passed, the action will be triggered by any edited text message.
+  */
+case class OnMessageEdited(strings: String*) extends ReactionBuilder {
   override def build(action: Context => Unit): Reaction =
     Reaction(
       Trigger { context =>

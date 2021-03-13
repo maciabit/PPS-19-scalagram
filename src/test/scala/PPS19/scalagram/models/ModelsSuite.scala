@@ -1,8 +1,8 @@
 package PPS19.scalagram.models
 
-import java.nio.file.{Files, Paths}
-
-import io.circe.parser.decode
+import PPS19.scalagram.TestingUtils.getJsonString
+import PPS19.scalagram.models.messages.{CallbackQuery, TextMessage}
+import io.circe.jawn.decode
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
@@ -11,15 +11,9 @@ import org.scalatestplus.junit.JUnitRunner
 class ModelsSuite extends AnyFunSuite {
 
   private def testUpdateDecoding(expectedJsonPath: String): Unit = {
-    val messageString = new String(
-      Files.readAllBytes(
-        Paths.get(
-          getClass.getClassLoader.getResource(expectedJsonPath).toURI
-        )
-      )
-    )
-    val messageDecoded = decode[Update](messageString)
-    assert(messageDecoded.isRight && messageDecoded.getOrElse(null).getClass != UnknownUpdate)
+    val messageString = getJsonString(expectedJsonPath)
+    val decodedMessage = decode[Update](messageString)
+    assert(decodedMessage.isRight && decodedMessage.getOrElse(null).getClass != UnknownUpdate.getClass)
   }
 
   test("A CallbackButtonSelected update can be decoded") {
@@ -39,11 +33,11 @@ class ModelsSuite extends AnyFunSuite {
   }
 
   test("A EditedChannelPost update can be decoded") {
-    testUpdateDecoding(s"updates/EditedChannelPostUpdate.json")
+    testUpdateDecoding(s"updates/ChannelPostEditedUpdate.json")
   }
 
   test("A EditedTextMessage update can be decoded") {
-    testUpdateDecoding(s"updates/EditedTextMessageUpdate.json")
+    testUpdateDecoding(s"updates/MessageEditedUpdate.json")
   }
 
   test("A MessagePinned update can be decoded") {
@@ -55,7 +49,37 @@ class ModelsSuite extends AnyFunSuite {
   }
 
   test("A TextMessage update can be decoded") {
-    testUpdateDecoding(s"updates/TextMessageUpdate.json")
+    testUpdateDecoding(s"updates/MessageReceivedUpdate.json")
+  }
+
+  test("A BotUser update can be decoded") {
+    val userString = getJsonString(s"users/BotUser.json")
+    val decodedUser = decode[User](userString)
+    assert(decodedUser.isRight && decodedUser.getOrElse(null).isBot)
+  }
+
+  test("A HumanUser update can be decoded") {
+    val userString = getJsonString(s"users/HumanUser.json")
+    val decodedUser = decode[User](userString)
+    assert(decodedUser.isRight && !decodedUser.getOrElse(null).isBot)
+  }
+
+  test("A ChatId containing a String can be decoded") {
+    val chatId: ChatId = ChatId("@JohnDoe")
+    assert(chatId.get.isInstanceOf[String])
+  }
+
+  test("A CallbackButtonSelected update can be created") {
+    val update: CallbackButtonSelected = CallbackButtonSelected(
+      0,
+      CallbackQuery(
+        "0",
+        User(0, isBot = false, "John"),
+        chatInstance = "0",
+        message = Some(TextMessage(0, Supergroup(id = 0), 0, "Message"))
+      )
+    )
+    assert(update.updateType == UpdateType.CallbackSelected && update.chat.isInstanceOf[Supergroup])
   }
 
 }
