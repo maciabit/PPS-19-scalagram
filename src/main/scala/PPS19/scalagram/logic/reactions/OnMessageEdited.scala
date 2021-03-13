@@ -14,7 +14,7 @@ case class OnMessageEdited(strings: String*) extends ReactionBuilder {
     Reaction(
       Trigger { context =>
         context.update match {
-          case Some(update: MessageUpdate)
+          case update: MessageUpdate
               if update.updateType == UpdateType.MessageEdited ||
                 update.updateType == UpdateType.ChannelPostEdited =>
             strings.isEmpty || strings.contains(

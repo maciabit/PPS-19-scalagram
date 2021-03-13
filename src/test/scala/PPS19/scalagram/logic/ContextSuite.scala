@@ -3,7 +3,7 @@ package PPS19.scalagram.logic
 import PPS19.scalagram.logic.scenes.{Scene, Step}
 import PPS19.scalagram.models.payloads.TextMessage
 import PPS19.scalagram.models.updates.MessageReceived
-import PPS19.scalagram.models.{BotToken, Supergroup, User}
+import PPS19.scalagram.models.{BotToken, Supergroup, UnknownChat, User}
 import org.junit.runner.RunWith
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.funsuite.AnyFunSuite
@@ -31,9 +31,9 @@ class ContextSuite extends AnyFunSuite with BeforeAndAfterEach {
     val chat = Supergroup(0, None, None)
     val user = User(0, isBot = false, "John", Some("Doe"), Some("johndoe"))
     val update = MessageReceived(0, TextMessage(0, Supergroup(0, None, None), 0, "message", from = Some(user)))
-    assert(context.chat.isEmpty && context.from.isEmpty)
-    context.update = Some(update)
-    assert(context.chat.contains(chat) && context.from.contains(user))
+    assert(context.chat == UnknownChat && context.from.isEmpty)
+    context.update = update
+    assert(context.chat == chat && context.from.contains(user))
   }
 
   test("The enterScene method works as intended") {

@@ -17,7 +17,7 @@ object SimpleDSLBot extends TelegramBotDSL {
 
   middlewares(
     <> { context =>
-      println(context.update.get)
+      println(context.update)
       true
     }
 
@@ -91,9 +91,6 @@ object SimpleDSLBot extends TelegramBotDSL {
       context.reply("Ready")
     }
 
-    << *
-    >> "What?"
-
     <* *
     >> "Any message edited"
 
@@ -133,15 +130,15 @@ object SimpleDSLBot extends TelegramBotDSL {
       }
     )
 
-      scene (
-        "SECOND_SCENE"
+    scene (
+      "SECOND_SCENE"
 
-        <| "ONLY_STEP"
-        >> { context =>
-          context.reply("This scene has only one step")
-          println("Scene step")
-        }
-      )
+      <| "ONLY_STEP"
+      >> { context =>
+        context.reply("This scene has only one step")
+        println("Scene step")
+      }
+    )
   )
 
 }

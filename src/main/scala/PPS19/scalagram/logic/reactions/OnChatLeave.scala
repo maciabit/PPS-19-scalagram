@@ -9,7 +9,7 @@ case class OnChatLeave() extends ReactionBuilder {
     Reaction(
       Trigger { context =>
         context.update match {
-          case Some(MessageReceived(_, message)) =>
+          case MessageReceived(_, message) =>
             message.isInstanceOf[ChatMemberRemoved]
           case _ => false
         }

@@ -23,7 +23,7 @@ object WorkerActor {
               botContext.timeout
             )
 
-            botContext.update = Some(update)
+            botContext.update = update
             var continue = true
 
             // Execute middlewares and reactions

@@ -2,12 +2,12 @@ package PPS19.scalagram.logic
 
 import PPS19.scalagram.logic.scenes.{Scene, Step}
 import PPS19.scalagram.models._
-import PPS19.scalagram.models.payloads.TelegramMessage
-import PPS19.scalagram.models.updates.{ChatUpdate, MessageUpdate, Update}
+import PPS19.scalagram.models.payloads.{NoPayload, Payload, TelegramMessage}
+import PPS19.scalagram.models.updates._
 
 import java.time.LocalDateTime
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
-import scala.util.{Failure, Try}
+import scala.util.Try
 
 /** Execution context of a bot.
   * There is exactly one instance of [[Context]] for each pair of [[Bot]] and [[Chat]].
@@ -33,12 +33,15 @@ trait Context {
   var sceneStep: Option[Step]
 
   /** Current update. */
-  var update: Option[Update]
+  var update: Update
+
+  /** Payload of the current update */
+  def payload: Payload
 
   /** Chat that this context refers to */
-  def chat: Option[Chat]
+  def chat: Chat
 
-  /** User that triggered the last update */
+  /** User that triggered the current update */
   def from: Option[User]
 
   /** Shortcut to send a message in the context chat.
@@ -97,19 +100,26 @@ object Context {
     override var lastUpdateTimestamp: LocalDateTime = LocalDateTime.now()
     override var activeScene: Option[Scene] = None
     override var sceneStep: Option[Step] = None
-    override var update: Option[Update] = None
+    override var update: Update = UnknownUpdate(-1)
     override var updateCount: Int = 0
 
-    override def chat: Option[Chat] =
+    override def payload: Payload =
       update match {
-        case Some(update: ChatUpdate) => Some(update.chat)
-        case _                        => None
+        case MessageUpdate(_, message)                => message
+        case CallbackButtonSelected(_, callbackQuery) => callbackQuery
+        case _                                        => NoPayload
+      }
+
+    override def chat: Chat =
+      update match {
+        case update: ChatUpdate => update.chat
+        case _                  => UnknownChat
       }
 
     override def from: Option[User] =
       update match {
-        case Some(update: MessageUpdate) => update.from
-        case _                           => None
+        case update: MessageUpdate => update.from
+        case _                     => None
       }
 
     private def sceneStepIndex: Option[Int] =
@@ -152,20 +162,6 @@ object Context {
         parseMode: Option[String] = None,
         replyMarkup: Option[ReplyMarkup] = None
     ): Try[TelegramMessage] =
-      chat match {
-        case Some(chat) =>
-          bot.sendMessage(
-            chat.chatId,
-            text,
-            parseMode,
-            replyMarkup = replyMarkup
-          )
-        case _ =>
-          Failure(
-            new IllegalStateException(
-              "Cannot send message: context.chatId is None."
-            )
-          )
-      }
+      bot.sendMessage(chat.chatId, text, parseMode, replyMarkup = replyMarkup)
   }
 }

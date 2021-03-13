@@ -13,7 +13,7 @@ case class OnMessage(strings: String*) extends ReactionBuilder {
     Reaction(
       Trigger { context =>
         context.update match {
-          case Some(update: MessageUpdate)
+          case update: MessageUpdate
               if update.updateType == UpdateType.MessageReceived ||
                 update.updateType == UpdateType.ChannelPostReceived =>
             val message = update.message.asInstanceOf[TextMessage].text

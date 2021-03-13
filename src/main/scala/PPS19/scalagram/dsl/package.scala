@@ -40,10 +40,7 @@ package object dsl {
     * )}}}
     */
   implicit def stringToSendMessage(string: String): Context => Unit =
-    context =>
-      if (context.chat.nonEmpty) {
-        context.bot.sendMessage(context.chat.get.chatId, string)
-      }
+    context => context.bot.sendMessage(context.chat.chatId, string)
 
   /** Implicit conversion from [[MessageContainer]] to [[Context => Unit]].
     * This conversion enables the use of the following syntax:
@@ -63,19 +60,17 @@ package object dsl {
     */
   implicit def messageBuilderToAction(messageBuilder: MessageContainer): Context => Unit =
     context =>
-      if (context.chat.nonEmpty) {
-        context.bot.sendMessage(
-          context.chat.get.chatId,
-          messageBuilder.message,
-          messageBuilder.parseMode,
-          replyMarkup = messageBuilder.keyboard match {
-            case Some(Left(replyKeyboardMarkup)) => Some(replyKeyboardMarkup)
-            case Some(Right(inlineKeyboardMarkup)) =>
-              Some(inlineKeyboardMarkup)
-            case _ => None
-          }
-        )
-      }
+      context.bot.sendMessage(
+        context.chat.chatId,
+        messageBuilder.message,
+        messageBuilder.parseMode,
+        replyMarkup = messageBuilder.keyboard match {
+          case Some(Left(replyKeyboardMarkup)) => Some(replyKeyboardMarkup)
+          case Some(Right(inlineKeyboardMarkup)) =>
+            Some(inlineKeyboardMarkup)
+          case _ => None
+        }
+      )
 
   // Conversions for the keyboard DSL
 

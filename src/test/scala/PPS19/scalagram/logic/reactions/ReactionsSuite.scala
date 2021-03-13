@@ -21,7 +21,7 @@ class ReactionsSuite extends AnyFunSuite {
       botReaction: (Context => Unit) => Reaction,
       expectedRes: Boolean = true
   ): Assertion = {
-    context.update = Some(update)
+    context.update = update
     var res = false
     var botRes = false
     reactionBuilder.build(_ => res = true).operation(context)

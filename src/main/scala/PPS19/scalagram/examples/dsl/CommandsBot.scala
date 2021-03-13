@@ -50,21 +50,16 @@ object CommandsBot extends TelegramBotDSL {
 
     </ *
     >> { context =>
-      context.reply(
-        s"""${context.update.get
-          .asInstanceOf[MessageUpdate]
-          .message
-          .asInstanceOf[ChatMemberRemoved]
-          .leftChatMember
-          .username
-          .get} has left the chat. Goodbye!""".stripMargin
-      )
+      context.payload match {
+        case ChatMemberRemoved(_, _, _, u) => context.reply(s"${u.username.get} has left the chat. Goodbye!")
+        case _ =>
+      }
     }
 
     <+ *
     >> { context =>
       context.reply(
-        s"""${context.update.get
+        s"""${context.update
           .asInstanceOf[MessageUpdate]
           .message
           .asInstanceOf[ChatMembersAdded]

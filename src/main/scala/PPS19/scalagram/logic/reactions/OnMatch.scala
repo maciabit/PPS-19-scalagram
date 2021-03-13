@@ -12,7 +12,7 @@ case class OnMatch(regex: String) extends ReactionBuilder {
     Reaction(
       Trigger { context =>
         context.update match {
-          case Some(MessageUpdate(_, message)) if message.isInstanceOf[TextMessage] =>
+          case MessageUpdate(_, message) if message.isInstanceOf[TextMessage] =>
             regex.r.matches(message.asInstanceOf[TextMessage].text)
           case _ => false
         }

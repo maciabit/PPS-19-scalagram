@@ -12,9 +12,8 @@ case class OnCallbackQuery(callbackData: String) extends ReactionBuilder {
     Reaction(
       Trigger { context =>
         context.update match {
-          case Some(CallbackButtonSelected(_, callbackQuery)) =>
-            callbackQuery.data.contains(callbackData)
-          case _ => false
+          case CallbackButtonSelected(_, callbackQuery) => callbackQuery.data.contains(callbackData)
+          case _                                        => false
         }
       },
       action
