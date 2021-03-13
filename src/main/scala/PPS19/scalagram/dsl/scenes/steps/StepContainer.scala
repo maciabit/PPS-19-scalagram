@@ -1,8 +1,9 @@
 package PPS19.scalagram.dsl.scenes.steps
 
-import PPS19.scalagram.logic.{Context, Step}
+import PPS19.scalagram.logic.Context
+import PPS19.scalagram.logic.scenes.{Scene, Step}
 
-/** Container used to build a single [[PPS19.scalagram.logic.Scene]]
+/** Container used to build a single [[Scene]]
   *
   * Used by [[PartialStepContainer]] and [[TotalStepContainer]]
   */
@@ -15,7 +16,7 @@ trait StepContainer {
   def steps: List[Step]
 }
 
-/** Container for a partially defined [[PPS19.scalagram.logic.Scene]], that includes a name for the scene, a list of steps and a name for the new step to be added.
+/** Container for a partially defined [[Scene]], that includes a name for the scene, a list of steps and a name for the new step to be added.
   * A [[PartialStepContainer]] cannot be passed to a bot's [[PPS19.scalagram.dsl.TelegramBotDSL.scene()]] method,
   * because it includes a step that is not totally defined.
   * A partially defined scene can be terminated by concatenating an action using the [[>>]] method.
@@ -32,7 +33,8 @@ case class PartialStepContainer(sceneName: String, stepName: String, steps: List
     *
     * @param action Function to be performed by the new step.
     */
-  def >>(action: Context => Unit): TotalStepContainer = TotalStepContainer(sceneName, steps :+ Step(stepName, action))
+  def >>(action: Context => Unit): TotalStepContainer =
+    TotalStepContainer(sceneName, steps :+ Step(stepName, action))
 }
 
 /** Container that has list of reactions.

@@ -9,8 +9,8 @@ import org.scalatestplus.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class UpdateTypeSuite extends AnyFunSuite {
 
-  private val humanUser: User = User(0, isBot = false, "John");
-  private val botUser: User = User(0, isBot = true, "Doe");
+  private val humanUser: User = User(0, isBot = false, "John")
+  private val botUser: User = User(0, isBot = true, "Doe")
   private val chat: Chat = Supergroup(id = 0)
 
   test("A CallbackButtonSelected UpdateType can be properly set") {

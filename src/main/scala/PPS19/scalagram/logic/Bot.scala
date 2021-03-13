@@ -1,10 +1,11 @@
 package PPS19.scalagram.logic
 
 import PPS19.scalagram.logic.reactions._
+import PPS19.scalagram.logic.scenes.Scene
 import PPS19.scalagram.methods._
+import PPS19.scalagram.models._
 import PPS19.scalagram.models.payloads.TelegramMessage
 import PPS19.scalagram.models.updates.Update
-import PPS19.scalagram.models._
 import PPS19.scalagram.modes.polling.Mode
 
 import scala.util.{Success, Try}

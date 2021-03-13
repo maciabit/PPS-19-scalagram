@@ -1,5 +1,6 @@
 package PPS19.scalagram.logic
 
+import PPS19.scalagram.logic.scenes.{Scene, Step}
 import PPS19.scalagram.models._
 import PPS19.scalagram.models.payloads.TelegramMessage
 import PPS19.scalagram.models.updates.{ChatUpdate, MessageUpdate, Update}

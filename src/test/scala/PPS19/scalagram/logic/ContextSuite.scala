@@ -1,5 +1,6 @@
 package PPS19.scalagram.logic
 
+import PPS19.scalagram.logic.scenes.{Scene, Step}
 import PPS19.scalagram.models.payloads.TextMessage
 import PPS19.scalagram.models.updates.MessageReceived
 import PPS19.scalagram.models.{BotToken, Supergroup, User}

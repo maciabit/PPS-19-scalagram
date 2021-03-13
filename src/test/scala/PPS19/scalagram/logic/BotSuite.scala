@@ -1,5 +1,6 @@
 package PPS19.scalagram.logic
 
+import PPS19.scalagram.logic.scenes.{Scene, Step}
 import PPS19.scalagram.models.BotToken
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
@@ -27,10 +28,10 @@ class BotSuite extends AnyFunSuite {
     assert(!reaction.operation(context))
   }
 
-  test("A Step always returns false") {
+  /*test("A Step always returns false") {
     val step = Step("name", _ => {})
     assert(!step.operation(context))
-  }
+  }*/
 
   test("Bot creation and extractor method are working as intended") {
     val token = BotToken("<TOKEN>")

@@ -13,6 +13,8 @@ trait Update {
 
   /** The update's unique identifier. Update identifiers starts from a certain positive number and increase sequentially. */
   val updateId: Long
+
+  /** Type of the update */
   //noinspection MutatorLikeMethodIsParameterless
   def updateType: UpdateType
 }

@@ -1,4 +1,6 @@
-package PPS19.scalagram.logic
+package PPS19.scalagram.logic.scenes
+
+import PPS19.scalagram.logic.Context
 
 /** A scoped set of actions that the bot can perform under certain circumstances.
   * A scene can be activated by name with the [[Context.enterScene()]] method.
@@ -9,7 +11,4 @@ package PPS19.scalagram.logic
   * @param name  Name of the scene.
   * @param steps Steps of the scene.
   */
-case class Scene(
-    name: String,
-    steps: List[Step]
-)
+case class Scene(name: String, steps: List[Step])

@@ -7,6 +7,7 @@ import PPS19.scalagram.dsl.scenes.SceneContainer
 import PPS19.scalagram.dsl.scenes.steps.TotalStepContainer
 import PPS19.scalagram.logic._
 import PPS19.scalagram.logic.reactions.OnStart
+import PPS19.scalagram.logic.scenes.Scene
 import PPS19.scalagram.models.BotToken
 import PPS19.scalagram.modes.polling.Mode
 

@@ -44,21 +44,3 @@ case class Reaction(trigger: Trigger, action: Context => Unit) extends Operation
         true
       }
 }
-
-/** A named operation that always returns false.
-  * Steps are only used inside scenes ([[Scene]]).
-  * The action of a step can use the following methods to set the active scene step for the next update:
-  * - [[Context.nextStep()]] to go to the next scene step
-  * - [[Context.goToStep()]] to go to a specific step by index or name
-  * - [[Context.leaveScene()]] to exit the current scene
-  *
-  * @param name   Name of the step
-  * @param action Function to be executed
-  */
-case class Step(name: String, action: Context => Unit) extends Operation {
-  def operation: Context => Boolean =
-    context => {
-      action(context)
-      false
-    }
-}

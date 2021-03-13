@@ -1,7 +1,9 @@
 package PPS19.scalagram.dsl.scenes
 
 import PPS19.scalagram.dsl._
-import PPS19.scalagram.logic.{Context, Scene, Step}
+import PPS19.scalagram.logic
+import PPS19.scalagram.logic.Context
+import PPS19.scalagram.logic.scenes.{Scene, Step}
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
@@ -18,8 +20,8 @@ class ScenesDSLSuite extends AnyFunSuite {
       )
     }
     val scenes = List(
-      Scene("1", List(Step("S1", f1), Step("S2", f2))),
-      Scene("2", List(Step("S1", f1)))
+      Scene("1", List(Step("S1", f1), logic.scenes.Step("S2", f2))),
+      Scene("2", List(logic.scenes.Step("S1", f1)))
     )
     assert(TestDSL._scenes == scenes)
   }
