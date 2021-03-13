@@ -11,6 +11,11 @@ Processo di sviluppo adottato (modalità di divisione in itinere dei task, meeti
 Requisiti (delle varie tipologie, ossia: 1) business, 2) utente, 3) funzionali, 4) non funzionali, 5) di implementazione)
 
 ### Business
+
+Questa sezione è dedicata alla analisi e definizione dei requisiti di business che caratterizzeranno il sistema. L'approccio utilizzato per la definizione del modello è basato sulla filosofia **Domain Driven Design** (DDD). 
+
+È importante asserire sin da subito che l'oggetto dello studio del modello del dominio sono state le [Telegram Bot API](https://core.telegram.org/bots/api).
+
 #### Knowledge crunching
 #### Ubiquitous language
 ### Utente
@@ -23,13 +28,20 @@ Requisiti (delle varie tipologie, ossia: 1) business, 2) utente, 3) funzionali, 
 Design architetturale (architettura complessiva, descrizione di pattern architetturali usati, componenti del sistema distribuito, scelte tecnologiche cruciali ai fini architetturali -- corredato da pochi ma efficaci diagrammi)
 
 ### Bounded context [Pistocchi]
+![BoundedContext](img/BoundedContext.png)
+
+
 ### DSL e user story [Pistocchi]
+
 
 ## Design Detail
 Design di dettaglio (scelte rilevanti, pattern di progettazione, organizzazione del codice -- corredato da pochi ma efficaci diagrammi)
 
 ### Scelte rilevanti [Boschi]
+- riferimento ai bounded context
+- adattarsi alle telegram api
 ### Organizzazione del codice [Rossi, Tumedei]
+- riferimento ai bounded context
 
 ## Implementation
 Implementazione (per ogni studente, una sotto-sezione descrittiva di cosa fatto/co-fatto e con chi, e descrizione di aspetti implementativi importanti non già presenti nel design)
