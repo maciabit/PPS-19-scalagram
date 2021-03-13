@@ -48,9 +48,19 @@ L'utilizzo di un ambiente di Continuous Integration (CI), quale GitHub Actions c
 Nelle successive sottosezioni verranno descritte tutte le procedure attuate proprio a questo fine.
 
 ### Automatic delivery e deployment [Rossi, Pistocchi]
-- tagging
-- publish release
-- publish on maven central
+
+In questa sezione verranno dettagliati gli aspetti relativi alla gestione automatizzata del repository ed alla pubblicazione degli artefatti sulla nota piattaforma Maven Central. Verrà dettagliato inoltre come l'utilizzo dell'integrator ci supporterà interamente durante questa fase.
+
+- La prima domanda da porsi quando si deve pubblicare software è quella di stabilire la modalità di **versioning**. Per il seguente progetto si è deciso di utilizzare il semantic versioning.
+
+- Per effettuare il versioning si sono utilizzati i **tag annotati** di Git.
+
+- Si è sfruttata la possibilità di salvare alcuni **segreti** all'interno dell'integrator, per poi utilizzarli all'interno dei workflows. Si sono salvate ad esempio le credenziali per la pubblicazione su Maven Central.
+
+- Una volta effettuato il tagging tramite il vcs, ci si avvale dell'integrator per effettuare la **pubblicazione della release**. A questo scopo è stato sviluppato un workflow in grado di reagire alla pubblicazione di un tag annotato. Vengono sfruttate due actions pubbliche in grado di creare e pubblicare la release all'interno del repository.
+
+- Ci si avvale allo stesso modo del task precedente, mediante un ulteriore action pubblica, per effettuare la pubblicazione degli artefatti in maniere automatizzata sul **Maven Central** Repository.
+
 ### Build automation [Rossi, Pistocchi]
 
 Questa sezione dettaglierà come è stata strutturata la fase di build automation all'interno dell'integrator GitHub Actions.
