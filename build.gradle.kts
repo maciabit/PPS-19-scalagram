@@ -59,7 +59,7 @@ dependencies {
     implementation("com.typesafe.akka:akka-actor-typed_2.13:2.6.11")
 
     // Use Scalatest for testing our library
-    testImplementation("junit:junit:null")
+    testImplementation("junit:junit:4.13.2")
     testImplementation("org.scalatest:scalatest_2.13:3.1.2")
     testImplementation("org.scalatestplus:junit-4-12_2.13:3.1.2.0")
 
