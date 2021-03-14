@@ -108,53 +108,94 @@ package object dsl {
   implicit def buttonContainerToButtonRow(buttonContainer: KeyboardButtonContainer): KeyboardRow =
     KeyboardRow(Seq(buttonContainer))
 
-  // Keyboard DSL methods
-
+  /** Creates a new reply keyboard with the given buttons.
+    *
+    * @param rows Rows of keyboard buttons
+    */
   def Keyboard(rows: KeyboardRow*): ReplyKeyboardMarkup =
     ReplyKeyboardMarkup(for {
       row <- rows
     } yield row.buttons map { _.toReplyKeyboardButton })
 
+  /** Creates a new inline keyboard with the given buttons.
+    *
+    * @param rows Rows of keyboard buttons
+    */
   def InlineKeyboard(rows: KeyboardRow*): InlineKeyboardMarkup =
     InlineKeyboardMarkup(for {
       row <- rows
     } yield row.buttons map { _.toInlineKeyboardButton })
 
   implicit class ReplyKeyboardMarkupUtils(markup: ReplyKeyboardMarkup) {
+
+    /** Creates a new instance of reply keyboard with the given buttons plus withResize field set true. */
     def withResize: ReplyKeyboardMarkup =
       ReplyKeyboardMarkup(markup.keyboard, Some(true), markup.oneTimeKeyboard, markup.selective)
 
+    /** Creates a new instance of reply keyboard with the given buttons plus withOneTime field set true. */
     def withOneTime: ReplyKeyboardMarkup =
       ReplyKeyboardMarkup(markup.keyboard, markup.resizeKeyboard, Some(true), markup.selective)
 
+    /** Creates a new instance of reply keyboard with the given buttons plus withSelective field set true. */
     def withSelective: ReplyKeyboardMarkup =
       ReplyKeyboardMarkup(markup.keyboard, markup.resizeKeyboard, markup.oneTimeKeyboard, Some(true))
   }
 
-  // Keyboard buttons DSL methods
-
+  /** Creates a new [[KeyboardButtonContainer]] with the given text and callbackData.
+    *
+    * @param tuple The text and the callbackData of the button.
+    * @return The new created [[KeyboardButtonContainer]].
+    */
   def Callback(tuple: (String, String)): KeyboardButtonContainer =
     KeyboardButtonContainer(tuple._1, callbackData = Some(tuple._2))
 
+  /** Creates a new [[KeyboardButtonContainer]] with the given text and url.
+    *
+    * @param tuple The text and the url of the button.
+    * @return The new created [[KeyboardButtonContainer]].
+    */
   def Url(tuple: (String, String)): KeyboardButtonContainer =
     KeyboardButtonContainer(tuple._1, url = Some(tuple._2))
 
+  /** Creates a new [[KeyboardButtonContainer]] with the given text and switchInlineQuery.
+    *
+    * @param tuple The text and the inline query of the button.
+    * @return The new created [[KeyboardButtonContainer]].
+    */
   def InlineQuery(tuple: (String, String)): KeyboardButtonContainer =
     KeyboardButtonContainer(tuple._1, switchInlineQuery = Some(tuple._2))
 
+  /** Creates a new [[KeyboardButtonContainer]] with the given text and switchInlineQueryCurrentChat.
+    *
+    * @param tuple The text and the inline query of the button.
+    * @return The new created [[KeyboardButtonContainer]].
+    */
   def CurrentChatInlineQuery(tuple: (String, String)): KeyboardButtonContainer =
     KeyboardButtonContainer(tuple._1, switchInlineQueryCurrentChat = Some(tuple._2))
 
+  /** Creates a new [[KeyboardButtonContainer]] with the given text and pay filed set true.
+    *
+    * @param text The text of the button.
+    * @return The new created [[KeyboardButtonContainer]].
+    */
   def Payment(text: String): KeyboardButtonContainer =
     KeyboardButtonContainer(text, pay = Some(true))
 
+  /** Creates a new [[KeyboardButtonContainer]] with the given text and requestContact field set true.
+    *
+    * @param text The text of the button.
+    * @return The new created [[KeyboardButtonContainer]].
+    */
   def Contact(text: String): KeyboardButtonContainer =
     KeyboardButtonContainer(text, requestContact = Some(true))
 
+  /** Creates a new [[KeyboardButtonContainer]] with the given text and requestLocation field set true.
+    *
+    * @param text The text of the button.
+    * @return The new created [[KeyboardButtonContainer]].
+    */
   def Location(text: String): KeyboardButtonContainer =
     KeyboardButtonContainer(text, requestLocation = Some(true))
-
-  // Extension classes
 
   /** String extension for the Scalagram DSL. */
   implicit class StringExtension(string: String) {
@@ -173,18 +214,33 @@ package object dsl {
     def |(string: String): List[String] = string +: list
   }
 
-  // Reactions DSL methods
-
+  /** Creates a new [[MessageContainer]] with the given text and HTML formatting enabled.
+    *
+    * @param message The text of the message.
+    * @return The new created [[MessageContainer]].
+    */
   def HTML(message: String): MessageContainer =
     MessageContainer(message, Some("HTML"), None)
 
+  /** Creates a new [[MessageContainer]] with the given text and Markdown formatting enabled.
+    *
+    * @param message The text of the message.
+    * @return The new created [[MessageContainer]].
+    */
   def Markdown(message: String): MessageContainer =
     MessageContainer(message, Some("Markdown"), None)
 
+  /** Creates a new [[MessageContainer]] with the given text and Markdown formatting enabled.
+    *
+    * @param message The text of the message.
+    * @return The new created [[MessageContainer]].
+    */
   def MarkdownV2(message: String): MessageContainer =
     MessageContainer(message, Some("MarkdownV2"), None)
 
-  // Mode DSL methods
-
+  /** Creates a new [[PollingModeContainer]] with the default parameters, that can be modified with the class methods.
+    *
+    * @return The new created [[PollingModeContainer]].
+    */
   def Polling: PollingModeContainer = PollingModeContainer()
 }
