@@ -1,3 +1,7 @@
+version = project.version
+
+group = "io.github.maciabit"
+
 plugins {
     java
     scala
@@ -8,6 +12,8 @@ plugins {
     id("org.danilopianini.publish-on-central") version "0.4.2"
     id("com.diffplug.spotless") version "5.10.2"
     id("org.scoverage") version "5.0.0"
+    id("org.danilopianini.git-sensitive-semantic-versioning") version "0.1.0"
+    id("org.kordamp.gradle.scaladoc") version "0.40.0"
 }
 
 repositories {
@@ -33,10 +39,8 @@ dependencies {
     testRuntimeOnly("org.scala-lang.modules:scala-xml_2.13:1.3.0")
 }
 
-tasks.withType<ScalaCompile>().configureEach {
-    scalaCompileOptions.apply {
-        additionalParameters = listOf("-Xfatal-warnings", "-Ywarn-unused", "-feature", "-language:implicitConversions")
-    }
+gitSemVer {
+    version = computeGitSemVer()
 }
 
 spotless {
@@ -49,12 +53,6 @@ spotless {
 scoverage {
     excludedPackages.addAll("PPS19.scalagram.examples", "PPS19.scalagram.examples.dsl")
 }
-
-tasks.compileScala.configure {
-   dependsOn(tasks.getByName("spotlessCheck"))
-}
-
-group = "io.github.maciabit"
 
 publishOnCentral {
     projectUrl = "https://github.com/maciabit/${project.name}"
@@ -96,4 +94,14 @@ signing {
     val signingKey: String? by project
     val signingPassword: String? by project
     useInMemoryPgpKeys(signingKey, signingPassword)
+}
+
+tasks.withType<ScalaCompile>().configureEach {
+    scalaCompileOptions.apply {
+        additionalParameters = listOf("-Xfatal-warnings", "-Ywarn-unused", "-feature", "-language:implicitConversions")
+    }
+}
+
+tasks.compileScala.configure {
+   dependsOn(tasks.getByName("spotlessCheck"))
 }
