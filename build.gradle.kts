@@ -5,7 +5,7 @@ plugins {
     `maven-publish`
     signing
 
-    id("org.danilopianini.publish-on-central") version "0.4.2"
+    id("org.danilopianini.publish-on-central") version "0.4.2-dev09-f29ccec"
     id("com.diffplug.spotless") version "5.10.2"
     id("org.scoverage") version "5.0.0"
 }
