@@ -24,11 +24,11 @@ case class KeyboardButtonContainer(
     requestLocation: Option[Boolean] = None
 ) {
 
-  /** Builds a [[ReplyKeyboardButton]] from this [[KeyboardButtonContainer]] */
+  /** Builds a [[PPS19.scalagram.models.ReplyKeyboardButton]] from this [[KeyboardButtonContainer]] */
   def toReplyKeyboardButton: ReplyKeyboardButton =
     ReplyKeyboardButton(text, requestContact, requestLocation)
 
-  /** Builds an [[InlineKeyboardButton]] from this [[KeyboardButtonContainer]] */
+  /** Builds an [[PPS19.scalagram.models.InlineKeyboardButton]] from this [[KeyboardButtonContainer]] */
   def toInlineKeyboardButton: InlineKeyboardButton =
     InlineKeyboardButton(text, url, callbackData, switchInlineQuery, switchInlineQueryCurrentChat, pay)
 }

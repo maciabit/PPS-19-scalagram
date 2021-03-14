@@ -1,6 +1,6 @@
 package PPS19.scalagram.modes.polling.actorsystem
 
-import PPS19.scalagram.models.Update
+import PPS19.scalagram.models.updates.Update
 
 import java.time.LocalDateTime
 

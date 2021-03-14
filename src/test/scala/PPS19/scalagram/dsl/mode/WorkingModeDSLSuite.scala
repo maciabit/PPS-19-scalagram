@@ -11,7 +11,7 @@ import scala.concurrent.duration.DurationInt
 class WorkingModeDSLSuite extends AnyFunSuite {
 
   test("A mode created with the DSL equals a mode created without it") {
-    object TestDSL extends TelegramBotDSL {
+    object TestDSL extends ScalagramDSL {
       mode(Polling interval 300.milliseconds timeoutDelay 1.days)
     }
     val mode = PPS19.scalagram.modes.polling.Polling(300.milliseconds, 1.days)

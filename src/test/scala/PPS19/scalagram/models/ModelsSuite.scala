@@ -1,7 +1,8 @@
 package PPS19.scalagram.models
 
 import PPS19.scalagram.TestingUtils.getJsonString
-import PPS19.scalagram.models.messages.{CallbackQuery, TextMessage}
+import PPS19.scalagram.models.payloads.{CallbackQuery, TextMessage}
+import PPS19.scalagram.models.updates.{CallbackButtonSelected, UnknownUpdate, Update, UpdateType}
 import io.circe.jawn.decode
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite

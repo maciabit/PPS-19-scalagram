@@ -1,7 +1,11 @@
 package PPS19.scalagram.methods
 
 import PPS19.scalagram.marshalling.codecs.EncoderOps
+<<<<<<< HEAD
 import PPS19.scalagram.models.messages.TelegramMessage
+=======
+import PPS19.scalagram.models.payloads.TelegramMessage
+>>>>>>> develop
 import PPS19.scalagram.models.{BotToken, ChatId, ReplyMarkup}
 import io.circe.parser.decode
 import io.circe.{Encoder, Json}
@@ -10,7 +14,7 @@ import requests.Requester
 import scala.util.{Failure, Success, Try}
 
 /** Use this method to edit text messages.
-  * On success, the edited [[TelegramMessage]] is returned.
+  * On success, the edited [[PPS19.scalagram.models.payloads.TelegramMessage]] is returned.
   *
   * @param token           Token of the bot that will perform the requets.
   * @param chatId          Unique identifier for the target chat or username of the target channel (in the format @channelusername).

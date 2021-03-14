@@ -1,7 +1,14 @@
 package PPS19.scalagram.logic
 
+<<<<<<< HEAD
 import PPS19.scalagram.models.messages.TextMessage
 import PPS19.scalagram.models.{BotToken, MessageReceived, Supergroup, User}
+=======
+import PPS19.scalagram.logic.scenes.{Scene, Step}
+import PPS19.scalagram.models.payloads.{NoPayload, TextMessage}
+import PPS19.scalagram.models.updates.{MessageReceived, UnknownUpdate}
+import PPS19.scalagram.models.{BotToken, Supergroup, UnknownChat, User}
+>>>>>>> develop
 import org.junit.runner.RunWith
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.funsuite.AnyFunSuite
@@ -18,20 +25,30 @@ class ContextSuite extends AnyFunSuite with BeforeAndAfterEach {
       Step("STEP3", _ => {})
     )
   )
-  val bot: Bot = Bot(BotToken(""), List(), List(), List(scene))
+  val bot: Scalagram = Scalagram(BotToken(""), List(), List(), List(scene))
   var context: Context = _
 
   override def beforeEach(): Unit = {
     context = Context(bot)
   }
 
-  test("If available, update chat and user can be accessed straight from the context") {
+  test("If an update is available, its payload, chat and user can be accessed straight from the context") {
     val chat = Supergroup(0, None, None)
     val user = User(0, isBot = false, "John", Some("Doe"), Some("johndoe"))
-    val update = MessageReceived(0, TextMessage(0, Supergroup(0, None, None), 0, "message", from = Some(user)))
-    assert(context.chat.isEmpty && context.from.isEmpty)
-    context.update = Some(update)
-    assert(context.chat.contains(chat) && context.from.contains(user))
+    val message = TextMessage(0, chat, 0, "message", from = Some(user))
+    val update = MessageReceived(0, message)
+    assert(
+      context.update.isInstanceOf[UnknownUpdate]
+        && context.payload == NoPayload
+        && context.chat == UnknownChat
+        && context.from.isEmpty
+    )
+    context.update = update
+    assert(
+      context.payload == message
+        && context.chat == chat
+        && context.from.contains(user)
+    )
   }
 
   test("The enterScene method works as intended") {

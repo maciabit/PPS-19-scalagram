@@ -1,6 +1,11 @@
 package PPS19.scalagram.models
 
+<<<<<<< HEAD
 import PPS19.scalagram.models.messages._
+=======
+import PPS19.scalagram.models.payloads._
+import PPS19.scalagram.models.updates._
+>>>>>>> develop
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
@@ -8,17 +13,17 @@ import org.scalatestplus.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class UpdateTypeSuite extends AnyFunSuite {
 
-  private val humanUser: User = User(0, isBot = false, "John");
-  private val botUser: User = User(0, isBot = true, "Doe");
+  private val humanUser: User = User(0, isBot = false, "John")
+  private val botUser: User = User(0, isBot = true, "Doe")
   private val chat: Chat = Supergroup(id = 0)
 
   test("A CallbackButtonSelected UpdateType can be properly set") {
     val update: CallbackButtonSelected = CallbackButtonSelected(0, CallbackQuery("0", botUser, chatInstance = "0"))
-    assert(update.updateType == UpdateType.CallbackSelected && update.chat.isInstanceOf[UnknownChat])
+    assert(update.updateType == UpdateType.CallbackSelected && update.chat == UnknownChat)
   }
 
   test("A Channel Post UpdateType can be properly set") {
-    val update: ChannelPost = ChannelPost(0, TextMessage(0, chat, 0, "Message"))
+    val update: ChannelPostReceived = ChannelPostReceived(0, TextMessage(0, chat, 0, "Message"))
     assert(update.updateType == UpdateType.ChannelPostReceived)
   }
 

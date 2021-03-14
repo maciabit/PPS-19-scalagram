@@ -5,7 +5,11 @@ import PPS19.scalagram.utils.Props
 
 import scala.concurrent.duration.DurationInt
 
+<<<<<<< HEAD
 private[dsl] object SimpleDSLBot extends TelegramBotDSL {
+=======
+object SimpleDSLBot extends ScalagramDSL {
+>>>>>>> develop
 
   token(
     Props.get("token")
@@ -17,7 +21,7 @@ private[dsl] object SimpleDSLBot extends TelegramBotDSL {
 
   middlewares(
     <> { context =>
-      println(context.update.get)
+      println(context.update)
       true
     }
 
@@ -91,9 +95,6 @@ private[dsl] object SimpleDSLBot extends TelegramBotDSL {
       context.reply("Ready")
     }
 
-    << *
-    >> "What?"
-
     <* *
     >> "Any message edited"
 
@@ -133,15 +134,15 @@ private[dsl] object SimpleDSLBot extends TelegramBotDSL {
       }
     )
 
-      scene (
-        "SECOND_SCENE"
+    scene (
+      "SECOND_SCENE"
 
-        <| "ONLY_STEP"
-        >> { context =>
-          context.reply("This scene has only one step")
-          println("Scene step")
-        }
-      )
+      <| "ONLY_STEP"
+      >> { context =>
+        context.reply("This scene has only one step")
+        println("Scene step")
+      }
+    )
   )
 
 }

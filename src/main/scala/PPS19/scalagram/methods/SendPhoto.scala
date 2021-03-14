@@ -1,7 +1,7 @@
 package PPS19.scalagram.methods
 
 import PPS19.scalagram.marshalling.codecs.EncoderOps
-import PPS19.scalagram.models.messages.TelegramMessage
+import PPS19.scalagram.models.payloads.TelegramMessage
 import PPS19.scalagram.models.{BotToken, _}
 import io.circe.parser.decode
 import io.circe.{Encoder, Json}
@@ -9,7 +9,7 @@ import requests.Requester
 
 import scala.util.{Failure, Success, Try}
 
-/** Use this method to send photos. On success, the sent [[TelegramMessage]] is returned.
+/** Use this method to send photos. On success, the sent [[PPS19.scalagram.models.payloads.TelegramMessage]] is returned.
   *
   * @param token                    Token of the bot that will perform the requets.
   * @param chatId                   Unique identifier for the target chat or username of the target channel (in the format @channelusername).

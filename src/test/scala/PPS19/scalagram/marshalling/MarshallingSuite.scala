@@ -7,6 +7,12 @@ import org.scalatestplus.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class MarshallingSuite extends AnyFunSuite {
 
+  test("An empty string is always the same if converted to camelcase or snakecase") {
+    val s = ""
+    val c = CaseString(s)
+    assert(s == c.camelCase && s == c.snakeCase)
+  }
+
   test("A snakecase string can be converted to camelcase") {
     val s = "snake_case"
     val c = CaseString(s)

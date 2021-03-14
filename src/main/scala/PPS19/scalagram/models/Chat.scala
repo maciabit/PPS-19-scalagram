@@ -79,6 +79,6 @@ final case class Channel(
 ) extends Chat
 
 /** Represents an unknown chat. */
-final case class UnknownChat() extends Chat {
+case object UnknownChat extends Chat {
   override val id: Long = -1
 }

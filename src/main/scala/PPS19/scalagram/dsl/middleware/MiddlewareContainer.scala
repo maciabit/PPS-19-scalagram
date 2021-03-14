@@ -2,9 +2,9 @@ package PPS19.scalagram.dsl.middleware
 
 import PPS19.scalagram.logic.{Context, Middleware}
 
-/** Container used to build a list of [[Middleware]].
+/** Container used to build a list of [[PPS19.scalagram.logic.Middleware]].
   *
-  * @param middlewares List of [[Middleware]] to put inside of this container
+  * @param middlewares List of [[PPS19.scalagram.logic.Middleware]] to put inside of this container
   */
 case class MiddlewareContainer(middlewares: List[Middleware]) {
 

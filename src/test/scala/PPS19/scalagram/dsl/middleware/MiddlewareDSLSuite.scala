@@ -12,7 +12,7 @@ class MiddlewareDSLSuite extends AnyFunSuite {
   test("A middleware list created with the DSL equals a middleware list created without it") {
     val f1: Context => Boolean = _ => true
     val f2: Context => Boolean = _ => false
-    object TestDSL extends TelegramBotDSL {
+    object TestDSL extends ScalagramDSL {
       middlewares(<>(f1).<>(f2))
     }
     val middlewares = List(Middleware(f1), Middleware(f2))

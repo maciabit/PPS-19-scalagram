@@ -1,13 +1,13 @@
 package PPS19.scalagram.examples.dsl
 
 import PPS19.scalagram.dsl._
-import PPS19.scalagram.models.MessageUpdate
-import PPS19.scalagram.models.messages.{ChatMemberRemoved, ChatMembersAdded}
+import PPS19.scalagram.models.payloads.{ChatMemberRemoved, ChatMembersAdded}
+import PPS19.scalagram.models.updates.MessageUpdate
 import PPS19.scalagram.utils.Props
 
 import scala.util.Random
 
-object CommandsBot extends TelegramBotDSL {
+object CommandsBot extends ScalagramDSL {
 
   token(
     Props.get("token")
@@ -19,60 +19,44 @@ object CommandsBot extends TelegramBotDSL {
 
   reactions(
     !!
-    >>
-      """Hi! I will respond to some commands. Type
-    |/hello to get some user's info,
-    |/random to get a random number from 0 to 1000,
-    |/hug to get a virtual hug from me.
-    |I will also react when someone enter or leave this chat!
-    |""".stripMargin
+    >> """Hi! I will respond to some commands. Type:
+      |/hello to get a greeting
+      |/random to get a random number
+      |/hug to get a virtual hug from me
+      |I will also react when someone enters or leaves this chat!
+      |""".stripMargin
 
     << "/hello"
     >> { context =>
       context.reply(
-        s"""Hi again! I bet your first name is
-        |${context.from.get.firstName}
+        s"""Hi again! I bet you are ${context.from.get.firstName}.
         |${if (context.from.get.lastName.isEmpty) "" else s"Your last name is ${context.from.get.lastName.get}"}
-        |Your username is @${context.from.get.username.get}
+        |Your username is @${context.from.get.username.get}.
         |""".stripMargin
       )
     }
 
     << "/random"
-    >> { context =>
-      context.reply(
-        "The random number is " + Random.nextInt(1000) + "!"
-      )
-    }
+    >> { context => context.reply("The random number is " + Random.nextInt(1000) + "!") }
 
     << "/hug"
     >> "I'm hugging you! (No worries, I'm COVID-free)"
 
-    </ *
-    >> { context =>
-      context.reply(
-        s"""${context.update.get
-          .asInstanceOf[MessageUpdate]
-          .message
-          .asInstanceOf[ChatMemberRemoved]
-          .leftChatMember
-          .username
-          .get} has left the chat. Goodbye!""".stripMargin
-      )
-    }
-
     <+ *
     >> { context =>
-      context.reply(
-        s"""${context.update.get
-          .asInstanceOf[MessageUpdate]
-          .message
-          .asInstanceOf[ChatMembersAdded]
-          .newChatMembers
-          .head
-          .username
-          .get} has entered the chat. Welcome!""".stripMargin
-      )
+      context.payload match {
+        case ChatMembersAdded(_, _, _, u) =>
+          context.reply(s"${u.head.username.get} has entered the chat. Welcome!")
+        case _ =>
+      }
+    }
+
+    </ *
+    >> { context =>
+      context.payload match {
+        case ChatMemberRemoved(_, _, _, u) => context.reply(s"${u.username.get} has left the chat. Goodbye!")
+        case _ =>
+      }
     }
   )
 }

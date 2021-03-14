@@ -1,8 +1,8 @@
 package PPS19.scalagram.logic.reactions
 
 import PPS19.scalagram.logic.{Context, Reaction, Trigger}
-import PPS19.scalagram.models.messages.TextMessage
-import PPS19.scalagram.models.{MessageUpdate, UpdateType}
+import PPS19.scalagram.models.payloads.TextMessage
+import PPS19.scalagram.models.updates.{MessageUpdate, UpdateType}
 
 /** A reaction that only gets executed if the update is an edited message equal to one of the given strings.
   *
@@ -14,7 +14,7 @@ case class OnMessageEdited(strings: String*) extends ReactionBuilder {
     Reaction(
       Trigger { context =>
         context.update match {
-          case Some(update: MessageUpdate)
+          case update: MessageUpdate
               if update.updateType == UpdateType.MessageEdited ||
                 update.updateType == UpdateType.ChannelPostEdited =>
             strings.isEmpty || strings.contains(

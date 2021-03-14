@@ -1,7 +1,7 @@
 package PPS19.scalagram.logic.reactions
 
 import PPS19.scalagram.logic.{Context, Reaction, Trigger}
-import PPS19.scalagram.models.CallbackButtonSelected
+import PPS19.scalagram.models.updates.CallbackButtonSelected
 
 /** A reaction that only gets executed if the update is a callback query with the data property equal to the given string.
   *
@@ -12,9 +12,8 @@ case class OnCallbackQuery(callbackData: String) extends ReactionBuilder {
     Reaction(
       Trigger { context =>
         context.update match {
-          case Some(CallbackButtonSelected(_, callbackQuery)) =>
-            callbackQuery.data.contains(callbackData)
-          case _ => false
+          case CallbackButtonSelected(_, callbackQuery) => callbackQuery.data.contains(callbackData)
+          case _                                        => false
         }
       },
       action
