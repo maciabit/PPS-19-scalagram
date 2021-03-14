@@ -62,7 +62,7 @@ trait Scalagram {
       allowedUpdates: Option[Array[String]] = None
   ): Try[List[Update]] = GetUpdates(token, offset, limit, timeout, allowedUpdates).call()
 
-  /** Use this method to send text messages. On success, the sent [[TelegramMessage]] is returned.
+  /** Use this method to send text messages. On success, the sent [[PPS19.scalagram.models.payloads.TelegramMessage]] is returned.
     *
     * @param chatId                   Unique identifier for the target chat or username of the target channel (in the format @channelusername).
     * @param text                     Text of the message to be sent, 1-4096 characters after entities parsing.
@@ -102,7 +102,7 @@ trait Scalagram {
     ).call()
 
   /** Use this method to edit text messages.
-    * On success, the edited [[TelegramMessage]] is returned.
+    * On success, the edited [[PPS19.scalagram.models.payloads.TelegramMessage]] is returned.
     *
     * @param chatId          Unique identifier for the target chat or username of the target channel (in the format @channelusername).
     * @param text            Text of the message to be sent, 1-4096 characters after entities parsing.
@@ -138,7 +138,7 @@ trait Scalagram {
       replyMarkup
     ).call()
 
-  /** Use this method to send photos. On success, the sent [[TelegramMessage]] is returned.
+  /** Use this method to send photos. On success, the sent [[PPS19.scalagram.models.payloads.TelegramMessage]] is returned.
     *
     * @param chatId                   Unique identifier for the target chat or username of the target channel (in the format @channelusername).
     * @param photo                    Photo to send.

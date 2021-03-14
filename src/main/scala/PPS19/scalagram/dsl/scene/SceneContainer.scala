@@ -2,9 +2,9 @@ package PPS19.scalagram.dsl.scene
 
 import PPS19.scalagram.logic.scenes.Scene
 
-/** Container used to build a list of [[Scene]].
+/** Container used to build a list of [[PPS19.scalagram.logic.scenes.Scene]].
   *
-  * @param scenes List of [[Scene]] to put inside of this container
+  * @param scenes List of [[PPS19.scalagram.logic.scenes.Scene]] to put inside of this container
   */
 case class SceneContainer(scenes: List[Scene]) {
 

@@ -65,7 +65,7 @@ trait TelegramRequest[T] {
 
   /** Executes the request.
     *
-    * @return Response as parsed from [[TelegramRequest.parseSuccessfulResponse()]].
+    * @return Response as parsed from [[TelegramRequest.parseSuccessfulResponse]].
     */
   def call(): Try[T] = {
     val req = computedMultipartFormData match {

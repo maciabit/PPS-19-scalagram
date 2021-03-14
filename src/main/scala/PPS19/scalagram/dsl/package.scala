@@ -12,7 +12,7 @@ import PPS19.scalagram.models.{InlineKeyboardMarkup, ReplyKeyboardMarkup}
   */
 package object dsl {
 
-  /** Trait used to implement the [[*]] wildcard. */
+  /** Trait used to implement the * wildcard. */
   sealed trait Star {
     def s(): Unit = {}
   }
@@ -23,7 +23,7 @@ package object dsl {
 
   // Conversions for the reactions DSL
 
-  /** Implicit conversion from [[String]] to [[Context => Unit]].
+  /** Implicit conversion from String to [[PPS19.scalagram.logic.Context => Unit]].
     * This conversion enables the use of the following syntax:
     * {{{
     * reactions(
@@ -42,7 +42,7 @@ package object dsl {
   implicit def stringToSendMessage(string: String): Context => Unit =
     context => context.bot.sendMessage(context.chat.chatId, string)
 
-  /** Implicit conversion from [[MessageContainer]] to [[Context => Unit]].
+  /** Implicit conversion from [[PPS19.scalagram.dsl.reaction.MessageContainer]] to [[PPS19.scalagram.logic.Context => Unit]].
     * This conversion enables the use of the following syntax:
     * {{{
     * reactions(
@@ -74,7 +74,7 @@ package object dsl {
 
   // Conversions for the keyboard DSL
 
-  /** Implicit conversion from [[String]] to [[MessageContainer]], that enables the following syntax:
+  /** Implicit conversion from String to [[PPS19.scalagram.dsl.reaction.MessageContainer]], that enables the following syntax:
     * {{{
     *  reactions(
     *    << "Message"
@@ -90,19 +90,19 @@ package object dsl {
   implicit def stringToMessageContainer(string: String): MessageContainer =
     MessageContainer(string, None, None)
 
-  /** Implicit conversion from [[String]] to [[KeyboardButtonContainer]], that enables the use of the syntax
+  /** Implicit conversion from String to [[PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer]], that enables the use of the syntax
     * {{{Keyboard("Button")}}} as a shortcut, instead of {{{Keyboard(KeyboardButtonContainer("Button"))}}}
     */
   implicit def stringToButtonContainer(string: String): KeyboardButtonContainer =
     Callback(string -> string)
 
-  /** Implicit conversion from [[String]] to [[KeyboardRow]], that enables the use of the syntax
+  /** Implicit conversion from String to [[PPS19.scalagram.dsl.keyboard.KeyboardRow]], that enables the use of the syntax
     * {{{Keyboard("Button")}}} as a shortcut, instead of {{{Keyboard(KeyboardRow(KeyboardButtonContainer("Button")))}}}
     */
   implicit def stringToButtonRow(string: String): KeyboardRow =
     KeyboardRow(Seq(Callback(string -> string)))
 
-  /** Implicit conversion from [[String]] to [[KeyboardButtonContainer]], that enables the use of the syntax
+  /** Implicit conversion from String to [[PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer]], that enables the use of the syntax
     * {{{Keyboard("Button")}}} as a shortcut, instead of {{{Keyboard(KeyboardRow(KeyboardButtonContainer("Button")))}}}
     */
   implicit def buttonContainerToButtonRow(buttonContainer: KeyboardButtonContainer): KeyboardRow =
@@ -141,58 +141,58 @@ package object dsl {
       ReplyKeyboardMarkup(markup.keyboard, markup.resizeKeyboard, markup.oneTimeKeyboard, Some(true))
   }
 
-  /** Creates a new [[KeyboardButtonContainer]] with the given text and callbackData.
+  /** Creates a new [[PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer]] with the given text and callbackData.
     *
     * @param tuple The text and the callbackData of the button.
-    * @return The new created [[KeyboardButtonContainer]].
+    * @return The new created [[PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer]].
     */
   def Callback(tuple: (String, String)): KeyboardButtonContainer =
     KeyboardButtonContainer(tuple._1, callbackData = Some(tuple._2))
 
-  /** Creates a new [[KeyboardButtonContainer]] with the given text and url.
+  /** Creates a new [[PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer]] with the given text and url.
     *
     * @param tuple The text and the url of the button.
-    * @return The new created [[KeyboardButtonContainer]].
+    * @return The new created [[PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer]].
     */
   def Url(tuple: (String, String)): KeyboardButtonContainer =
     KeyboardButtonContainer(tuple._1, url = Some(tuple._2))
 
-  /** Creates a new [[KeyboardButtonContainer]] with the given text and switchInlineQuery.
+  /** Creates a new [[PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer]] with the given text and switchInlineQuery.
     *
     * @param tuple The text and the inline query of the button.
-    * @return The new created [[KeyboardButtonContainer]].
+    * @return The new created [[PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer]].
     */
   def InlineQuery(tuple: (String, String)): KeyboardButtonContainer =
     KeyboardButtonContainer(tuple._1, switchInlineQuery = Some(tuple._2))
 
-  /** Creates a new [[KeyboardButtonContainer]] with the given text and switchInlineQueryCurrentChat.
+  /** Creates a new [[PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer]] with the given text and switchInlineQueryCurrentChat.
     *
     * @param tuple The text and the inline query of the button.
-    * @return The new created [[KeyboardButtonContainer]].
+    * @return The new created [[PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer]].
     */
   def CurrentChatInlineQuery(tuple: (String, String)): KeyboardButtonContainer =
     KeyboardButtonContainer(tuple._1, switchInlineQueryCurrentChat = Some(tuple._2))
 
-  /** Creates a new [[KeyboardButtonContainer]] with the given text and pay filed set true.
+  /** Creates a new [[PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer]] with the given text and pay filed set true.
     *
     * @param text The text of the button.
-    * @return The new created [[KeyboardButtonContainer]].
+    * @return The new created [[PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer]].
     */
   def Payment(text: String): KeyboardButtonContainer =
     KeyboardButtonContainer(text, pay = Some(true))
 
-  /** Creates a new [[KeyboardButtonContainer]] with the given text and requestContact field set true.
+  /** Creates a new [[PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer]] with the given text and requestContact field set true.
     *
     * @param text The text of the button.
-    * @return The new created [[KeyboardButtonContainer]].
+    * @return The new created [[PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer]].
     */
   def Contact(text: String): KeyboardButtonContainer =
     KeyboardButtonContainer(text, requestContact = Some(true))
 
-  /** Creates a new [[KeyboardButtonContainer]] with the given text and requestLocation field set true.
+  /** Creates a new [[PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer]] with the given text and requestLocation field set true.
     *
     * @param text The text of the button.
-    * @return The new created [[KeyboardButtonContainer]].
+    * @return The new created [[PPS19.scalagram.dsl.keyboard.KeyboardButtonContainer]].
     */
   def Location(text: String): KeyboardButtonContainer =
     KeyboardButtonContainer(text, requestLocation = Some(true))
@@ -200,47 +200,47 @@ package object dsl {
   /** String extension for the Scalagram DSL. */
   implicit class StringExtension(string: String) {
 
-    /** Creates a [[List]] from this string and the one given as a parameter. */
+    /** Creates a List from this string and the one given as a parameter. */
     def |(string2: String) = List(string2, string)
 
-    /** Creates a [[PartialStepContainer]] with this string as name. */
+    /** Creates a [[PPS19.scalagram.dsl.scene.PartialStepContainer]] with this string as name. */
     def <|(stepName: String): PartialStepContainer = PartialStepContainer(string, stepName, Nil)
   }
 
   /** List extension for the Scalagram DSL. */
   implicit class ListExtension(list: List[String]) {
 
-    /** Alias for [[list.appended]]. */
+    /** Alias for appended. */
     def |(string: String): List[String] = string +: list
   }
 
-  /** Creates a new [[MessageContainer]] with the given text and HTML formatting enabled.
+  /** Creates a new [[PPS19.scalagram.dsl.reaction.MessageContainer]] with the given text and HTML formatting enabled.
     *
     * @param message The text of the message.
-    * @return The new created [[MessageContainer]].
+    * @return The new created [[PPS19.scalagram.dsl.reaction.MessageContainer]].
     */
   def HTML(message: String): MessageContainer =
     MessageContainer(message, Some("HTML"), None)
 
-  /** Creates a new [[MessageContainer]] with the given text and Markdown formatting enabled.
+  /** Creates a new [[PPS19.scalagram.dsl.reaction.MessageContainer]] with the given text and Markdown formatting enabled.
     *
     * @param message The text of the message.
-    * @return The new created [[MessageContainer]].
+    * @return The new created [[PPS19.scalagram.dsl.reaction.MessageContainer]].
     */
   def Markdown(message: String): MessageContainer =
     MessageContainer(message, Some("Markdown"), None)
 
-  /** Creates a new [[MessageContainer]] with the given text and Markdown formatting enabled.
+  /** Creates a new [[PPS19.scalagram.dsl.reaction.MessageContainer]] with the given text and Markdown formatting enabled.
     *
     * @param message The text of the message.
-    * @return The new created [[MessageContainer]].
+    * @return The new created [[PPS19.scalagram.dsl.reaction.MessageContainer]].
     */
   def MarkdownV2(message: String): MessageContainer =
     MessageContainer(message, Some("MarkdownV2"), None)
 
-  /** Creates a new [[PollingModeContainer]] with the default parameters, that can be modified with the class methods.
+  /** Creates a new [[PPS19.scalagram.dsl.mode.PollingModeContainer]] with the default parameters, that can be modified with the class methods.
     *
-    * @return The new created [[PollingModeContainer]].
+    * @return The new created [[PPS19.scalagram.dsl.mode.PollingModeContainer]]
     */
   def Polling: PollingModeContainer = PollingModeContainer()
 }

@@ -3,12 +3,11 @@ package PPS19.scalagram.models
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
 
-/** Represents a TelegramError that can be caused by a bad request or a connection problem.
+/** Represents a Telegram error that can be caused by a bad request or a connection problem.
   *
   * @param statusCode  The status code of the error.
   * @param description The description of the error.
   * @param ok          The result of the request.
-  *                    Extends [[Throwable]]
   */
 case class TelegramError(statusCode: Int, description: String, ok: Boolean) extends Throwable
 

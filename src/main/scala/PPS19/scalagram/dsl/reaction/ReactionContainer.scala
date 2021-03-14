@@ -5,6 +5,6 @@ import PPS19.scalagram.logic.Reaction
 /** Container used to build a list of reactions */
 trait ReactionContainer {
 
-  /** List of [[Reaction]] to put inside of this container */
+  /** List of [[PPS19.scalagram.logic.Reaction]] to put inside of this container */
   def reactions: List[Reaction]
 }

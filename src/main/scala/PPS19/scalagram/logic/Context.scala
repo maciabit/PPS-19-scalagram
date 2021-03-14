@@ -10,7 +10,7 @@ import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.util.Try
 
 /** Execution context of a bot.
-  * There is exactly one instance of [[Context]] for each pair of [[Scalagram]] and [[Chat]].
+  * There is exactly one instance of [[Context]] for each pair of [[Scalagram]] and [[PPS19.scalagram.models.Chat]].
   */
 trait Context {
 

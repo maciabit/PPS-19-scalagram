@@ -21,14 +21,14 @@ case class PollingModeContainer(
     timeoutDelay: FiniteDuration = defaultTimeoutDelay
 ) extends WorkingModeContainer {
 
-  /** Creates a copy of this [[PollingModeContainer]] with [[pollingInterval]] set as a parameter.
+  /** Creates a copy of this [[PollingModeContainer]] with pollingInterval set as a parameter.
     *
     * @param pollingInterval Interval at which updates are fetched.
     */
   def interval(pollingInterval: FiniteDuration): PollingModeContainer =
     PollingModeContainer(pollingInterval, this.timeoutDelay)
 
-  /** Creates a copy of this [[PollingModeContainer]] with [[timeoutDelay]] set as a parameter.
+  /** Creates a copy of this [[PollingModeContainer]] with timeoutDelay set as a parameter.
     *
     * @param timeoutDelay Timeout after which, if no updates are received, the bot's context gets destroyed.
     */

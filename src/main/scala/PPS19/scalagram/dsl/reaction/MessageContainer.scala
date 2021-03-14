@@ -15,14 +15,14 @@ case class MessageContainer(
     keyboard: Option[Either[ReplyKeyboardMarkup, InlineKeyboardMarkup]]
 ) {
 
-  /** Creates a new container with [[message]] and [[parseMode]] from this one, plus the [[ReplyKeyboardMarkup]] given as a parameter.
+  /** Creates a new container with [[message]] and [[parseMode]] from this one, plus the [[PPS19.scalagram.models.ReplyKeyboardMarkup]] given as a parameter.
     *
     * @param replyKeyboard Keyboard to attach to the message.
     */
   def -(replyKeyboard: ReplyKeyboardMarkup): MessageContainer =
     MessageContainer(message, parseMode, Some(Left(replyKeyboard)))
 
-  /** Creates a new container with [[message]] and [[parseMode]] from this one, plus the [[InlineKeyboardMarkup]] given as a parameter.
+  /** Creates a new container with [[message]] and [[parseMode]] from this one, plus the [[PPS19.scalagram.models.InlineKeyboardMarkup]] given as a parameter.
     *
     * @param inlineKeyboard Keyboard to attach to the message.
     */

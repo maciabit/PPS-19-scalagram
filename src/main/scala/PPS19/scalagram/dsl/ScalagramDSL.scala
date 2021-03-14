@@ -66,25 +66,25 @@ trait ScalagramDSL {
     _scenes = sceneContainer.scenes
   }
 
-  /** Creates a [[PartialReactionContainer]] with [[OnStart]] reaction,  which will always be the first reaction of the bot.
-    * Used to start the creation of the [[TotalReactionContainer]], that will be obtained by using the [[PartialReactionContainer.>>()]] method.
+  /** Creates a [[PPS19.scalagram.dsl.reaction.PartialReactionContainer]] with [[PPS19.scalagram.logic.reactions.OnStart]] reaction,  which will always be the first reaction of the bot.
+    * Used to start the creation of the [[PPS19.scalagram.dsl.reaction.TotalReactionContainer]], that will be obtained by using the [[PPS19.scalagram.dsl.reaction.PartialReactionContainer.>>]] method.
     *
-    * @return The [[PartialReactionContainer]] with the [[OnStart]] reaction.
+    * @return The [[PPS19.scalagram.dsl.reaction.PartialReactionContainer]] with the [[PPS19.scalagram.logic.reactions.OnStart]] reaction.
     */
   protected def !! : PartialReactionContainer = PartialReactionContainer(Nil, OnStart())
 
-  /** Creates a [[MiddlewareContainer]], used to contain a [[Middleware]] and concatenate them.
+  /** Creates a [[PPS19.scalagram.dsl.middleware.MiddlewareContainer]], used to contain a [[PPS19.scalagram.logic.Middleware]] and concatenate them.
     *
     * @param middleware The middleware that will be created.
-    * @return The created [[MiddlewareContainer]].
+    * @return The created [[PPS19.scalagram.dsl.middleware.MiddlewareContainer]].
     */
   protected def <>(middleware: Context => Boolean): MiddlewareContainer =
     MiddlewareContainer(Middleware(middleware) :: Nil)
 
-  /** Creates a [[SceneContainer]], used to contain a [[Scene]] and concatenate them.
+  /** Creates a [[PPS19.scalagram.dsl.scene.SceneContainer]], used to contain a [[PPS19.scalagram.logic.scenes.Scene]] and concatenate them.
     *
-    * @param stepContainer The [[TotalStepContainer]] containing the list of all scene's steps.
-    * @return The created [[SceneContainer]].
+    * @param stepContainer The [[PPS19.scalagram.dsl.scene.TotalStepContainer]] containing the list of all scene's steps.
+    * @return The created [[PPS19.scalagram.dsl.scene.SceneContainer]].
     */
   protected def scene(stepContainer: TotalStepContainer): SceneContainer =
     SceneContainer(Scene(stepContainer.sceneName, stepContainer.steps) :: Nil)

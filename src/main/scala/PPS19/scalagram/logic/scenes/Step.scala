@@ -6,9 +6,10 @@ import PPS19.scalagram.logic.{Context, Operation, Trigger}
 /** A named operation that always returns false.
   * Steps are only used inside scenes ([[Scene]]).
   * The action of a step can use the following methods to set the active scene step for the next update:
-  * - [[Context.nextStep()]] to go to the next scene step
-  * - [[Context.goToStep()]] to go to a specific step by index or name
-  * - [[Context.leaveScene()]] to exit the current scene
+  * - [[Context.nextStep]] to go to the next scene step
+  * - [[Context.goToStep(index:Int):Unit*]] to go to a specific step by index
+  * - [[Context.goToStep(stepName:String):Unit*]] to go to a specific step by name
+  * - [[Context.leaveScene]] to exit the current scene
   *
   * @param name   Name of the step
   * @param action Function to be executed
