@@ -33,9 +33,17 @@ dependencies {
     testRuntimeOnly("org.scala-lang.modules:scala-xml_2.13:1.3.0")
 }
 
+val additionalScalaCParams = listOf("-Xfatal-warnings", "-Ywarn-unused", "-feature", "-language:implicitConversions")
+
 tasks.withType<ScalaCompile>().configureEach {
     scalaCompileOptions.apply {
-        additionalParameters = listOf("-Xfatal-warnings", "-Ywarn-unused", "-feature", "-language:implicitConversions")
+        additionalParameters = additionalScalaCParams
+    }
+}
+
+tasks.withType<ScalaDoc>().configureEach {
+    scalaDocOptions.apply {
+        additionalParameters = additionalScalaCParams
     }
 }
 

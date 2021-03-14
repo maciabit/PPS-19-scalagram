@@ -10,10 +10,7 @@ import PPS19.scalagram.logic.scenes.Scene
 import PPS19.scalagram.models.BotToken
 import PPS19.scalagram.modes.polling.Mode
 
-/** Container used to build a bot using the DSL.
-  *
-  * Used by [[PPS19.scalagram.examples.dsl.CommandsBot]], [[PPS19.scalagram.examples.dsl.KeyboardsBot]], [[PPS19.scalagram.examples.dsl.ScenesBot]], [[PPS19.scalagram.examples.dsl.SimpleDSLBot]]
-  */
+/** Container used to build a bot using the DSL. */
 trait ScalagramDSL {
 
   protected[dsl] var _token: BotToken = _
