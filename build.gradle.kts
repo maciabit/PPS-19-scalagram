@@ -18,7 +18,7 @@ plugins {
     `maven-publish`
 
     // Import GitSemVer plugin
-    id("org.danilopianini.git-sensitive-semantic-versioning") version "0.1.0"
+    id("org.danilopianini.git-sensitive-semantic-versioning") version "0.2.3-dev09-736e3da"
 
     // Import Maven Central Gradle plugin
     id("org.danilopianini.publish-on-central") version "0.4.0"
