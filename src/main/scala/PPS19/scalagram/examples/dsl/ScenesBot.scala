@@ -2,10 +2,9 @@ package PPS19.scalagram.examples.dsl
 
 import PPS19.scalagram.dsl._
 import PPS19.scalagram.models.payloads.TextMessage
-import PPS19.scalagram.models.updates.MessageUpdate
 import PPS19.scalagram.utils.Props
 
-object ScenesBot extends ScalagramDSL {
+private[dsl] object ScenesBot extends ScalagramDSL {
 
   token(
     Props.get("token")

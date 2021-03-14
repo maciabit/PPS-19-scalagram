@@ -1,7 +1,7 @@
 package PPS19.scalagram.examples
 
 import PPS19.scalagram.logic.scenes.{Scene, Step}
-import PPS19.scalagram.logic.{Scalagram, Middleware}
+import PPS19.scalagram.logic.{Middleware, Scalagram}
 import PPS19.scalagram.models.{BotToken, InlineKeyboardButton, InlineKeyboardMarkup}
 import PPS19.scalagram.modes.polling.Polling
 import PPS19.scalagram.utils.Props

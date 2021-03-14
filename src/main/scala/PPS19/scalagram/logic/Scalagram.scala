@@ -3,14 +3,9 @@ package PPS19.scalagram.logic
 import PPS19.scalagram.logic.reactions._
 import PPS19.scalagram.logic.scenes.Scene
 import PPS19.scalagram.methods._
-<<<<<<< HEAD:src/main/scala/PPS19/scalagram/logic/Bot.scala
-import PPS19.scalagram.models.messages.TelegramMessage
-import PPS19.scalagram.models._
-=======
 import PPS19.scalagram.models._
 import PPS19.scalagram.models.payloads.TelegramMessage
 import PPS19.scalagram.models.updates.Update
->>>>>>> develop:src/main/scala/PPS19/scalagram/logic/Scalagram.scala
 import PPS19.scalagram.modes.polling.Mode
 
 import scala.util.{Success, Try}

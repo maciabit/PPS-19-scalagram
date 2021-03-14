@@ -1,14 +1,9 @@
 package PPS19.scalagram.logic
 
-<<<<<<< HEAD
-import PPS19.scalagram.models.messages.TextMessage
-import PPS19.scalagram.models.{BotToken, MessageReceived, Supergroup, User}
-=======
 import PPS19.scalagram.logic.scenes.{Scene, Step}
 import PPS19.scalagram.models.payloads.{NoPayload, TextMessage}
 import PPS19.scalagram.models.updates.{MessageReceived, UnknownUpdate}
 import PPS19.scalagram.models.{BotToken, Supergroup, UnknownChat, User}
->>>>>>> develop
 import org.junit.runner.RunWith
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.funsuite.AnyFunSuite

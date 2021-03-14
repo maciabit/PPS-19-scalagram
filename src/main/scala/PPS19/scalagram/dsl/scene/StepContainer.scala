@@ -1,7 +1,7 @@
 package PPS19.scalagram.dsl.scene
 
 import PPS19.scalagram.logic.Context
-import PPS19.scalagram.logic.scenes.{Scene, Step}
+import PPS19.scalagram.logic.scenes.Step
 
 /** Container used to build a single [[PPS19.scalagram.logic.scenes.Scene]]
   *

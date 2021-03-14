@@ -1,6 +1,6 @@
 package PPS19.scalagram.logic.reactions
 
-import PPS19.scalagram.logic.{Scalagram, Context, Reaction}
+import PPS19.scalagram.logic.{Context, Reaction, Scalagram}
 import PPS19.scalagram.models._
 import PPS19.scalagram.models.payloads._
 import PPS19.scalagram.models.updates.{CallbackButtonSelected, MessageEdited, MessageReceived, Update}

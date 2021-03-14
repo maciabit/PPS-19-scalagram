@@ -3,7 +3,7 @@ package PPS19.scalagram.examples.dsl
 import PPS19.scalagram.dsl._
 import PPS19.scalagram.utils.Props
 
-object KeyboardsBot extends ScalagramDSL {
+private[dsl] object KeyboardsBot extends ScalagramDSL {
 
   token(
     Props.get("token")

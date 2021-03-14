@@ -1,13 +1,9 @@
 package PPS19.scalagram.dsl.scene
 
 import PPS19.scalagram.dsl._
-<<<<<<< HEAD:src/test/scala/PPS19/scalagram/dsl/scenes/ScenesDSLSuite.scala
-import PPS19.scalagram.logic.{Context, Scene, Step}
-=======
 import PPS19.scalagram.logic
 import PPS19.scalagram.logic.Context
 import PPS19.scalagram.logic.scenes.{Scene, Step}
->>>>>>> develop:src/test/scala/PPS19/scalagram/dsl/scene/ScenesDSLSuite.scala
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner

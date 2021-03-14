@@ -1,11 +1,7 @@
 package PPS19.scalagram.models
 
-<<<<<<< HEAD
-import PPS19.scalagram.models.messages._
-=======
 import PPS19.scalagram.models.payloads._
 import PPS19.scalagram.models.updates._
->>>>>>> develop
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
