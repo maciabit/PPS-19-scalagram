@@ -64,7 +64,7 @@ dependencies {
     testImplementation("org.scalatestplus:junit-4-12_2.13:3.3.0.0-SNAP2")
 
     // Need scala-xml at test runtime
-    testRuntimeOnly("org.scala-lang.modules:scala-xml_2.13:1.2.0")
+    testRuntimeOnly("org.scala-lang.modules:scala-xml_2.13:1.3.0")
 }
 
 spotless {
