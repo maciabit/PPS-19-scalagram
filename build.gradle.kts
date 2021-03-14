@@ -60,7 +60,7 @@ dependencies {
 
     // Use Scalatest for testing our library
     testImplementation("junit:junit:null")
-    testImplementation("org.scalatest:scalatest_2.13:3.1.2")
+    testImplementation("org.scalatest:scalatest_2.13:3.3.0-SNAP3")
     testImplementation("org.scalatestplus:junit-4-12_2.13:3.3.0.0-SNAP2")
 
     // Need scala-xml at test runtime
