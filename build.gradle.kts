@@ -56,7 +56,7 @@ dependencies {
 
     // Use Akka for the polling infrastructure
     implementation("org.slf4j:slf4j-nop:1.7.30")
-    implementation("com.typesafe.akka:akka-actor-typed_2.13:2.6.11")
+    implementation("com.typesafe.akka:akka-actor-typed_2.13:2.6.13")
 
     // Use Scalatest for testing our library
     testImplementation("junit:junit:null")
