@@ -44,7 +44,7 @@ repositories {
 
 dependencies {
     // Use Scala 2.13 in our library project
-    implementation("org.scala-lang:scala-library:2.13.2")
+    implementation("org.scala-lang:scala-library:2.13.5")
 
     // Use requests to perform HTTP requests
     implementation("com.lihaoyi:requests_2.13:0.6.5")
