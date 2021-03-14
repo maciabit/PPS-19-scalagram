@@ -44,27 +44,27 @@ repositories {
 
 dependencies {
     // Use Scala 2.13 in our library project
-    implementation("org.scala-lang:scala-library:2.13.2")
+    implementation("org.scala-lang:scala-library:2.13.5")
 
     // Use requests to perform HTTP requests
     implementation("com.lihaoyi:requests_2.13:0.6.5")
 
     // Use Circe to perform object <-> JSON conversions
-    implementation("io.circe:circe-core_2.13:0.14.0-M3")
-    implementation("io.circe:circe-parser_2.13:0.14.0-M3")
-    implementation("io.circe:circe-generic_2.13:0.14.0-M3")
+    implementation("io.circe:circe-core_2.13:0.14.0-M4")
+    implementation("io.circe:circe-parser_2.13:0.14.0-M4")
+    implementation("io.circe:circe-generic_2.13:0.14.0-M4")
 
     // Use Akka for the polling infrastructure
     implementation("org.slf4j:slf4j-nop:1.7.30")
-    implementation("com.typesafe.akka:akka-actor-typed_2.13:2.6.11")
+    implementation("com.typesafe.akka:akka-actor-typed_2.13:2.6.13")
 
     // Use Scalatest for testing our library
     testImplementation("junit:junit:null")
-    testImplementation("org.scalatest:scalatest_2.13:3.1.2")
-    testImplementation("org.scalatestplus:junit-4-12_2.13:3.1.2.0")
+    testImplementation("org.scalatest:scalatest_2.13:3.3.0-SNAP3")
+    testImplementation("org.scalatestplus:junit-4-12_2.13:3.3.0.0-SNAP2")
 
     // Need scala-xml at test runtime
-    testRuntimeOnly("org.scala-lang.modules:scala-xml_2.13:1.2.0")
+    testRuntimeOnly("org.scala-lang.modules:scala-xml_2.13:1.3.0")
 }
 
 spotless {
