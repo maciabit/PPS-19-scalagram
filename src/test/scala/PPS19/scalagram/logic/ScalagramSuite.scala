@@ -1,7 +1,9 @@
 package PPS19.scalagram.logic
 
 import PPS19.scalagram.logic.scenes.{Scene, Step}
-import PPS19.scalagram.models.BotToken
+import PPS19.scalagram.models.{BotToken, UnknownChat}
+import PPS19.scalagram.models.payloads.TextMessage
+import PPS19.scalagram.models.updates.{MessageReceived, UnknownUpdate}
 import org.junit.runner.RunWith
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.junit.JUnitRunner
@@ -28,10 +30,21 @@ class ScalagramSuite extends AnyFunSuite {
     assert(!reaction.operation(context))
   }
 
-  /*test("A Step always returns false") {
-    val step = Step("name", _ => {})
-    assert(!step.operation(context))
-  }*/
+  test("A Step returns false if not supplied with a MessageUpdate") {
+    var res = false
+    val step = Step("name", _ => res = true)
+    val someOtherUpdate = UnknownUpdate(0)
+    context.update = someOtherUpdate
+    assert(step.operation(context) && !res)
+  }
+
+  test("A step gets executed if supplied with a MessageUpdate") {
+    var res = false
+    val step = Step("name", _ => res = true)
+    val messageUpdate = MessageReceived(0, TextMessage(0, UnknownChat, 0, "Message"))
+    context.update = messageUpdate
+    assert(!step.operation(context) && res)
+  }
 
   test("Bot creation and extractor method are working as intended") {
     val token = BotToken("<TOKEN>")
