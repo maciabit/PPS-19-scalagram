@@ -1,9 +1,14 @@
 # ScalaGram - Report
 
 ## Development process [Rossi]
-Processo di sviluppo adottato (modalità di divisione in itinere dei task, meeting/interazioni pianificate, modalità di revisione in itinere dei task, scelta degli strumenti di test/build/continuous integration)
+Lo sviluppo del sistema verrà effettuato adottando un processo simil-Scrum, viste le ridotte dimensioni del team e la conseguente impossibilità di adottare Scrum in pieno. L'approccio utilizzato prevede la suddivisione in Scrum-Task anche di tutta la parte progettuale del sistema e di bootstrap del progetto, comprese la definizione dei requisiti, la configurazione degli ambienti (IntelliJ, Gradle, Github e Github Actions) e la stesura di questo report. 
 
 ### Divisione dei task
+La divisione dei ruoli all'interno del team è la seguente: 
+Gianni Tumedei: product owner e sviluppatore. Responsabile dello sviluppo e testing delle seguenti funzionalità:
+Francesco Boschi: scrum master e sviluppatore. Responsabile dello sviluppo e testing delle seguenti funzionalità:
+Mattia Rossi: sviluppatore. Responsabile dello sviluppo e testing delle seguenti funzionalità:
+Per quanto concerne lo sviluppo delle componenti sviluppate in comune, queste sono le seguenti:
 ### Meeting ed interazioni
 ### Strumenti utilizzati
 
