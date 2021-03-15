@@ -4,14 +4,40 @@
 Lo sviluppo del sistema verrà effettuato adottando un processo simil-Scrum, viste le ridotte dimensioni del team e la conseguente impossibilità di adottare Scrum in pieno. L'approccio utilizzato prevede la suddivisione in Scrum-Task anche di tutta la parte progettuale del sistema e di bootstrap del progetto, comprese la definizione dei requisiti, la configurazione degli ambienti (IntelliJ, Gradle, Github e Github Actions) e la stesura di questo report. 
 
 ### Divisione dei task
-La divisione dei ruoli all'interno del team è la seguente: 
-Gianni Tumedei: product owner e sviluppatore. Responsabile dello sviluppo e testing delle seguenti funzionalità:
-Francesco Boschi: scrum master e sviluppatore. Responsabile dello sviluppo e testing delle seguenti funzionalità:
-Mattia Rossi: sviluppatore. Responsabile dello sviluppo e testing delle seguenti funzionalità:
-Per quanto concerne lo sviluppo delle componenti sviluppate in comune, queste sono le seguenti:
-### Meeting ed interazioni
-### Strumenti utilizzati
+La divisione dei ruoli all'interno del team è la seguente:
 
+**Gianni Tumedei**: *product owner* e *sviluppatore*. Responsabile dello sviluppo e testing delle seguenti funzionalità:
+- Gestione della logica di funzionamento del bot
+- Gestione delle modalità di recupero degli update
+
+**Francesco Boschi**: *scrum master* e *sviluppatore*. Responsabile dello sviluppo e testing delle seguenti funzionalità:
+- Gestione dei modelli delle entità del sistema
+- Codifica e decodifica delle informazioni
+
+**Mattia Rossi**: *sviluppatore*. Responsabile dello sviluppo e testing delle seguenti funzionalità:
+- Gestione dei metodi di Telegram
+- Gestione degli errori e dell'output
+
+Per quanto concerne la realizzazione delle componenti sviluppate in comune, queste sono le seguenti:
+- Sviluppo del DSL
+- Creazione dei Bot di esempio
+
+### Meeting ed interazioni
+I componenti del team si prefissano di realizzare meeting con cadenza giornarliera tramite videochiamate, principalmente effettuate tramite Microsoft Teams e Discord, al fine di mantenersi aggiornati sullo stato del progetto e sull'avanzamento dei singoli task. Con cadenza settimanale, per la precisione alla fine di ogni sprint, si terrà invece un meeting in cui verranno definiti i task da includere nella fase di sprint successiva. Le interazioni tra i componenti del team si mantengono comunque frequenti per convenire su eventuali dettagli di minore entità all'interno del progetto. 
+### Strumenti utilizzati
+- **IntelliJ IDEA**: IDE utilizzato per lo sviluppo del progetto, scelto perché fornisce supporto completo per lavorare con il linguaggio Scala
+- **Git**: utilizzato come version control system per tenere traccia dello sviluppo in itinere del progetto. Sono stati tracciati i file sorgente, di test, di configurazione della build e quelli di backlog. 
+- **Github**: scelto come servizio di repository
+- Gradle: utilizzato come tool per eseguire la build del sistema
+- **Github Actions**: servizio integrato all'interno di Github per la CI (continuos integration) per eseguire la build del progetto in sistemi eterogenei
+- **Scoverage**: utilizzato per calcolare la copertura dei test implementati, al fine di stabilire la percentuiale minima di sistema non "coperto" e quindi soggetto a eventuali bug. 
+- **Trello**: è stato utilizzato in maniera distribuita per definire nel dettaglio le attività presenti nel backlog. In particolare sono state definite le seguenti sezioni: 
+  - To do: task che devono ancora essere sviluppati
+  - In progess: lo sviluppo del task è iniziato ma non concluso
+  - Done: contiene i task che sono stati completati
+  - Paused: contiene i task che erano in progresso e sono stati momentaneamente sospesi
+  - Aborted: contiene i task definitiamente cancellati 
+- **Google Docs**: utilizzato sia per scrivere il backlog settimanale che gli appunti riguardanti il design, l'architettura e le user story del progetto
 ## Requirements [Gruppo]
 Requisiti (delle varie tipologie, ossia: 1) business, 2) utente, 3) funzionali, 4) non funzionali, 5) di implementazione)
 
