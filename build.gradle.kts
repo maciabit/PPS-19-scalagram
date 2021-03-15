@@ -13,7 +13,7 @@ plugins {
     id("com.diffplug.spotless") version "5.10.2"
     id("org.scoverage") version "5.0.0"
     id("org.danilopianini.git-sensitive-semantic-versioning") version "0.1.0"
-    id("org.kordamp.gradle.scaladoc") version "0.40.0"
+    id("org.kordamp.gradle.scaladoc") version "0.44.0"
 }
 
 repositories {
