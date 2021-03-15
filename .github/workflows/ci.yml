@@ -1,6 +1,6 @@
 # This workflow will build a Scala project with Gradle
 
-name: Scala CI with Gradle
+name: CI
 
 on:
   push:
