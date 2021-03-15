@@ -85,6 +85,17 @@ Implementazione (per ogni studente, una sotto-sezione descrittiva di cosa fatto/
 
 ### Implementazione - Gianni Tumedei [Logica bot]
 ### Implementazione - Francesco Boschi [Modelli, marshalling]
+Boschi Francesco è responsabile dell'implementazione delle seguenti componenti:
+#### Package PPS19.scalagram.models
+#### Package PPS19.scalagram.marshalling
+Poichè tutti i campi all'interno dei json sfruttati da Telegram sono definiti seguendo il formato [snake_case](https://en.wikipedia.org/wiki/Snake_case), al contraio di quelle definite via codice che seguono quello [camelCase](https://en.wikipedia.org/wiki/Camel_case), il package marshalling è incaricato di eseguire le conversioni tra i due stili.  
+Si è deciso quindi di utilizzare due classi implicite che wrappassero le classi Decoder ed Encoder della libreria Circe, così da poter sfruttare in maniera comoda e immediata i metodi per la conversione contenuti al loro interno.  
+Nello specifico, la classe DecoderOps contiene un metodo per la conversione in camelCase, in quanto per eseguire il decoding automatico è necessario che i field del json coincidano con quelli degli oggetti e, quindi, che vegnano trasformati da snake_case a camelCase.  
+Al contrario, la class EncoderOps, contiene un metodo per la conversione in snake_case, in modo che la codifica in json delle entità segua lo stile snake_case e sia accettata da Telegram.  
+Per portare a termine queste operazioni, si è sfruttata una funzione higher-order, la quale prende come parametro la funzione di trasformazione sulla stringa desiderata.  
+Tali funzioni di trasformazione sono definite nel file package.scala e incluse all'interno di una classe CaseString, la quale wrappa la classe stringa, di modo che tali trasformazioni possano essere usate anche sulle singole stringhe e non necessariamente sui json, come accade per esempio nella codifica dell'URL.
+
+
 ### Implementazione - Mattia Rossi [Metodi] 
 ### Attività di gruppo [Gruppo]
 #### DSL 
