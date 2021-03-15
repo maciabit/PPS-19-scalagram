@@ -67,8 +67,16 @@ Architettura del dsl?
 Design di dettaglio (scelte rilevanti, pattern di progettazione, organizzazione del codice -- corredato da pochi ma efficaci diagrammi)
 
 ### Scelte rilevanti [Boschi]
-- riferimento ai bounded context
-- adattarsi alle telegram api
+In fase di design, si è deciso di seguire la suddivisione definita tramite i Bounded Context, identificando così tre macro aree sviluppabili in maniera indipendente e di conseguenza parallelizzabili le quali, una volta terminate, sarebbero poi state integrate.  
+La modellazione dei modelli atti a rappresentare le entità fondamentali è stata definita adattandosi alle [Telegram Bot API](https://core.telegram.org/bots/api), identificando all'interno di classi create ad hoc tutti i campi necessari a rappresentare gli elementi sfruttati da Telegram, richiamando quindi un paradigma OO-FP Mixed.  
+Grazie a questa scelta, è stato possibile utilizzare la libreria [Circe](https://circe.github.io/circe/), atta a facilitare e rendere semiautomatiche le operazioni di codifica (in fase di invio) e decodifica (in fase di ricezione) dei json.  
+In maniera analoga ai modelli, anche la modalità di utilizzo delle API per interagire con il server Telegram è stata definita facendo riferimento alle direttive fornite dal servizio stesso. 
+In questo caso, per garanitre uno sviluppo più possibile funzionale, si è utilizzato il trio di classi [Try, Success, Failure](https://docs.scala-lang.org/overviews/scala-book/functional-error-handling.html), fondamentali per gestire gli errorri in maniera gracefully, siano essi dovuti a problemi nella formattazione dell'URL, del body del messaggio o di connessione.  
+Grazie a questa tecnica e all'utilizzo di classi di default nel caso in cui l'encoding/decoding dei json non andasse a buon fine, qulunque failure riesce ad essere intercettata senza causare interruzioni non volute del programma.  
+Per quanto concerne il testing, inizialmente si era optato per un testing automatico che, tramite le apposite chiamate HTTP al server Telegram, permettesse di verificare la corretteza sia nell'utilizzo delle API, che nell'encoding della richiesta e nel decoding della risposta.  
+Poichè Telegram per evitare attacchi DOS prevede un limite massimo di richeste al minuto, è stato necessario optare per un approccio alternativo, in quanto l'esecuzione di più suite di test in contemporanea portava frequenti fallimenti nonostante le tecniche di retry adottate.  
+La correttezza nell'utilizzo delle API viene quindi determinata solamente sulla base della composizione della richiesta stessa, ipotizzando che data una richiesta corretta, possa fallire solo per problemi legati a Telegram o alla connesione.  
+Per la fase di interpretazione delle risposte, invece, si è deciso di memorizzare i json di interesse in appositi file e utilizzarli per verificare la correttezza delle operazioni di decodifica.
 ### Organizzazione del codice [Rossi, Tumedei]
 - riferimento ai bounded context
 
