@@ -1,7 +1,7 @@
 # ScalaGram - Report
 
-## Development process [Rossi]
-Lo sviluppo del sistema verrà effettuato adottando un processo simil-Scrum, viste le ridotte dimensioni del team e la conseguente impossibilità di adottare Scrum in pieno. L'approccio utilizzato prevede la suddivisione in Scrum-Task anche di tutta la parte progettuale del sistema e di bootstrap del progetto, comprese la definizione dei requisiti, la configurazione degli ambienti (IntelliJ, Gradle, Github e Github Actions) e la stesura di questo report. 
+## 1. Development process [Rossi]
+Lo sviluppo del sistema verrà effettuato adottando un processo simil-Scrum, viste le ridotte dimensioni del team e la conseguente impossibilità di adottare Scrum in pieno. L'approccio utilizzato prevede la suddivisione in Scrum-Task anche di tutta la parte progettuale del sistema e di bootstrap del progetto, comprese la definizione dei requisiti, la configurazione degli ambienti (IntelliJ, Gradle, Github e Github Actions) e la stesura di questo report.
 
 ### Divisione dei task
 La divisione dei ruoli all'interno del team è la seguente:
@@ -23,38 +23,81 @@ Per quanto concerne la realizzazione delle componenti sviluppate in comune, ques
 - Creazione dei Bot di esempio
 
 ### Meeting ed interazioni
-I componenti del team si prefissano di realizzare meeting con cadenza giornarliera tramite videochiamate, principalmente effettuate tramite Microsoft Teams e Discord, al fine di mantenersi aggiornati sullo stato del progetto e sull'avanzamento dei singoli task. Con cadenza settimanale, per la precisione alla fine di ogni sprint, si terrà invece un meeting in cui verranno definiti i task da includere nella fase di sprint successiva. Le interazioni tra i componenti del team si mantengono comunque frequenti per convenire su eventuali dettagli di minore entità all'interno del progetto. 
+I componenti del team si prefissano di realizzare meeting con cadenza giornaliera tramite videochiamate, principalmente effettuate tramite Microsoft Teams e Discord, al fine di mantenersi aggiornati sullo stato del progetto e sull'avanzamento dei singoli task. Con cadenza settimanale, per la precisione alla fine di ogni sprint, si terrà invece un meeting in cui verranno definiti i task da includere nella fase di sprint successiva. Le interazioni tra i componenti del team si mantengono comunque frequenti per convenire su eventuali dettagli di minore entità all'interno del progetto.
 ### Strumenti utilizzati
 - **IntelliJ IDEA**: IDE utilizzato per lo sviluppo del progetto, scelto perché fornisce supporto completo per lavorare con il linguaggio Scala
-- **Git**: utilizzato come version control system per tenere traccia dello sviluppo in itinere del progetto. Sono stati tracciati i file sorgente, di test, di configurazione della build e quelli di backlog. 
+- **Git**: utilizzato come version control system per tenere traccia dello sviluppo in itinere del progetto. Sono stati tracciati i file sorgente, di test, di configurazione della build e quelli di backlog.
 - **Github**: scelto come servizio di repository
 - Gradle: utilizzato come tool per eseguire la build del sistema
 - **Github Actions**: servizio integrato all'interno di Github per la CI (continuos integration) per eseguire la build del progetto in sistemi eterogenei
-- **Scoverage**: utilizzato per calcolare la copertura dei test implementati, al fine di stabilire la percentuiale minima di sistema non "coperto" e quindi soggetto a eventuali bug. 
-- **Trello**: è stato utilizzato in maniera distribuita per definire nel dettaglio le attività presenti nel backlog. In particolare sono state definite le seguenti sezioni: 
+- **Scoverage**: utilizzato per calcolare la copertura dei test implementati, al fine di stabilire la percentuale minima di sistema non "coperto" e quindi soggetto a eventuali bug.
+- **Trello**: è stato utilizzato in maniera distribuita per definire nel dettaglio le attività presenti nel backlog. In particolare sono state definite le seguenti sezioni:
   - To do: task che devono ancora essere sviluppati
-  - In progess: lo sviluppo del task è iniziato ma non concluso
+  - In progress: lo sviluppo del task è iniziato ma non concluso
   - Done: contiene i task che sono stati completati
   - Paused: contiene i task che erano in progresso e sono stati momentaneamente sospesi
+<<<<<<< HEAD
   - Aborted: contiene i task definitiamente cancellati 
 - **Google Docs**: utilizzato sia per scrivere il backlog settimanale che gli appunti riguardanti il design,
 -  l'architettura e le user story del progetto
 ## Requirements [Gruppo]
 Requisiti (delle varie tipologie, ossia: 1) business, 2) utente, 3) funzionali, 4) non funzionali, 5) di implementazione)
+=======
+  - Aborted: contiene i task definitivamente cancellati
+- **Google Docs**: utilizzato sia per scrivere il backlog settimanale che gli appunti riguardanti il design, l'architettura e le user story del progetto
+## 2. Requirements [Gruppo]
+Questo capitolo è dedicato alla descrizione dei requisiti che il progetto mira a soddisfare. Le sezioni sottostanti definiscono le varie tipologie di requisiti dettagliandoli secondo diversi punti di vista.
+>>>>>>> 4fdf20606a0d2998d99bea0c996e2686eb9f6030
 
 ### Business
 
-Questa sezione è dedicata all'analisi e definizione dei requisiti di business che caratterizzeranno il sistema. L'approccio utilizzato per la definizione del modello è basato sulla filosofia **Domain Driven Design** (DDD). 
+Questa sezione è dedicata all'analisi e definizione dei requisiti di business che caratterizzeranno il sistema. L'approccio utilizzato per la definizione del modello è basato sulla filosofia **Domain Driven Design** (DDD).\
+L'obbiettivo del progetto è lo sviluppo di una libreria per la creazione di bot per la piattaforma di messaggistica Telegram.\
+Il progetto è nato grazie alla passione di alcuni membri del gruppo per lo sviluppo di bot Telegram e a causa dell'assenza di un pratico framework/libreria in Scala che li soddisfacesse.
+Questo capito è suddiviso nelle sezioni Ubiquitous language e Knowledge crunching.
 
 È importante asserire sin da subito che l'oggetto dello studio del modello del dominio sono state le [Telegram Bot API](https://core.telegram.org/bots/api).
 
+#### Ubiquitous language
+Questa sezione riporta le terminologie tecniche che sono emerse durante durante tutto lo svolgimento del progetto accompagnate dalla loro definizione.\
+Nei capitoli successivi di questo documento si farà riferimento a questi termini dandone per assodato il significato.
+| Termine                        | Significato                                                                                                                                                                                                                                                                                                                                                     |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| User/Utente                    | Un entità che interagisce con Telegram. Può essere sia un utente umano che un programma (Bot). È identificato da uno user ID, che è anche usato da altri utenti per interagire con esso.                                                                                                                                                                        |
+| Human user/Utente umano        | Persona identificata dall'account che utilizza.                                                                                                                                                                                                                                                                                                                |
+| Account                        | Un account di Telegram identifica un utente umano ed è associato con un numero telefonico/email univoco e un User.                                                                                                                                                                                                                                              |
+| Bot                            | User automatizzato. Un Bot deve essere creato da un utente umano, che ne è anche il proprietario. Un Bot è identificato da un token univoco.                                                                                                                                                                                                                    |
+| Chat                           | Una conversazione tra due o più utenti, identificata da un ID.                                                                                                                                                                                                                                                                                                  |
+| Private chat/Chat privata      | una conversazione tra due utenti.                                                                                                                                                                                                                                                                                                                               |
+| Channel/Canale                 | Una chat a senso unico, in cui gli amministratori possono pubblicare messaggi (in questo caso chiamati anche post), e gli utenti (in questo caso chiamati anche iscritti o subscribers) possono leggerli. I canali sono identificati da un chat ID e da un channel name.                                                                                        |
+| Gruppo                         | Una conversazione tra un gruppo di utenti. Il gruppo è gestito da amministratori.                                                                                                                                                                                                                                                                               |
+| Private channel/Canale privato | Canale a cui hanno accesso solamente amministratori e utenti iscritti, che possono essere aggiunti manualmente dagli amministratori oppure iscriversi tramite un link di invito.                                                                                                                                                                                |
+| Public channel/Canale pubblico | Canale di cui chiunque può visualizzare i messaggi (anche senza effettuare il login su Telegram) e chiunque può iscriversi.                                                                                                                                                                                                                                     |
+| Message/Messaggio              | Qualsiasi contenuto inviato in una chat o in un canale. I più semplici sono messaggi di testo, ma altri formati includono note vocali e video, immagini statiche, GIF, file audio, file video, qualsiasi altro file, adesivo, sondaggio, posizione, contatto. I Bot possono anche inviare messaggi di risposta. Un messaggio è identificato da un ID messaggio. |
+| Command/Comando                | Un messaggio che inizia con il carattere "/", utile per invocare in maniera semplice dei trigger.                                                                                                                                                                                                                                                               |
+| Pin                            | Azione di fissare un messaggio in una chat, per mantenerli sempre visibili nella parte alta.                                                                                                                                                                                                                                                                    |
+| Unpin                          | Rimozione del pin da un messaggio fissato. Può essere eseguita sul singolo o su tutti i messaggi fissati.                                                                                                                                                                                                                                                       |
+| Update                         | Tutti gli eventi che accadono all'interno di Telegram sono wrappati in un update, che viene inviato agli utenti interessati ed è identificato da un update ID.                                                                                                                                                                                                  |
+| Polling                        | Modalità di reperimento degli update nella quale si contattano periodicamente i server di Telegram per scaricare quelli disponibili.                                                                                                                                                                                                                            |
+| Webhook                        | Modalità di reperimento degli update nella quale sono sono i server di Telegram a inoltrarli ad un URL pubblico. Richiede una fase di configurazione nella quale il token del bot viene associato a tale URL.                                                                                                                                                   |
+| Token                          | Identificatore univoco di un bot. Tramite esso è possibile controllare le azioni del bot, pertanto va mantenuto privato. Può essere trasferito da un utente ad un altro per cambiarne il proprietario.                                                                                                                                                          |
+| Trigger                        | Logica secondo la quale un bot reagisce ad un update.                                                                                                                                                                                                                                                                                                           |
+| Action/Azione                  | Una serie di attività eseguite in seguito all'attivazione di un trigger.                                                                                                                                                                                                                                                                                        |
+| Reaction                       | Combinazione di un trigger e dell'azione corrispondente.                                                                                                                                                                                                                                                                                                        |
+| Context/Contesto               | Container per tutti i dati che un bot deve memorizzare tra un update e l'altro. Il context è identificato dalla chat a cui fa riferimento e contiene soltanto i dati ad essa relativi in modo da isolare le varie conversazioni.                                                                                                                                |
+| Scene/Scena                    | Interazione ben definita con il bot composta da uno o più step che devono essere eseguiti in un certo ordine.                                                                                                                                                                                                                                                   |
+| Step                           | Reaction all'interno di una scena.                                                                                                                                                                                                                                                                                                                              |
+| Middleware                     | Elemento che processa ogni update e determina se inoltrarlo e scartarlo.                                                                                                                                                                                                                                                                                        |
+
 #### Knowledge crunching
 
-#### Ubiquitous language
 ### Utente
+Gli utenti finali del progetto sono gli sviluppatori che sfruttano la libreria Scalagram per la realizzazione di bot Telegram.\
+La libreria deve mettere a disposizione gli strumenti per la programmazione di un bot sfruttando un apposito DSL.\
+Nel caso in cui un utilizzatore abbia necessità specifiche, deve inoltre essere possibile utilizzare qualsiasi funzionalità della libreria senza far uso del DSL.
 ### Funzionali
 
-- Definire il comportamento di un bot telegram mediante il DSL proposto in maniera dichiarativa.
+- Definire il comportamento di un bot Telegram mediante il DSL proposto in maniera dichiarativa.
     1. Definire il **token** del bot in questione.
     2. Definire la **modalità** di esecuzione del bot (e.g. Polling o Webhook), ed i rispettivi parametri, quali l'intervallo di polling ed il timeout delay.
     3. Definire l'insieme di **middleware** assegnandone il rispettivo contesto di attivazione e la conseguente reazione.
@@ -80,7 +123,7 @@ Comparare la user story con i pezzi di codice/pseudocodice del DSL.
 ### Non funzionali
 ### Implementazione
 
-## Architectural Design [Gruppo - Pistocchi]
+## 3. Architectural Design [Gruppo - Pistocchi]
 Design architetturale (architettura complessiva, descrizione di pattern architetturali usati, componenti del sistema distribuito, scelte tecnologiche cruciali ai fini architetturali -- corredato da pochi ma efficaci diagrammi)
 
 ### Bounded context [Pistocchi]
@@ -95,10 +138,11 @@ Queste decisioni impatteranno in maniera significativa successivamente, quando s
 ### DSL e user story [Pistocchi]
 Architettura del dsl?
 
-## Design Detail
+## 4. Design Detail
 Design di dettaglio (scelte rilevanti, pattern di progettazione, organizzazione del codice -- corredato da pochi ma efficaci diagrammi)
 
 ### Scelte rilevanti [Boschi]
+<<<<<<< HEAD
 In fase di design, si è deciso di seguire la suddivisione definita tramite i Bounded Context, identificando così tre macro aree sviluppabili in maniera indipendente e di conseguenza parallelizzabili le quali, una volta terminate, sarebbero poi state integrate.  
 La modellazione dei modelli atti a rappresentare le entità fondamentali è stata definita adattandosi alle [Telegram Bot API](https://core.telegram.org/bots/api), identificando all'interno di classi create ad hoc tutti i campi necessari a rappresentare gli elementi sfruttati da Telegram, richiamando quindi un paradigma OO-FP Mixed.  
 Grazie a questa scelta, è stato possibile utilizzare la libreria [Circe](https://circe.github.io/circe/), atta a facilitare e rendere semiautomatiche le operazioni di codifica (in fase di invio) e decodifica (in fase di ricezione) dei json.  
@@ -108,31 +152,79 @@ Grazie a questa tecnica e all'utilizzo di classi di default nel caso in cui l'en
 Per quanto concerne il testing, inizialmente si era optato per un testing automatico che, tramite le apposite chiamate HTTP al server Telegram, permettesse di verificare la corretteza sia nell'utilizzo delle API, che nell'encoding della richiesta e nel decoding della risposta.  
 Poichè Telegram per evitare attacchi DOS prevede un limite massimo di richeste al minuto, è stato necessario optare per un approccio alternativo, in quanto l'esecuzione di più suite di test in contemporanea portava frequenti fallimenti nonostante le tecniche di retry adottate.  
 La correttezza nell'utilizzo delle API viene quindi determinata solamente sulla base della composizione della richiesta stessa, ipotizzando che data una richiesta corretta, possa fallire solo per problemi legati a Telegram o alla connesione.  
+=======
+In fase di design, si è deciso di seguire la suddivisione definita tramite i Bounded Context, identificando così tre macro aree sviluppabili in maniera indipendente e di conseguenza parallelizzabili le quali, una volta terminate, sarebbero poi state integrate.
+
+Nello sviluppo del DSL, col fine di avere un linguaggio il più possibile comprensibile e intuitivo, si è fatto ampio uso dello **zucchero sintattico** messo a disposizione da Scala, come per esempio:
+
+- possibilità di utilizzare metodi unari come operatori **infissi**;
+- pattern **Pimp my library** per fornire in maniera implicita metodi, conversioni ed estendere tipi esistenti;
+- possibilità di utilizzare **parentesi graffe** per istanziare liste con un solo argomento;
+- possibilità di omettere la parola chiave **new** nella creazione di un istanza.
+
+L'implementazione dei modelli atti a rappresentare le entità fondamentali è stata definita **adattandosi** alle [Telegram Bot API](https://core.telegram.org/bots/api), identificando all'interno di classi create ad hoc tutti i campi necessari a rappresentare gli elementi sfruttati da Telegram, richiamando quindi un paradigma OO-FP Mixed.\n
+Grazie a questa scelta, è stato possibile utilizzare la libreria [Circe](https://circe.github.io/circe/), atta a facilitare e rendere semiautomatiche le operazioni di codifica (in fase di invio) e decodifica (in fase di ricezione) dei json.
+
+In maniera analoga ai modelli, anche la modalità di utilizzo delle **API** per interagire con il server Telegram è stata definita facendo riferimento alle direttive fornite dal servizio stesso.\n
+In questo caso, per garantire uno sviluppo più possibile funzionale, si è utilizzato il trio di classi [Try, Success, Failure](https://docs.scala-lang.org/overviews/scala-book/functional-error-handling.html), fondamentali per gestire gli errori in maniera **gracefully**, siano essi dovuti a problemi nella formattazione dell'URL, del body del messaggio o di connessione.\n
+Grazie a questa tecnica e all'utilizzo di classi di default nel caso in cui l'encoding/decoding dei json non andasse a buon fine, qualunque failure riesce ad essere intercettata senza causare interruzioni non volute del programma.
+
+Per quanto concerne il testing, inizialmente si era optato per un **testing automatico** che, tramite le apposite chiamate HTTP al server Telegram, permettesse di verificare la correttezza sia nell'utilizzo delle API, che nell'encoding della richiesta e nel decoding della risposta.\n
+Poiché Telegram per evitare attacchi DOS prevede un limite massimo di richieste al minuto, è stato necessario optare per un approccio alternativo, in quanto l'esecuzione di più suite di test in contemporanea portava frequenti fallimenti nonostante le tecniche di retry adottate.\n
+La correttezza nell'utilizzo delle API viene quindi determinata solamente sulla base della composizione della richiesta stessa, ipotizzando che data una richiesta corretta, possa fallire solo per problemi legati a Telegram o alla connessione.\n
+>>>>>>> 4fdf20606a0d2998d99bea0c996e2686eb9f6030
 Per la fase di interpretazione delle risposte, invece, si è deciso di memorizzare i json di interesse in appositi file e utilizzarli per verificare la correttezza delle operazioni di decodifica.
 ### Organizzazione del codice [Rossi, Tumedei]
 - riferimento ai bounded context
 
-## Implementation
+## 5. Implementation
 Implementazione (per ogni studente, una sotto-sezione descrittiva di cosa fatto/co-fatto e con chi, e descrizione di aspetti implementativi importanti non già presenti nel design)
 
 ### Implementazione - Gianni Tumedei [Logica bot]
 ### Implementazione - Francesco Boschi [Modelli, marshalling]
 Boschi Francesco è responsabile dell'implementazione delle seguenti componenti:
 #### Package PPS19.scalagram.models
+<<<<<<< HEAD
 #### Package PPS19.scalagram.marshalling
 Poichè tutti i campi all'interno dei json sfruttati da Telegram sono definiti seguendo il formato [snake_case](https://en.wikipedia.org/wiki/Snake_case), al contraio di quelle definite via codice che seguono quello [camelCase](https://en.wikipedia.org/wiki/Camel_case), il package marshalling è incaricato di eseguire le conversioni tra i due stili.  
 Si è deciso quindi di utilizzare due classi implicite che wrappassero le classi Decoder ed Encoder della libreria Circe, così da poter sfruttare in maniera comoda e immediata i metodi per la conversione contenuti al loro interno.  
 Nello specifico, la classe DecoderOps contiene un metodo per la conversione in camelCase, in quanto per eseguire il decoding automatico è necessario che i field del json coincidano con quelli degli oggetti e, quindi, che vegnano trasformati da snake_case a camelCase.  
 Al contrario, la class EncoderOps, contiene un metodo per la conversione in snake_case, in modo che la codifica in json delle entità segua lo stile snake_case e sia accettata da Telegram.  
 Per portare a termine queste operazioni, si è sfruttata una funzione higher-order, la quale prende come parametro la funzione di trasformazione sulla stringa desiderata.  
+=======
+Il seguente package, contiene tutti i file atti a definire le entità alla base del sistema e le operazioni di codifica e decodifica in json delle stesse.
+
+Sebbene i modelli presenti siano in grande numero, la struttura utilizzata è simile per tutti e rispecchia il paradigma OO-FP Mixed, essendo presenti riferimenti al classico OO come gerarchie tra classi e trait atti a definire contratti comuni, oltre a elementi tipici di FP come companion object che fungono da contenitori di impliciti o Factory.
+
+Elemento fondamentale che accomuna la maggior parte di queste classi, è la sezione dedicata alla **derivazione semiautomatica** messa a disposizione dalla libreria Circe.\n
+L'utilizzo di deriveDecoder, permette di decodificare in maniera automatica un json creando un oggetto della classe corrispondente, basandosi sul match tra i field del json e quelli della classe che verrà istanziata.\n
+Nel caso in cui un trait fosse ereditato da più classi, quindi, tramite un apposito implicito definito all'interno del **companion object**, viene selezionata la classe che sarà istanziata in maniera automatica o sulla base di parametri specifici, come nel caso della classe MessageEntity nella quale la derivazione viene fatta sulla base del valore di un field del json.
+
+Per le classi che sono utilizzate anche in fase di invio di un messaggio, come le classi per la creazione di tastiere e delle loro componenti, è inoltre presente all'interno del companion object un **Encoder**, sempre messo a disposizione da Circe, utilizzato per convertire in maniera automatica o sulla base di uno specifico parametro un'istanza di tale classe in formato json.
+
+L'entry point del sistema in fase di ricezione di un update è la classe **Update**, la quale è incaricata dell'avvio delle operazioni di derivazione semiautomatica, dopo aver convertito l'intero json in stile camelCase così da assicurare la corrispondenza tra filed del json e delle classi.
+
+Configurazione simile è presenta anche in altre classi, come **TelegramMessage**, in quanto  potrebbero essere sate direttamente in fase di decodifica senza essere richiamate dalla classe Update e, nella quali quindi, è necessario mantenere la conversione in camelCase.
+
+In questa sezione del progetto, quindi, il pattern maggiormente presente è certamente **Pimp my library**, per estendere le classi messe a disposizione dalla libreria Circe.
+
+#### Package PPS19.scalagram.marshalling
+Poiché tutti i campi all'interno dei json sfruttati da Telegram sono definiti seguendo il formato [snake_case](https://en.wikipedia.org/wiki/Snake_case), al contrario di quelle definite via codice che seguono quello [camelCase](https://en.wikipedia.org/wiki/Camel_case), il package marshalling è incaricato di eseguire le conversioni tra i due stili.
+
+Si è deciso quindi di utilizzare due classi implicite che wrappassero le classi Decoder ed Encoder della libreria Circe, così da poter sfruttare in maniera comoda e immediata i metodi per la conversione contenuti al loro interno.\n
+Nello specifico, la classe DecoderOps contiene un metodo per la conversione in camelCase, in quanto per eseguire il decoding automatico è necessario che i field del json coincidano con quelli degli oggetti e, quindi, che vengano trasformati da snake_case a camelCase.\n
+Al contrario, la class EncoderOps, contiene un metodo per la conversione in snake_case, in modo che la codifica in json delle entità segua lo stile snake_case e sia accettata da Telegram.
+
+Per portare a termine queste operazioni, si è sfruttata una funzione higher-order, la quale prende come parametro la funzione di trasformazione sulla stringa desiderata.\n
+>>>>>>> 4fdf20606a0d2998d99bea0c996e2686eb9f6030
 Tali funzioni di trasformazione sono definite nel file package.scala e incluse all'interno di una classe CaseString, la quale wrappa la classe stringa, di modo che tali trasformazioni possano essere usate anche sulle singole stringhe e non necessariamente sui json, come accade per esempio nella codifica dell'URL.
 
 
-### Implementazione - Mattia Rossi [Metodi] 
+### Implementazione - Mattia Rossi [Metodi]
 ### Attività di gruppo [Gruppo]
-#### DSL 
+#### DSL
 
-## OPS
+## 6. OPS
 In questa sezione verranno descritti dettagliatamente gli aspetti relativi alla parte di **Operations** (Ops) implementati all'interno del progetto. Con Ops si intendono tutte quelle strategie finalizzate a semplificare ed automatizzare alcuni workflow relativi alla gestione del progetto.
 
 L'utilizzo di un ambiente di Continuous Integration (CI), quale GitHub Actions consentirà di eseguire in maniera automatizzata alcune di queste procedure relative sia alla build automation del progetto, come compilazione, testing e quality assurance, ma anche relative alla gestione del repository ed alla pubblicazione degli artefatti.
@@ -168,15 +260,15 @@ La fase di build è stata strutturata in un unica fase principale (job). Gli asp
 
 ### Licensing [Rossi]
 ### QA [Boschi, Tumedei]
-#### Testing 
+#### Testing
 ##### Testing automatizzato
 ##### Testing non automatizzato
 ##### Copertura dei test
 
-## Retrospective [Rossi, Optional[Tumedei]]
-Restrospettiva (descrizione finale dettagliata dell'andamento dello sviluppo, del backlog, delle iterazioni; commenti finali)
+## 7. Retrospective [Rossi, Optional[Tumedei]]
+Retrospettiva (descrizione finale dettagliata dell'andamento dello sviluppo, del backlog, delle iterazioni; commenti finali)
 
-### Sprint 1 
+### Sprint 1
 ### Sprint 2
 ### Sprint 3
 ### Sprint 4
@@ -185,6 +277,6 @@ Restrospettiva (descrizione finale dettagliata dell'andamento dello sviluppo, de
 ### Sprint 7
 ### Sprint 8
 
-## Conclusioni [Gruppo]
+## 8. Conclusioni [Gruppo]
 ### Sviluppi futuri
 ### Conclusioni
