@@ -23,20 +23,20 @@ Per quanto concerne la realizzazione delle componenti sviluppate in comune, ques
 - Creazione dei Bot di esempio
 
 ### Meeting ed interazioni
-I componenti del team si prefissano di realizzare meeting con cadenza giornaliera tramite videochiamate, principalmente effettuate tramite Microsoft Teams e Discord, al fine di mantenersi aggiornati sullo stato del progetto e sull'avanzamento dei singoli task. Con cadenza settimanale, per la precisione alla fine di ogni sprint, si terrà invece un meeting in cui verranno definiti i task da includere nella fase di sprint successiva. Le interazioni tra i componenti del team si mantengono comunque frequenti per convenire su eventuali dettagli di minore entità all'interno del progetto. 
+I componenti del team si prefissano di realizzare meeting con cadenza giornaliera tramite videochiamate, principalmente effettuate tramite Microsoft Teams e Discord, al fine di mantenersi aggiornati sullo stato del progetto e sull'avanzamento dei singoli task. Con cadenza settimanale, per la precisione alla fine di ogni sprint, si terrà invece un meeting in cui verranno definiti i task da includere nella fase di sprint successiva. Le interazioni tra i componenti del team si mantengono comunque frequenti per convenire su eventuali dettagli di minore entità all'interno del progetto.
 ### Strumenti utilizzati
 - **IntelliJ IDEA**: IDE utilizzato per lo sviluppo del progetto, scelto perché fornisce supporto completo per lavorare con il linguaggio Scala
-- **Git**: utilizzato come version control system per tenere traccia dello sviluppo in itinere del progetto. Sono stati tracciati i file sorgente, di test, di configurazione della build e quelli di backlog. 
+- **Git**: utilizzato come version control system per tenere traccia dello sviluppo in itinere del progetto. Sono stati tracciati i file sorgente, di test, di configurazione della build e quelli di backlog.
 - **Github**: scelto come servizio di repository
 - Gradle: utilizzato come tool per eseguire la build del sistema
 - **Github Actions**: servizio integrato all'interno di Github per la CI (continuos integration) per eseguire la build del progetto in sistemi eterogenei
-- **Scoverage**: utilizzato per calcolare la copertura dei test implementati, al fine di stabilire la percentuale minima di sistema non "coperto" e quindi soggetto a eventuali bug. 
-- **Trello**: è stato utilizzato in maniera distribuita per definire nel dettaglio le attività presenti nel backlog. In particolare sono state definite le seguenti sezioni: 
+- **Scoverage**: utilizzato per calcolare la copertura dei test implementati, al fine di stabilire la percentuale minima di sistema non "coperto" e quindi soggetto a eventuali bug.
+- **Trello**: è stato utilizzato in maniera distribuita per definire nel dettaglio le attività presenti nel backlog. In particolare sono state definite le seguenti sezioni:
   - To do: task che devono ancora essere sviluppati
-  - In progess: lo sviluppo del task è iniziato ma non concluso
+  - In progress: lo sviluppo del task è iniziato ma non concluso
   - Done: contiene i task che sono stati completati
   - Paused: contiene i task che erano in progresso e sono stati momentaneamente sospesi
-  - Aborted: contiene i task definitivamente cancellati 
+  - Aborted: contiene i task definitivamente cancellati
 - **Google Docs**: utilizzato sia per scrivere il backlog settimanale che gli appunti riguardanti il design, l'architettura e le user story del progetto
 ## 2. Requirements [Gruppo]
 Questo capitolo è dedicato alla descrizione dei requisiti che il progetto mira a soddisfare. Le sezioni sottostanti definiscono le varie tipologie di requisiti dettagliandoli secondo diversi punti di vista.
@@ -147,7 +147,7 @@ L'implementazione dei modelli atti a rappresentare le entità fondamentali è st
 Grazie a questa scelta, è stato possibile utilizzare la libreria [Circe](https://circe.github.io/circe/), atta a facilitare e rendere semiautomatiche le operazioni di codifica (in fase di invio) e decodifica (in fase di ricezione) dei json.
 
 In maniera analoga ai modelli, anche la modalità di utilizzo delle **API** per interagire con il server Telegram è stata definita facendo riferimento alle direttive fornite dal servizio stesso.\n
-In questo caso, per garanitre uno sviluppo più possibile funzionale, si è utilizzato il trio di classi [Try, Success, Failure](https://docs.scala-lang.org/overviews/scala-book/functional-error-handling.html), fondamentali per gestire gli errori in maniera **gracefully**, siano essi dovuti a problemi nella formattazione dell'URL, del body del messaggio o di connessione.\n
+In questo caso, per garantire uno sviluppo più possibile funzionale, si è utilizzato il trio di classi [Try, Success, Failure](https://docs.scala-lang.org/overviews/scala-book/functional-error-handling.html), fondamentali per gestire gli errori in maniera **gracefully**, siano essi dovuti a problemi nella formattazione dell'URL, del body del messaggio o di connessione.\n
 Grazie a questa tecnica e all'utilizzo di classi di default nel caso in cui l'encoding/decoding dei json non andasse a buon fine, qualunque failure riesce ad essere intercettata senza causare interruzioni non volute del programma.
 
 Per quanto concerne il testing, inizialmente si era optato per un **testing automatico** che, tramite le apposite chiamate HTTP al server Telegram, permettesse di verificare la correttezza sia nell'utilizzo delle API, che nell'encoding della richiesta e nel decoding della risposta.\n
@@ -191,9 +191,9 @@ Per portare a termine queste operazioni, si è sfruttata una funzione higher-ord
 Tali funzioni di trasformazione sono definite nel file package.scala e incluse all'interno di una classe CaseString, la quale wrappa la classe stringa, di modo che tali trasformazioni possano essere usate anche sulle singole stringhe e non necessariamente sui json, come accade per esempio nella codifica dell'URL.
 
 
-### Implementazione - Mattia Rossi [Metodi] 
+### Implementazione - Mattia Rossi [Metodi]
 ### Attività di gruppo [Gruppo]
-#### DSL 
+#### DSL
 
 ## 6. OPS
 In questa sezione verranno descritti dettagliatamente gli aspetti relativi alla parte di **Operations** (Ops) implementati all'interno del progetto. Con Ops si intendono tutte quelle strategie finalizzate a semplificare ed automatizzare alcuni workflow relativi alla gestione del progetto.
@@ -231,15 +231,15 @@ La fase di build è stata strutturata in un unica fase principale (job). Gli asp
 
 ### Licensing [Rossi]
 ### QA [Boschi, Tumedei]
-#### Testing 
+#### Testing
 ##### Testing automatizzato
 ##### Testing non automatizzato
 ##### Copertura dei test
 
 ## 7. Retrospective [Rossi, Optional[Tumedei]]
-Restrospettiva (descrizione finale dettagliata dell'andamento dello sviluppo, del backlog, delle iterazioni; commenti finali)
+Retrospettiva (descrizione finale dettagliata dell'andamento dello sviluppo, del backlog, delle iterazioni; commenti finali)
 
-### Sprint 1 
+### Sprint 1
 ### Sprint 2
 ### Sprint 3
 ### Sprint 4
