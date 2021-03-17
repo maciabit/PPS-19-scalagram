@@ -49,8 +49,6 @@ L'obbiettivo del progetto è lo sviluppo di una libreria per la creazione di bot
 Il progetto è nato grazie alla passione di alcuni membri del gruppo per lo sviluppo di bot Telegram e a causa dell'assenza di un pratico framework/libreria in Scala che li soddisfacesse.
 Questo capito è suddiviso nelle sezioni Ubiquitous language e Knowledge crunching.
 
-È importante asserire sin da subito che l'oggetto dello studio del modello del dominio sono state le [Telegram Bot API](https://core.telegram.org/bots/api).
-
 #### Ubiquitous language
 Questa sezione riporta le terminologie tecniche che sono emerse durante durante tutto lo svolgimento del progetto accompagnate dalla loro definizione.\
 Nei capitoli successivi di questo documento si farà riferimento a questi termini dandone per assodato il significato.
@@ -83,6 +81,23 @@ Nei capitoli successivi di questo documento si farà riferimento a questi termin
 | Middleware                     | Elemento che processa ogni update e determina se inoltrarlo e scartarlo.                                                                                                                                                                                                                                                                                        |
 
 #### Knowledge crunching
+Questa è stata la fase iniziale del progetto, durante la quale si è cercato di effettuare una panoramica sul dominio che consiste nella piattaforma Telegram e nelle relative [Bot API](https://core.telegram.org/bots/api).\
+La maggior parte delle terminologie inserite nella sezione Ubiquitous Language sono emerse durante questa fase e non sono quindi riportati anche in questo capitolo.
+
+Telegram è un è un servizio di messaggistica istantanea e broadcasting basato su cloud. I client ufficiali di Telegram sno distribuiti sotto forma di software open-source per Android, Linux, IOS, MacOS e Microsoft Windows. \
+Dal 2015 Telegram ha introdotto due funzionalità che lo hanno distinto particolarmente dalla concorrenza: i canali e una piattaforma dedicata alla creazione e alla gestione di bot.\
+Questi ultimi sono utenti virtuali che forniscono molteplici funzionalità in maniera totalmente automatizzata e sono l'oggetto di principale interesse del progetto.
+
+La creazione stessa dei bot e la loro gestione sono demandate al bot ufficiale di Telegram, BotFather, che permette ad ogni utente di:
+
+- Creare, elencare e cancellare i propri bot
+- Modificare nome, descrizione, bio, immagine, comandi suggeriti e impostazioni di privacy e pagamenti dei propri bot
+- Trasferire la proprietà dei bot ad altri utenti
+
+BotFather non consente quindi di definire il comportamento dei bot. Tale compito deve essere definito in un software esterno che ottiene aggiornamenti da Telegram in modalità push (webook mode) o pull (polling mode) e li processa secondo la logica definita dal programmatore del bot.
+
+Telegram mette a disposizione delle [API](https://core.telegram.org/bots/api) per permettere lo sviluppo dei bot.\
+La community Telegram ha creato numerose librerie in vari linguaggi di programmazione che forniscono astrazioni di più alto livello sulle API. Il progetto Scalagram ricade in questa categoria.
 
 ### Utente
 Gli utenti finali del progetto sono gli sviluppatori che sfruttano la libreria Scalagram per la realizzazione di bot Telegram.\
