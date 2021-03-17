@@ -8,7 +8,8 @@
 
 ## Overview
 
-ScalaGram is a library for building Telegram bots easily, thanks to the help of functional programming and a powerful DSL.
+ScalaGram is a library for building Telegram bots easily, thanks to the help of functional programming and a powerful DSL.\
+If you've never worked with Telegram bots before, please check out the official [page](https://core.telegram.org/bots).
 
 ## Report
 
@@ -36,8 +37,33 @@ object ScalagramBot extends ScalagramDSL {
   )
 }
 
-object CommandsBotMain extends App {
-  CommandsBot.start()
+object ScalagramBotMain extends App {
+  ScalagramBot.start()
+}
+```
+
+The DSL is entirely optional. Here is the same above example, without the DSL.
+
+```scala
+import PPS19.scalagram.logic.{Scalagram, BotToken}
+import PPS19.scalagram.logic.Scalagram.{onStart, onMessage}
+
+object SimpleBot extends App {
+
+  val reactions = List(
+    // Response to the "/start" command
+    onStart { context =>
+      context.reply("Hello, World!")
+    },
+
+    // Response to the "/hello" command
+    onMessage("/hello") { context =>
+      context.reply(s"Hi, ${context.from.get.firstName}")
+    }
+  )
+
+  val scalagramBot = Scalagram(BotToken("<YOUR_BOT_TOKEN>"), reactions = reactions)
+  scalagramBot.launch(Polling())
 }
 ```
 
@@ -55,14 +81,14 @@ coming soon
 
 Build from source:
 ```
-git clone https://github.com/maciabit/PPS-19-scalagram
-cd PPS-19-scalagram
-./gradlew build
+$ git clone https://github.com/maciabit/PPS-19-scalagram
+$ cd PPS-19-scalagram
+$ ./gradlew build
 ```
 
-## Test
+## Testing
 ```
-./gradlew test
+$ ./gradlew test
 ```
 
 ## Implemented features
