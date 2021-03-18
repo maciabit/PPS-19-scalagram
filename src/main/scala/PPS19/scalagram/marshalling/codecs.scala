@@ -1,4 +1,5 @@
 package PPS19.scalagram.marshalling
+import PPS19.scalagram.models.TelegramError
 import io.circe._
 
 /** Object used as container of implicits for Circe Decoder and Encoder.
@@ -17,9 +18,7 @@ object codecs {
         parser
           .parse(printer.print(snakeKeys(j)))
           .getOrElse(
-            throw new RuntimeException(
-              "Exception during encoding with snake_case"
-            )
+            null
           )
       )
   }
