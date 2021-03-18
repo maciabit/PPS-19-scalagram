@@ -1,5 +1,4 @@
 package PPS19.scalagram.marshalling
-import PPS19.scalagram.models.TelegramError
 import io.circe._
 
 /** Object used as container of implicits for Circe Decoder and Encoder.
@@ -24,7 +23,6 @@ object codecs {
   }
 
   private val printer: Printer = Printer.noSpaces.copy(dropNullValues = true)
-
   private val camelKeys: Json => Json = transformKeys(_.camelCase)
   private val snakeKeys: Json => Json = transformKeys(_.snakeCase)
 
