@@ -115,14 +115,20 @@ Nel caso in cui un utilizzatore abbia necessità specifiche, deve inoltre essere
 
 #### User stories
 
-Si sono sviluppate user stories al fine di poter definire dettagliatamente i principali casi d'uso del framework da parte di un utente finale utilizzatore. Questo passaggio sarà cruciale per poter sviluppare in seguito un domain specific language (DSL) che andrà a ricalcare le user stories con una nuova sintassi dichiarativa, sviluppata ad hoc per venire in contro alle esigente di un utilizzatore.
+Al termine della fase di knowledge crunching si sono sviluppate user stories col fine di poter definire dettagliatamente i principali casi d'uso del framework da parte di un utente finale. Questo passaggio è risultato cruciale per poter in seguito definire un DSL che ricalcasse le user stories con una nuova sintassi dichiarativa, sviluppata ad hoc per venire in contro alle esigente del cliente.
 
-Questa fase di studio ha portato al seguente output.
+Questa fase di studio ha portato al seguente output, fondamentale nella successiva identificazione dei requisiti funzionali.
 
-- User story generale
-- User story che specifica le reactions
-- User story che specifica i middleware
-- User story che specifica le scene
+- Come developer, voglio poter creare un bot definendone stage e trigger
+- Come developer, voglio poter definire il token appartenente al bot
+- Come developer, voglio poter definire una scena per uno specifico stage
+- Come developer, voglio poter definire uno stage
+- Come developer, voglio poter avviare l'esecuzione del bot in modalità polling o webhook
+- Come developer, voglio poter definire un trigger, associato ad uno o più update ricevuti
+- Come developer, voglio poter definire una specifica azione eseguibile dal bot
+- Come developer, voglio poter definire una reaction
+- Come developer, voglio poter definire i middleware associati al bot
+- Come developer, voglio poter bypassare il DSL nel caso in cui riscontrassi esigenze particolari
 
 #### DSL
 
