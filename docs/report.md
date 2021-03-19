@@ -1,5 +1,56 @@
 # ScalaGram - Report
 
+- [ScalaGram - Report](#scalagram---report)
+  - [1. Development process [Rossi]](#1-development-process-rossi)
+    - [Divisione dei task](#divisione-dei-task)
+    - [Meeting ed interazioni](#meeting-ed-interazioni)
+    - [Strumenti utilizzati](#strumenti-utilizzati)
+  - [2. Requirements [Gruppo]](#2-requirements-gruppo)
+    - [Business](#business)
+      - [Ubiquitous language](#ubiquitous-language)
+      - [Knowledge crunching](#knowledge-crunching)
+    - [Utente](#utente)
+    - [Funzionali](#funzionali)
+      - [User stories](#user-stories)
+      - [DSL](#dsl)
+    - [Non funzionali](#non-funzionali)
+    - [Implementazione](#implementazione)
+  - [3. Architectural Design [Gruppo - Pistocchi]](#3-architectural-design-gruppo---pistocchi)
+    - [Bounded context [Pistocchi]](#bounded-context-pistocchi)
+    - [DSL e user story [Pistocchi]](#dsl-e-user-story-pistocchi)
+  - [4. Design Detail](#4-design-detail)
+    - [Scelte rilevanti [Boschi]](#scelte-rilevanti-boschi)
+    - [Organizzazione del codice [Rossi, Tumedei]](#organizzazione-del-codice-rossi-tumedei)
+  - [5. Implementation](#5-implementation)
+    - [Implementazione - Gianni Tumedei [Logica bot]](#implementazione---gianni-tumedei-logica-bot)
+    - [Implementazione - Francesco Boschi [Modelli, marshalling]](#implementazione---francesco-boschi-modelli-marshalling)
+      - [Package PPS19.scalagram.models](#package-pps19scalagrammodels)
+      - [Package PPS19.scalagram.marshalling](#package-pps19scalagrammarshalling)
+    - [Implementazione - Mattia Rossi [Metodi]](#implementazione---mattia-rossi-metodi)
+    - [Attività di gruppo [Gruppo]](#attività-di-gruppo-gruppo)
+      - [DSL](#dsl-1)
+  - [6. OPS](#6-ops)
+    - [Automatic delivery e deployment [Rossi, Pistocchi]](#automatic-delivery-e-deployment-rossi-pistocchi)
+    - [Build automation [Rossi, Pistocchi]](#build-automation-rossi-pistocchi)
+    - [Licensing [Rossi]](#licensing-rossi)
+    - [QA [Boschi, Tumedei]](#qa-boschi-tumedei)
+      - [Testing](#testing)
+        - [Testing automatizzato](#testing-automatizzato)
+        - [Testing non automatizzato](#testing-non-automatizzato)
+        - [Copertura dei test](#copertura-dei-test)
+  - [7. Retrospective [Rossi, Optional[Tumedei]]](#7-retrospective-rossi-optionaltumedei)
+    - [Sprint 1](#sprint-1)
+    - [Sprint 2](#sprint-2)
+    - [Sprint 3](#sprint-3)
+    - [Sprint 4](#sprint-4)
+    - [Sprint 5](#sprint-5)
+    - [Sprint 6](#sprint-6)
+    - [Sprint 7](#sprint-7)
+    - [Sprint 8](#sprint-8)
+  - [8. Conclusioni [Gruppo]](#8-conclusioni-gruppo)
+    - [Sviluppi futuri](#sviluppi-futuri)
+    - [Conclusioni](#conclusioni)
+
 ## 1. Development process [Rossi]
 Lo sviluppo del sistema verrà effettuato adottando un processo simil-Scrum, viste le ridotte dimensioni del team e la conseguente impossibilità di adottare Scrum in pieno. L'approccio utilizzato prevede la suddivisione in Scrum-Task anche di tutta la parte progettuale del sistema e di bootstrap del progetto, comprese la definizione dei requisiti, la configurazione degli ambienti (IntelliJ, Gradle, Github e Github Actions) e la stesura di questo report.
 
@@ -36,16 +87,16 @@ I componenti del team si prefissano di realizzare meeting con cadenza giornalier
   - In progress: lo sviluppo del task è iniziato ma non concluso
   - Done: contiene i task che sono stati completati
   - Paused: contiene i task che erano in progresso e sono stati momentaneamente sospesi
-  - Aborted: contiene i task definitivamente cancellati 
+  - Aborted: contiene i task definitivamente cancellati
 - **Google Docs**: utilizzato sia per scrivere il backlog settimanale che gli appunti riguardanti il design,
 -  l'architettura e le user story del progetto
-## Requirements [Gruppo]
+## 2. Requirements [Gruppo]
 Requisiti (delle varie tipologie, ossia: 1) business, 2) utente, 3) funzionali, 4) non funzionali, 5) di implementazione)
 
 ### Business
 
 Questa sezione è dedicata all'analisi e definizione dei requisiti di business che caratterizzeranno il sistema. L'approccio utilizzato per la definizione del modello è basato sulla filosofia **Domain Driven Design** (DDD).\
-L'obbiettivo del progetto è lo sviluppo di una libreria per la creazione di bot per la piattaforma di messaggistica Telegram.\
+L'obiettivo del progetto è lo sviluppo di una libreria per la creazione di bot per la piattaforma di messaggistica Telegram.\
 Il progetto è nato grazie alla passione di alcuni membri del gruppo per lo sviluppo di bot Telegram e a causa dell'assenza di un pratico framework/libreria in Scala che li soddisfacesse.
 Questo capito è suddiviso nelle sezioni Ubiquitous language e Knowledge crunching.
 
@@ -179,15 +230,15 @@ Poiché Telegram per evitare attacchi DOS prevede un limite massimo di richieste
 La correttezza nell'utilizzo delle API viene quindi determinata solamente sulla base della composizione della richiesta stessa, ipotizzando che data una richiesta corretta, possa fallire solo per problemi legati a Telegram o alla connessione.\n
 Per la fase di interpretazione delle risposte, invece, si è deciso di memorizzare i json di interesse in appositi file e utilizzarli per verificare la correttezza delle operazioni di decodifica.
 ### Organizzazione del codice [Rossi, Tumedei]
-L'organizzazione dei package del progetto riflette i bounded context definiti in fase di design. Il core delle funzionalità nei seguenti package: 
+L'organizzazione dei package del progetto riflette i bounded context definiti in fase di design. Il core delle funzionalità nei seguenti package:
 - `methods`: corrisponde al bounded context **Telegram API calls** contiene l'implementazione di tutti i metodi delle API di Telegram che si è deciso di implementare nella libreria. I metodi principali in questo package sono `GetUpdates` e `SendMessage`.
 - `modes`: corrisponde al bounded context **Update retrieval**, la modalità di download degli update che si è deciso di adottare è polling, la cui infrastruttura è implementata all'interno di questo package.
-- `logic`: fa riferimento al bounded context **Bot logic**, questo package contiene tutti gli strumenti che la libreria fornisce agli sviluppatori per definire il comportamento del bot, ovvero come esso deve reagire a determinate situazioni. In particolare, il package `reactions` mette a disposizione una serie di factory per la creazione di reaction che permettono al bot di rispondere a eventi come la ricezione di messaggi, o l'entrata/uscita di un utente dalla chat. Questo package include anche l'implementazione delle seguenti classi core della libreria: `Scalagram`, `Context`, `Reaction`, `Scene` e `Middleware`.  
+- `logic`: fa riferimento al bounded context **Bot logic**, questo package contiene tutti gli strumenti che la libreria fornisce agli sviluppatori per definire il comportamento del bot, ovvero come esso deve reagire a determinate situazioni. In particolare, il package `reactions` mette a disposizione una serie di factory per la creazione di reaction che permettono al bot di rispondere a eventi come la ricezione di messaggi, o l'entrata/uscita di un utente dalla chat. Questo package include anche l'implementazione delle seguenti classi core della libreria: `Scalagram`, `Context`, `Reaction`, `Scene` e `Middleware`.
 - `models`: questo package è strettamente correlato con `methods` in quanto fornisce la definizione di tutte le entità inviate o ricevute tramite le API di Telegram, come `Update` e `TelegramMessage`.
-- `dsl`: il dsl della libreria fa da wrapper alle sue funzionalità principali, tutte le definizioni necessarie per la sua realizzazione sono contenute in questo package. Esse sono suddivise in ulteriori package in base al concetto che rappresentano. I package in questione sono: `keyboard`, `middleware`, `mode`, `reaction` e `scene`.   
-- `marshalling`: contiene i metodi necessari per la conversione di stringhe tra camel case e snake case, utilizzati in fase di decodifica degli update e codifica delle richieste da inviare alle API di Telegram.  
-- `utils`: contiene alcuni metodi di utility privati utilizzati all'interno della libreria. 
-- `examples`: contiene alcuni bot di esempio a cui gli sviluppatori possono fare riferimento. 
+- `dsl`: il dsl della libreria fa da wrapper alle sue funzionalità principali, tutte le definizioni necessarie per la sua realizzazione sono contenute in questo package. Esse sono suddivise in ulteriori package in base al concetto che rappresentano. I package in questione sono: `keyboard`, `middleware`, `mode`, `reaction` e `scene`.
+- `marshalling`: contiene i metodi necessari per la conversione di stringhe tra camel case e snake case, utilizzati in fase di decodifica degli update e codifica delle richieste da inviare alle API di Telegram.
+- `utils`: contiene alcuni metodi di utility privati utilizzati all'interno della libreria.
+- `examples`: contiene alcuni bot di esempio a cui gli sviluppatori possono fare riferimento.
 
 <p align="center">
   <img src="./img/code-organization.png" alt="code-organization" height="600"/>
@@ -277,9 +328,56 @@ La fase di build è stata strutturata in un unica fase principale (job). Gli asp
 Retrospettiva (descrizione finale dettagliata dell'andamento dello sviluppo, del backlog, delle iterazioni; commenti finali)
 
 ### Sprint 1
+
+L'obiettivo che il team si è posto al primo sprint è stato quello di stabilire le linee guida da seguire per lo sviluppo del progetto, con particolare enfasi su: design del dominio, architettura del sistema e definizione dei concetti chiave.
+
+Un'altra importante attività svolta in questa fase è stata quella di effettuare il setup dell'ambiente di sviluppo, del repository e di una semplice pipeline di CI/CD, in modo da velocizzare la programmazione durante gli sprint successivi.
+
+Pertanto, i task individuati sono stati i seguenti:
+- **Domain Driven Design**: fase iniziale di knowledge crunching, comprendente anche la definizione dell'ubiquitous language, dei bounded context e delle user stories
+- **Define project requirements**: stabilimento dei requisiti business, utente, funzionali, non funzionali e implementativi
+- **Define architecture**: definizione del design per l'architettura del sistema, in questa fase con maggiore enfasi sul design complessivo e senza scendere troppo nel dettaglio
+- **Environment setup**: creazione del progetto e del repository GitHub, setup dell'IDE IntelliJ Idea per lo sviluppo
+- **Gradle automation process**: creazione di una prima versione del file `build.gradle.kts` per la gestione del progetto e delle sue dipendenze tramite appositi task
+- **CI/CD setup**: creazione di una GitHub Action per automatizzare le operazioni di build e test
+- **Setup project documentation**: creazione della board Trello del progetto e dei seguenti documenti: README, report, Project Backlog.
+
 ### Sprint 2
+
+L'obiettivo per il secondo sprint è stato quello di fornire delle implementazioni basiche, ma già funzionanti, degli aspetti core del sistema, in particolare per quanto riguarda:
+- Effettuare richieste alle Telegram API
+- Eseguire il download degli update da Telegram
+- Definire la logica di comportamento di un bot
+
+I task per questo sprint sono stati:
+- **Implement essential Telegram API methods**: iniziare lo sviluppo dei metodi wrapper per le chiamate alle Telegram API e delle classi modello per gli oggetti da esse restituiti
+- **Define and implement bot logic**: definire una prima versione della classe Scalagram e dei relativi contenuti (Reactions, Middlewares, Scenes)
+- **Develop a system to work in polling mode**: creare un Akka actor system per l'elaborazione degli update di un bot
+- **Setup proper unit tests**: eseguire i task precedentemente elencati aderendo a una metodologia di sviluppo TDD
+- **CI/CD Setup**: migliorare la matrice di espansione della GitHub action, passando un token diverso ad ogni cella in modo da evitare errori HTTP 429 da parte dei server di Telegram
+
 ### Sprint 3
+
+Dal momento che il team aveva intenzione di iniziare lo sviluppo del DSL a partire dalla quarta settimana, l'obiettivo di questo sprint è stato quello di ottenere un sistema il più possibile funzionante, in modo da poter iniziare a wrappare le sue funzionalità con la sintassi del DSL nello sprint successivo.
+
+I task definiti in questo sprint sono quindi:
+- **Implement essential Telegram API methods**: terminare lo sviluppo dei metodi per l'utilizzo delle Telegram API e dei relativi model
+- **Refactoring**: eseguire un refactoring dei metodi implementati in modo da facilitarne la futura estensibilità
+- **Define and implement bot logic**: fornire una versione pienamente funzionante della classe Scalagram per la definizione della logica di comportamento dei bot
+- **Develop a system to work in polling mode**: completare l'implementazione della modalità di polling per quanto riguarda il download degli update
+- **CI/CD Setup**: installazione del plugin Scalafmt per la formattazione automatica del codice; miglioramento delle prestazioni della pipeline di CI
+
 ### Sprint 4
+
+Avendo la prima versione funzionante della libreria, gli obiettivi principali di questo sprint sono stati: la definizione della sintassi del DSL, la creazione del primo bot di esempio basato su Scalagram, il rilascio della prima versione della libreria (in questa fase solamente attraverso l'upload di un artifact su GitHub).
+
+Task dello sprint:
+- **Define and implement bot logic**: vista la prolissità riscontrata nella definizione dei trigger per le reaction del bot, si è deciso di implementare dei builder per facilitarne la creazione
+- **Define a DSL for using the implemented solution**: definire la sintassi del DSL e iniziare a lavorare sul DSL per le tastiere del bot
+- **Refactoring**: avendo terminato l'implementazione dei metodi delle Telegram API, si è eseguito un refactoring dei relativi modelli
+- **Define and automate semantic versioning and releases**: installazione del plugin GitSemVer e pubblicazione della prima release
+- **Create some bots to showcase the library**: creazione del primo bot basato su Scalagram
+
 ### Sprint 5
 ### Sprint 6
 ### Sprint 7
