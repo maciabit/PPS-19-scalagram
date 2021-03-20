@@ -16,7 +16,7 @@
     - [Non funzionali](#non-funzionali)
     - [Implementazione](#implementazione)
   - [3. Architectural Design [Gruppo - Pistocchi]](#3-architectural-design-gruppo---pistocchi)
-    - [Bounded context [Pistocchi]](#bounded-context-pistocchi)
+    - [Bounded context](#bounded-context)
     - [DSL e user story [Pistocchi]](#dsl-e-user-story-pistocchi)
   - [4. Design Detail](#4-design-detail)
     - [Scelte rilevanti [Boschi]](#scelte-rilevanti-boschi)
@@ -145,7 +145,7 @@ La creazione stessa dei bot e la loro gestione sono demandate al bot ufficiale d
 - Modificare nome, descrizione, bio, immagine, comandi suggeriti e impostazioni di privacy e pagamenti dei propri bot
 - Trasferire la proprietà dei bot ad altri utenti
 
-BotFather non consente quindi di definire il comportamento dei bot. Tale compito deve essere definito in un software esterno che ottiene aggiornamenti da Telegram in modalità push (webook mode) o pull (polling mode) e li processa secondo la logica definita dal programmatore del bot.
+BotFather non consente quindi di definire il comportamento dei bot. Tale compito deve essere definito in un software esterno che ottiene aggiornamenti da Telegram in modalità push (webhook mode) o pull (polling mode) e li processa secondo la logica definita dal programmatore del bot.
 
 Telegram mette a disposizione delle [API](https://core.telegram.org/bots/api) per permettere lo sviluppo dei bot.\
 La community Telegram ha creato numerose librerie in vari linguaggi di programmazione che forniscono astrazioni di più alto livello sulle API. Il progetto Scalagram ricade in questa categoria.
@@ -156,51 +156,56 @@ La libreria deve mettere a disposizione gli strumenti per la programmazione di u
 Nel caso in cui un utilizzatore abbia necessità specifiche, deve inoltre essere possibile utilizzare qualsiasi funzionalità della libreria senza far uso del DSL.
 ### Funzionali
 
-- Definire il comportamento di un bot Telegram mediante il DSL proposto in maniera dichiarativa.
-    1. Definire il **token** del bot in questione.
-    2. Definire la **modalità** di esecuzione del bot (e.g. Polling o Webhook), ed i rispettivi parametri, quali l'intervallo di polling ed il timeout delay.
-    3. Definire l'insieme di **middleware** assegnandone il rispettivo contesto di attivazione e la conseguente reazione.
-    4. Definire un inseme di **reactions** secondo le seguenti sintassi proposte
-        - uno
-        - due
+Le funzionalità che la libreria deve mettere a disposizione sono state definite tramite la stesura delle user stories e del diagramma dei casi d'uso. 
 
 #### User stories
 
-Al termine della fase di knowledge crunching si sono sviluppate user stories col fine di poter definire dettagliatamente i principali casi d'uso del framework da parte di un utente finale. Questo passaggio è risultato cruciale per poter in seguito definire un DSL che ricalcasse le user stories con una nuova sintassi dichiarativa, sviluppata ad hoc per venire in contro alle esigente del cliente.
+Al termine della fase di knowledge crunching si sono sviluppate user stories col fine di poter definire dettagliatamente i principali casi d'uso della libreria da parte di un utente finale, ossia uno sviluppatore software. Questo passaggio è risultato cruciale per poter in seguito definire un DSL che ricalcasse le user stories con una nuova sintassi dichiarativa, sviluppata ad hoc per venire in contro alle esigente del cliente.
 
-Questa fase di studio ha portato al seguente output, fondamentale nella successiva identificazione dei requisiti funzionali.
+Le user stories sono definite dal punto di vista di un developer, che deve poter: 
 
-- Come developer, voglio poter creare un bot definendone stage e trigger
-- Come developer, voglio poter definire il token appartenente al bot
-- Come developer, voglio poter definire una scena per uno specifico stage
-- Come developer, voglio poter definire uno stage
-- Come developer, voglio poter avviare l'esecuzione del bot in modalità polling o webhook
-- Come developer, voglio poter definire un trigger, associato ad uno o più update ricevuti
-- Come developer, voglio poter definire una specifica azione eseguibile dal bot
-- Come developer, voglio poter definire una reaction
-- Come developer, voglio poter definire i middleware associati al bot
-- Come developer, voglio poter bypassare il DSL nel caso in cui riscontrassi esigenze particolari
+- Definire il token appartenente al bot
+- Definire un middleware associato al bot
+- Definire una specifica reaction eseguibile dal bot composta da trigger e action
+- Definire uno step per una specifica scena
+- Avviare l'esecuzione del bot in modalità polling, opzionalmente specificandone i parametri
+- Bypassare il DSL in caso di esigenze particolari
+
+A partire dalle user stories è stato definito il seguente diagramma dei casi d'uso:
+
+<p align="center">
+  <img src="./img/use-case.png" alt="Use case" height="750"/>
+</p>
 
 #### DSL
 
 Comparare la user story con i pezzi di codice/pseudocodice del DSL.
 
 ### Non funzionali
+
+Dal momento che implementare tutti i metodi resi disponibili dalle API di Telegram e la modalità webhook avrebbe richiesto un tempo superiore a quello disponibile per il progetto, alcune funzionalità non sono state implementate. Per questo motivo il team si è posto come obiettivo quello di realizzare la libreria adottando un'architettura facilmente estendibile, in modo da far fronte a eventuali sviluppi futuri. 
+
 ### Implementazione
 
 ## 3. Architectural Design [Gruppo - Pistocchi]
 Design architetturale (architettura complessiva, descrizione di pattern architetturali usati, componenti del sistema distribuito, scelte tecnologiche cruciali ai fini architetturali -- corredato da pochi ma efficaci diagrammi)
 
-### Bounded context [Pistocchi]
+### Bounded context
 
 Lo studio del problema ha portato a definire tre aree critiche per la definizione del sistema, le quali necessitano un importante isolamento, al fine di garantire indipendenza e chiara suddivisione dei moduli durante la fase di sviluppo. Una corretta suddivisione dei bounded context in fase iniziale permetterà di scomporre in maniera più chiara il lavoro.
+
+Sono stati definiti i seguenti bounded context:
+- **Bot logic context**: è il core del sistema, comprende le funzionalità dedicate alla definizione della logica di comportamento del bot
+- **Telegram API calls context**: racchiude tutte le interazioni con le API di Telegram. Ad esempio, il download degli update e l'invio dei messaggi sono isolati in questo bounded context
+- **Update retrieval context**: si appoggia al context delle Telegram API calls per ottenere gli update e si occupa quindi del loro smistamento
+
+Di seguito è riportata la context map del progetto, da notare che i modelli relativi alle entità restituite dalle API di Telegram sono legati più strettamente al context delle Telegram API calls, ma vengono sfruttati di frequente anche dalla logica del bot, pertanto si trovano in un'intersezione tra i due context. 
 
 Queste decisioni impatteranno in maniera significativa successivamente, quando sarà necessario organizzare e scomporre i moduli di basso livello.
 
 <p align="center">
-  <img src="./img/BoundedContext.png" alt="BoundedContext" height="400"/>
+  <img src="./img/context-map.png" alt="Context Map" height="350"/>
 </p>
-
 
 ### DSL e user story [Pistocchi]
 Architettura del dsl?
@@ -218,16 +223,16 @@ Nello sviluppo del DSL, col fine di avere un linguaggio il più possibile compre
 - possibilità di utilizzare **parentesi graffe** per istanziare liste con un solo argomento;
 - possibilità di omettere la parola chiave **new** nella creazione di un istanza.
 
-L'implementazione dei modelli atti a rappresentare le entità fondamentali è stata definita **adattandosi** alle [Telegram Bot API](https://core.telegram.org/bots/api), identificando all'interno di classi create ad hoc tutti i campi necessari a rappresentare gli elementi sfruttati da Telegram, richiamando quindi un paradigma OO-FP Mixed.\n
+L'implementazione dei modelli atti a rappresentare le entità fondamentali è stata definita **adattandosi** alle [Telegram Bot API](https://core.telegram.org/bots/api), identificando all'interno di classi create ad hoc tutti i campi necessari a rappresentare gli elementi sfruttati da Telegram, richiamando quindi un paradigma OO-FP Mixed.\
 Grazie a questa scelta, è stato possibile utilizzare la libreria [Circe](https://circe.github.io/circe/), atta a facilitare e rendere semiautomatiche le operazioni di codifica (in fase di invio) e decodifica (in fase di ricezione) dei json.
 
-In maniera analoga ai modelli, anche la modalità di utilizzo delle **API** per interagire con il server Telegram è stata definita facendo riferimento alle direttive fornite dal servizio stesso.\n
-In questo caso, per garantire uno sviluppo più possibile funzionale, si è utilizzato il trio di classi [Try, Success, Failure](https://docs.scala-lang.org/overviews/scala-book/functional-error-handling.html), fondamentali per gestire gli errori in maniera **gracefully**, siano essi dovuti a problemi nella formattazione dell'URL, del body del messaggio o di connessione.\n
+In maniera analoga ai modelli, anche la modalità di utilizzo delle **API** per interagire con il server Telegram è stata definita facendo riferimento alle direttive fornite dal servizio stesso.\
+In questo caso, per garantire uno sviluppo più possibile funzionale, si è utilizzato il trio di classi [Try, Success, Failure](https://docs.scala-lang.org/overviews/scala-book/functional-error-handling.html), fondamentali per gestire gli errori in maniera **gracefully**, siano essi dovuti a problemi nella formattazione dell'URL, del body del messaggio o di connessione.\
 Grazie a questa tecnica e all'utilizzo di classi di default nel caso in cui l'encoding/decoding dei json non andasse a buon fine, qualunque failure riesce ad essere intercettata senza causare interruzioni non volute del programma.
 
-Per quanto concerne il testing, inizialmente si era optato per un **testing automatico** che, tramite le apposite chiamate HTTP al server Telegram, permettesse di verificare la correttezza sia nell'utilizzo delle API, che nell'encoding della richiesta e nel decoding della risposta.\n
-Poiché Telegram per evitare attacchi DOS prevede un limite massimo di richieste al minuto, è stato necessario optare per un approccio alternativo, in quanto l'esecuzione di più suite di test in contemporanea portava frequenti fallimenti nonostante le tecniche di retry adottate.\n
-La correttezza nell'utilizzo delle API viene quindi determinata solamente sulla base della composizione della richiesta stessa, ipotizzando che data una richiesta corretta, possa fallire solo per problemi legati a Telegram o alla connessione.\n
+Per quanto concerne il testing, inizialmente si era optato per un **testing automatico** che, tramite le apposite chiamate HTTP al server Telegram, permettesse di verificare la correttezza sia nell'utilizzo delle API, che nell'encoding della richiesta e nel decoding della risposta.\
+Poiché Telegram per evitare attacchi DOS prevede un limite massimo di richieste al minuto, è stato necessario optare per un approccio alternativo, in quanto l'esecuzione di più suite di test in contemporanea portava frequenti fallimenti nonostante le tecniche di retry adottate.\
+La correttezza nell'utilizzo delle API viene quindi determinata solamente sulla base della composizione della richiesta stessa, ipotizzando che data una richiesta corretta, possa fallire solo per problemi legati a Telegram o alla connessione.\
 Per la fase di interpretazione delle risposte, invece, si è deciso di memorizzare i json di interesse in appositi file e utilizzarli per verificare la correttezza delle operazioni di decodifica.
 ### Organizzazione del codice [Rossi, Tumedei]
 L'organizzazione dei package del progetto riflette i bounded context definiti in fase di design. Il core delle funzionalità nei seguenti package:
@@ -256,8 +261,8 @@ Il seguente package, contiene tutti i file atti a definire le entità alla base 
 
 Sebbene i modelli presenti siano in grande numero, la struttura utilizzata è simile per tutti e rispecchia il paradigma OO-FP Mixed, essendo presenti riferimenti al classico OO come gerarchie tra classi e trait atti a definire contratti comuni, oltre a elementi tipici di FP come companion object che fungono da contenitori di impliciti o Factory.
 
-Elemento fondamentale che accomuna la maggior parte di queste classi, è la sezione dedicata alla **derivazione semiautomatica** messa a disposizione dalla libreria Circe.\n
-L'utilizzo di deriveDecoder, permette di decodificare in maniera automatica un json creando un oggetto della classe corrispondente, basandosi sul match tra i field del json e quelli della classe che verrà istanziata.\n
+Elemento fondamentale che accomuna la maggior parte di queste classi, è la sezione dedicata alla **derivazione semiautomatica** messa a disposizione dalla libreria Circe.\
+L'utilizzo di deriveDecoder, permette di decodificare in maniera automatica un json creando un oggetto della classe corrispondente, basandosi sul match tra i field del json e quelli della classe che verrà istanziata.\
 Nel caso in cui un trait fosse ereditato da più classi, quindi, tramite un apposito implicito definito all'interno del **companion object**, viene selezionata la classe che sarà istanziata in maniera automatica o sulla base di parametri specifici, come nel caso della classe MessageEntity nella quale la derivazione viene fatta sulla base del valore di un field del json.
 
 Per le classi che sono utilizzate anche in fase di invio di un messaggio, come le classi per la creazione di tastiere e delle loro componenti, è inoltre presente all'interno del companion object un **Encoder**, sempre messo a disposizione da Circe, utilizzato per convertire in maniera automatica o sulla base di uno specifico parametro un'istanza di tale classe in formato json.
@@ -271,11 +276,11 @@ In questa sezione del progetto, quindi, il pattern maggiormente presente è cert
 #### Package PPS19.scalagram.marshalling
 Poiché tutti i campi all'interno dei json sfruttati da Telegram sono definiti seguendo il formato [snake_case](https://en.wikipedia.org/wiki/Snake_case), al contrario di quelle definite via codice che seguono quello [camelCase](https://en.wikipedia.org/wiki/Camel_case), il package marshalling è incaricato di eseguire le conversioni tra i due stili.
 
-Si è deciso quindi di utilizzare due classi implicite che wrappassero le classi Decoder ed Encoder della libreria Circe, così da poter sfruttare in maniera comoda e immediata i metodi per la conversione contenuti al loro interno.\n
-Nello specifico, la classe DecoderOps contiene un metodo per la conversione in camelCase, in quanto per eseguire il decoding automatico è necessario che i field del json coincidano con quelli degli oggetti e, quindi, che vengano trasformati da snake_case a camelCase.\n
+Si è deciso quindi di utilizzare due classi implicite che wrappassero le classi Decoder ed Encoder della libreria Circe, così da poter sfruttare in maniera comoda e immediata i metodi per la conversione contenuti al loro interno.\
+Nello specifico, la classe DecoderOps contiene un metodo per la conversione in camelCase, in quanto per eseguire il decoding automatico è necessario che i field del json coincidano con quelli degli oggetti e, quindi, che vengano trasformati da snake_case a camelCase.\
 Al contrario, la class EncoderOps, contiene un metodo per la conversione in snake_case, in modo che la codifica in json delle entità segua lo stile snake_case e sia accettata da Telegram.
 
-Per portare a termine queste operazioni, si è sfruttata una funzione higher-order, la quale prende come parametro la funzione di trasformazione sulla stringa desiderata.\n
+Per portare a termine queste operazioni, si è sfruttata una funzione higher-order, la quale prende come parametro la funzione di trasformazione sulla stringa desiderata.\
 Tali funzioni di trasformazione sono definite nel file package.scala e incluse all'interno di una classe CaseString, la quale wrappa la classe stringa, di modo che tali trasformazioni possano essere usate anche sulle singole stringhe e non necessariamente sui json, come accade per esempio nella codifica dell'URL.
 
 
@@ -318,7 +323,7 @@ La fase di build è stata strutturata in un unica fase principale (job). Gli asp
 
 
 ### Licensing [Rossi]
-La scelta della licenza da applicare al nostro sistema è ricaduta sulla **Apache License 2.0**, ideale per chi vuole sviluppare software open source con supporto a lungo termine.\n
+La scelta della licenza da applicare al nostro sistema è ricaduta sulla **Apache License 2.0**, ideale per chi vuole sviluppare software open source con supporto a lungo termine.\
 Si tratta di una licenza non copyleft che obbliga gli utenti a preservare l'informativa di diritto d'autore e d'esclusione di responsabilità nelle versioni modificate. In particolar modo i vincoli imposti e gli usi concessi sono i seguenti: 
 
 | Permessi         | Limitazioni     | Condizioni                     |
@@ -328,8 +333,6 @@ Si tratta di una licenza non copyleft che obbliga gli utenti a preservare l'info
 | Distribuzione    | Garanzia        |                                |
 | Uso del brevetto |                 |                                |
 | Uso privato      |                 |                                |
-|                  |                 |                                |
-
 
 ### QA [Boschi, Tumedei]
 #### Testing
@@ -396,46 +399,46 @@ I task per questo sprint sono stati:
 L'obiettivo di questo sprint verteva principalmente sull'estensione della sintassi del DSL appena creato e la creazione di un bot d'esempio che fosse in grado di sfruttarlo, per cui ci siamo concentrati anche sulla possibilità di poter sfruttare le API di Telegram, in questo caso unicamente per l'invio di un messaggio, a partire dal DSL.
 
 I task per questo sprint sono stati:
-**Define a DSL for using the implemented solution**: estensione della sintassi del DSL per l'implementazione di reactions e middlewares
-**Define a DSL for interacting with the Telegram API**: a partire dal DSL sono state utilizzate le Telegram API per effettuare l'invio di messaggi 
-**Gradle automation process**: aggiunta e configurazione di Scalafmt come plugin per la formattazione del codice Scala 
-**Refactoring**: avendo proseguito con l'implementazione della sintassi del DSL, si è eseguito un refactoring delle reactions, della logica di funzionamento del bot e dei package dei modelli
-**Create some bots to showcase the library**: creazione di un primo bot di esempio che sfrutta la sintassi del DSL
+- **Define a DSL for using the implemented solution**: estensione della sintassi del DSL per l'implementazione di reactions e middlewares
+- **Define a DSL for interacting with the Telegram API**: a partire dal DSL sono state utilizzate le Telegram API per effettuare l'invio di messaggi 
+- **Gradle automation process**: aggiunta e configurazione di Scalafmt come plugin per la formattazione del codice Scala 
+- **Refactoring**: avendo proseguito con l'implementazione della sintassi del DSL, si è eseguito un refactoring delle reactions, della logica di funzionamento del bot e dei package dei modelli
+- **Create some bots to showcase the library**: creazione di un primo bot di esempio che sfrutta la sintassi del DSL
 
 ### Sprint 6
 
-In questa fase dello sviluppo ci siamo concentrati sugli aspetti riguardanti l'automazione del sistema, creando le basi per effettuare un rilascio automatico su Maven Central, oltre all'installazione e configurazione di diversi strumenti di supporto come Dependabot.\n
+In questa fase dello sviluppo ci siamo concentrati sugli aspetti riguardanti l'automazione del sistema, creando le basi per effettuare un rilascio automatico su Maven Central, oltre all'installazione e configurazione di diversi strumenti di supporto come Dependabot.\
 Inoltre, in seguito all'installazione del plugin di scoverage, abbiamo creato nuovi test precedentemente mancanti e modificato quelli già presenti per evitare di usare le API di Telegram e quindi effettuare troppe richieste HTTP che spesso si traducevano in fallimenti dovuti a timeout. 
 
 I task per questo sprint sono stati:
-**Release on Maven Central**: registrazione al servizio di Sonatype, creazione delle chiavi gpg per la firma digitale, aggiunta e configurazione del plugin necessario per la pubblicazione automatica su Maven Central
-**Gradle automation process**: configurazione di Dependabot, esportazione automatica di un artefatto su GitHub Actions contenente l'output della console se il job fallisce e aggiunta del plugin per la verifica della coverage dei test
-**Define a DSL for programming the bot logic**: estensione della sintassi del DSL per l'implementazione delle scene e aggiunta della possibilità di creare triggers che facciano match con qualsiasi messaggio
-**Setup proper unit tests**: aggiunta di ulteriori test per la verifica di parti del sistema altrimenti scoperte e modifica dei test già esistenti per evitare che utilizzino le Telegram API
+- **Release on Maven Central**: registrazione al servizio di Sonatype, creazione delle chiavi gpg per la firma digitale, aggiunta e configurazione del plugin necessario per la pubblicazione automatica su Maven Central
+- **Gradle automation process**: configurazione di Dependabot, esportazione automatica di un artefatto su GitHub Actions contenente l'output della console se il job fallisce e aggiunta del plugin per la verifica della coverage dei test
+- **Define a DSL for programming the bot logic**: estensione della sintassi del DSL per l'implementazione delle scene e aggiunta della possibilità di creare triggers che facciano match con qualsiasi messaggio
+- **Setup proper unit tests**: aggiunta di ulteriori test per la verifica di parti del sistema altrimenti scoperte e modifica dei test già esistenti per evitare che utilizzino le Telegram API
 
 ### Sprint 7
 
-Dal momento che la fase di sviluppo del sistema era ormai conclusa, abbiamo sfruttato questo sprint per la modifica di aspetti secondari come l'aggiunta di alcune regole particolarmente restrittive per la corretta compilazione del codice Scala (errori su import non utilizzati e warning).\n
+Dal momento che la fase di sviluppo del sistema era ormai conclusa, abbiamo sfruttato questo sprint per la modifica di aspetti secondari come l'aggiunta di alcune regole particolarmente restrittive per la corretta compilazione del codice Scala (errori su import non utilizzati e warning).\
 L'aspetto chiave di questo sprint è sicuramente stato la creazione di una moltitudine di test che, grazie all'analisi del plugin di scoverage, abbiamo aggiunto per ottenere un buon livello di copertura. 
 
 I task per questo sprint sono stati:
-**Gradle automation process**: configurazione di ulteriori regole per la compilazione del codice Scala
-**Setup proper unit tests**: aggiunta di ulteriori test per raggiungere un livello di copertura del sistema sufficientemente elevato
-**Refactoring**: modifica della struttura dei package per permettere agli utenti della libreria di effettuare il minor numero di import necessari all'utilizzo
+- **Gradle automation process**: configurazione di ulteriori regole per la compilazione del codice Scala
+- **Setup proper unit tests**: aggiunta di ulteriori test per raggiungere un livello di copertura del sistema sufficientemente elevato
+- **Refactoring**: modifica della struttura dei package per permettere agli utenti della libreria di effettuare il minor numero di import necessari all'utilizzo
 
 ### Sprint 8
 
-Durante l'ultimo sprint abbiamo curato alcuni aspetti precedentemente preteriti e ci siamo assicurati che il sistema rispettasse i vincoli architetturali e di DDD precedentemente stilati.\n
+Durante l'ultimo sprint il team ha curato alcuni aspetti precedentemente preteriti e ci siamo assicurati che il sistema rispettasse i vincoli architetturali e di DDD precedentemente stilati.\
 Una volta creati in via definitiva i bot di esempio, utili agli utenti che utilizzeranno la libreria, abbiamo lavorato sulla documentazione del progetto, in particolare sulla generazione della ScalaDoc e del report finale; ci siamo inoltre sincerati che gli aspetti di automazione del sistema fossero adeguati.
 
 I task per questo sprint sono stati:
-**Create some bots to showcase the library**: creazione di bot di esempio che sfruttano vari aspetti della sintassi del DSL
-**Develop final report**: stesura della ScalaDoc e di parte del report finale
-**Release on Maven Central**: prima release del sistema su Nexus Repository
-**Domain Driven Design**: considerazioni finali su aspetti riguardanti il DDD adottato durante lo svolgimento del progetto
-**Define architecture**: considerazioni finali sull'architettura del sistema e aggiunta di aspetti di dettaglio 
-**Gradle automation process**: aggiunta e configurazione dei plugin per il versioning semantico e la creazione di un jar non eseguibile contenente la ScalaDoc 
-**CI/CD Setup**: refactor del workflow di GitHub Actions e creazione della Action per eseguire automaticamente il merge delle pull requests effettuate da Dependabot
+- **Create some bots to showcase the library**: creazione di bot di esempio che sfruttano vari aspetti della sintassi del DSL
+- **Develop final report**: stesura della ScalaDoc e di parte del report finale
+- **Release on Maven Central**: prima release del sistema su Nexus Repository
+- **Domain Driven Design**: considerazioni finali su aspetti riguardanti il DDD adottato durante lo svolgimento del progetto
+- **Define architecture**: considerazioni finali sull'architettura del sistema e aggiunta di aspetti di dettaglio 
+- **Gradle automation process**: aggiunta e configurazione dei plugin per il versioning semantico e la creazione di un jar non eseguibile contenente la ScalaDoc 
+- **CI/CD Setup**: refactor del workflow di GitHub Actions e creazione della Action per eseguire automaticamente il merge delle pull requests effettuate da Dependabot
 
 ## 8. Conclusioni [Gruppo]
 ### Sviluppi futuri
