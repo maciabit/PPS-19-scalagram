@@ -1,7 +1,7 @@
 # ScalaGram - Report
 
 - [ScalaGram - Report](#scalagram---report)
-  - [1. Development process [Rossi]](#1-development-process-rossi)
+  - [1. Development process](#1-development-process)
     - [Divisione dei task](#divisione-dei-task)
     - [Meeting ed interazioni](#meeting-ed-interazioni)
     - [Strumenti utilizzati](#strumenti-utilizzati)
@@ -14,10 +14,16 @@
       - [User stories](#user-stories)
       - [DSL](#dsl)
     - [Non funzionali](#non-funzionali)
-    - [Implementazione](#implementazione)
-  - [3. Architectural Design [Gruppo - Pistocchi]](#3-architectural-design-gruppo---pistocchi)
+    - [Implementativi](#implementativi)
+  - [3. Architectural Design](#3-architectural-design)
     - [Bounded context](#bounded-context)
-    - [DSL e user story [Pistocchi]](#dsl-e-user-story-pistocchi)
+    - [DSL](#dsl-1)
+      - [Bot token](#bot-token)
+      - [Mode](#mode)
+      - [Middlewares](#middlewares)
+      - [Reactions](#reactions)
+      - [Scenes](#scenes)
+      - [Keyboards](#keyboards)
   - [4. Design Detail](#4-design-detail)
     - [Scelte rilevanti [Boschi]](#scelte-rilevanti-boschi)
     - [Organizzazione del codice [Rossi, Tumedei]](#organizzazione-del-codice-rossi-tumedei)
@@ -28,7 +34,7 @@
       - [Package PPS19.scalagram.marshalling](#package-pps19scalagrammarshalling)
     - [Implementazione - Mattia Rossi [Metodi]](#implementazione---mattia-rossi-metodi)
     - [Attività di gruppo [Gruppo]](#attività-di-gruppo-gruppo)
-      - [DSL](#dsl-1)
+      - [DSL](#dsl-2)
   - [6. OPS](#6-ops)
     - [Automatic delivery e deployment [Rossi, Pistocchi]](#automatic-delivery-e-deployment-rossi-pistocchi)
     - [Build automation [Rossi, Pistocchi]](#build-automation-rossi-pistocchi)
@@ -52,7 +58,7 @@
     - [Sviluppi futuri](#sviluppi-futuri)
     - [Conclusioni](#conclusioni)
 
-## 1. Development process [Rossi]
+## 1. Development process
 Lo sviluppo del sistema verrà effettuato adottando un processo simil-Scrum, viste le ridotte dimensioni del team e la conseguente impossibilità di adottare Scrum in pieno. L'approccio utilizzato prevede la suddivisione in Scrum-Task anche di tutta la parte progettuale del sistema e di bootstrap del progetto, comprese la definizione dei requisiti, la configurazione degli ambienti (IntelliJ, Gradle, Github e Github Actions) e la stesura di questo report.
 
 ### Divisione dei task
@@ -179,16 +185,16 @@ A partire dalle user stories è stato definito il seguente diagramma dei casi d'
 </p>
 
 #### DSL
-
-Comparare la user story con i pezzi di codice/pseudocodice del DSL.
+Il DSL deve essere sviluppato con l'idea di fornire un ulteriore livello di astrazione rispetto alle funzionalità già offerte dalla libreria.
 
 ### Non funzionali
 
 Dal momento che implementare tutti i metodi resi disponibili dalle API di Telegram e la modalità webhook avrebbe richiesto un tempo superiore a quello disponibile per il progetto, alcune funzionalità non sono state implementate. Per questo motivo il team si è posto come obiettivo quello di realizzare la libreria adottando un'architettura facilmente estendibile, in modo da far fronte a eventuali sviluppi futuri. 
 
-### Implementazione
+### Implementativi
+Durante lo sviluppo si è deciso di distaccarsi da un approccio puramente Object Oriented adottandone uno OO-FP Mixed favorito dal linguaggio Scala.
 
-## 3. Architectural Design [Gruppo - Pistocchi]
+## 3. Architectural Design
 Design architetturale (architettura complessiva, descrizione di pattern architetturali usati, componenti del sistema distribuito, scelte tecnologiche cruciali ai fini architetturali -- corredato da pochi ma efficaci diagrammi)
 
 ### Bounded context
@@ -208,8 +214,138 @@ Queste decisioni impatteranno in maniera significativa successivamente, quando s
   <img src="./img/context-map.png" alt="Context Map" height="350"/>
 </p>
 
-### DSL e user story [Pistocchi]
-Architettura del dsl?
+### DSL
+Dal momento che il DSL della libreria fa da wrapper a tutte le altre funzionalità, la parte di design relativa alla sua sintassi è stata affrontata a partire dal quarto sprint.\
+Di seguito sono riportati tutti i costrutti sintattici del linguaggio:
+
+#### Bot token
+```scala
+token("<TOKEN>")
+```
+#### Mode
+```scala
+mode(Polling)
+```
+
+Opzionalmente è possibile specificare l'intervallo di polling e timeout.
+```scala
+mode(Polling interval 300.milliseconds timeoutDelay 1.days)
+```
+#### Middlewares
+```scala
+middlewares (
+
+  <> { context =>
+    ...
+    true
+  }
+
+  <> { context =>
+    println(context.update)
+    true
+  }
+)
+```
+#### Reactions
+```scala
+reactions (
+
+  !! // /start
+  >> "Welcome!"
+
+  << "/hello"
+  >> "ciao Gianni"
+
+  << ("message" | "another message" | "one more message")
+  >> { context =>  // Action
+    ...
+  }
+
+  << "/hello"
+  >> "ciao Gianni"
+
+  <~ "callback"
+  >> "callback reply"
+
+  << "/hello"
+  >> HTML("<b>Ciao Gianni</b>")
+
+  << "/hello"
+  >> MD("**Ciao Gianni**")
+
+  << "/hello"
+  >> "Hi" - Keyboard(...)
+
+  // Message edited
+  <* "edited message"
+  >> "Reply"
+
+  // Message pinned
+  <^
+  >> "Message pinned"
+
+  // Chat enter
+  <+
+  >> "Welcome"
+
+  // Chat leave
+  </
+  >> "Goodbye"
+
+  // Regex match
+  <# "regexp"
+  >> "reply"
+)
+```
+#### Scenes
+```scala
+scenes (
+
+  scene (
+    "Scene name"
+
+    <| "Step name"
+    >> "Reply"
+
+    <| "Second step name"
+    >> { context =>
+      ...
+    }
+  )
+
+  scene (
+    "Another scene"
+
+    <| "Step"
+    >> "Reply"
+  )
+
+)
+```
+#### Keyboards
+```scala
+Button("Button text")
+LinkButton("Button text", "URL")
+CallbackButton("Button text", "callback data")
+
+// Keyboard definition
+trait ReplyKeyboard
+Keyboard(...) extends ReplyKeyboard
+InlineKeyboard(...) extends ReplyKeyboard
+
+// Keyboard creation
+Keyboard(("Button 1"))
+Keyboard(
+  "Button 1" :: "Button 2",
+  "Button 3" :: "Button 4"
+)
+Keyboard("Button 1" contact :: "Button 2" location)
+
+InlineKeyboard(
+  "Button 1" callback "callback1" :: "Button 2" callback "callback2",
+  "Link 1" link "url1" :: "Link 2" link "url2"
+)
+```
 
 ## 4. Design Detail
 Design di dettaglio (scelte rilevanti, pattern di progettazione, organizzazione del codice -- corredato da pochi ma efficaci diagrammi)
@@ -219,22 +355,22 @@ In fase di design, si è deciso di seguire la suddivisione definita tramite i Bo
 
 Nello sviluppo del DSL, col fine di avere un linguaggio il più possibile comprensibile e intuitivo, si è fatto ampio uso dello **zucchero sintattico** messo a disposizione da Scala, come per esempio:
 
-- possibilità di utilizzare metodi unari come operatori **infissi**;
-- pattern **Pimp my library** per fornire in maniera implicita metodi, conversioni ed estendere tipi esistenti;
-- possibilità di utilizzare **parentesi graffe** per istanziare liste con un solo argomento;
-- possibilità di omettere la parola chiave **new** nella creazione di un istanza.
+- Possibilità di utilizzare metodi unari come operatori **infissi**
+- Pattern **Pimp my library** per fornire in maniera implicita metodi, conversioni ed estendere tipi esistenti
+- Possibilità di utilizzare **parentesi graffe** per istanziare liste con un solo argomento
+- Possibilità di omettere la parola chiave **new** nella creazione di un istanza
 
 L'implementazione dei modelli atti a rappresentare le entità fondamentali è stata definita **adattandosi** alle [Telegram Bot API](https://core.telegram.org/bots/api), identificando all'interno di classi create ad hoc tutti i campi necessari a rappresentare gli elementi sfruttati da Telegram, richiamando quindi un paradigma OO-FP Mixed.\
-Grazie a questa scelta, è stato possibile utilizzare la libreria [Circe](https://circe.github.io/circe/), atta a facilitare e rendere semiautomatiche le operazioni di codifica (in fase di invio) e decodifica (in fase di ricezione) dei json.
+Grazie a questa scelta, è stato possibile utilizzare la libreria [Circe](https://circe.github.io/circe/), atta a facilitare e rendere semiautomatiche le operazioni di codifica (in fase di invio) e decodifica (in fase di ricezione) dei JSON.
 
-In maniera analoga ai modelli, anche la modalità di utilizzo delle **API** per interagire con il server Telegram è stata definita facendo riferimento alle direttive fornite dal servizio stesso.\
-In questo caso, per garantire uno sviluppo più possibile funzionale, si è utilizzato il trio di classi [Try, Success, Failure](https://docs.scala-lang.org/overviews/scala-book/functional-error-handling.html), fondamentali per gestire gli errori in maniera **gracefully**, siano essi dovuti a problemi nella formattazione dell'URL, del body del messaggio o di connessione.\
-Grazie a questa tecnica e all'utilizzo di classi di default nel caso in cui l'encoding/decoding dei json non andasse a buon fine, qualunque failure riesce ad essere intercettata senza causare interruzioni non volute del programma.
+In maniera analoga ai modelli, anche la modalità di utilizzo delle **API** per interagire con il server Telegram è stata definita facendo riferimento alle linee guida fornite dalla piattaforma stessa.\
+In questo caso, per garantire uno sviluppo più possibile funzionale, si è utilizzata la monade [Try](https://docs.scala-lang.org/overviews/scala-book/functional-error-handling.html), fondamentali per gestire gli errori in maniera **gracefully**, siano essi dovuti a problemi nella formattazione dell'URL, del body del messaggio o di connessione.\
+Grazie a questa tecnica e all'utilizzo di classi di default nel caso in cui l'encoding/decoding dei JSON non andasse a buon fine, qualunque failure riesce ad essere intercettata senza causare interruzioni non volute del programma.
 
-Per quanto concerne il testing, inizialmente si era optato per un **testing automatico** che, tramite le apposite chiamate HTTP al server Telegram, permettesse di verificare la correttezza sia nell'utilizzo delle API, che nell'encoding della richiesta e nel decoding della risposta.\
-Poiché Telegram per evitare attacchi DOS prevede un limite massimo di richieste al minuto, è stato necessario optare per un approccio alternativo, in quanto l'esecuzione di più suite di test in contemporanea portava frequenti fallimenti nonostante le tecniche di retry adottate.\
-La correttezza nell'utilizzo delle API viene quindi determinata solamente sulla base della composizione della richiesta stessa, ipotizzando che data una richiesta corretta, possa fallire solo per problemi legati a Telegram o alla connessione.\
-Per la fase di interpretazione delle risposte, invece, si è deciso di memorizzare i json di interesse in appositi file e utilizzarli per verificare la correttezza delle operazioni di decodifica.
+Per quanto concerne il testing, inizialmente si era optato per un testing totalmente automatizzato che, tramite apposite chiamate HTTP al server Telegram, permettesse di verificare la correttezza sia nell'utilizzo delle API, che nell'encoding della richiesta e nel decoding della risposta.\
+Poiché Telegram, per evitare attacchi DOS, prevede un limite massimo di richieste al minuto, è stato necessario optare per un approccio alternativo, in quanto l'esecuzione di più suite di test in contemporanea portava frequenti fallimenti nonostante le tecniche di retry adottate.\
+La correttezza nell'utilizzo delle API viene quindi determinata solamente sulla base della composizione della richiesta stessa, ipotizzando che data una richiesta i cui campi sono corretti, essa possa fallire solo per problemi esterni alla libreria.\
+Per la fase di interpretazione delle risposte, invece, si è deciso di memorizzare i JSON di interesse in appositi file e utilizzarli per verificare la correttezza delle operazioni di decodifica.
 ### Organizzazione del codice [Rossi, Tumedei]
 L'organizzazione dei package del progetto riflette i bounded context definiti in fase di design. Il core delle funzionalità nei seguenti package:
 - `methods`: corrisponde al bounded context **Telegram API calls** contiene l'implementazione di tutti i metodi delle API di Telegram che si è deciso di implementare nella libreria. I metodi principali in questo package sono `GetUpdates` e `SendMessage`.
@@ -258,31 +394,31 @@ Implementazione (per ogni studente, una sotto-sezione descrittiva di cosa fatto/
 ### Implementazione - Francesco Boschi [Modelli, marshalling]
 Boschi Francesco è responsabile dell'implementazione delle seguenti componenti:
 #### Package PPS19.scalagram.models
-Il seguente package, contiene tutti i file atti a definire le entità alla base del sistema e le operazioni di codifica e decodifica in json delle stesse.
+Il seguente package contiene tutti i file atti a definire le entità relative alle API di Telegram e le operazioni di codifica e decodifica in JSON delle stesse.
 
 Sebbene i modelli presenti siano in grande numero, la struttura utilizzata è simile per tutti e rispecchia il paradigma OO-FP Mixed, essendo presenti riferimenti al classico OO come gerarchie tra classi e trait atti a definire contratti comuni, oltre a elementi tipici di FP come companion object che fungono da contenitori di impliciti o Factory.
 
-Elemento fondamentale che accomuna la maggior parte di queste classi, è la sezione dedicata alla **derivazione semiautomatica** messa a disposizione dalla libreria Circe.\
-L'utilizzo di deriveDecoder, permette di decodificare in maniera automatica un json creando un oggetto della classe corrispondente, basandosi sul match tra i field del json e quelli della classe che verrà istanziata.\
-Nel caso in cui un trait fosse ereditato da più classi, quindi, tramite un apposito implicito definito all'interno del **companion object**, viene selezionata la classe che sarà istanziata in maniera automatica o sulla base di parametri specifici, come nel caso della classe MessageEntity nella quale la derivazione viene fatta sulla base del valore di un field del json.
+Elemento fondamentale che accomuna la maggior parte di queste classi è la sezione dedicata alla **derivazione semiautomatica** messa a disposizione dalla libreria Circe.\
+L'utilizzo di deriveDecoder, permette di decodificare in maniera automatica un JSON creando un oggetto della classe corrispondente, basandosi sul match tra i field del JSON e quelli della classe che verrà istanziata.\
+Nel caso in cui un trait fosse ereditato da più classi, quindi, tramite un apposito implicito definito all'interno del **companion object**, viene selezionata la classe che sarà istanziata in maniera automatica o sulla base di parametri specifici, come nel caso della classe MessageEntity nella quale la derivazione viene fatta sulla base del valore assunto da uno specifico campo.
 
-Per le classi che sono utilizzate anche in fase di invio di un messaggio, come le classi per la creazione di tastiere e delle loro componenti, è inoltre presente all'interno del companion object un **Encoder**, sempre messo a disposizione da Circe, utilizzato per convertire in maniera automatica o sulla base di uno specifico parametro un'istanza di tale classe in formato json.
+Per le classi utilizzate in fase di invio di un messaggio, ad esempio per la creazione di tastiere, è inoltre presente un **Encoder**, sempre messo a disposizione da Circe, utilizzato per convertire in maniera automatica o sulla base di uno specifico parametro un'istanza di tale classe in formato JSON.
 
-L'entry point del sistema in fase di ricezione di un update è la classe **Update**, la quale è incaricata dell'avvio delle operazioni di derivazione semiautomatica, dopo aver convertito l'intero json in stile camelCase così da assicurare la corrispondenza tra filed del json e delle classi.
+In fase di ricezione di un update la classe **Update** è incaricata dell'avvio delle operazioni di derivazione semiautomatica e deve quindi convertire l'intero JSON in stile camel case così da assicurare la corrispondenza tra i campi del JSON e delle classi.
 
-Configurazione simile è presenta anche in altre classi, come **TelegramMessage**, in quanto  potrebbero essere sate direttamente in fase di decodifica senza essere richiamate dalla classe Update e, nella quali quindi, è necessario mantenere la conversione in camelCase.
+La stessa operazione di conversione in camel case deve essere effettuata in fase di decodifica da tutte le classi le cui istanze possono essere restituite da una chiamata alle API di Telegram, come ad esempio **TelegramMessage**.
 
-In questa sezione del progetto, quindi, il pattern maggiormente presente è certamente **Pimp my library**, per estendere le classi messe a disposizione dalla libreria Circe.
+In questa sezione del progetto, quindi, il pattern maggiormente presente è certamente **Pimp my library**, utilizzato per estendere le classi messe a disposizione dalla libreria Circe.
 
 #### Package PPS19.scalagram.marshalling
-Poiché tutti i campi all'interno dei json sfruttati da Telegram sono definiti seguendo il formato [snake_case](https://en.wikipedia.org/wiki/Snake_case), al contrario di quelle definite via codice che seguono quello [camelCase](https://en.wikipedia.org/wiki/Camel_case), il package marshalling è incaricato di eseguire le conversioni tra i due stili.
+Poiché tutti i campi all'interno dei JSON sfruttati da Telegram sono definiti seguendo il formato [snake_case](https://en.wikipedia.org/wiki/Snake_case), al contrario di quelle definite via codice che seguono quello [camelCase](https://en.wikipedia.org/wiki/Camel_case), il package marshalling è incaricato di eseguire le conversioni tra i due stili.
 
 Si è deciso quindi di utilizzare due classi implicite che wrappassero le classi Decoder ed Encoder della libreria Circe, così da poter sfruttare in maniera comoda e immediata i metodi per la conversione contenuti al loro interno.\
-Nello specifico, la classe DecoderOps contiene un metodo per la conversione in camelCase, in quanto per eseguire il decoding automatico è necessario che i field del json coincidano con quelli degli oggetti e, quindi, che vengano trasformati da snake_case a camelCase.\
-Al contrario, la class EncoderOps, contiene un metodo per la conversione in snake_case, in modo che la codifica in json delle entità segua lo stile snake_case e sia accettata da Telegram.
+Nello specifico, la classe DecoderOps contiene un metodo per la conversione in camel case, in quanto per eseguire il decoding automatico è necessario che i field del JSON coincidano con quelli degli oggetti.\
+Al contrario, la class EncoderOps, contiene un metodo per la conversione in snake case, in modo che le entità codificate siano accettate da Telegram.
 
-Per portare a termine queste operazioni, si è sfruttata una funzione higher-order, la quale prende come parametro la funzione di trasformazione sulla stringa desiderata.\
-Tali funzioni di trasformazione sono definite nel file package.scala e incluse all'interno di una classe CaseString, la quale wrappa la classe stringa, di modo che tali trasformazioni possano essere usate anche sulle singole stringhe e non necessariamente sui json, come accade per esempio nella codifica dell'URL.
+Per portare a termine queste operazioni si è sfruttata una funzione higher-order, la quale prende come parametro la funzione di trasformazione sulla stringa desiderata.\
+Tali funzioni di trasformazione sono definite nel file package object di marhalling e incluse all'interno di una classe CaseString, la quale wrappa la classe String, in modo che tali trasformazioni possano essere usate anche sulle singole stringhe e non necessariamente sui JSON, come accade per esempio nella codifica dell'URL delle richieste che la libreria effettua alle Telegram API.
 
 
 ### Implementazione - Mattia Rossi [Metodi]
