@@ -333,7 +333,7 @@ L'obiettivo che il team si è posto al primo sprint è stato quello di stabilire
 
 Un'altra importante attività svolta in questa fase è stata quella di effettuare il setup dell'ambiente di sviluppo, del repository e di una semplice pipeline di CI/CD, in modo da velocizzare la programmazione durante gli sprint successivi.
 
-Pertanto, i task individuati sono stati i seguenti:
+I task per questo sprint sono stati:
 - **Domain Driven Design**: fase iniziale di knowledge crunching, comprendente anche la definizione dell'ubiquitous language, dei bounded context e delle user stories
 - **Define project requirements**: stabilimento dei requisiti business, utente, funzionali, non funzionali e implementativi
 - **Define architecture**: definizione del design per l'architettura del sistema, in questa fase con maggiore enfasi sul design complessivo e senza scendere troppo nel dettaglio
@@ -360,7 +360,7 @@ I task per questo sprint sono stati:
 
 Dal momento che il team aveva intenzione di iniziare lo sviluppo del DSL a partire dalla quarta settimana, l'obiettivo di questo sprint è stato quello di ottenere un sistema il più possibile funzionante, in modo da poter iniziare a wrappare le sue funzionalità con la sintassi del DSL nello sprint successivo.
 
-I task definiti in questo sprint sono quindi:
+I task per questo sprint sono stati:
 - **Implement essential Telegram API methods**: terminare lo sviluppo dei metodi per l'utilizzo delle Telegram API e dei relativi model
 - **Refactoring**: eseguire un refactoring dei metodi implementati in modo da facilitarne la futura estensibilità
 - **Define and implement bot logic**: fornire una versione pienamente funzionante della classe Scalagram per la definizione della logica di comportamento dei bot
@@ -369,9 +369,9 @@ I task definiti in questo sprint sono quindi:
 
 ### Sprint 4
 
-Avendo la prima versione funzionante della libreria, gli obiettivi principali di questo sprint sono stati: la definizione della sintassi del DSL, la creazione del primo bot di esempio basato su Scalagram, il rilascio della prima versione della libreria (in questa fase solamente attraverso l'upload di un artifact su GitHub).
+Avendo la prima versione funzionante della libreria, gli obiettivi principali di questo sprint sono stati: la definizione della sintassi del DSL, la creazione del primo bot di esempio basato su Scalagram e il rilascio della prima versione della libreria (in questa fase solamente attraverso l'upload di un artifact su GitHub).
 
-Task dello sprint:
+I task per questo sprint sono stati:
 - **Define and implement bot logic**: vista la prolissità riscontrata nella definizione dei trigger per le reaction del bot, si è deciso di implementare dei builder per facilitarne la creazione
 - **Define a DSL for using the implemented solution**: definire la sintassi del DSL e iniziare a lavorare sul DSL per le tastiere del bot
 - **Refactoring**: avendo terminato l'implementazione dei metodi delle Telegram API, si è eseguito un refactoring dei relativi modelli
@@ -379,9 +379,50 @@ Task dello sprint:
 - **Create some bots to showcase the library**: creazione del primo bot basato su Scalagram
 
 ### Sprint 5
+
+L'obiettivo di questo sprint verteva principalmente sull'estensione della sintassi del DSL appena creato e la creazione di un bot d'esempio che fosse in grado di sfruttarlo, per cui ci siamo concentrati anche sulla possibilità di poter sfruttare le API di Telegram, in questo caso unicamente per l'invio di un messaggio, a partire dal DSL.
+
+I task per questo sprint sono stati:
+**Define a DSL for using the implemented solution**: estensione della sintassi del DSL per l'implementazione di reactions e middlewares
+**Define a DSL for interacting with the Telegram API**: a partire dal DSL sono state utilizzate le Telegram API per effettuare l'invio di messaggi 
+**Gradle automation process**: aggiunta e configurazione di Scalafmt come plugin per la formattazione del codice Scala 
+**Refactoring**: avendo proseguito con l'implementazione della sintassi del DSL, si è eseguito un refactoring delle reactions, della logica di funzionamento del bot e dei package dei modelli
+**Create some bots to showcase the library**: creazione di un primo bot di esempio che sfrutta la sintassi del DSL
+
 ### Sprint 6
+
+In questa fase dello sviluppo ci siamo concentrati sugli aspetti riguardanti l'automazione del sistema, creando le basi per effettuare un rilascio automatico su Maven Central, oltre all'installazione e configurazione di diversi strumenti di supporto come Dependabot.\n
+Inoltre, in seguito all'installazione del plugin di scoverage, abbiamo creato nuovi test precedentemente mancanti e modificato quelli già presenti per evitare di usare le API di Telegram e quindi effettuare troppe richieste HTTP che spesso si traducevano in fallimenti dovuti a timeout. 
+
+I task per questo sprint sono stati:
+**Release on Maven Central**: registrazione al servizio di Sonatype, creazione delle chiavi gpg per la firma digitale, aggiunta e configurazione del plugin necessario per la pubblicazione automatica su Maven Central
+**Gradle automation process**: configurazione di Dependabot, esportazione automatica di un artefatto su GitHub Actions contenente l'output della console se il job fallisce e aggiunta del plugin per la verifica della coverage dei test
+**Define a DSL for programming the bot logic**: estensione della sintassi del DSL per l'implementazione delle scene e aggiunta della possibilità di creare triggers che facciano match con qualsiasi messaggio
+**Setup proper unit tests**: aggiunta di ulteriori test per la verifica di parti del sistema altrimenti scoperte e modifica dei test già esistenti per evitare che utilizzino le Telegram API
+
 ### Sprint 7
+
+Dal momento che la fase di sviluppo del sistema era ormai conclusa, abbiamo sfruttato questo sprint per la modifica di aspetti secondari come l'aggiunta di alcune regole particolarmente restrittive per la corretta compilazione del codice Scala (errori su import non utilizzati e warning).\n
+L'aspetto chiave di questo sprint è sicuramente stato la creazione di una moltitudine di test che, grazie all'analisi del plugin di scoverage, abbiamo aggiunto per ottenere un buon livello di copertura. 
+
+I task per questo sprint sono stati:
+**Gradle automation process**: configurazione di ulteriori regole per la compilazione del codice Scala
+**Setup proper unit tests**: aggiunta di ulteriori test per raggiungere un livello di copertura del sistema sufficientemente elevato
+**Refactoring**: modifica della struttura dei package per permettere agli utenti della libreria di effettuare il minor numero di import necessari all'utilizzo
+
 ### Sprint 8
+
+Durante l'ultimo sprint abbiamo curato alcuni aspetti precedentemente preteriti e ci siamo assicurati che il sistema rispettasse i vincoli architetturali e di DDD precedentemente stilati.\n
+Una volta creati in via definitiva i bot di esempio, utili agli utenti che utilizzeranno la libreria, abbiamo lavorato sulla documentazione del progetto, in particolare sulla generazione della ScalaDoc e del report finale; ci siamo inoltre sincerati che gli aspetti di automazione del sistema fossero adeguati.
+
+I task per questo sprint sono stati:
+**Create some bots to showcase the library**: creazione di bot di esempio che sfruttano vari aspetti della sintassi del DSL
+**Develop final report**: stesura della ScalaDoc e di parte del report finale
+**Release on Maven Central**: prima release del sistema su Nexus Repository
+**Domain Driven Design**: considerazioni finali su aspetti riguardanti il DDD adottato durante lo svolgimento del progetto
+**Define architecture**: considerazioni finali sull'architettura del sistema e aggiunta di aspetti di dettaglio 
+**Gradle automation process**: aggiunta e configurazione dei plugin per il versioning semantico e la creazione di un jar non eseguibile contenente la ScalaDoc 
+**CI/CD Setup**: refactor del workflow di GitHub Actions e creazione della Action per eseguire automaticamente il merge delle pull requests effettuate da Dependabot
 
 ## 8. Conclusioni [Gruppo]
 ### Sviluppi futuri
