@@ -33,11 +33,12 @@
     - [Automatic delivery e deployment [Rossi, Pistocchi]](#automatic-delivery-e-deployment-rossi-pistocchi)
     - [Build automation [Rossi, Pistocchi]](#build-automation-rossi-pistocchi)
     - [Licensing [Rossi]](#licensing-rossi)
-    - [QA [Boschi, Tumedei]](#qa-boschi-tumedei)
+    - [Quality Assurance [Boschi, Tumedei]](#quality-assurance-boschi-tumedei)
       - [Testing](#testing)
         - [Testing automatizzato](#testing-automatizzato)
         - [Testing non automatizzato](#testing-non-automatizzato)
-        - [Copertura dei test](#copertura-dei-test)
+      - [Coverage](#coverage)
+      - [Code style](#code-style)
   - [7. Retrospective [Rossi, Optional[Tumedei]]](#7-retrospective-rossi-optionaltumedei)
     - [Sprint 1](#sprint-1)
     - [Sprint 2](#sprint-2)
@@ -334,12 +335,36 @@ Si tratta di una licenza non copyleft che obbliga gli utenti a preservare l'info
 | Uso del brevetto |                 |                                |
 | Uso privato      |                 |                                |
 
-### QA [Boschi, Tumedei]
+### Quality Assurance [Boschi, Tumedei]
 #### Testing
-##### Testing automatizzato
-##### Testing non automatizzato
-##### Copertura dei test
+Buona parte dello sviluppo ha seguito un approccio TDD (Test Driven Development) facendo uso della libreria ScalaTest e JUnit.\
 
+##### Testing automatizzato
+Il progetto è stato sviluppato su sistemi Linux, Mac e Windows utilizzando Java 14. Tuttavia grazie all'utilizzo di GitHub Actions è stato possibile automatizzare il testing su questi tre sistemi operativi utilizzando in ciascuno le versioni 8, 11 e 14 di Java.\
+Le componenti principali testate sono riportate di seguito con alcune considerazioni:
+- **Models**: per le classi che estendono il trait ReplyMarkup, le cui istanze devono essere inviate ai server di Telegram, si è testata la corretta codifica in formato JSON confrontandola con dei  file JSON memorizzati in precedenza.\
+  Le istanze di tutte le altre classi del package vengono ricevute dalla libreria in risposta a chiamate alle API Telegram, pertanto è stata testata la loro corretta decodifica a partire da file in formato JSON.
+- **Methods**: i wrapper per i metodi delle API di Telegram sono stati testati senza effettuare chiamate alle API, ma semplicemente valutando la correttezza dell'endpoint richiesto e dei parametri passati.
+- **Logic**: i test del package Logic sono suddivisi in tre suite:
+    - ScalagramSuite si occupa di testare la corretta implementazione delle classi core della logica del bot, vale a dire Middleware, Trigger, Reaction e Step, verificando che le funzioni higher order in esse contenute producano il risultato atteso.
+    - ContextSuite: il Context contiene proprietà e metodi relative all'attivazione di scene e step di un bot. La suite in questione testa dunque il corretto funzionamento di tali elementi.
+    - ReactionsSuite crea reaction utilizzando tutti i tipi possibili di ReactionBuilder e testa il corretto funzionamento dei trigger e delle action così ottenuti.
+- **DSL**: questa suite si occupa di verificare che l'utilizzo di tutte le funzionalità della libreria tramite il DSL produca lo stesso risultato ottenuto richiamando tali funzionalità senza l'utilizzo del DSL.
+##### Testing non automatizzato
+Il funzionamento del semplice Actor System Akka che si occupa dello smistamento degli update è stato testato tramite un'interazione diretta con i bot di esempio sulle chat di Telegram.
+
+Il testing automatizzato delle chiamate alle API è stato escluso a causa delle limitazioni di traffico imposte da Telegram, quindi anch'esse sono state testate direttamente nelle chat di Telegram sfruttando i bot di esempio creati. 
+#### Coverage
+La copertura dei test è stata verificata tramite il plugin **Gradle Scoverage**.\
+La percentuale di coverage ottenuta ammonta a X%. Tale valore è influenzato dalle funzionalità testate in maniera non automatizzata, senza le quali la percentuale di statement coverage supererebbe il 90%.
+TODO:SCREEN STATEMENT COVERAGE
+TODO:SCREEN PACKAGE
+
+#### Code style
+Il compilatore Scala esegue già numerosi controlli per assicurare una buona qualità del codice. Per renderlo ancora più stringente si è deciso di abilitare gli warning per gli import non utilizzati e convertire tutti gli warning in errori di compilazione.
+
+Per quanto riguarda la formattazione del codice, questa viene eseguita in maniera automatizzata dal plugin Gradle Spotless che si appoggia al tool **Scalafmt**. Anche in questo caso, il warning per formattazione non corretta del codice viene convertito in un errore di compilazione.\
+Poiché Scalafmt è supportato da IntelliJ IDEA, è possibile eseguire la formattazione del codice con l'apposito shortcut, mantenendo lo stile definito nel file di configurazione del plugin.
 ## 7. Retrospective [Rossi, Optional[Tumedei]]
 Retrospettiva (descrizione finale dettagliata dell'andamento dello sviluppo, del backlog, delle iterazioni; commenti finali)
 
