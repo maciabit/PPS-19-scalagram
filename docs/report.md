@@ -318,6 +318,19 @@ La fase di build è stata strutturata in un unica fase principale (job). Gli asp
 
 
 ### Licensing [Rossi]
+La scelta della licenza da applicare al nostro sistema è ricaduta sulla **Apache License 2.0**, ideale per chi vuole sviluppare software open source con supporto a lungo termine.\n
+Si tratta di una licenza non copyleft che obbliga gli utenti a preservare l'informativa di diritto d'autore e d'esclusione di responsabilità nelle versioni modificate. In particolar modo i vincoli imposti e gli usi concessi sono i seguenti: 
+
+| Permessi         | Limitazioni     | Condizioni                     |
+|------------------|-----------------|--------------------------------|
+| Uso commerciale  | Uso del marchio | Licenza e notice del copyright |
+| Modifica         | Responsabilità  | Notifica dei cambiamenti       |
+| Distribuzione    | Garanzia        |                                |
+| Uso del brevetto |                 |                                |
+| Uso privato      |                 |                                |
+|                  |                 |                                |
+
+
 ### QA [Boschi, Tumedei]
 #### Testing
 ##### Testing automatizzato
