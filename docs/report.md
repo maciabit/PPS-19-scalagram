@@ -441,6 +441,30 @@ Il companion object di `Context` fornisce un'implementazione privata del trait, 
 
 #### Package PPS19.scalagram.modes
 
+Questo package contiene la componente del sistema che si occupa di reperire gli update, distribuirli tra i `Context` presenti e processarli secondo la logica definita dallo sviluppatore finale del bot.
+
+Lo smistamento degli update viene effettuato attraverso un Actor System Akka.\
+Il sistema è composto da due tipologie di attori:
+- **UpdateDispatcherActor**: ne esiste una sola istanza per ogni bot. Si occupa di reperire periodicamente gli update tramite il metodo `GetUpdates` di `PPS19.scalagram.methods` e smistare ciascuno di essi all'opportuno WorkerActor, in base alla chat da cui proviene l'update
+- **WorkerActor**: il sistema comprende un'istanza di questo attore per ogni chat su cui il bot sta avendo conversazioni. Vi è quindi un'associazione unaria tra `Context`, `Chat` e `WorkerActor`.\
+  Quando WorkerActor riceve un messaggio contenente un update da processare, fa passare quest'ultimo attraverso una pipeline composta dai seguenti elementi, nell'ordine in cui sono specificati:
+    - Tutti i middleware del bot, in ordine di dichiarazione
+    - Tutte le reaction del bot, in ordine di dichiarazione
+    - Se presente, lo step attuale della scena attiva sullo specifico Context
+
+  Tutti gli elementi della pipeline ereditano dal trait `Operation` e hanno pertanto un metodo `operation: Context => Boolean` che restituisce:
+    - `true` se la pipeline deve continuare
+    - `false` se l'update è da considerarsi processato e la pipeline va interrotta
+
+  Se un update giunge in fondo alla pipeline senza essere processato, viene semplicemente scartato in quanto la logica del bot non prevede di gestirlo.
+
+L'Actor System può essere configurato dallo sviluppatore finale con i seguenti parametri, da fornire al costruttore della modalità `Polling`:
+- `pollingInterval`: intervallo che deve intercorrere tra un'operazione di `GetUpdates` e l'altra (default: 300ms)
+- `timeoutDelay`: intervallo dopo il quale un `WorkerActor`, se non ha ricevuto messaggi, termina, con conseguente distruzione del `Context` associato e perdita della traccia della conversazione da parte del bot (default: 1 giorno)\
+  È opportuno notare che solitamente i bot Telegram restano in esecuzione per periodi molto lunghi di tempo, ma sono pensati per avere brevi conversazioni con molti utenti. Pertanto è preferibile mantenere un `timeoutDelay` di durata ragionevole, in modo da non inquinare l'Actor System con `WorkerActor` dormienti che non effettuano alcuna operazione. Nel caso in cui un bot debba memorizzare informazioni importanti o con una durata di vita elevata, è buona pratica non utilizzare variabili in memory, ma appoggiarsi ad un database, in modo anche da far fronte ad eventuali perdite di dati dovute a crash.
+
+Nel caso in cui si decidesse di supportare ulteriormente la libreria implementando anche la modalità Webhook, l'Actor System è stato strutturato in modo da non dover subire drastici cambiamenti per supportare anche un tipo di operatività unicamente push, in aggiunta a quella pull attuale. In modalità Webhook poi sarebbe necessaria la creazione di un server HTTP a cui Telegram può inoltrare gli update, ma anche questa operazione è disponibile tramite Akka.
+
 ### 5.2 Implementazione - Francesco Boschi [Modelli, marshalling]
 
 Boschi Francesco è responsabile dell'implementazione delle seguenti componenti:
