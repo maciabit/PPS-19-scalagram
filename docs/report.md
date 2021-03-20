@@ -29,6 +29,8 @@
     - [4.2 Organizzazione del codice](#42-organizzazione-del-codice)
   - [5. Implementation](#5-implementation)
     - [5.1 Implementazione - Gianni Tumedei [Logica bot]](#51-implementazione---gianni-tumedei-logica-bot)
+      - [Package PPS19.scalagram.logic](#package-pps19scalagramlogic)
+      - [Package PPS19.scalagram.modes](#package-pps19scalagrammodes)
     - [5.2 Implementazione - Francesco Boschi [Modelli, marshalling]](#52-implementazione---francesco-boschi-modelli-marshalling)
       - [Package PPS19.scalagram.models](#package-pps19scalagrammodels)
       - [Package PPS19.scalagram.marshalling](#package-pps19scalagrammarshalling)
@@ -407,6 +409,37 @@ L'organizzazione dei package del progetto riflette i bounded context definiti in
 Implementazione (per ogni studente, una sotto-sezione descrittiva di cosa fatto/co-fatto e con chi, e descrizione di aspetti implementativi importanti non già presenti nel design)
 
 ### 5.1 Implementazione - Gianni Tumedei [Logica bot]
+
+Gianni Tumedei è responsabile dell'implementazione dei seguenti componenti:
+
+#### Package PPS19.scalagram.logic
+
+Il package `logic` contiene le entità che sono poi usate come building blocks per la definizione della logica dei bot: `Operation`, `Trigger`, `Action`, `Reaction`, `Scene`, `Step`.
+
+Il package `PPS19.scalagram.logic.reactions` contiene il trait `ReactionBuilder`, che sfrutta le entità sopra citate, in combinazione con il **pattern builder**, per facilitare all'utente finale la creazione di complicati trigger da utilizzare all'interno del bot. I builder messi a disposizione dalla libreria sono i seguenti:
+- `OnMessage(strings: String*)`: permette al bot di reagire alla ricezione di un messaggio il cui contenuto corrisponde ad un elemento della lista di stringhe passate come parametro (è possibile non passare stringhe per reagire alla ricezione di qualsiasi messaggio)
+- `OnStart()`: è uno shortcut per eseguire `OnMessage("/start")`, utile in quanto tutti i bot devono disporre di un comando `/start`
+- `OnHelp()`: è uno shortcut per eseguire `OnMessage("/help")`
+- `OnMessageEdited(strings: String*)`: permette al bot di reagire alla modifica di un messaggio il cui nuovo contenuto corrisponde ad un elemento della lista di stringhe passate come parametro (è possibile non passare stringhe per reagire alla modifica di qualsiasi messaggio)
+- `OnMessagePinned()`: permette al bot di reagire all'evento di pin di un messaggio
+- `OnCallbackQuery(callbackData: String)`: permette al bot di reagire in seguito alla pressione del bottone di una tastiera inline con uno specifico `callbackData`, il cui evento associato è detto *callback*
+- `OnChatEnter()`: permette al bot di reagire in seguito all'aggiunta di uno o più utenti ad una chat
+- `OnChatLeave()`: permette al bot di reagire in seguito alla rimozione di un utente da una chat
+- `OnMatch(regex: String)`: permette al bot di reagire in seguito alla ricezione di un messaggio che fa match con una regular expression passata come parametro
+
+Il trait `Scalagram` rappresenta un bot Telegram creato con questa libreria. Oltre alle operazioni che caratterizzano il bot, mette a disposizione degli shortcut ai metodi definiti nel package `PPS19.scalagram.methods`, in modo da facilitare lo sviluppatore finale e ridurre il numero di import da egli richiesto.\
+Il companion object di `Scalagram` fornisce un'implementazione immutabile e privata del trait, utilizzata nel metodo `apply`. Inoltre, sempre per migliorare la quality of life dello sviluppatore finale, sono qui inseriti dei riferimenti ai metodi di `PPS19.scalagram.logic.reactions`.
+
+Il trait `Context` rappresenta, appunto, il contesto di esecuzione di un bot. Esiste un'istanza di `Context` per ogni chat su cui il bot sta comunicando, che contiene vari campi utili allo sviluppatore finale, come:
+- Un riferimento al bot
+- Una `Map` su cui è possibile memorizzare dati tra un'interazione e l'altra
+- Un riferimento alla chat del `Context`
+- Un riferimento all'ultimo `Update` ricevuto, al suo `Payload` e allo `User` che lo ha generato
+
+`Context` include poi i metodi necessari all'attivazione delle `Scene` e dei loro `Step`.\
+Il companion object di `Context` fornisce un'implementazione privata del trait, sfruttata dal metodo `apply`.
+
+#### Package PPS19.scalagram.modes
 
 ### 5.2 Implementazione - Francesco Boschi [Modelli, marshalling]
 
