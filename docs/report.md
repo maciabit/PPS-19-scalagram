@@ -706,5 +706,27 @@ I task per questo sprint sono stati:
 ## 8. Conclusioni [Gruppo]
 
 ### 8.1 Sviluppi futuri
+In questa sezione vengono elencati alcuni possibili sviluppi futuri che il eam o uno sviluppatore esterno potrebbe voler sviluppare:
 
+- Implementazione della modalità di lavoro webhook
+- Aggiunta di ulteriori tipologie di messaggi utente, quali video, audio, stickers, sondaggi, animazioni ecc.
+- Aggiunta dei messaggi di sistema mancanti, per facilitare la gestione delle chat
+- Aggiunta della modalità di sviluppo di videogiochi interni a Telegram
+
+Inoltre, poiché l'intero sistema dipende da un servizio esterno, è fondamentale per il corretto funzionamento che la libreria venga mantenuta aggiornata in maniera concorde con le modifiche e le linee guida rilasciate nel tempo da Telegram.\
+A questo scopo, la suddivisione del codice e il design scelto dal team, sono pensati per rendere il codice il più possibile mantenibile e modificabile nel tempo riducendo allo stretto essenziale le relazioni tra le componenti del sistema e la piattaforma di messaggistica.
 ### 8.2 Conclusioni
+
+La scelta del progetto è stata fatta con l'idea di sfruttare al massimo le peculiarità del paradigma funzionale, questo ci ha permesso di apprezzare appieno le potenzialità del linguaggio Scala con il progredire dell'applicativo, specialmente durante le fasi avanzate della definizione del DSL.\
+È infatti evidente come alcuni pattern e funzionalità messi a disposizione da Scala, come Pimp My Library e impliciti, uniti al suo zucchero sintattico, abbiano permesso di programmare in maniera relativamente intuitiva un DSL chiaro e facilmente utilizzabile dall'utente finale.
+
+Un'attenta e prolungata fase di analisi, definizione del design e modellazione ingegneristica, ha permesso al team di avere le idee chiare sin dai primi Scrum sprint, riducendo al minimo i rischi di sviluppo di porzioni di software inconsistenti e facilitando le operazioni di integrazione, oltre a permettere una migliore parallelizzazione del lavoro.
+
+L’utilizzo dell’approccio di sviluppo agile Scrum per gestire le attività di progetto ha permesso al team di coordinare in maniera molto precisa le attività, rendendo chiari i goal che ogni membro avrebbe dovuto portare a termine settimanalmente.\
+Adottando delivery settimanali, inoltre, tutte le fasi di monitoraggio dei tempi e dello sviluppo del progetto sono risultate più semplici, riducendo ulteriormente i rischi di fallimenti o ritardi nella consegna.
+
+La possibilità inoltre di integrare al progetto tutte le operazioni viste durante il corso Laboratorio di Sistemi Software, vale a dire automatic delivery/deployment, build automation, licensing, quality assurance, coverage e code style, ha permesso ai membri del team di capire l'effettiva importanza nell'utilizzare tecniche di automazione e adottare formalismi atti a rendere il team allineato e coerente durante tutto lo sviluppo.
+
+Nel complesso il team si ritiene quindi soddisfatto del lavoro svolto e del risultato raggiunto.\
+Il progetto è risultato fondamentale per confrontarsi con un problema nuovo e mettere in pratica i concetti teorici appresi durante le lezioni, così da valutarne la reale importanza che spesso è difficile da cogliere fino a quando non si approccia un problema reale.\
+Le competenze acquisite durante questa esperienza risulteranno certamente fondamentale in progetti futuri, siano essi in ambito accademico o lavorativo.
