@@ -190,9 +190,10 @@ Le user stories sono definite dal punto di vista di un developer, che deve poter
 
 A partire dalle user stories è stato definito il seguente diagramma dei casi d'uso:
 
-<p align="center">
-  <img src="./img/use-case.png" alt="Use case" height="750"/>
-</p>
+<figure align="center">
+  <img src="./img/use-case.png" alt="Diagramma dei casi d'uso"/>
+  <figcaption>Diagramma dei casi d'uso</figcaption>
+</figure>
 
 #### DSL
 
@@ -223,9 +224,10 @@ Di seguito è riportata la context map del progetto, da notare che i modelli rel
 
 Queste decisioni impatteranno in maniera significativa successivamente, quando sarà necessario organizzare e scomporre i moduli di basso livello.
 
-<p align="center">
-  <img src="./img/context-map.png" alt="Context Map" height="350"/>
-</p>
+<figure align="center">
+  <img src="./img/context-map.png" alt="Context map"/>
+  <figcaption>Context map</figcaption>
+</figure>
 
 ### 3.2 DSL
 Dal momento che il DSL della libreria fa da wrapper a tutte le altre funzionalità, la parte di design relativa alla sua sintassi è stata affrontata a partire dal quarto sprint.\
@@ -399,10 +401,10 @@ L'organizzazione dei package del progetto riflette i bounded context definiti in
 - `utils`: contiene alcuni metodi di utility privati utilizzati all'interno della libreria.
 - `examples`: contiene alcuni bot di esempio a cui gli sviluppatori possono fare riferimento.
 
-<p align="center">
-  <img src="./img/code-organization.png" alt="code-organization" height="600"/>
-</p>
-
+<figure align="center">
+  <img src="./img/code-organization.png" alt="Organizzazione del codice"/>
+  <figcaption>Organizzazione del codice</figcaption>
+</figure>
 
 ## 5. Implementation
 
@@ -582,8 +584,16 @@ Il testing automatizzato delle chiamate alle API è stato escluso a causa delle 
 
 La copertura dei test è stata verificata tramite il plugin **Gradle Scoverage**.\
 La percentuale di coverage ottenuta ammonta a X%. Tale valore è influenzato dalle funzionalità testate in maniera non automatizzata, senza le quali la percentuale di statement coverage supererebbe il 90%.
-TODO:SCREEN STATEMENT COVERAGE
-TODO:SCREEN PACKAGE
+
+<figure align="center">
+  <img src="img/statement-coverage.png" alt="Statement coverage"/>
+  <figcaption>Statement coverage</figcaption>
+</figure>
+
+<figure align="center">
+  <img src="img/package-coverage.png" alt="Package coverage"/>
+  <figcaption>Package coverage</figcaption>
+</figure>
 
 #### Code style
 
