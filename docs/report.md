@@ -1,69 +1,68 @@
-# ScalaGram - Report
+# ScalaGram - Report <!-- omit in toc -->
 
-- [ScalaGram - Report](#scalagram---report)
-  - [1. Development process](#1-development-process)
-    - [1.1 Divisione dei task](#11-divisione-dei-task)
-    - [1.2 Meeting ed interazioni](#12-meeting-ed-interazioni)
-    - [1.3 Strumenti utilizzati](#13-strumenti-utilizzati)
-  - [2. Requirements](#2-requirements)
-    - [2.1 Requisiti Business](#21-requisiti-business)
-      - [Ubiquitous language](#ubiquitous-language)
-      - [Knowledge crunching](#knowledge-crunching)
-    - [2.2 Requisiti Utente](#22-requisiti-utente)
-    - [2.3 Requisiti Funzionali](#23-requisiti-funzionali)
-      - [User stories](#user-stories)
-      - [DSL](#dsl)
-    - [2.4 Requisiti Non funzionali](#24-requisiti-non-funzionali)
-    - [2.5 Requisiti Implementativi](#25-requisiti-implementativi)
-  - [3. Architectural Design](#3-architectural-design)
-    - [3.1 Bounded context](#31-bounded-context)
-    - [3.2 DSL](#32-dsl)
-      - [Bot token](#bot-token)
-      - [Mode](#mode)
-      - [Middlewares](#middlewares)
-      - [Reactions](#reactions)
-      - [Scenes](#scenes)
-      - [Keyboards](#keyboards)
-  - [4. Design Detail](#4-design-detail)
-    - [4.1 Scelte rilevanti](#41-scelte-rilevanti)
-    - [4.2 Organizzazione del codice](#42-organizzazione-del-codice)
-  - [5. Implementation](#5-implementation)
-    - [5.1 Implementazione - Gianni Tumedei](#51-implementazione---gianni-tumedei)
-      - [Package PPS19.scalagram.logic](#package-pps19scalagramlogic)
-      - [Package PPS19.scalagram.modes](#package-pps19scalagrammodes)
-    - [5.2 Implementazione - Francesco Boschi](#52-implementazione---francesco-boschi)
-      - [Package PPS19.scalagram.models](#package-pps19scalagrammodels)
-      - [Package PPS19.scalagram.marshalling](#package-pps19scalagrammarshalling)
-    - [Implementazione - Mattia Rossi](#implementazione---mattia-rossi)
-      - [Package PPS19.scalagram.methods](#package-pps19scalagrammethods)
-      - [Package PPS19.scalagram.examples](#package-pps19scalagramexamples)
-    - [Attività di gruppo](#attività-di-gruppo)
-      - [Package PPS19.scalagram.dsl](#package-pps19scalagramdsl)
-        - [Package object dsl](#package-object-dsl)
-        - [Trait ScalagramDSL](#trait-scalagramdsl)
-        - [Packages keyboard, middleware, mode, reaction, scene](#packages-keyboard-middleware-mode-reaction-scene)
-  - [6. OPS](#6-ops)
-    - [6.1 Automatic delivery e deployment](#61-automatic-delivery-e-deployment)
-    - [6.2 Build automation](#62-build-automation)
-    - [6.3 Licensing](#63-licensing)
-    - [6.4 Quality Assurance](#64-quality-assurance)
-      - [Testing](#testing)
-        - [Testing automatizzato](#testing-automatizzato)
-        - [Testing non automatizzato](#testing-non-automatizzato)
-      - [Coverage](#coverage)
-      - [Code style](#code-style)
-  - [7. Retrospective](#7-retrospective)
-    - [7.1 Sprint 1 (18/01/2020)](#71-sprint-1-18012020)
-    - [7.2 Sprint 2 (25/01/2020)](#72-sprint-2-25012020)
-    - [7.3 Sprint 3 (01/02/2020)](#73-sprint-3-01022020)
-    - [7.4 Sprint 4 (08/02/2020)](#74-sprint-4-08022020)
-    - [7.5 Sprint 5 (15/02/2020)](#75-sprint-5-15022020)
-    - [7.6 Sprint 6 (22/02/2020)](#76-sprint-6-22022020)
-    - [7.7 Sprint 7 (01/03/2020)](#77-sprint-7-01032020)
-    - [7.8 Sprint 8 (08/03/2020)](#78-sprint-8-08032020)
-  - [8. Conclusioni](#8-conclusioni)
-    - [8.1 Sviluppi futuri](#81-sviluppi-futuri)
-    - [8.2 Conclusioni](#82-conclusioni)
+- [1. Development process](#1-development-process)
+  - [1.1 Divisione dei task](#11-divisione-dei-task)
+  - [1.2 Meeting ed interazioni](#12-meeting-ed-interazioni)
+  - [1.3 Strumenti utilizzati](#13-strumenti-utilizzati)
+- [2. Requirements](#2-requirements)
+  - [2.1 Requisiti Business](#21-requisiti-business)
+    - [Ubiquitous language](#ubiquitous-language)
+    - [Knowledge crunching](#knowledge-crunching)
+  - [2.2 Requisiti Utente](#22-requisiti-utente)
+  - [2.3 Requisiti Funzionali](#23-requisiti-funzionali)
+    - [User stories](#user-stories)
+    - [DSL](#dsl)
+  - [2.4 Requisiti Non funzionali](#24-requisiti-non-funzionali)
+  - [2.5 Requisiti Implementativi](#25-requisiti-implementativi)
+- [3. Architectural Design](#3-architectural-design)
+  - [3.1 Bounded context](#31-bounded-context)
+  - [3.2 DSL](#32-dsl)
+    - [Bot token](#bot-token)
+    - [Mode](#mode)
+    - [Middlewares](#middlewares)
+    - [Reactions](#reactions)
+    - [Scenes](#scenes)
+    - [Keyboards](#keyboards)
+- [4. Design Detail](#4-design-detail)
+  - [4.1 Scelte rilevanti](#41-scelte-rilevanti)
+  - [4.2 Organizzazione del codice](#42-organizzazione-del-codice)
+- [5. Implementation](#5-implementation)
+  - [5.1 Implementazione - Gianni Tumedei](#51-implementazione---gianni-tumedei)
+    - [Package PPS19.scalagram.logic](#package-pps19scalagramlogic)
+    - [Package PPS19.scalagram.modes](#package-pps19scalagrammodes)
+  - [5.2 Implementazione - Francesco Boschi](#52-implementazione---francesco-boschi)
+    - [Package PPS19.scalagram.models](#package-pps19scalagrammodels)
+    - [Package PPS19.scalagram.marshalling](#package-pps19scalagrammarshalling)
+  - [Implementazione - Mattia Rossi](#implementazione---mattia-rossi)
+    - [Package PPS19.scalagram.methods](#package-pps19scalagrammethods)
+    - [Package PPS19.scalagram.examples](#package-pps19scalagramexamples)
+  - [Attività di gruppo](#attività-di-gruppo)
+    - [Package PPS19.scalagram.dsl](#package-pps19scalagramdsl)
+      - [Package object dsl](#package-object-dsl)
+      - [Trait ScalagramDSL](#trait-scalagramdsl)
+      - [Packages keyboard, middleware, mode, reaction, scene](#packages-keyboard-middleware-mode-reaction-scene)
+- [6. OPS](#6-ops)
+  - [6.1 Automatic delivery e deployment](#61-automatic-delivery-e-deployment)
+  - [6.2 Build automation](#62-build-automation)
+  - [6.3 Licensing](#63-licensing)
+  - [6.4 Quality Assurance](#64-quality-assurance)
+    - [Testing](#testing)
+      - [Testing automatizzato](#testing-automatizzato)
+      - [Testing non automatizzato](#testing-non-automatizzato)
+    - [Coverage](#coverage)
+    - [Code style](#code-style)
+- [7. Retrospective](#7-retrospective)
+  - [7.1 Sprint 1 (18/01/2020)](#71-sprint-1-18012020)
+  - [7.2 Sprint 2 (25/01/2020)](#72-sprint-2-25012020)
+  - [7.3 Sprint 3 (01/02/2020)](#73-sprint-3-01022020)
+  - [7.4 Sprint 4 (08/02/2020)](#74-sprint-4-08022020)
+  - [7.5 Sprint 5 (15/02/2020)](#75-sprint-5-15022020)
+  - [7.6 Sprint 6 (22/02/2020)](#76-sprint-6-22022020)
+  - [7.7 Sprint 7 (01/03/2020)](#77-sprint-7-01032020)
+  - [7.8 Sprint 8 (08/03/2020)](#78-sprint-8-08032020)
+- [8. Conclusioni](#8-conclusioni)
+  - [8.1 Sviluppi futuri](#81-sviluppi-futuri)
+  - [8.2 Conclusioni](#82-conclusioni)
 
 ## 1. Development process
 
@@ -214,11 +213,9 @@ Durante lo sviluppo si è deciso di distaccarsi da un approccio puramente Object
 
 ## 3. Architectural Design
 
-Design architetturale (architettura complessiva, descrizione di pattern architetturali usati, componenti del sistema distribuito, scelte tecnologiche cruciali ai fini architetturali -- corredato da pochi ma efficaci diagrammi)
-
 ### 3.1 Bounded context
 
-Lo studio del problema ha portato a definire tre aree critiche per la definizione del sistema, le quali necessitano un importante isolamento, al fine di garantire indipendenza e chiara suddivisione dei moduli durante la fase di sviluppo. Una corretta suddivisione dei bounded context in fase iniziale permetterà di scomporre in maniera più chiara il lavoro.
+Lo studio del problema ha portato a definire tre aree critiche che compongono il sistema, le quali necessitano un importante isolamento, al fine di garantire indipendenza e chiara suddivisione dei moduli durante la fase di sviluppo. Una corretta suddivisione dei bounded context in fase iniziale permetterà di scomporre in maniera più chiara il lavoro.
 
 Sono stati definiti i seguenti bounded context:
 - **Bot logic context**: è il core del sistema, comprende le funzionalità dedicate alla definizione della logica di comportamento del bot
@@ -235,23 +232,29 @@ Queste decisioni impatteranno in maniera significativa successivamente, quando s
 <p align="center">Figura 3.1 - Context map</p>
 
 ### 3.2 DSL
-Dal momento che il DSL della libreria fa da wrapper a tutte le altre funzionalità, la parte di design relativa alla sua sintassi è stata affrontata a partire dal quarto sprint.\
-Di seguito sono riportati tutti i costrutti sintattici del linguaggio:
+
+Dal momento che il DSL della libreria fa da wrapper a tutte le altre funzionalità, la parte di design relativa alla sua sintassi è stata affrontata a partire dal quarto sprint, quando le funzionalità core della libreria erano ormai sufficientemente solide.
+
+Di seguito sono riportati tutti i costrutti sintattici del linguaggio.
 
 #### Bot token
+Permette di settare il token del bot.
 ```scala
 token("<TOKEN>")
 ```
+
 #### Mode
+Permette di settare la modalità di download degli update.
 ```scala
 mode(Polling)
 ```
-
 Opzionalmente è possibile specificare l'intervallo di polling e timeout.
 ```scala
 mode(Polling interval 300.milliseconds timeoutDelay 1.days)
 ```
+
 #### Middlewares
+Permette di settare i middleware del bot.
 ```scala
 middlewares (
 
@@ -266,105 +269,139 @@ middlewares (
   }
 )
 ```
+
 #### Reactions
+Permette di settare le reaction del bot.\
+Ogni reaction è formata da due parti. La prima indica che tipo di evento deve avvenire mentre la seconda quale azione va effettuata in seguito a tale evento.\
+Lo snippet di codice sottostante riporta tutte le tipologie di reaction che è possibile creare con il DSL, correlate da opportuni commenti.
 ```scala
 reactions (
 
-  !! // /start
+  // React to the "/start" message
+  !!
   >> "Welcome!"
 
+  // React to to the "/hello" message
   << "/hello"
-  >> "ciao Gianni"
+  >> "Hi there"
 
+  // React to a message with content equal to one of this strings
   << ("message" | "another message" | "one more message")
-  >> { context =>  // Action
+  >> { context =>
     ...
   }
 
-  << "/hello"
-  >> "ciao Gianni"
+  // React to any incoming message
+  << *
+  >> "Ok"
 
+  // React to to a callback query with "callback" as data
   <~ "callback"
   >> "callback reply"
 
-  << "/hello"
+  // Reply to the "/html" command by sending a message interpreted as HTML
+  << "/html"
   >> HTML("<b>Ciao Gianni</b>")
 
-  << "/hello"
+  // Reply to the "/markdown" command by sending a message interpreted as Markdown
+  << "/markdown"
   >> MD("**Ciao Gianni**")
 
-  << "/hello"
+  // Reply to the "/keyboard" command by sending a message with an attached keyboard
+  << "/keyboard"
   >> "Hi" - Keyboard(...)
 
-  // Message edited
+  // React to an edited message with new content equal to "edited message"
   <* "edited message"
-  >> "Reply"
+  >> "A message has been edited"
 
-  // Message pinned
-  <^
-  >> "Message pinned"
+  // React to an edited message with new content equal to one of the given strings
+  <* ("edited message" | "another edited message")
+  >> "A message has been edited"
 
-  // Chat enter
-  <+
+  // React to to any edited message
+  <* *
+  >> "A message has been edited"
+
+  // React to any pinned message
+  <^ *
+  >> "A message has been pinned"
+
+  // React to to a new user entering a chat
+  <+ *
   >> "Welcome"
 
-  // Chat leave
-  </
+  // React to a user leaving a chat
+  </ *
   >> "Goodbye"
 
-  // Regex match
+  // React to to an incoming message that passes the given regular expression
   <# "regexp"
   >> "reply"
+
 )
 ```
+
 #### Scenes
+Permette di settare le scene del bot.\
+Ogni `Scene` è composta da un nome e da una serie di `Step`. Gli step sono a loro volta composti da un nome e da un'action, ossia una funzione `Context => Boolean`.
 ```scala
 scenes (
 
   scene (
-    "Scene name"
+    "SCENE_NAME"
 
-    <| "Step name"
-    >> "Reply"
+    <| "STEP1_NAME"
+    >> { context =>
+      context.reply("Reply")
+      context.nextStep()
+    }
 
-    <| "Second step name"
+    <| "STEP2_NAME"
     >> { context =>
       ...
     }
   )
 
   scene (
-    "Another scene"
+    "ANOTHER_SCENE"
 
-    <| "Step"
+    <| "STEP"
     >> "Reply"
   )
 
 )
 ```
+
 #### Keyboards
+Il DSL per le keyboard è stato strutturato in modo da rendere il più possibile evidente il layout della tastiera, al contempo mantenendo un elevato grado di espressività dal punto di vista delle azioni dei pulsanti.
+
+Per le tastiere di tipo `ReplyKeyboardMarkup`, un normale bottone può essere creato semplicemente passando una stringa al metodo `Keyboard`.\
+Le tastiere inline (`InlineKeyboardMarkup`) non possono avere bottoni solo testuali, ma è necessario indicare per ognuno di essi il campo `callbackData`. Per semplificare questa operazione, vi è anche in questo caso la possibilità di passare una semplice stringa al metodo `InlineKeyboard` per creare un bottone il cui valore del campo `callbackData` equivale al suo contenuto testuale.
+
+Seguono alcuni esempi.
+
+Tastiera con un bottone sulla prima riga e due sulla seconda
 ```scala
-Button("Button text")
-LinkButton("Button text", "URL")
-CallbackButton("Button text", "callback data")
-
-// Keyboard definition
-trait ReplyKeyboard
-Keyboard(...) extends ReplyKeyboard
-InlineKeyboard(...) extends ReplyKeyboard
-
-// Keyboard creation
-Keyboard(("Button 1"))
 Keyboard(
-  "Button 1" :: "Button 2",
-  "Button 3" :: "Button 4"
+  "Button 1",
+  "Button 2" :: "Button 3"
 )
-Keyboard("Button 1" contact :: "Button 2" location)
+```
 
+Tastiera inline contenente vari link
+```scala
 InlineKeyboard(
-  "Button 1" callback "callback1" :: "Button 2" callback "callback2",
-  "Link 1" link "url1" :: "Link 2" link "url2"
+  Link("GitHub" -> "https://www.github.com"),
+  Link("Bitbucket" -> "https://www.bitbucket.org")
 )
+```
+
+Altri esempi di bottoni che è possibile creare
+```scala
+Callback("Button text" -> "callbackData")
+Location("Button")
+Contact("Button")
 ```
 
 ## 4. Design Detail
@@ -662,10 +699,16 @@ Nel package object vi sono poi tre classi implicite che utilizzano il pattern **
   ```
 - `ReplyKeyboardMarkup`: offre i metodi `withResize`, `withOneTime` e `withSelective` per personalizzare un `ReplyKeyboardMarkup` tramite il DSL
 
-Il package object offre infine vari metodi di utility volti a semplificare:
+Il package object offre vari metodi di utility volti a semplificare:
 - La creazione delle tastiere e dei loro bottoni
 - La formattazione di messaggi di tipo HTML e Markdown
 - La definizione dell'operatività di tipo Polling
+
+Infine, nel package object è presente il singleton `*`, una sorta di wildcard usata nel DSL per indicare che un certo tipo di evento deve fare match su qualsiasi elemento. Ad esempio, lo snippet di codice che segue rappresenta la creazione di una reaction che viene eseguita alla ricezione di un qualsiasi messaggio.
+```scala
+<< *
+>> "Reply"
+```
 
 ##### Trait ScalagramDSL
 
