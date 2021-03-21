@@ -40,9 +40,11 @@
     - [Attività di gruppo [Gruppo]](#attività-di-gruppo-gruppo)
       - [DSL](#dsl-1)
   - [6. OPS](#6-ops)
-    - [6.1 Automatic delivery e deployment [Rossi, Pistocchi]](#61-automatic-delivery-e-deployment-rossi-pistocchi)
-    - [6.2 Build automation [Rossi, Pistocchi]](#62-build-automation-rossi-pistocchi)
-    - [6.3 Licensing [Rossi]](#63-licensing-rossi)
+    - [6.1 Automatic delivery e deployment](#61-automatic-delivery-e-deployment)
+      - [Pubblicazione degli artefatti su Maven Central](#pubblicazione-degli-artefatti-su-maven-central)
+    - [6.2 Build automation](#62-build-automation)
+      - [Gestione automatizzata delle dipendenze](#gestione-automatizzata-delle-dipendenze)
+    - [6.3 Licensing](#63-licensing)
     - [6.4 Quality Assurance](#64-quality-assurance)
       - [Testing](#testing)
         - [Testing automatizzato](#testing-automatizzato)
@@ -568,47 +570,66 @@ InlineKeyboard(Callback("Button 1" -> "callback"))
 
 ## 6. OPS
 
-In questa sezione verranno descritti dettagliatamente gli aspetti relativi alla parte di **Operations** (Ops) implementati all'interno del progetto. Con Ops si intendono tutte quelle strategie finalizzate a semplificare ed automatizzare alcuni workflow relativi alla gestione del progetto.
+In questa sezione sono descritti dettagliatamente gli aspetti relativi alla parte di **Operations** (Ops) implementati all'interno del progetto. Con Ops si intendono tutte quelle strategie finalizzate a semplificare e automatizzare alcuni workflow relativi alla gestione del progetto.
 
-L'utilizzo di un ambiente di Continuous Integration (CI), quale GitHub Actions consentirà di eseguire in maniera automatizzata alcune di queste procedure relative sia alla build automation del progetto, come compilazione, testing e quality assurance, ma anche relative alla gestione del repository ed alla pubblicazione degli artefatti.
+L'utilizzo GitHub Actions come ambiente di Continuous Integration (CI) consente di eseguire in maniera automatizzata alcune di queste procedure, relative sia alla build automation del progetto, come compilazione, testing e quality assurance, che alla gestione del repository e alla pubblicazione degli artefatti.
 
-Nelle successive sottosezioni verranno descritte tutte le procedure attuate proprio a questo fine.
+### 6.1 Automatic delivery e deployment
 
-### 6.1 Automatic delivery e deployment [Rossi, Pistocchi]
+In questa sezione sono dettagliati gli aspetti relativi alla gestione automatizzata del repository e alla pubblicazione degli artefatti sulla nota piattaforma Maven Central.
 
-In questa sezione verranno dettagliati gli aspetti relativi alla gestione automatizzata del repository ed alla pubblicazione degli artefatti sulla nota piattaforma Maven Central. Verrà dettagliato inoltre come l'utilizzo dell'integrator ci supporterà interamente durante questa fase.
+Per quanto riguarda la politica di **versioning** il progetto si avvale del semantic versioning, sfruttando le funzionalità offerte dal plugin [gitSemVer](https://github.com/DanySK/git-sensitive-semantic-versioning-gradle-plugin). Per creare le nuove versioni si utilizzano i **tag annotati** di Git.\
+Una volta effettuato il tagging tramite il VCS, ci si avvale dell'integrator per effettuare la **pubblicazione della release**; a questo scopo è stato sviluppato un workflow in grado di reagire alla creazione di un tag annotato, caricando gli artefatti della build sul repository e avviando la procedura di pubblicazione su Maven Central.
 
-- La prima domanda da porsi quando si deve pubblicare software è quella di stabilire la modalità di **versioning**. Per il seguente progetto si è deciso di utilizzare il semantic versioning.
+Il numero di versione della libreria è ottenuto in maniera automatizzata nei seguenti metodi: 
+- Nel README del repository attraverso un [badge](https://github.com/badges/shields)
+- Negli artefatti caricati su Maven Central attraverso il metodo `computeGitSemVer()` del plugin gitSemVer
+- Nelle release di GitHub, essendo queste effettuate al momento della creazione del tag, prendendo semplicemente il suo contenuto
 
-- Per effettuare il versioning si sono utilizzati i **tag annotati** di Git.
+#### Pubblicazione degli artefatti su Maven Central
 
-- Si è sfruttata la possibilità di salvare alcuni **segreti** all'interno dell'integrator, per poi utilizzarli all'interno dei workflows. Si sono salvate ad esempio le credenziali per la pubblicazione su Maven Central.
+La pubblicazione automatica su Maven Central ha richiesto l'esecuzione di vari step riportati di seguito. 
 
-- Una volta effettuato il tagging tramite il vcs, ci si avvale dell'integrator per effettuare la **pubblicazione della release**. A questo scopo è stato sviluppato un workflow in grado di reagire alla pubblicazione di un tag annotato. Vengono sfruttate due actions pubbliche in grado di creare e pubblicare la release all'interno del repository.
+- Creazione di una coppia di chiavi in formato **GPG 2** (2.2.11) per la firma digitale degli artefatti
+- Apertura di una issue su **Sonatype JIRA** per avviare il processo di verifica e registrazione dell'account
+- Configurazione del plugin [Maven Central Gradle Plugin](https://github.com/DanySK/maven-central-gradle-plugin)
+- Aggiunta del plugin [scaladoc](https://plugins.gradle.org/plugin/org.kordamp.gradle.scaladoc) per la generazione di un file JAR non eseguibile contenente la ScalaDoc del progetto
+- Aggiunta dei seguenti segreti al repository: MAVEN_CENTRAL_USERNAME, MAVEN_CENTRAL_PASSWORD, ORG_GRADLE_PROJECT_SIGNINGKEY, ORG_GRADLE_PROJECT_SIGNINGPASSWORD 
+- Creazione del workflow per la pubblicazione su **Nexus Repository Manager**
 
-- Ci si avvale allo stesso modo del task precedente, mediante un ulteriore action pubblica, per effettuare la pubblicazione degli artefatti in maniere automatizzata sul **Maven Central** Repository.
+Per questo processo si è deciso di automatizzare gli step fino all'aggiunta degli artefatti alle staging area di Nexus Repository. Per quanto concerne l'operazione finale di chiusura del repository e pubblicazione su Maven Central, si è deciso di effettuarla manualmente a causa della politica no-retract adottata da Maven.  
 
-### 6.2 Build automation [Rossi, Pistocchi]
+### 6.2 Build automation
 
-Questa sezione dettaglierà come è stata strutturata la fase di build automation all'interno dell'integrator GitHub Actions.
+La fase di build è strutturata in un unico workflow, i cui aspetti principali sono riportati di seguito.
 
-La fase di build è stata strutturata in un unica fase principale (job). Gli aspetti principali considerati in questa procedura sono i seguenti:
+L'utilizzo di una **matrice di build** ha permesso di riutilizzare codice per generalizzare sistema operativo e versione di Java sui quali eseguire il workflow. La matrice contiene i seguenti elementi: 
 
-- L'utilizzo di una **matrice di build** ci ha permesso di effettuare riuso di codice per generalizzare sul **sistema operativo** sul quale viene eseguito il workflow di continuous integration e la configurazione della **versione di Java**.
+- Sistemi operativi: Windows, MacOS e Ubuntu, ciascuno all'ultima versione resa disponibile da GitHub Actions
+- Versioni di Java: 8, 11 e 14
 
-- Si utilizza una action che ci permette di effettuare **l'upload** degli artefatti all'interno dell'ambiente di continuous integration. Questa action viene sfruttata per poter caricare l'output della build, solamente nel caso in cui essa fallisca. Questa proceduta viene effettuate quando si riceve un errore in fasi di compilazione o in fase di test.
+Nel caso in cui la build o i test dovessero fallire, è stata sfruttata una Action per la generazione degli artefatti contenenti l'ouput della console di tutte le celle della matrice sulle quali si è verificato l'errore. 
 
-- È stato inoltre schedulato un **chron job**, che ci permetterà di eseguire il workflow dedicato alla build automation settimanalmente.
+Ai trigger del workflow di CI sono stati aggiunti i seguenti elementi: 
+- Un chron job che esegue periodicamente il workflow con cadenza settimanale
+- La voce `workflow_dispatch` che permette di eseguire la Action direttamente dall'interfaccia di GitHub
 
+#### Gestione automatizzata delle dipendenze
 
-### 6.3 Licensing [Rossi]
+Per l'aggiornamento semiautomatico delle versioni delle librerie utilizzate si è deciso di avvalersi di **Dependabot**, un servizio integrato all'interno di GitHub che effettua una pull request ogni qualvolta una delle dipendenze del progetto non è aggiornata all'ultima versione disponibile. 
 
-La scelta della licenza da applicare al nostro sistema è ricaduta sulla **Apache License 2.0**, ideale per chi vuole sviluppare software open source con supporto a lungo termine.\
-Si tratta di una licenza non copyleft che obbliga gli utenti a preservare l'informativa di diritto d'autore e d'esclusione di responsabilità nelle versioni modificate. In particolar modo i vincoli imposti e gli usi concessi sono i seguenti:
+Sfruttando i workflow di Actions Dependabot è stato configurato con la seguente logica: 
+- Utilizzo di develop come branch target per le pull requests
+- Controllo giornaliero delle versioni delle dipendenze 
+- Merge automatico effettuato solo se i test sul branch creato da Dependabot terminano con successo e si tratta di un incremento della versione di patch. Per quanto concerne major e minor si è deciso di lasciare agli sviluppatori il compito di effettuare il merge manuale
+
+### 6.3 Licensing
+
+La scelta della licenza da applicare a Scalagram è ricaduta sulla **Apache License 2.0**, ideale per chi vuole sviluppare software open source con supporto a lungo termine. Si tratta di una licenza non copyleft che obbliga gli utenti a preservare l'informativa del diritto d'autore e prevede l'esclusione di responsabilità nelle versioni modificate. In particolar modo i vincoli imposti e gli usi concessi sono i seguenti:
 
 | Permessi         | Limitazioni     | Condizioni                     |
 |------------------|-----------------|--------------------------------|
-| Uso commerciale  | Uso del marchio | Licenza e notice del copyright |
+| Uso commerciale  | Uso del marchio | Licenza e avviso di copyright  |
 | Modifica         | Responsabilità  | Notifica dei cambiamenti       |
 | Distribuzione    | Garanzia        |                                |
 | Uso del brevetto |                 |                                |
@@ -656,10 +677,15 @@ La percentuale di coverage ottenuta ammonta a X%. Tale valore è influenzato dal
 
 #### Code style
 
-Il compilatore Scala esegue già numerosi controlli per assicurare una buona qualità del codice. Per renderlo ancora più stringente si è deciso di abilitare gli warning per gli import non utilizzati e convertire tutti gli warning in errori di compilazione.
+Per rendere maggiormente restrittiva la compilazione del codice Scala e quindi garantire una qualità del software più elevata sono stati inseriti una serie di parametri aggiuntivi per i task di tipo **ScalaCompile**: 
+- `-Xfatal-warnings`: se il compilatore rileva dei warning, questi vengono interpretati come effettivi errori di compilazione
+- `-Ywarn-unused`: genera dei warning a seguito del rilevamento di import non utilizzati
+- `-feature`: genera warning per l'uso di feature di Scala che dovrebbero essere abilitate esplicitamente
+- `-language:implicitConversions`: abilita le conversioni implicite di default, silenziando così il feature warning associato
 
 Per quanto riguarda la formattazione del codice, questa viene eseguita in maniera automatizzata dal plugin Gradle Spotless che si appoggia al tool **Scalafmt**. Anche in questo caso, il warning per formattazione non corretta del codice viene convertito in un errore di compilazione.\
-Poiché Scalafmt è supportato da IntelliJ IDEA, è possibile eseguire la formattazione del codice con l'apposito shortcut, mantenendo lo stile definito nel file di configurazione del plugin.
+Poiché Scalafmt è supportato da IntelliJ IDEA, è possibile eseguire la formattazione del codice con l'apposito shortcut, mantenendo lo stile definito nel file di configurazione del plugin.\
+Inoltre l'esecuzione del task **compileScala** dipende da **spotlessCheck**, per assicurarsi che la compilazione del codice avvenga unicamente se questo è formattato correttamente. 
 
 ## 7. Retrospective
 
