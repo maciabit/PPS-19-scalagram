@@ -31,10 +31,10 @@
     - [5.1 Implementazione - Gianni Tumedei](#51-implementazione---gianni-tumedei)
       - [Package PPS19.scalagram.logic](#package-pps19scalagramlogic)
       - [Package PPS19.scalagram.modes](#package-pps19scalagrammodes)
-    - [5.2 Implementazione - Francesco Boschi [Modelli, marshalling]](#52-implementazione---francesco-boschi-modelli-marshalling)
+    - [5.2 Implementazione - Francesco Boschi](#52-implementazione---francesco-boschi)
       - [Package PPS19.scalagram.models](#package-pps19scalagrammodels)
       - [Package PPS19.scalagram.marshalling](#package-pps19scalagrammarshalling)
-    - [Implementazione - Mattia Rossi [Metodi, Esempi]](#implementazione---mattia-rossi-metodi-esempi)
+    - [Implementazione - Mattia Rossi](#implementazione---mattia-rossi)
       - [Package PPS19.scalagram.methods](#package-pps19scalagrammethods)
       - [Package PPS19.scalagram.examples](#package-pps19scalagramexamples)
     - [Attività di gruppo](#attività-di-gruppo)
@@ -43,9 +43,9 @@
         - [Trait ScalagramDSL](#trait-scalagramdsl)
         - [Packages keyboard, middleware, mode, reaction, scene](#packages-keyboard-middleware-mode-reaction-scene)
   - [6. OPS](#6-ops)
-    - [6.1 Automatic delivery e deployment [Rossi, Pistocchi]](#61-automatic-delivery-e-deployment-rossi-pistocchi)
-    - [6.2 Build automation [Rossi, Pistocchi]](#62-build-automation-rossi-pistocchi)
-    - [6.3 Licensing [Rossi]](#63-licensing-rossi)
+    - [6.1 Automatic delivery e deployment](#61-automatic-delivery-e-deployment)
+    - [6.2 Build automation](#62-build-automation)
+    - [6.3 Licensing](#63-licensing)
     - [6.4 Quality Assurance](#64-quality-assurance)
       - [Testing](#testing)
         - [Testing automatizzato](#testing-automatizzato)
@@ -61,43 +61,7 @@
     - [7.6 Sprint 6 (22/02/2020)](#76-sprint-6-22022020)
     - [7.7 Sprint 7 (01/03/2020)](#77-sprint-7-01032020)
     - [7.8 Sprint 8 (08/03/2020)](#78-sprint-8-08032020)
-  - [8. Conclusioni [Gruppo]](#8-conclusioni-gruppo)
-    - [8.1 Sviluppi futuri](#81-sviluppi-futuri)
-    - [8.2 Conclusioni](#82-conclusioni)
-<<<<<<< HEAD
-    - [5.3 Implementazione - Mattia Rossi [Metodi]](#53-implementazione---mattia-rossi-metodi)
-    - [5.4 Implementazione - Attività di gruppo [Gruppo]](#54-implementazione---attività-di-gruppo-gruppo)
-      - [Package PPS19.scalagram.dsl](#package-pps19scalagramdsl)
-        - [Package object dsl](#package-object-dsl)
-        - [Trait ScalagramDSL](#trait-scalagramdsl)
-        - [Packages keyboard, middleware, mode, reaction, scene](#packages-keyboard-middleware-mode-reaction-scene)
-=======
-    - [Implementazione - Mattia Rossi [Metodi, Esempi]](#implementazione---mattia-rossi-metodi-esempi)
-      - [Package PPS19.scalagram.methods](#package-pps19scalagrammethods)
-      - [Package PPS19.scalagram.examples](#package-pps19scalagramexamples)
-    - [Attività di gruppo [Gruppo]](#attività-di-gruppo-gruppo)
-      - [DSL](#dsl-1)
->>>>>>> 120fb73a481779548dce6963a8cd586fa6975019
-  - [6. OPS](#6-ops)
-    - [6.1 Automatic delivery e deployment [Rossi, Pistocchi]](#61-automatic-delivery-e-deployment-rossi-pistocchi)
-    - [6.2 Build automation [Rossi, Pistocchi]](#62-build-automation-rossi-pistocchi)
-    - [6.3 Licensing [Rossi]](#63-licensing-rossi)
-    - [6.4 Quality Assurance](#64-quality-assurance)
-      - [Testing](#testing)
-        - [Testing automatizzato](#testing-automatizzato)
-        - [Testing non automatizzato](#testing-non-automatizzato)
-      - [Coverage](#coverage)
-      - [Code style](#code-style)
-  - [7. Retrospective](#7-retrospective)
-    - [7.1 Sprint 1 (18/01/2020)](#71-sprint-1-18012020)
-    - [7.2 Sprint 2 (25/01/2020)](#72-sprint-2-25012020)
-    - [7.3 Sprint 3 (01/02/2020)](#73-sprint-3-01022020)
-    - [7.4 Sprint 4 (08/02/2020)](#74-sprint-4-08022020)
-    - [7.5 Sprint 5 (15/02/2020)](#75-sprint-5-15022020)
-    - [7.6 Sprint 6 (22/02/2020)](#76-sprint-6-22022020)
-    - [7.7 Sprint 7 (01/03/2020)](#77-sprint-7-01032020)
-    - [7.8 Sprint 8 (08/03/2020)](#78-sprint-8-08032020)
-  - [8. Conclusioni [Gruppo]](#8-conclusioni-gruppo)
+  - [8. Conclusioni](#8-conclusioni)
     - [8.1 Sviluppi futuri](#81-sviluppi-futuri)
     - [8.2 Conclusioni](#82-conclusioni)
 
@@ -414,7 +378,7 @@ In fase di design, si è deciso di seguire la suddivisione definita tramite i Bo
 Nello sviluppo del DSL, col fine di avere un linguaggio il più possibile comprensibile e intuitivo, si è fatto ampio uso dello **zucchero sintattico** messo a disposizione da Scala, come per esempio:
 
 - Possibilità di utilizzare metodi unari come operatori **infissi**
-- Pattern **Pimp my library** per fornire in maniera implicita metodi, conversioni ed estendere tipi esistenti
+- Pattern **Pimp My library** per fornire in maniera implicita metodi, conversioni ed estendere tipi esistenti
 - Possibilità di utilizzare **parentesi graffe** per istanziare liste con un solo argomento
 - Possibilità di omettere la parola chiave **new** nella creazione di un istanza
 
@@ -509,7 +473,7 @@ L'Actor System può essere configurato dallo sviluppatore finale con i seguenti 
 
 Nel caso in cui si decidesse di supportare ulteriormente la libreria implementando anche la modalità Webhook, l'Actor System è stato strutturato in modo da non dover subire drastici cambiamenti per supportare anche un tipo di operatività unicamente push, in aggiunta a quella pull attuale. In modalità Webhook poi sarebbe necessaria la creazione di un server HTTP a cui Telegram può inoltrare gli update, ma anche questa operazione è disponibile tramite Akka.
 
-### 5.2 Implementazione - Francesco Boschi [Modelli, marshalling]
+### 5.2 Implementazione - Francesco Boschi
 
 Boschi Francesco è responsabile dell'implementazione delle seguenti componenti:
 
@@ -529,7 +493,7 @@ In fase di ricezione di un update la classe **Update** è incaricata dell'avvio 
 
 La stessa operazione di conversione in camel case deve essere effettuata in fase di decodifica da tutte le classi le cui istanze possono essere restituite da una chiamata alle API di Telegram, come ad esempio **TelegramMessage**.
 
-In questa sezione del progetto, quindi, il pattern maggiormente presente è certamente **Pimp my library**, utilizzato per estendere le classi messe a disposizione dalla libreria Circe.
+In questa sezione del progetto, quindi, il pattern maggiormente presente è certamente **Pimp My library**, utilizzato per estendere le classi messe a disposizione dalla libreria Circe.
 
 #### Package PPS19.scalagram.marshalling
 
@@ -543,36 +507,39 @@ Per portare a termine queste operazioni si è sfruttata una funzione higher-orde
 Tali funzioni di trasformazione sono definite nel file package object di marhalling e incluse all'interno di una classe CaseString, la quale wrappa la classe String, in modo che tali trasformazioni possano essere usate anche sulle singole stringhe e non necessariamente sui JSON, come accade per esempio nella codifica dell'URL delle richieste che la libreria effettua alle Telegram API.
 
 
-### Implementazione - Mattia Rossi [Metodi, Esempi]
+### Implementazione - Mattia Rossi
 
 Rossi Mattia è responsabile dell'implementazione delle seguenti componenti:
 
 #### Package PPS19.scalagram.methods
-Il contenuto di questo package include la definizione di tutti i metodi delle Telegram API che possono essere utilizzati all'interno della libreria. I metodi sono tutti rappresentati da case class che estendono il trait **TelegramRequest**, il quale accetta come parametro un generico T, che indica il tipo di ritorno della richiesta che si sta implementando.
+Il contenuto di questo package include la definizione di tutti i metodi delle Telegram API che possono essere utilizzati all'interno della libreria. I metodi sono rappresentati da case class che estendono il trait `TelegramRequest`, il quale accetta come parametro un generico T, che indica il tipo di ritorno della richiesta che si sta implementando.
 
-Racchiude inoltre tutta la logica per effettuare le richieste a Telegram, in questo modo all'interno dei metodi sarà necessario unicamente definire i campi che caratterizzano la richiesta, che sono i seguenti:
+`TelegramRequest` racchiude inoltre tutta la logica per effettuare le richieste a Telegram. In questo modo all'interno dei metodi sarà necessario unicamente definire i campi che caratterizzano la richiesta, riportati di seguito:
 
-- **token**: token del bot di tipo BotToken (PPS19.scalagram.logic)
-- **request**: tipo della richiesta HTTP da effettuare, si tratta di un Requester, istanza della libreria utilizzata per effettuare le chiamate HTTP
-- **endpoint**: deve essere concatenato all'URL e identifica l'endpoint del metodo delle API che si vuole richiamare
-- **urlParams**: si tratta di una mappa da String a Any, rappresenta tutti i possibili parametri che possono essere inseriti all'interno dell'URL
-- **multipartFormData**: si tratta di una mappa da String a String (vuota di default); permette di aggiungere parametri alla richiesta che non possono essere specificati all'interno dell'URL, come file multimediali
-- `parseSuccessResponse(json: Json): Try[T]`: metodo che effettua il parsing di un oggetto di tipo JSON e torna un Try del generico T, il cui tipo dipende dal tipo di ritorno del metodo utilizzato
+- `token`: token del bot di tipo `PPS19.scalagram.logic.BotToken`
+- `request`: tipo della richiesta HTTP da effettuare, si tratta di un `Requester` della libreria Requests, utilizzata per effettuare le chiamate HTTP
+- `endpoint`: deve essere concatenato all'URL e identifica l'endpoint del metodo delle API che si vuole richiamare
+- `urlParams`: si tratta di una `Map[String, Any]`, rappresenta tutti i possibili parametri che possono essere inseriti all'interno dell'URL
+- `multipartFormData`: si tratta di una `Map[String, String]` (vuota di default); permette di aggiungere alla richiesta dei **multipart form data**, come file multimediali
+- `parseSuccessResponse(json: Json): Try[T]`: metodo che effettua il parsing di un oggetto JSON e torna un `Try` del tipo generico `T`, indicato nella definizione del metodo utilizzato
 
-I campi che invece devono essere utilizzati per effettuare la richiesta, ma sono già implementati all'interno del trait sono i seguenti:
-- **TELEGRAM_API_URL**: url di base per contattare le API di Telegram
-- **endpointUrl**: URL completo della richiesta effettuata a Telegram, concatena il TELEGRAM_API_URL, il token del bot e l'endpoint da raggiungere
-- **computedUrlParams**: torna una mappa da String a String contenente tutti i parametri presenti nell'URL della richiesta e i rispettivi valori, la mappa viene filtrata per eliminare i parametri che non sono stati specificati
-- **computedMultipartFormData**: torna una lista di MultiItem, ognuno dei quali è un file da allegare alla richiesta
-- **call**: punto di partenza dal quale viene effettivamente lanciata la richiesta alle API di Telegram, al suo interno vengono svolte diverse operazioni di case matching innestate. In prima battuta si istanzia un oggetto Request diverso in base alla presenza o meno di computedMultipartFormData, successivamente viene controllato il risultato della richiesta; se il JSON fornito da Telegram è valido allora la richiesta è andata a buon fine, altrimenti vengono controllati eventuali errori nel parsing o di rete, in quanto vi è l'eventualità di non poter contattare le API per errori di rete o timeout.
+I campi e i metodi che invece devono essere utilizzati per effettuare la richiesta, ma sono già implementati all'interno del trait `TelegramRequest`, sono i seguenti:
+- `TELEGRAM_API_URL`: url di base per contattare le API di Telegram
+- `endpointUrl`: URL completo della richiesta effettuata a Telegram, ottenuto concatenando `TELEGRAM_API_URL`, il token del bot e l'endpoint da raggiungere
+- `computedUrlParams`: `Map[String, String]` contenente tutti i parametri presenti nell'URL della richiesta e i rispettivi valori, filtrata per eliminare i parametri che non sono stati specificati
+- `computedMultipartFormData`: `List[MultiItem]`, ognuno dei quali è un file da allegare alla richiesta
+- `call`: è il metodo che esegue l'effettiva chiamata alle Telegram API. Utilizza la libreria Requests per la richiesta HTTP e il metodo `parseSuccessResponse` per il decoding della risposta.\
+  Il tipo di ritorno di `call` è una monade `Try[T]`, che può assumere i seguenti valori:
+    - `Success(T)`: indica il successo della chiamata e racchiude l'oggetto restituito dalle Telegram API
+    - `Failure(TelegramError)`: indica che la richiesta ha raggiunto i server di Telegram, ma non è andata a buon fine. Un esempio può essere la tentata cancellazione di un messaggio inesistente
+    - `Failure(Throwable)`: indica che la richiesta HTTP è fallita, ad esempio a causa di problemi di rete
+    - `Failure(Error)`: indica che la richiesta è andata a buon fine, ma si è verificato un errore nella decodifica della risposta
 
-Data la natura del trait appena descritto, sia al suo interno che nelle case class che lo estendono, si è fatto ampio uso della monade Try per la gestione degli errori in modo funzionale.
+Di seguito sono riportati tre metodi rappresentativi che estendono TelegramRequest, ciascuno con una diversa implementazione di `parseSuccessResponse`:
 
-Di seguito sono riportati i due metodi fondamentali per il funzionamento di un bot Telegram:
-
-- **GetUpdates**: utilizzato per effettuare il recupero degli update, che vengono messi a disposizione sotto forma di lista. Restituisce sempre successo, poiché il JSON contenente gli update, anche se vuoto, deve essere parsato
-- **SendMessage**: utilizzato per effettuare l'invio di un messaggio, restituisce un oggetto TelegramMessage
-- **PinMessage**:
+- `GetUpdates`: utilizzato per effettuare il download degli update, che vengono messi a disposizione sotto forma di `List[Update]`. Il metodo `parseSuccessResponse`, in questo caso, restituisce sempre `Success(T)`, poiché la decodifica è effettuata a livello di singolo update e non può pertanto fallire in blocco
+- `SendMessage`: utilizzato per effettuare l'invio di un messaggio, restituisce un `Try[TelegramMessage]`
+- `PinMessage`: esegue il pin di un messaggio; in caso di successo non effettua il decoding della risposta in quanto essa contiene un semplice valore booleano settato a true, pertanto restituisce direttamente `Success(true)`
 
 #### Package PPS19.scalagram.examples
 Questo package contiene tutti i bot di esempio necessari a un utente per comprendere le funzionalità di base della libreria, al suo interno è presente un oggetto **SimpleBot** con scope privato, visibile unicamente all'interno del suddetto package, che illustra il funzionamento di middleware, reactions, scenes e avvio del bot senza sfruttare la sintassi del DSL.
@@ -674,7 +641,7 @@ Il package object `dsl` mette a disposizione varie conversioni implicite, utili 
   Keyboard("Button")
   ```
 
-Nel package object vi sono poi tre classi implicite che utilizzano il pattern **pimp my library** per estendere i seguenti elementi:
+Nel package object vi sono poi tre classi implicite che utilizzano il pattern **Pimp My Library** per estendere i seguenti elementi:
 - `String`: aggiunge i metodi:
     - `| : String => List`: permette la creazione di liste a partire da una stringa con la seguente chiamata:
       ```scala
@@ -725,7 +692,7 @@ L'utilizzo di un ambiente di Continuous Integration (CI), quale GitHub Actions c
 
 Nelle successive sottosezioni verranno descritte tutte le procedure attuate proprio a questo fine.
 
-### 6.1 Automatic delivery e deployment [Rossi, Pistocchi]
+### 6.1 Automatic delivery e deployment
 
 In questa sezione verranno dettagliati gli aspetti relativi alla gestione automatizzata del repository ed alla pubblicazione degli artefatti sulla nota piattaforma Maven Central. Verrà dettagliato inoltre come l'utilizzo dell'integrator ci supporterà interamente durante questa fase.
 
@@ -739,7 +706,7 @@ In questa sezione verranno dettagliati gli aspetti relativi alla gestione automa
 
 - Ci si avvale allo stesso modo del task precedente, mediante un ulteriore action pubblica, per effettuare la pubblicazione degli artefatti in maniere automatizzata sul **Maven Central** Repository.
 
-### 6.2 Build automation [Rossi, Pistocchi]
+### 6.2 Build automation
 
 Questa sezione dettaglierà come è stata strutturata la fase di build automation all'interno dell'integrator GitHub Actions.
 
@@ -752,7 +719,7 @@ La fase di build è stata strutturata in un unica fase principale (job). Gli asp
 - È stato inoltre schedulato un **chron job**, che ci permetterà di eseguire il workflow dedicato alla build automation settimanalmente.
 
 
-### 6.3 Licensing [Rossi]
+### 6.3 Licensing
 
 La scelta della licenza da applicare al nostro sistema è ricaduta sulla **Apache License 2.0**, ideale per chi vuole sviluppare software open source con supporto a lungo termine.\
 Si tratta di una licenza non copyleft che obbliga gli utenti a preservare l'informativa di diritto d'autore e d'esclusione di responsabilità nelle versioni modificate. In particolar modo i vincoli imposti e gli usi concessi sono i seguenti:
@@ -769,7 +736,7 @@ Si tratta di una licenza non copyleft che obbliga gli utenti a preservare l'info
 
 #### Testing
 
-Buona parte dello sviluppo ha seguito un approccio TDD (Test Driven Development) facendo uso della libreria ScalaTest e JUnit.\
+Buona parte dello sviluppo ha seguito un approccio TDD (Test Driven Development) facendo uso della libreria ScalaTest e JUnit.
 
 ##### Testing automatizzato
 
@@ -913,30 +880,36 @@ I task per questo sprint sono stati:
 - **Gradle automation process**: aggiunta e configurazione dei plugin per il versioning semantico e la creazione di un jar non eseguibile contenente la ScalaDoc
 - **CI/CD Setup**: refactor del workflow di GitHub Actions e creazione della Action per eseguire automaticamente il merge delle pull requests effettuate da Dependabot
 
-## 8. Conclusioni [Gruppo]
+## 8. Conclusioni
 
 ### 8.1 Sviluppi futuri
-In questa sezione vengono elencati alcuni possibili sviluppi futuri che il eam o uno sviluppatore esterno potrebbe voler sviluppare:
 
-- Implementazione della modalità di lavoro webhook
-- Aggiunta di ulteriori tipologie di messaggi utente, quali video, audio, stickers, sondaggi, animazioni ecc.
-- Aggiunta dei messaggi di sistema mancanti, per facilitare la gestione delle chat
+Le Telegram API offrono un'elevata quantità di funzionalità aggiuntive a quelle implementate in Scalagram. In questa sezione vengono elencati i possibili sviluppi futuri che il team o eventuali contributor potrebbero intraprendere.
+
+- Implementazione della modalità Webhook per il download degli update
+- Gestione della ricezione di ulteriori tipologie di messaggi utente, quali video, audio, stickers, sondaggi, animazioni, ecc.
+- Gestione della ricezione dei messaggi di sistema mancanti, dovuti ad esempio al cambio di titolo o immagine di una chat
 - Aggiunta della modalità di sviluppo di videogiochi interni a Telegram
+- Supporto alla [modalità inline](https://core.telegram.org/bots/inline)
+- Implementazione dei metodi delle Telegram API attualmente non supportati, come sendAudio, sendVideo, kickChatMember, unbanChatMember
 
 Inoltre, poiché l'intero sistema dipende da un servizio esterno, è fondamentale per il corretto funzionamento che la libreria venga mantenuta aggiornata in maniera concorde con le modifiche e le linee guida rilasciate nel tempo da Telegram.\
-A questo scopo, la suddivisione del codice e il design scelto dal team, sono pensati per rendere il codice il più possibile mantenibile e modificabile nel tempo riducendo allo stretto essenziale le relazioni tra le componenti del sistema e la piattaforma di messaggistica.
+A questo scopo, la suddivisione del codice e il design scelto dal team sono pensati per rendere il progetto il più possibile mantenibile e modificabile nel tempo, riducendo allo stretto necessario le relazioni tra le componenti del sistema e la piattaforma di messaggistica.
+
 ### 8.2 Conclusioni
 
-La scelta del progetto è stata fatta con l'idea di sfruttare al massimo le peculiarità del paradigma funzionale, questo ci ha permesso di apprezzare appieno le potenzialità del linguaggio Scala con il progredire dell'applicativo, specialmente durante le fasi avanzate della definizione del DSL.\
-È infatti evidente come alcuni pattern e funzionalità messi a disposizione da Scala, come Pimp My Library e impliciti, uniti al suo zucchero sintattico, abbiano permesso di programmare in maniera relativamente intuitiva un DSL chiaro e facilmente utilizzabile dall'utente finale.
+La scelta del progetto è stata fatta con l'idea di sfruttare al massimo le peculiarità del paradigma funzionale. Questo ci ha permesso di apprezzare appieno le potenzialità del linguaggio Scala con il progredire dell'applicativo, specialmente durante le fasi avanzate della definizione del DSL.\
+È infatti evidente che alcune feature messe a disposizione da Scala, come il pattern Pimp My Library e gli implicit, uniti al suo zucchero sintattico, abbiano permesso di programmare in maniera relativamente intuitiva un DSL chiaro e facilmente utilizzabile dall'utente finale.
 
 Un'attenta e prolungata fase di analisi, definizione del design e modellazione ingegneristica, ha permesso al team di avere le idee chiare sin dai primi Scrum sprint, riducendo al minimo i rischi di sviluppo di porzioni di software inconsistenti e facilitando le operazioni di integrazione, oltre a permettere una migliore parallelizzazione del lavoro.
 
-L’utilizzo dell’approccio di sviluppo agile Scrum per gestire le attività di progetto ha permesso al team di coordinare in maniera molto precisa le attività, rendendo chiari i goal che ogni membro avrebbe dovuto portare a termine settimanalmente.\
+L’utilizzo dell’approccio di sviluppo agile Scrum per gestire le attività di progetto, ha permesso al team di coordinare in maniera molto precisa le attività, rendendo chiari i goal che ogni membro avrebbe dovuto portare a termine settimanalmente.\
 Adottando delivery settimanali, inoltre, tutte le fasi di monitoraggio dei tempi e dello sviluppo del progetto sono risultate più semplici, riducendo ulteriormente i rischi di fallimenti o ritardi nella consegna.
 
-La possibilità inoltre di integrare al progetto tutte le operazioni viste durante il corso Laboratorio di Sistemi Software, vale a dire automatic delivery/deployment, build automation, licensing, quality assurance, coverage e code style, ha permesso ai membri del team di capire l'effettiva importanza nell'utilizzare tecniche di automazione e adottare formalismi atti a rendere il team allineato e coerente durante tutto lo sviluppo.
+La possibilità di integrare tutte le operazioni di DevOps viste durante il corso Laboratorio di Sistemi Software, vale a dire automatic delivery/deployment, build automation, licensing, quality assurance, coverage e code style, ha permesso al team di capire l'effettiva importanza e la comodità nell'utilizzare tecniche di automazione durante tutto il ciclo di vita di un progetto.
+
+Effettuare una fase iniziale di Knowledge Crunching robusta e adottare formalismi espressivi definiti in un Ubiquitous Language ha permesso ai membri di restare allineati e coerenti durante tutto lo sviluppo, riducendo al minimo le incomprensioni.
 
 Nel complesso il team si ritiene quindi soddisfatto del lavoro svolto e del risultato raggiunto.\
-Il progetto è risultato fondamentale per confrontarsi con un problema nuovo e mettere in pratica i concetti teorici appresi durante le lezioni, così da valutarne la reale importanza che spesso è difficile da cogliere fino a quando non si approccia un problema reale.\
-Le competenze acquisite durante questa esperienza risulteranno certamente fondamentale in progetti futuri, siano essi in ambito accademico o lavorativo.
+Il progetto è stato fondamentale per confrontarsi con un problema nuovo e mettere in pratica i concetti teorici appresi durante le lezioni, così da comprenderne l'importanza, che spesso è difficile da cogliere fino a quando non si sviluppa una soluzione reale.\
+Le competenze acquisite durante questa esperienza risulteranno certamente fondamentali in progetti futuri, siano essi in ambito accademico o lavorativo.
