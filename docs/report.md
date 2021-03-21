@@ -1,68 +1,69 @@
-# ScalaGram - Report
-
-- [ScalaGram - Report](#scalagram---report)
-  - [1. Development process](#1-development-process)
-    - [1.1 Divisione dei task](#11-divisione-dei-task)
-    - [1.2 Meeting ed interazioni](#12-meeting-ed-interazioni)
-    - [1.3 Strumenti utilizzati](#13-strumenti-utilizzati)
-  - [2. Requirements](#2-requirements)
-    - [2.1 Requisiti Business](#21-requisiti-business)
-      - [Ubiquitous language](#ubiquitous-language)
-      - [Knowledge crunching](#knowledge-crunching)
-    - [2.2 Requisiti Utente](#22-requisiti-utente)
-    - [2.3 Requisiti Funzionali](#23-requisiti-funzionali)
-      - [User stories](#user-stories)
-      - [DSL](#dsl)
-    - [2.4 Requisiti Non funzionali](#24-requisiti-non-funzionali)
-    - [2.5 Requisiti Implementativi](#25-requisiti-implementativi)
-  - [3. Architectural Design](#3-architectural-design)
-    - [3.1 Bounded context](#31-bounded-context)
-    - [3.2 DSL](#32-dsl)
-      - [Bot token](#bot-token)
-      - [Mode](#mode)
-      - [Middlewares](#middlewares)
-      - [Reactions](#reactions)
-      - [Scenes](#scenes)
-      - [Keyboards](#keyboards)
-  - [4. Design Detail](#4-design-detail)
-    - [4.1 Scelte rilevanti](#41-scelte-rilevanti)
-    - [4.2 Organizzazione del codice](#42-organizzazione-del-codice)
-  - [5. Implementation](#5-implementation)
-    - [5.1 Implementazione - Gianni Tumedei [Logica bot]](#51-implementazione---gianni-tumedei-logica-bot)
-      - [Package PPS19.scalagram.logic](#package-pps19scalagramlogic)
-      - [Package PPS19.scalagram.modes](#package-pps19scalagrammodes)
-    - [5.2 Implementazione - Francesco Boschi [Modelli, marshalling]](#52-implementazione---francesco-boschi-modelli-marshalling)
-      - [Package PPS19.scalagram.models](#package-pps19scalagrammodels)
-      - [Package PPS19.scalagram.marshalling](#package-pps19scalagrammarshalling)
-    - [Implementazione - Mattia Rossi [Metodi, Esempi]](#implementazione---mattia-rossi-metodi-esempi)
-      - [Package PPS19.scalagram.methods](#package-pps19scalagrammethods)
-      - [Package PPS19.scalagram.examples](#package-pps19scalagramexamples)
-    - [Attività di gruppo [Gruppo]](#attività-di-gruppo-gruppo)
-      - [DSL](#dsl-1)
-  - [6. OPS](#6-ops)
-    - [6.1 Automatic delivery e deployment](#61-automatic-delivery-e-deployment)
-      - [Pubblicazione degli artefatti su Maven Central](#pubblicazione-degli-artefatti-su-maven-central)
-    - [6.2 Build automation](#62-build-automation)
-      - [Gestione automatizzata delle dipendenze](#gestione-automatizzata-delle-dipendenze)
-    - [6.3 Licensing](#63-licensing)
-    - [6.4 Quality Assurance](#64-quality-assurance)
-      - [Testing](#testing)
-        - [Testing automatizzato](#testing-automatizzato)
-        - [Testing non automatizzato](#testing-non-automatizzato)
-      - [Coverage](#coverage)
-      - [Code style](#code-style)
-  - [7. Retrospective](#7-retrospective)
-    - [7.1 Sprint 1 (18/01/2020)](#71-sprint-1-18012020)
-    - [7.2 Sprint 2 (25/01/2020)](#72-sprint-2-25012020)
-    - [7.3 Sprint 3 (01/02/2020)](#73-sprint-3-01022020)
-    - [7.4 Sprint 4 (08/02/2020)](#74-sprint-4-08022020)
-    - [7.5 Sprint 5 (15/02/2020)](#75-sprint-5-15022020)
-    - [7.6 Sprint 6 (22/02/2020)](#76-sprint-6-22022020)
-    - [7.7 Sprint 7 (01/03/2020)](#77-sprint-7-01032020)
-    - [7.8 Sprint 8 (08/03/2020)](#78-sprint-8-08032020)
-  - [8. Conclusioni [Gruppo]](#8-conclusioni-gruppo)
-    - [8.1 Sviluppi futuri](#81-sviluppi-futuri)
-    - [8.2 Conclusioni](#82-conclusioni)
+# ScalaGram - Report <!-- omit in toc -->
+- [1. Development process](#1-development-process)
+  - [1.1 Divisione dei task](#11-divisione-dei-task)
+  - [1.2 Meeting ed interazioni](#12-meeting-ed-interazioni)
+  - [1.3 Strumenti utilizzati](#13-strumenti-utilizzati)
+- [2. Requirements](#2-requirements)
+  - [2.1 Requisiti Business](#21-requisiti-business)
+    - [Ubiquitous language](#ubiquitous-language)
+    - [Knowledge crunching](#knowledge-crunching)
+  - [2.2 Requisiti Utente](#22-requisiti-utente)
+  - [2.3 Requisiti Funzionali](#23-requisiti-funzionali)
+    - [User stories](#user-stories)
+    - [DSL](#dsl)
+  - [2.4 Requisiti Non funzionali](#24-requisiti-non-funzionali)
+  - [2.5 Requisiti Implementativi](#25-requisiti-implementativi)
+- [3. Architectural Design](#3-architectural-design)
+  - [3.1 Bounded context](#31-bounded-context)
+  - [3.2 DSL](#32-dsl)
+    - [Bot token](#bot-token)
+    - [Mode](#mode)
+    - [Middlewares](#middlewares)
+    - [Reactions](#reactions)
+    - [Scenes](#scenes)
+    - [Keyboards](#keyboards)
+- [4. Design Detail](#4-design-detail)
+  - [4.1 Scelte rilevanti](#41-scelte-rilevanti)
+  - [4.2 Organizzazione del codice](#42-organizzazione-del-codice)
+- [5. Implementation](#5-implementation)
+  - [5.1 Implementazione - Gianni Tumedei](#51-implementazione---gianni-tumedei)
+    - [Package PPS19.scalagram.logic](#package-pps19scalagramlogic)
+    - [Package PPS19.scalagram.modes](#package-pps19scalagrammodes)
+  - [5.2 Implementazione - Francesco Boschi](#52-implementazione---francesco-boschi)
+    - [Package PPS19.scalagram.models](#package-pps19scalagrammodels)
+    - [Package PPS19.scalagram.marshalling](#package-pps19scalagrammarshalling)
+  - [Implementazione - Mattia Rossi](#implementazione---mattia-rossi)
+    - [Package PPS19.scalagram.methods](#package-pps19scalagrammethods)
+    - [Package PPS19.scalagram.examples](#package-pps19scalagramexamples)
+  - [Attività di gruppo](#attività-di-gruppo)
+    - [Package PPS19.scalagram.dsl](#package-pps19scalagramdsl)
+      - [Package object dsl](#package-object-dsl)
+      - [Trait ScalagramDSL](#trait-scalagramdsl)
+      - [Packages keyboard, middleware, mode, reaction, scene](#packages-keyboard-middleware-mode-reaction-scene)
+- [6. OPS](#6-ops)
+  - [6.1 Automatic delivery e deployment](#61-automatic-delivery-e-deployment)
+    - [Pubblicazione degli artefatti su Maven Central](#pubblicazione-degli-artefatti-su-maven-central)
+  - [6.2 Build automation](#62-build-automation)
+    - [Gestione automatizzata delle dipendenze](#gestione-automatizzata-delle-dipendenze)
+  - [6.3 Licensing](#63-licensing)
+  - [6.4 Quality Assurance](#64-quality-assurance)
+    - [Testing](#testing)
+      - [Testing automatizzato](#testing-automatizzato)
+      - [Testing non automatizzato](#testing-non-automatizzato)
+    - [Coverage](#coverage)
+    - [Code style](#code-style)
+- [7. Retrospective](#7-retrospective)
+  - [7.1 Sprint 1 (18/01/2020)](#71-sprint-1-18012020)
+  - [7.2 Sprint 2 (25/01/2020)](#72-sprint-2-25012020)
+  - [7.3 Sprint 3 (01/02/2020)](#73-sprint-3-01022020)
+  - [7.4 Sprint 4 (08/02/2020)](#74-sprint-4-08022020)
+  - [7.5 Sprint 5 (15/02/2020)](#75-sprint-5-15022020)
+  - [7.6 Sprint 6 (22/02/2020)](#76-sprint-6-22022020)
+  - [7.7 Sprint 7 (01/03/2020)](#77-sprint-7-01032020)
+  - [7.8 Sprint 8 (08/03/2020)](#78-sprint-8-08032020)
+- [8. Conclusioni](#8-conclusioni)
+  - [8.1 Sviluppi futuri](#81-sviluppi-futuri)
+  - [8.2 Conclusioni](#82-conclusioni)
 
 ## 1. Development process
 
@@ -194,10 +195,10 @@ Le user stories sono definite dal punto di vista di un developer, che deve poter
 
 A partire dalle user stories è stato definito il seguente diagramma dei casi d'uso:
 
-<figure align="center">
+<p align="center">
   <img src="./img/use-case.png" alt="Diagramma dei casi d'uso"/>
-  <figcaption>Diagramma dei casi d'uso</figcaption>
-</figure>
+</p>
+<p align="center">Figura 2.1 - Diagramma dei casi d'uso</p>
 
 #### DSL
 
@@ -213,11 +214,9 @@ Durante lo sviluppo si è deciso di distaccarsi da un approccio puramente Object
 
 ## 3. Architectural Design
 
-Design architetturale (architettura complessiva, descrizione di pattern architetturali usati, componenti del sistema distribuito, scelte tecnologiche cruciali ai fini architetturali -- corredato da pochi ma efficaci diagrammi)
-
 ### 3.1 Bounded context
 
-Lo studio del problema ha portato a definire tre aree critiche per la definizione del sistema, le quali necessitano un importante isolamento, al fine di garantire indipendenza e chiara suddivisione dei moduli durante la fase di sviluppo. Una corretta suddivisione dei bounded context in fase iniziale permetterà di scomporre in maniera più chiara il lavoro.
+Lo studio del problema ha portato a definire tre aree critiche che compongono il sistema, le quali necessitano un importante isolamento, al fine di garantire indipendenza e chiara suddivisione dei moduli durante la fase di sviluppo. Una corretta suddivisione dei bounded context in fase iniziale permetterà di scomporre in maniera più chiara il lavoro.
 
 Sono stati definiti i seguenti bounded context:
 - **Bot logic context**: è il core del sistema, comprende le funzionalità dedicate alla definizione della logica di comportamento del bot
@@ -228,29 +227,35 @@ Di seguito è riportata la context map del progetto, da notare che i modelli rel
 
 Queste decisioni impatteranno in maniera significativa successivamente, quando sarà necessario organizzare e scomporre i moduli di basso livello.
 
-<figure align="center">
+<p align="center">
   <img src="./img/context-map.png" alt="Context map"/>
-  <figcaption>Context map</figcaption>
-</figure>
+</p>
+<p align="center">Figura 3.1 - Context map</p>
 
 ### 3.2 DSL
-Dal momento che il DSL della libreria fa da wrapper a tutte le altre funzionalità, la parte di design relativa alla sua sintassi è stata affrontata a partire dal quarto sprint.\
-Di seguito sono riportati tutti i costrutti sintattici del linguaggio:
+
+Dal momento che il DSL della libreria fa da wrapper a tutte le altre funzionalità, la parte di design relativa alla sua sintassi è stata affrontata a partire dal quarto sprint, quando le funzionalità core della libreria erano ormai sufficientemente solide.
+
+Di seguito sono riportati tutti i costrutti sintattici del linguaggio.
 
 #### Bot token
+Permette di settare il token del bot.
 ```scala
 token("<TOKEN>")
 ```
+
 #### Mode
+Permette di settare la modalità di download degli update.
 ```scala
 mode(Polling)
 ```
-
 Opzionalmente è possibile specificare l'intervallo di polling e timeout.
 ```scala
 mode(Polling interval 300.milliseconds timeoutDelay 1.days)
 ```
+
 #### Middlewares
+Permette di settare i middleware del bot.
 ```scala
 middlewares (
 
@@ -265,105 +270,139 @@ middlewares (
   }
 )
 ```
+
 #### Reactions
+Permette di settare le reaction del bot.\
+Ogni reaction è formata da due parti. La prima indica che tipo di evento deve avvenire mentre la seconda quale azione va effettuata in seguito a tale evento.\
+Lo snippet di codice sottostante riporta tutte le tipologie di reaction che è possibile creare con il DSL, correlate da opportuni commenti.
 ```scala
 reactions (
 
-  !! // /start
+  // React to the "/start" message
+  !!
   >> "Welcome!"
 
+  // React to to the "/hello" message
   << "/hello"
-  >> "ciao Gianni"
+  >> "Hi there"
 
+  // React to a message with content equal to one of this strings
   << ("message" | "another message" | "one more message")
-  >> { context =>  // Action
+  >> { context =>
     ...
   }
 
-  << "/hello"
-  >> "ciao Gianni"
+  // React to any incoming message
+  << *
+  >> "Ok"
 
+  // React to to a callback query with "callback" as data
   <~ "callback"
   >> "callback reply"
 
-  << "/hello"
+  // Reply to the "/html" command by sending a message interpreted as HTML
+  << "/html"
   >> HTML("<b>Ciao Gianni</b>")
 
-  << "/hello"
+  // Reply to the "/markdown" command by sending a message interpreted as Markdown
+  << "/markdown"
   >> MD("**Ciao Gianni**")
 
-  << "/hello"
+  // Reply to the "/keyboard" command by sending a message with an attached keyboard
+  << "/keyboard"
   >> "Hi" - Keyboard(...)
 
-  // Message edited
+  // React to an edited message with new content equal to "edited message"
   <* "edited message"
-  >> "Reply"
+  >> "A message has been edited"
 
-  // Message pinned
-  <^
-  >> "Message pinned"
+  // React to an edited message with new content equal to one of the given strings
+  <* ("edited message" | "another edited message")
+  >> "A message has been edited"
 
-  // Chat enter
-  <+
+  // React to to any edited message
+  <* *
+  >> "A message has been edited"
+
+  // React to any pinned message
+  <^ *
+  >> "A message has been pinned"
+
+  // React to to a new user entering a chat
+  <+ *
   >> "Welcome"
 
-  // Chat leave
-  </
+  // React to a user leaving a chat
+  </ *
   >> "Goodbye"
 
-  // Regex match
+  // React to to an incoming message that passes the given regular expression
   <# "regexp"
   >> "reply"
+
 )
 ```
+
 #### Scenes
+Permette di settare le scene del bot.\
+Ogni `Scene` è composta da un nome e da una serie di `Step`. Gli step sono a loro volta composti da un nome e da un'action, ossia una funzione `Context => Boolean`.
 ```scala
 scenes (
 
   scene (
-    "Scene name"
+    "SCENE_NAME"
 
-    <| "Step name"
-    >> "Reply"
+    <| "STEP1_NAME"
+    >> { context =>
+      context.reply("Reply")
+      context.nextStep()
+    }
 
-    <| "Second step name"
+    <| "STEP2_NAME"
     >> { context =>
       ...
     }
   )
 
   scene (
-    "Another scene"
+    "ANOTHER_SCENE"
 
-    <| "Step"
+    <| "STEP"
     >> "Reply"
   )
 
 )
 ```
+
 #### Keyboards
+Il DSL per le keyboard è stato strutturato in modo da rendere il più possibile evidente il layout della tastiera, al contempo mantenendo un elevato grado di espressività dal punto di vista delle azioni dei pulsanti.
+
+Per le tastiere di tipo `ReplyKeyboardMarkup`, un normale bottone può essere creato semplicemente passando una stringa al metodo `Keyboard`.\
+Le tastiere inline (`InlineKeyboardMarkup`) non possono avere bottoni solo testuali, ma è necessario indicare per ognuno di essi il campo `callbackData`. Per semplificare questa operazione, vi è anche in questo caso la possibilità di passare una semplice stringa al metodo `InlineKeyboard` per creare un bottone il cui valore del campo `callbackData` equivale al suo contenuto testuale.
+
+Seguono alcuni esempi.
+
+Tastiera con un bottone sulla prima riga e due sulla seconda
 ```scala
-Button("Button text")
-LinkButton("Button text", "URL")
-CallbackButton("Button text", "callback data")
-
-// Keyboard definition
-trait ReplyKeyboard
-Keyboard(...) extends ReplyKeyboard
-InlineKeyboard(...) extends ReplyKeyboard
-
-// Keyboard creation
-Keyboard(("Button 1"))
 Keyboard(
-  "Button 1" :: "Button 2",
-  "Button 3" :: "Button 4"
+  "Button 1",
+  "Button 2" :: "Button 3"
 )
-Keyboard("Button 1" contact :: "Button 2" location)
+```
 
+Tastiera inline contenente vari link
+```scala
 InlineKeyboard(
-  "Button 1" callback "callback1" :: "Button 2" callback "callback2",
-  "Link 1" link "url1" :: "Link 2" link "url2"
+  Link("GitHub" -> "https://www.github.com"),
+  Link("Bitbucket" -> "https://www.bitbucket.org")
 )
+```
+
+Altri esempi di bottoni che è possibile creare
+```scala
+Callback("Button text" -> "callbackData")
+Location("Button")
+Contact("Button")
 ```
 
 ## 4. Design Detail
@@ -377,7 +416,7 @@ In fase di design, si è deciso di seguire la suddivisione definita tramite i Bo
 Nello sviluppo del DSL, col fine di avere un linguaggio il più possibile comprensibile e intuitivo, si è fatto ampio uso dello **zucchero sintattico** messo a disposizione da Scala, come per esempio:
 
 - Possibilità di utilizzare metodi unari come operatori **infissi**
-- Pattern **Pimp my library** per fornire in maniera implicita metodi, conversioni ed estendere tipi esistenti
+- Pattern **Pimp My library** per fornire in maniera implicita metodi, conversioni ed estendere tipi esistenti
 - Possibilità di utilizzare **parentesi graffe** per istanziare liste con un solo argomento
 - Possibilità di omettere la parola chiave **new** nella creazione di un istanza
 
@@ -405,16 +444,16 @@ L'organizzazione dei package del progetto riflette i bounded context definiti in
 - `utils`: contiene alcuni metodi di utility privati utilizzati all'interno della libreria.
 - `examples`: contiene alcuni bot di esempio a cui gli sviluppatori possono fare riferimento.
 
-<figure align="center">
+<p align="center">
   <img src="./img/code-organization.png" alt="Organizzazione del codice"/>
-  <figcaption>Organizzazione del codice</figcaption>
-</figure>
+</p>
+<p align="center">Figura 4.1 - Organizzazione del codice</p>
 
 ## 5. Implementation
 
 Implementazione (per ogni studente, una sotto-sezione descrittiva di cosa fatto/co-fatto e con chi, e descrizione di aspetti implementativi importanti non già presenti nel design)
 
-### 5.1 Implementazione - Gianni Tumedei [Logica bot]
+### 5.1 Implementazione - Gianni Tumedei
 
 Gianni Tumedei è responsabile dell'implementazione dei seguenti componenti:
 
@@ -436,11 +475,12 @@ Il package `PPS19.scalagram.logic.reactions` contiene il trait `ReactionBuilder`
 Il trait `Scalagram` rappresenta un bot Telegram creato con questa libreria. Oltre alle operazioni che caratterizzano il bot, mette a disposizione degli shortcut ai metodi definiti nel package `PPS19.scalagram.methods`, in modo da facilitare lo sviluppatore finale e ridurre il numero di import da egli richiesto.\
 Il companion object di `Scalagram` fornisce un'implementazione immutabile e privata del trait, utilizzata nel metodo `apply`. Inoltre, sempre per migliorare la quality of life dello sviluppatore finale, sono qui inseriti dei riferimenti ai metodi di `PPS19.scalagram.logic.reactions`.
 
-Il trait `Context` rappresenta, appunto, il contesto di esecuzione di un bot. Esiste un'istanza di `Context` per ogni chat su cui il bot sta comunicando, che contiene vari campi utili allo sviluppatore finale, come:
+Il trait `Context` rappresenta, appunto, il contesto di esecuzione di un bot. Esiste un'istanza di `Context` per ogni chat su cui il bot sta comunicando, che contiene vari shortcut utili allo sviluppatore finale, come:
 - Un riferimento al bot
 - Una `Map` su cui è possibile memorizzare dati tra un'interazione e l'altra
 - Un riferimento alla chat del `Context`
 - Un riferimento all'ultimo `Update` ricevuto, al suo `Payload` e allo `User` che lo ha generato
+- Un metodo `reply`, da utilizzare come alternativa rapida a `sendMessage` in quanto permette di omettere la chat di destinazione, valorizzandola automaticamente a quella attuale
 
 `Context` include poi i metodi necessari all'attivazione delle `Scene` e dei loro `Step`.\
 Il companion object di `Context` fornisce un'implementazione privata del trait, sfruttata dal metodo `apply`.
@@ -471,7 +511,7 @@ L'Actor System può essere configurato dallo sviluppatore finale con i seguenti 
 
 Nel caso in cui si decidesse di supportare ulteriormente la libreria implementando anche la modalità Webhook, l'Actor System è stato strutturato in modo da non dover subire drastici cambiamenti per supportare anche un tipo di operatività unicamente push, in aggiunta a quella pull attuale. In modalità Webhook poi sarebbe necessaria la creazione di un server HTTP a cui Telegram può inoltrare gli update, ma anche questa operazione è disponibile tramite Akka.
 
-### 5.2 Implementazione - Francesco Boschi [Modelli, marshalling]
+### 5.2 Implementazione - Francesco Boschi
 
 Boschi Francesco è responsabile dell'implementazione delle seguenti componenti:
 
@@ -491,7 +531,7 @@ In fase di ricezione di un update la classe **Update** è incaricata dell'avvio 
 
 La stessa operazione di conversione in camel case deve essere effettuata in fase di decodifica da tutte le classi le cui istanze possono essere restituite da una chiamata alle API di Telegram, come ad esempio **TelegramMessage**.
 
-In questa sezione del progetto, quindi, il pattern maggiormente presente è certamente **Pimp my library**, utilizzato per estendere le classi messe a disposizione dalla libreria Circe.
+In questa sezione del progetto, quindi, il pattern maggiormente presente è certamente **Pimp My library**, utilizzato per estendere le classi messe a disposizione dalla libreria Circe.
 
 #### Package PPS19.scalagram.marshalling
 
@@ -505,41 +545,44 @@ Per portare a termine queste operazioni si è sfruttata una funzione higher-orde
 Tali funzioni di trasformazione sono definite nel file package object di marhalling e incluse all'interno di una classe CaseString, la quale wrappa la classe String, in modo che tali trasformazioni possano essere usate anche sulle singole stringhe e non necessariamente sui JSON, come accade per esempio nella codifica dell'URL delle richieste che la libreria effettua alle Telegram API.
 
 
-### Implementazione - Mattia Rossi [Metodi, Esempi]
+### Implementazione - Mattia Rossi
 
 Rossi Mattia è responsabile dell'implementazione delle seguenti componenti:
 
 #### Package PPS19.scalagram.methods
-Il contenuto di questo package include la definizione di tutti i metodi delle Telegram API che possono essere utilizzati all'interno della libreria. I metodi sono tutti rappresentati da case class che estendono il trait **TelegramRequest**, il quale accetta come parametro un generico T, che indica il tipo di ritorno della richiesta che si sta implementando.
+Il contenuto di questo package include la definizione di tutti i metodi delle Telegram API che possono essere utilizzati all'interno della libreria. I metodi sono rappresentati da case class che estendono il trait `TelegramRequest`, il quale accetta come parametro un generico T, che indica il tipo di ritorno della richiesta che si sta implementando.
 
-Racchiude inoltre tutta la logica per effettuare le richieste a Telegram, in questo modo all'interno dei metodi sarà necessario unicamente definire i campi che caratterizzano la richiesta, che sono i seguenti: 
+`TelegramRequest` racchiude inoltre tutta la logica per effettuare le richieste a Telegram. In questo modo all'interno dei metodi sarà necessario unicamente definire i campi che caratterizzano la richiesta, riportati di seguito:
 
-- **token**: token del bot di tipo BotToken (PPS19.scalagram.logic)
-- **request**: tipo della richiesta HTTP da effettuare, si tratta di un Requester, istanza della libreria utilizzata per effettuare le chiamate HTTP
-- **endpoint**: deve essere concatenato all'URL e identifica l'endpoint del metodo delle API che si vuole richiamare
-- **urlParams**: si tratta di una mappa da String a Any, rappresenta tutti i possibili parametri che possono essere inseriti all'interno dell'URL
-- **multipartFormData**: si tratta di una mappa da String a String (vuota di default); permette di aggiungere parametri alla richiesta che non possono essere specificati all'interno dell'URL, come file multimediali
-- `parseSuccessResponse(json: Json): Try[T]`: metodo che effettua il parsing di un oggetto di tipo JSON e torna un Try del generico T, il cui tipo dipende dal tipo di ritorno del metodo utilizzato
- 
-I campi che invece devono essere utilizzati per effettuare la richiesta, ma sono già implementati all'interno del trait sono i seguenti: 
-- **TELEGRAM_API_URL**: url di base per contattare le API di Telegram
-- **endpointUrl**: URL completo della richiesta effettuata a Telegram, concatena il TELEGRAM_API_URL, il token del bot e l'endpoint da raggiungere
-- **computedUrlParams**: torna una mappa da String a String contenente tutti i parametri presenti nell'URL della richiesta e i rispettivi valori, la mappa viene filtrata per eliminare i parametri che non sono stati specificati
-- **computedMultipartFormData**: torna una lista di MultiItem, ognuno dei quali è un file da allegare alla richiesta
-- **call**: punto di partenza dal quale viene effettivamente lanciata la richiesta alle API di Telegram, al suo interno vengono svolte diverse operazioni di case matching innestate. In prima battuta si istanzia un oggetto Request diverso in base alla presenza o meno di computedMultipartFormData, successivamente viene controllato il risultato della richiesta; se il JSON fornito da Telegram è valido allora la richiesta è andata a buon fine, altrimenti vengono controllati eventuali errori nel parsing o di rete, in quanto vi è l'eventualità di non poter contattare le API per errori di rete o timeout.  
+- `token`: token del bot di tipo `PPS19.scalagram.logic.BotToken`
+- `request`: tipo della richiesta HTTP da effettuare, si tratta di un `Requester` della libreria Requests, utilizzata per effettuare le chiamate HTTP
+- `endpoint`: deve essere concatenato all'URL e identifica l'endpoint del metodo delle API che si vuole richiamare
+- `urlParams`: si tratta di una `Map[String, Any]`, rappresenta tutti i possibili parametri che possono essere inseriti all'interno dell'URL
+- `multipartFormData`: si tratta di una `Map[String, String]` (vuota di default); permette di aggiungere alla richiesta dei **multipart form data**, come file multimediali
+- `parseSuccessResponse(json: Json): Try[T]`: metodo che effettua il parsing di un oggetto JSON e torna un `Try` del tipo generico `T`, indicato nella definizione del metodo utilizzato
 
-Data la natura del trait appena descritto, sia al suo interno che nelle case class che lo estendono, si è fatto ampio uso della monade Try per la gestione degli errori in modo funzionale. 
+I campi e i metodi che invece devono essere utilizzati per effettuare la richiesta, ma sono già implementati all'interno del trait `TelegramRequest`, sono i seguenti:
+- `TELEGRAM_API_URL`: url di base per contattare le API di Telegram
+- `endpointUrl`: URL completo della richiesta effettuata a Telegram, ottenuto concatenando `TELEGRAM_API_URL`, il token del bot e l'endpoint da raggiungere
+- `computedUrlParams`: `Map[String, String]` contenente tutti i parametri presenti nell'URL della richiesta e i rispettivi valori, filtrata per eliminare i parametri che non sono stati specificati
+- `computedMultipartFormData`: `List[MultiItem]`, ognuno dei quali è un file da allegare alla richiesta
+- `call`: è il metodo che esegue l'effettiva chiamata alle Telegram API. Utilizza la libreria Requests per la richiesta HTTP e il metodo `parseSuccessResponse` per il decoding della risposta.\
+  Il tipo di ritorno di `call` è una monade `Try[T]`, che può assumere i seguenti valori:
+    - `Success(T)`: indica il successo della chiamata e racchiude l'oggetto restituito dalle Telegram API
+    - `Failure(TelegramError)`: indica che la richiesta ha raggiunto i server di Telegram, ma non è andata a buon fine. Un esempio può essere la tentata cancellazione di un messaggio inesistente
+    - `Failure(Throwable)`: indica che la richiesta HTTP è fallita, ad esempio a causa di problemi di rete
+    - `Failure(Error)`: indica che la richiesta è andata a buon fine, ma si è verificato un errore nella decodifica della risposta
 
-Di seguito sono riportati i due metodi fondamentali per il funzionamento di un bot Telegram:
+Di seguito sono riportati tre metodi rappresentativi che estendono TelegramRequest, ciascuno con una diversa implementazione di `parseSuccessResponse`:
 
-- **GetUpdates**: utilizzato per effettuare il recupero degli update, che vengono messi a disposizione sotto forma di lista. Restituisce sempre successo, poiché il JSON contenente gli update, anche se vuoto, deve essere parsato
-- **SendMessage**: utilizzato per effettuare l'invio di un messaggio, restituisce un oggetto TelegramMessage
-- **PinMessage**: 
+- `GetUpdates`: utilizzato per effettuare il download degli update, che vengono messi a disposizione sotto forma di `List[Update]`. Il metodo `parseSuccessResponse`, in questo caso, restituisce sempre `Success(T)`, poiché la decodifica è effettuata a livello di singolo update e non può pertanto fallire in blocco
+- `SendMessage`: utilizzato per effettuare l'invio di un messaggio, restituisce un `Try[TelegramMessage]`
+- `PinMessage`: esegue il pin di un messaggio; in caso di successo non effettua il decoding della risposta in quanto essa contiene un semplice valore booleano settato a true, pertanto restituisce direttamente `Success(true)`
 
 #### Package PPS19.scalagram.examples
 Questo package contiene tutti i bot di esempio necessari a un utente per comprendere le funzionalità di base della libreria, al suo interno è presente un oggetto **SimpleBot** con scope privato, visibile unicamente all'interno del suddetto package, che illustra il funzionamento di middleware, reactions, scenes e avvio del bot senza sfruttare la sintassi del DSL.
 
-All'interno del package **PPS19.scalagram.examples.dsl** sono presenti quattro oggetti, anch'essi con scope privato e quindi visibili solo all'interno del package di appartenenza, ognuno dei quali rappresenta un'istanza del trait **ScalagramDSL** e quindi un bot che sfrutta la sintassi del DSL. 
+All'interno del package **PPS19.scalagram.examples.dsl** sono presenti quattro oggetti, anch'essi con scope privato e quindi visibili solo all'interno del package di appartenenza, ognuno dei quali rappresenta un'istanza del trait **ScalagramDSL** e quindi un bot che sfrutta la sintassi del DSL.
 
 - **CommandsBot.scala**: illustra l'utilizzo delle reaction
 - **KeyboardsBot.scala**: illustra l'utilizzo delle tastiere
@@ -565,8 +608,125 @@ Medesima operazione sfruttando la sintassi del DSL
 InlineKeyboard(Callback("Button 1" -> "callback"))
 ```
 
-### Attività di gruppo [Gruppo]
-#### DSL
+### Attività di gruppo
+
+#### Package PPS19.scalagram.dsl
+
+Essendo un parte trasversale della libreria, che wrappa tutte le sue funzionalità, il DSL è stato sviluppato dal team lavorando prevalentemente in gruppo.
+
+Il package `dsl` costituisce buona parte dell'API che l'utente finale utilizzerà sviluppando dei bot con la libreria Scalagram, ed è strutturato come segue:
+- Package object `dsl`: contiene tutti gli impliciti necessari alla corretta compilazione del DSL e vari metodi di utility
+- Trait `ScalagramDSL`: è il trait da estendere quando si vuole creare un bot utilizzando il DSL
+- Package `keyboard`, `middleware`, `mode`, `reaction` e `scene`: contengono ciascuno il DSL della parte di libreria da cui prendono il nome
+
+##### Package object dsl
+
+Il package object `dsl` mette a disposizione varie conversioni implicite, utili per rendere il linguaggio più sintetico ed espressivo e riportate di seguito.
+- `String` to `Context => Unit`: permette di trasformare la seguente sintassi
+  ```scala
+  reactions(
+    << "Message"
+    >> { context =>
+      context.reply("Reply")
+    }
+  )
+  ```
+  in
+  ```scala
+  reactions(
+    << "Message"
+    >> "Reply"
+  )
+  ```
+- `MessageContainer` to `Context => Unit`: permette di trasformare la seguente sintassi
+  ```scala
+  reactions(
+    << "Message"
+    >> { context =>
+      context.reply("Reply", Some(Keyboard("Button")))
+    }
+  )
+  ```
+  in
+  ```scala
+  reactions(
+    << "Message"
+    >> "Reply" - Keyboard("Button")
+  )
+  ```
+- `String` to `MessageContainer`: permette di trasformare la seguente sintassi
+  ```scala
+  reactions(
+    << "Message"
+    >> MessageContainer("Reply", None, Some(Left(Keyboard("Button"))))
+  )
+  ```
+  in
+  ```scala
+  reactions(
+    << "Message"
+    >> "Reply" - Keyboard("Button")
+  )
+  ```
+- `String` to `KeyboardButtonContainer`\
+  `String` to `KeyboardButtonRow`\
+  `KeyboardButtonContainer` to `KeyboardButtonRow`: permettono di assieme di trasformare la seguente sintassi
+  ```scala
+  Keyboard(KeyboardRow(KeyboardButtonContainer("Button")))
+  ```
+  in
+  ```scala
+  Keyboard("Button")
+  ```
+
+Nel package object vi sono poi tre classi implicite che utilizzano il pattern **Pimp My Library** per estendere i seguenti elementi:
+- `String`: aggiunge i metodi:
+    - `| : String => List`: permette la creazione di liste a partire da una stringa con la seguente chiamata:
+      ```scala
+      "string1" | "string2"
+      ```
+    - `<|: String => PartialStepContainer`: permette la creazione delle `Scene` con la seguente sintassi:
+      ```scala
+      Scene(
+        "SCENE_NAME"
+
+        <| "STEP_NAME"
+        >> "Reply"
+      )
+      ```
+- `List`: offre il simbolo `|` come ulteriore alias per `appended` e `+:`, che in concomitanza con il pimping di `String`, consente la creazione di liste con la seguente sintassi, utilizzata nel DSL per indicare una reaction che viene eseguita se il messaggio ricevuto corrisponde ad una delle stringhe indicate:
+  ```scala
+  "string1" | "string2" | "string3"
+  ```
+- `ReplyKeyboardMarkup`: offre i metodi `withResize`, `withOneTime` e `withSelective` per personalizzare un `ReplyKeyboardMarkup` tramite il DSL
+
+Il package object offre vari metodi di utility volti a semplificare:
+- La creazione delle tastiere e dei loro bottoni
+- La formattazione di messaggi di tipo HTML e Markdown
+- La definizione dell'operatività di tipo Polling
+
+Infine, nel package object è presente il singleton `*`, una sorta di wildcard usata nel DSL per indicare che un certo tipo di evento deve fare match su qualsiasi elemento. Ad esempio, lo snippet di codice che segue rappresenta la creazione di una reaction che viene eseguita alla ricezione di un qualsiasi messaggio.
+```scala
+<< *
+>> "Reply"
+```
+
+##### Trait ScalagramDSL
+
+Questo trait offre le basi per la realizzazione di un bot con il DSL della libreria e va pertanto esteso in un object dallo sviluppatore finale.
+
+L'object creato a partire da ScalagramDSL è una sorta di builder, che permette di configurare i parametri del bot tramite i metodi: `token`, `mode`, `middlewares`, `reactions` e `scenes`.\
+Una volta definite questa caratteristiche, `ScalagramDSL` mette a disposizione un metodo `start()` per istanziare e avviare un bot di classe `Scalagram`.
+
+##### Packages keyboard, middleware, mode, reaction, scene
+
+Questi package e le classi che contengono hanno una struttura piuttosto simile tra loro, in quanto ciascuno di essi effettua il wrap della corrispondente feature della libreria per offrirne il DSL. Si prenda come esempio il wrapper `MiddlewareContainer`:
+- È una case class immutabile, creata a partire da una `List[Middleware]`
+- Mette a disposizione un metodo `<>` che, data una funzione `Context => Boolean`, restituisce una nuova istanza di `MiddlewareContainer`, contenente tutti i `Middleware` della lista precedente più uno nuovo creato a partire da questo
+
+Un caso particolare è quello di `ReactionContainer`. Dal momento che il DSL prevede due step per la creazione di una reaction, e solo una lista di reaction complete può essere passata al metodo `reactions` di `ScalagramDSL`, si è deciso di creare ReactionContainer come trait con due implementazioni:
+- `PartialReactionContainer`: wrappa una `List[Reaction]` e una reaction di cui non è stata ancora specificata l'action. Una sua istanza non può essere passata al metodo `reactions` in quanto contiene una reaction incompleta, ma definisce il metodo `>>` per terminarne la creazione
+- `TotalReactionContainer`: wrappa una `List[Reaction]` completa e può quindi essere passato al metodo `reactions`. Offre vari metodi per iniziare la creazione di una nuova reaction, come `<<` e `<*`
 
 ## 6. OPS
 
@@ -639,7 +799,7 @@ La scelta della licenza da applicare a Scalagram è ricaduta sulla **Apache Lice
 
 #### Testing
 
-Buona parte dello sviluppo ha seguito un approccio TDD (Test Driven Development) facendo uso della libreria ScalaTest e JUnit.\
+Buona parte dello sviluppo ha seguito un approccio TDD (Test Driven Development) facendo uso della libreria ScalaTest e JUnit.
 
 ##### Testing automatizzato
 
@@ -665,15 +825,15 @@ Il testing automatizzato delle chiamate alle API è stato escluso a causa delle 
 La copertura dei test è stata verificata tramite il plugin **Gradle Scoverage**.\
 La percentuale di coverage ottenuta ammonta a X%. Tale valore è influenzato dalle funzionalità testate in maniera non automatizzata, senza le quali la percentuale di statement coverage supererebbe il 90%.
 
-<figure align="center">
+<p align="center">
   <img src="img/statement-coverage.png" alt="Statement coverage"/>
-  <figcaption>Statement coverage</figcaption>
-</figure>
+</p>
+<p align="center">Figura 6.1 - Statement coverage</p>
 
-<figure align="center">
+<p align="center">
   <img src="img/package-coverage.png" alt="Package coverage"/>
-  <figcaption>Package coverage</figcaption>
-</figure>
+</p>
+<p align="center">Figura 6.2 - Package coverage</p>
 
 #### Code style
 
@@ -788,8 +948,36 @@ I task per questo sprint sono stati:
 - **Gradle automation process**: aggiunta e configurazione dei plugin per il versioning semantico e la creazione di un jar non eseguibile contenente la ScalaDoc
 - **CI/CD Setup**: refactor del workflow di GitHub Actions e creazione della Action per eseguire automaticamente il merge delle pull requests effettuate da Dependabot
 
-## 8. Conclusioni [Gruppo]
+## 8. Conclusioni
 
 ### 8.1 Sviluppi futuri
 
+Le Telegram API offrono un'elevata quantità di funzionalità aggiuntive a quelle implementate in Scalagram. In questa sezione vengono elencati i possibili sviluppi futuri che il team o eventuali contributor potrebbero intraprendere.
+
+- Implementazione della modalità Webhook per il download degli update
+- Gestione della ricezione di ulteriori tipologie di messaggi utente, quali video, audio, stickers, sondaggi, animazioni, ecc.
+- Gestione della ricezione dei messaggi di sistema mancanti, dovuti ad esempio al cambio di titolo o immagine di una chat
+- Aggiunta della modalità di sviluppo di videogiochi interni a Telegram
+- Supporto alla [modalità inline](https://core.telegram.org/bots/inline)
+- Implementazione dei metodi delle Telegram API attualmente non supportati, come sendAudio, sendVideo, kickChatMember, unbanChatMember
+
+Inoltre, poiché l'intero sistema dipende da un servizio esterno, è fondamentale per il corretto funzionamento che la libreria venga mantenuta aggiornata in maniera concorde con le modifiche e le linee guida rilasciate nel tempo da Telegram.\
+A questo scopo, la suddivisione del codice e il design scelto dal team sono pensati per rendere il progetto il più possibile mantenibile e modificabile nel tempo, riducendo allo stretto necessario le relazioni tra le componenti del sistema e la piattaforma di messaggistica.
+
 ### 8.2 Conclusioni
+
+La scelta del progetto è stata fatta con l'idea di sfruttare al massimo le peculiarità del paradigma funzionale. Questo ci ha permesso di apprezzare appieno le potenzialità del linguaggio Scala con il progredire dell'applicativo, specialmente durante le fasi avanzate della definizione del DSL.\
+È infatti evidente che alcune feature messe a disposizione da Scala, come il pattern Pimp My Library e gli implicit, uniti al suo zucchero sintattico, abbiano permesso di programmare in maniera relativamente intuitiva un DSL chiaro e facilmente utilizzabile dall'utente finale.
+
+Un'attenta e prolungata fase di analisi, definizione del design e modellazione ingegneristica, ha permesso al team di avere le idee chiare sin dai primi Scrum sprint, riducendo al minimo i rischi di sviluppo di porzioni di software inconsistenti e facilitando le operazioni di integrazione, oltre a permettere una migliore parallelizzazione del lavoro.
+
+L’utilizzo dell’approccio di sviluppo agile Scrum per gestire le attività di progetto, ha permesso al team di coordinare in maniera molto precisa le attività, rendendo chiari i goal che ogni membro avrebbe dovuto portare a termine settimanalmente.\
+Adottando delivery settimanali, inoltre, tutte le fasi di monitoraggio dei tempi e dello sviluppo del progetto sono risultate più semplici, riducendo ulteriormente i rischi di fallimenti o ritardi nella consegna.
+
+La possibilità di integrare tutte le operazioni di DevOps viste durante il corso Laboratorio di Sistemi Software, vale a dire automatic delivery/deployment, build automation, licensing, quality assurance, coverage e code style, ha permesso al team di capire l'effettiva importanza e la comodità nell'utilizzare tecniche di automazione durante tutto il ciclo di vita di un progetto.
+
+Effettuare una fase iniziale di Knowledge Crunching robusta e adottare formalismi espressivi definiti in un Ubiquitous Language ha permesso ai membri di restare allineati e coerenti durante tutto lo sviluppo, riducendo al minimo le incomprensioni.
+
+Nel complesso il team si ritiene quindi soddisfatto del lavoro svolto e del risultato raggiunto.\
+Il progetto è stato fondamentale per confrontarsi con un problema nuovo e mettere in pratica i concetti teorici appresi durante le lezioni, così da comprenderne l'importanza, che spesso è difficile da cogliere fino a quando non si sviluppa una soluzione reale.\
+Le competenze acquisite durante questa esperienza risulteranno certamente fondamentali in progetti futuri, siano essi in ambito accademico o lavorativo.
