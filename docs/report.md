@@ -2,22 +2,22 @@
 
 - [ScalaGram - Report](#scalagram---report)
   - [1. Development process](#1-development-process)
-    - [Divisione dei task](#divisione-dei-task)
-    - [Meeting ed interazioni](#meeting-ed-interazioni)
-    - [Strumenti utilizzati](#strumenti-utilizzati)
-  - [2. Requirements [Gruppo]](#2-requirements-gruppo)
-    - [Business](#business)
+    - [1.1 Divisione dei task](#11-divisione-dei-task)
+    - [1.2 Meeting ed interazioni](#12-meeting-ed-interazioni)
+    - [1.3 Strumenti utilizzati](#13-strumenti-utilizzati)
+  - [2. Requirements](#2-requirements)
+    - [2.1 Requisiti Business](#21-requisiti-business)
       - [Ubiquitous language](#ubiquitous-language)
       - [Knowledge crunching](#knowledge-crunching)
-    - [Utente](#utente)
-    - [Funzionali](#funzionali)
+    - [2.2 Requisiti Utente](#22-requisiti-utente)
+    - [2.3 Requisiti Funzionali](#23-requisiti-funzionali)
       - [User stories](#user-stories)
       - [DSL](#dsl)
-    - [Non funzionali](#non-funzionali)
-    - [Implementativi](#implementativi)
+    - [2.4 Requisiti Non funzionali](#24-requisiti-non-funzionali)
+    - [2.5 Requisiti Implementativi](#25-requisiti-implementativi)
   - [3. Architectural Design](#3-architectural-design)
-    - [Bounded context](#bounded-context)
-    - [DSL](#dsl-1)
+    - [3.1 Bounded context](#31-bounded-context)
+    - [3.2 DSL](#32-dsl)
       - [Bot token](#bot-token)
       - [Mode](#mode)
       - [Middlewares](#middlewares)
@@ -25,45 +25,49 @@
       - [Scenes](#scenes)
       - [Keyboards](#keyboards)
   - [4. Design Detail](#4-design-detail)
-    - [Scelte rilevanti [Boschi]](#scelte-rilevanti-boschi)
-    - [Organizzazione del codice [Rossi, Tumedei]](#organizzazione-del-codice-rossi-tumedei)
+    - [4.1 Scelte rilevanti](#41-scelte-rilevanti)
+    - [4.2 Organizzazione del codice](#42-organizzazione-del-codice)
   - [5. Implementation](#5-implementation)
-    - [Implementazione - Gianni Tumedei [Logica bot]](#implementazione---gianni-tumedei-logica-bot)
-    - [Implementazione - Francesco Boschi [Modelli, marshalling]](#implementazione---francesco-boschi-modelli-marshalling)
+    - [5.1 Implementazione - Gianni Tumedei [Logica bot]](#51-implementazione---gianni-tumedei-logica-bot)
+      - [Package PPS19.scalagram.logic](#package-pps19scalagramlogic)
+      - [Package PPS19.scalagram.modes](#package-pps19scalagrammodes)
+    - [5.2 Implementazione - Francesco Boschi [Modelli, marshalling]](#52-implementazione---francesco-boschi-modelli-marshalling)
       - [Package PPS19.scalagram.models](#package-pps19scalagrammodels)
       - [Package PPS19.scalagram.marshalling](#package-pps19scalagrammarshalling)
     - [Implementazione - Mattia Rossi [Metodi, Esempi]](#implementazione---mattia-rossi-metodi-esempi)
       - [Package PPS19.scalagram.methods](#package-pps19scalagrammethods)
       - [Package PPS19.scalagram.examples](#package-pps19scalagramexamples)
     - [Attività di gruppo [Gruppo]](#attività-di-gruppo-gruppo)
-      - [DSL](#dsl-2)
+      - [DSL](#dsl-1)
   - [6. OPS](#6-ops)
-    - [Automatic delivery e deployment [Rossi, Pistocchi]](#automatic-delivery-e-deployment-rossi-pistocchi)
-    - [Build automation [Rossi, Pistocchi]](#build-automation-rossi-pistocchi)
-    - [Licensing [Rossi]](#licensing-rossi)
-    - [Quality Assurance [Boschi, Tumedei]](#quality-assurance-boschi-tumedei)
+    - [6.1 Automatic delivery e deployment [Rossi, Pistocchi]](#61-automatic-delivery-e-deployment-rossi-pistocchi)
+    - [6.2 Build automation [Rossi, Pistocchi]](#62-build-automation-rossi-pistocchi)
+    - [6.3 Licensing [Rossi]](#63-licensing-rossi)
+    - [6.4 Quality Assurance](#64-quality-assurance)
       - [Testing](#testing)
         - [Testing automatizzato](#testing-automatizzato)
         - [Testing non automatizzato](#testing-non-automatizzato)
       - [Coverage](#coverage)
       - [Code style](#code-style)
-  - [7. Retrospective [Rossi, Optional[Tumedei]]](#7-retrospective-rossi-optionaltumedei)
-    - [Sprint 1](#sprint-1)
-    - [Sprint 2](#sprint-2)
-    - [Sprint 3](#sprint-3)
-    - [Sprint 4](#sprint-4)
-    - [Sprint 5](#sprint-5)
-    - [Sprint 6](#sprint-6)
-    - [Sprint 7](#sprint-7)
-    - [Sprint 8](#sprint-8)
+  - [7. Retrospective](#7-retrospective)
+    - [7.1 Sprint 1 (18/01/2020)](#71-sprint-1-18012020)
+    - [7.2 Sprint 2 (25/01/2020)](#72-sprint-2-25012020)
+    - [7.3 Sprint 3 (01/02/2020)](#73-sprint-3-01022020)
+    - [7.4 Sprint 4 (08/02/2020)](#74-sprint-4-08022020)
+    - [7.5 Sprint 5 (15/02/2020)](#75-sprint-5-15022020)
+    - [7.6 Sprint 6 (22/02/2020)](#76-sprint-6-22022020)
+    - [7.7 Sprint 7 (01/03/2020)](#77-sprint-7-01032020)
+    - [7.8 Sprint 8 (08/03/2020)](#78-sprint-8-08032020)
   - [8. Conclusioni [Gruppo]](#8-conclusioni-gruppo)
-    - [Sviluppi futuri](#sviluppi-futuri)
-    - [Conclusioni](#conclusioni)
+    - [8.1 Sviluppi futuri](#81-sviluppi-futuri)
+    - [8.2 Conclusioni](#82-conclusioni)
 
 ## 1. Development process
-Lo sviluppo del sistema verrà effettuato adottando un processo simil-Scrum, viste le ridotte dimensioni del team e la conseguente impossibilità di adottare Scrum in pieno. L'approccio utilizzato prevede la suddivisione in Scrum-Task anche di tutta la parte progettuale del sistema e di bootstrap del progetto, comprese la definizione dei requisiti, la configurazione degli ambienti (IntelliJ, Gradle, Github e Github Actions) e la stesura di questo report.
 
-### Divisione dei task
+Lo sviluppo del sistema verrà effettuato adottando un processo simil-Scrum, viste le ridotte dimensioni del team e la conseguente impossibilità di adottare Scrum in pieno. L'approccio utilizzato prevede la suddivisione in Scrum-Task anche di tutta la parte progettuale del sistema e di bootstrap del progetto, comprese la definizione dei requisiti, la configurazione degli ambienti (IntelliJ, Gradle, GitHub e GitHub Actions) e la stesura di questo report.
+
+### 1.1 Divisione dei task
+
 La divisione dei ruoli all'interno del team è la seguente:
 
 **Gianni Tumedei**: *product owner* e *sviluppatore*. Responsabile dello sviluppo e testing delle seguenti funzionalità:
@@ -82,14 +86,17 @@ Per quanto concerne la realizzazione delle componenti sviluppate in comune, ques
 - Sviluppo del DSL
 - Creazione dei Bot di esempio
 
-### Meeting ed interazioni
+### 1.2 Meeting ed interazioni
+
 I componenti del team si prefissano di realizzare meeting con cadenza giornaliera tramite videochiamate, principalmente effettuate tramite Microsoft Teams e Discord, al fine di mantenersi aggiornati sullo stato del progetto e sull'avanzamento dei singoli task. Con cadenza settimanale, per la precisione alla fine di ogni sprint, si terrà invece un meeting in cui verranno definiti i task da includere nella fase di sprint successiva. Le interazioni tra i componenti del team si mantengono comunque frequenti per convenire su eventuali dettagli di minore entità all'interno del progetto.
-### Strumenti utilizzati
+
+### 1.3 Strumenti utilizzati
+
 - **IntelliJ IDEA**: IDE utilizzato per lo sviluppo del progetto, scelto perché fornisce supporto completo per lavorare con il linguaggio Scala
 - **Git**: utilizzato come version control system per tenere traccia dello sviluppo in itinere del progetto. Sono stati tracciati i file sorgente, di test, di configurazione della build e quelli di backlog.
-- **Github**: scelto come servizio di repository
+- **GitHub**: scelto come servizio di repository
 - Gradle: utilizzato come tool per eseguire la build del sistema
-- **Github Actions**: servizio integrato all'interno di Github per la CI (continuos integration) per eseguire la build del progetto in sistemi eterogenei
+- **GitHub Actions**: servizio integrato all'interno di GitHub per la CI (continuos integration) per eseguire la build del progetto in sistemi eterogenei
 - **Scoverage**: utilizzato per calcolare la copertura dei test implementati, al fine di stabilire la percentuale minima di sistema non "coperto" e quindi soggetto a eventuali bug.
 - **Trello**: è stato utilizzato in maniera distribuita per definire nel dettaglio le attività presenti nel backlog. In particolare sono state definite le seguenti sezioni:
   - To do: task che devono ancora essere sviluppati
@@ -99,10 +106,10 @@ I componenti del team si prefissano di realizzare meeting con cadenza giornalier
   - Aborted: contiene i task definitivamente cancellati
 - **Google Docs**: utilizzato sia per scrivere il backlog settimanale che gli appunti riguardanti il design,
 -  l'architettura e le user story del progetto
-## 2. Requirements [Gruppo]
-Requisiti (delle varie tipologie, ossia: 1) business, 2) utente, 3) funzionali, 4) non funzionali, 5) di implementazione)
 
-### Business
+## 2. Requirements
+
+### 2.1 Requisiti Business
 
 Questa sezione è dedicata all'analisi e definizione dei requisiti di business che caratterizzeranno il sistema. L'approccio utilizzato per la definizione del modello è basato sulla filosofia **Domain Driven Design** (DDD).\
 L'obiettivo del progetto è lo sviluppo di una libreria per la creazione di bot per la piattaforma di messaggistica Telegram.\
@@ -141,6 +148,7 @@ Nei capitoli successivi di questo documento si farà riferimento a questi termin
 | Middleware                     | Elemento che processa ogni update e determina se inoltrarlo e scartarlo.                                                                                                                                                                                                                                                                                        |
 
 #### Knowledge crunching
+
 Questa è stata la fase iniziale del progetto, durante la quale si è cercato di effettuare una panoramica sul dominio che consiste nella piattaforma Telegram e nelle relative [Bot API](https://core.telegram.org/bots/api).\
 La maggior parte delle terminologie inserite nella sezione Ubiquitous Language sono emerse durante questa fase e non sono quindi riportati anche in questo capitolo.
 
@@ -159,19 +167,21 @@ BotFather non consente quindi di definire il comportamento dei bot. Tale compito
 Telegram mette a disposizione delle [API](https://core.telegram.org/bots/api) per permettere lo sviluppo dei bot.\
 La community Telegram ha creato numerose librerie in vari linguaggi di programmazione che forniscono astrazioni di più alto livello sulle API. Il progetto Scalagram ricade in questa categoria.
 
-### Utente
+### 2.2 Requisiti Utente
+
 Gli utenti finali del progetto sono gli sviluppatori che sfruttano la libreria Scalagram per la realizzazione di bot Telegram.\
 La libreria deve mettere a disposizione gli strumenti per la programmazione di un bot sfruttando un apposito DSL.\
 Nel caso in cui un utilizzatore abbia necessità specifiche, deve inoltre essere possibile utilizzare qualsiasi funzionalità della libreria senza far uso del DSL.
-### Funzionali
 
-Le funzionalità che la libreria deve mettere a disposizione sono state definite tramite la stesura delle user stories e del diagramma dei casi d'uso. 
+### 2.3 Requisiti Funzionali
+
+Le funzionalità che la libreria deve mettere a disposizione sono state definite tramite la stesura delle user stories e del diagramma dei casi d'uso.
 
 #### User stories
 
 Al termine della fase di knowledge crunching si sono sviluppate user stories col fine di poter definire dettagliatamente i principali casi d'uso della libreria da parte di un utente finale, ossia uno sviluppatore software. Questo passaggio è risultato cruciale per poter in seguito definire un DSL che ricalcasse le user stories con una nuova sintassi dichiarativa, sviluppata ad hoc per venire in contro alle esigente del cliente.
 
-Le user stories sono definite dal punto di vista di un developer, che deve poter: 
+Le user stories sono definite dal punto di vista di un developer, che deve poter:
 
 - Definire il token appartenente al bot
 - Definire un middleware associato al bot
@@ -182,24 +192,28 @@ Le user stories sono definite dal punto di vista di un developer, che deve poter
 
 A partire dalle user stories è stato definito il seguente diagramma dei casi d'uso:
 
-<p align="center">
-  <img src="./img/use-case.png" alt="Use case" height="750"/>
-</p>
+<figure align="center">
+  <img src="./img/use-case.png" alt="Diagramma dei casi d'uso"/>
+  <figcaption>Diagramma dei casi d'uso</figcaption>
+</figure>
 
 #### DSL
+
 Il DSL deve essere sviluppato con l'idea di fornire un ulteriore livello di astrazione rispetto alle funzionalità già offerte dalla libreria.
 
-### Non funzionali
+### 2.4 Requisiti Non funzionali
 
-Dal momento che implementare tutti i metodi resi disponibili dalle API di Telegram e la modalità webhook avrebbe richiesto un tempo superiore a quello disponibile per il progetto, alcune funzionalità non sono state implementate. Per questo motivo il team si è posto come obiettivo quello di realizzare la libreria adottando un'architettura facilmente estendibile, in modo da far fronte a eventuali sviluppi futuri. 
+Dal momento che implementare tutti i metodi resi disponibili dalle API di Telegram e la modalità webhook avrebbe richiesto un tempo superiore a quello disponibile per il progetto, alcune funzionalità non sono state implementate. Per questo motivo il team si è posto come obiettivo quello di realizzare la libreria adottando un'architettura facilmente estendibile, in modo da far fronte a eventuali sviluppi futuri.
 
-### Implementativi
+### 2.5 Requisiti Implementativi
+
 Durante lo sviluppo si è deciso di distaccarsi da un approccio puramente Object Oriented adottandone uno OO-FP Mixed favorito dal linguaggio Scala.
 
 ## 3. Architectural Design
+
 Design architetturale (architettura complessiva, descrizione di pattern architetturali usati, componenti del sistema distribuito, scelte tecnologiche cruciali ai fini architetturali -- corredato da pochi ma efficaci diagrammi)
 
-### Bounded context
+### 3.1 Bounded context
 
 Lo studio del problema ha portato a definire tre aree critiche per la definizione del sistema, le quali necessitano un importante isolamento, al fine di garantire indipendenza e chiara suddivisione dei moduli durante la fase di sviluppo. Una corretta suddivisione dei bounded context in fase iniziale permetterà di scomporre in maniera più chiara il lavoro.
 
@@ -208,15 +222,16 @@ Sono stati definiti i seguenti bounded context:
 - **Telegram API calls context**: racchiude tutte le interazioni con le API di Telegram. Ad esempio, il download degli update e l'invio dei messaggi sono isolati in questo bounded context
 - **Update retrieval context**: si appoggia al context delle Telegram API calls per ottenere gli update e si occupa quindi del loro smistamento
 
-Di seguito è riportata la context map del progetto, da notare che i modelli relativi alle entità restituite dalle API di Telegram sono legati più strettamente al context delle Telegram API calls, ma vengono sfruttati di frequente anche dalla logica del bot, pertanto si trovano in un'intersezione tra i due context. 
+Di seguito è riportata la context map del progetto, da notare che i modelli relativi alle entità restituite dalle API di Telegram sono legati più strettamente al context delle Telegram API calls, ma vengono sfruttati di frequente anche dalla logica del bot, pertanto si trovano in un'intersezione tra i due context.
 
 Queste decisioni impatteranno in maniera significativa successivamente, quando sarà necessario organizzare e scomporre i moduli di basso livello.
 
-<p align="center">
-  <img src="./img/context-map.png" alt="Context Map" height="350"/>
-</p>
+<figure align="center">
+  <img src="./img/context-map.png" alt="Context map"/>
+  <figcaption>Context map</figcaption>
+</figure>
 
-### DSL
+### 3.2 DSL
 Dal momento che il DSL della libreria fa da wrapper a tutte le altre funzionalità, la parte di design relativa alla sua sintassi è stata affrontata a partire dal quarto sprint.\
 Di seguito sono riportati tutti i costrutti sintattici del linguaggio:
 
@@ -350,9 +365,11 @@ InlineKeyboard(
 ```
 
 ## 4. Design Detail
+
 Design di dettaglio (scelte rilevanti, pattern di progettazione, organizzazione del codice -- corredato da pochi ma efficaci diagrammi)
 
-### Scelte rilevanti [Boschi]
+### 4.1 Scelte rilevanti
+
 In fase di design, si è deciso di seguire la suddivisione definita tramite i Bounded Context, identificando così tre macro aree sviluppabili in maniera indipendente e di conseguenza parallelizzabili le quali, una volta terminate, sarebbero poi state integrate.
 
 Nello sviluppo del DSL, col fine di avere un linguaggio il più possibile comprensibile e intuitivo, si è fatto ampio uso dello **zucchero sintattico** messo a disposizione da Scala, come per esempio:
@@ -373,7 +390,9 @@ Per quanto concerne il testing, inizialmente si era optato per un testing totalm
 Poiché Telegram, per evitare attacchi DOS, prevede un limite massimo di richieste al minuto, è stato necessario optare per un approccio alternativo, in quanto l'esecuzione di più suite di test in contemporanea portava frequenti fallimenti nonostante le tecniche di retry adottate.\
 La correttezza nell'utilizzo delle API viene quindi determinata solamente sulla base della composizione della richiesta stessa, ipotizzando che data una richiesta i cui campi sono corretti, essa possa fallire solo per problemi esterni alla libreria.\
 Per la fase di interpretazione delle risposte, invece, si è deciso di memorizzare i JSON di interesse in appositi file e utilizzarli per verificare la correttezza delle operazioni di decodifica.
-### Organizzazione del codice [Rossi, Tumedei]
+
+### 4.2 Organizzazione del codice
+
 L'organizzazione dei package del progetto riflette i bounded context definiti in fase di design. Il core delle funzionalità nei seguenti package:
 - `methods`: corrisponde al bounded context **Telegram API calls** contiene l'implementazione di tutti i metodi delle API di Telegram che si è deciso di implementare nella libreria. I metodi principali in questo package sono `GetUpdates` e `SendMessage`.
 - `modes`: corrisponde al bounded context **Update retrieval**, la modalità di download degli update che si è deciso di adottare è polling, la cui infrastruttura è implementata all'interno di questo package.
@@ -384,18 +403,78 @@ L'organizzazione dei package del progetto riflette i bounded context definiti in
 - `utils`: contiene alcuni metodi di utility privati utilizzati all'interno della libreria.
 - `examples`: contiene alcuni bot di esempio a cui gli sviluppatori possono fare riferimento.
 
-<p align="center">
-  <img src="./img/code-organization.png" alt="code-organization" height="600"/>
-</p>
-
+<figure align="center">
+  <img src="./img/code-organization.png" alt="Organizzazione del codice"/>
+  <figcaption>Organizzazione del codice</figcaption>
+</figure>
 
 ## 5. Implementation
+
 Implementazione (per ogni studente, una sotto-sezione descrittiva di cosa fatto/co-fatto e con chi, e descrizione di aspetti implementativi importanti non già presenti nel design)
 
-### Implementazione - Gianni Tumedei [Logica bot]
-### Implementazione - Francesco Boschi [Modelli, marshalling]
+### 5.1 Implementazione - Gianni Tumedei [Logica bot]
+
+Gianni Tumedei è responsabile dell'implementazione dei seguenti componenti:
+
+#### Package PPS19.scalagram.logic
+
+Il package `logic` contiene le entità che sono poi usate come building blocks per la definizione della logica dei bot: `Operation`, `Trigger`, `Action`, `Reaction`, `Scene`, `Step`.
+
+Il package `PPS19.scalagram.logic.reactions` contiene il trait `ReactionBuilder`, che sfrutta le entità sopra citate, in combinazione con il **pattern builder**, per facilitare all'utente finale la creazione di complicati trigger da utilizzare all'interno del bot. I builder messi a disposizione dalla libreria sono i seguenti:
+- `OnMessage(strings: String*)`: permette al bot di reagire alla ricezione di un messaggio il cui contenuto corrisponde ad un elemento della lista di stringhe passate come parametro (è possibile non passare stringhe per reagire alla ricezione di qualsiasi messaggio)
+- `OnStart()`: è uno shortcut per eseguire `OnMessage("/start")`, utile in quanto tutti i bot devono disporre di un comando `/start`
+- `OnHelp()`: è uno shortcut per eseguire `OnMessage("/help")`
+- `OnMessageEdited(strings: String*)`: permette al bot di reagire alla modifica di un messaggio il cui nuovo contenuto corrisponde ad un elemento della lista di stringhe passate come parametro (è possibile non passare stringhe per reagire alla modifica di qualsiasi messaggio)
+- `OnMessagePinned()`: permette al bot di reagire all'evento di pin di un messaggio
+- `OnCallbackQuery(callbackData: String)`: permette al bot di reagire in seguito alla pressione del bottone di una tastiera inline con uno specifico `callbackData`, il cui evento associato è detto *callback*
+- `OnChatEnter()`: permette al bot di reagire in seguito all'aggiunta di uno o più utenti ad una chat
+- `OnChatLeave()`: permette al bot di reagire in seguito alla rimozione di un utente da una chat
+- `OnMatch(regex: String)`: permette al bot di reagire in seguito alla ricezione di un messaggio che fa match con una regular expression passata come parametro
+
+Il trait `Scalagram` rappresenta un bot Telegram creato con questa libreria. Oltre alle operazioni che caratterizzano il bot, mette a disposizione degli shortcut ai metodi definiti nel package `PPS19.scalagram.methods`, in modo da facilitare lo sviluppatore finale e ridurre il numero di import da egli richiesto.\
+Il companion object di `Scalagram` fornisce un'implementazione immutabile e privata del trait, utilizzata nel metodo `apply`. Inoltre, sempre per migliorare la quality of life dello sviluppatore finale, sono qui inseriti dei riferimenti ai metodi di `PPS19.scalagram.logic.reactions`.
+
+Il trait `Context` rappresenta, appunto, il contesto di esecuzione di un bot. Esiste un'istanza di `Context` per ogni chat su cui il bot sta comunicando, che contiene vari campi utili allo sviluppatore finale, come:
+- Un riferimento al bot
+- Una `Map` su cui è possibile memorizzare dati tra un'interazione e l'altra
+- Un riferimento alla chat del `Context`
+- Un riferimento all'ultimo `Update` ricevuto, al suo `Payload` e allo `User` che lo ha generato
+
+`Context` include poi i metodi necessari all'attivazione delle `Scene` e dei loro `Step`.\
+Il companion object di `Context` fornisce un'implementazione privata del trait, sfruttata dal metodo `apply`.
+
+#### Package PPS19.scalagram.modes
+
+Questo package contiene la componente del sistema che si occupa di reperire gli update, distribuirli tra i `Context` presenti e processarli secondo la logica definita dallo sviluppatore finale del bot.
+
+Lo smistamento degli update viene effettuato attraverso un Actor System Akka.\
+Il sistema è composto da due tipologie di attori:
+- **UpdateDispatcherActor**: ne esiste una sola istanza per ogni bot. Si occupa di reperire periodicamente gli update tramite il metodo `GetUpdates` di `PPS19.scalagram.methods` e smistare ciascuno di essi all'opportuno WorkerActor, in base alla chat da cui proviene l'update
+- **WorkerActor**: il sistema comprende un'istanza di questo attore per ogni chat su cui il bot sta avendo conversazioni. Vi è quindi un'associazione unaria tra `Context`, `Chat` e `WorkerActor`.\
+  Quando WorkerActor riceve un messaggio contenente un update da processare, fa passare quest'ultimo attraverso una pipeline composta dai seguenti elementi, nell'ordine in cui sono specificati:
+    - Tutti i middleware del bot, in ordine di dichiarazione
+    - Tutte le reaction del bot, in ordine di dichiarazione
+    - Se presente, lo step attuale della scena attiva sullo specifico Context
+
+  Tutti gli elementi della pipeline ereditano dal trait `Operation` e hanno pertanto un metodo `operation: Context => Boolean` che restituisce:
+    - `true` se la pipeline deve continuare
+    - `false` se l'update è da considerarsi processato e la pipeline va interrotta
+
+  Se un update giunge in fondo alla pipeline senza essere processato, viene semplicemente scartato in quanto la logica del bot non prevede di gestirlo.
+
+L'Actor System può essere configurato dallo sviluppatore finale con i seguenti parametri, da fornire al costruttore della modalità `Polling`:
+- `pollingInterval`: intervallo che deve intercorrere tra un'operazione di `GetUpdates` e l'altra (default: 300ms)
+- `timeoutDelay`: intervallo dopo il quale un `WorkerActor`, se non ha ricevuto messaggi, termina, con conseguente distruzione del `Context` associato e perdita della traccia della conversazione da parte del bot (default: 1 giorno)\
+  È opportuno notare che solitamente i bot Telegram restano in esecuzione per periodi molto lunghi di tempo, ma sono pensati per avere brevi conversazioni con molti utenti. Pertanto è preferibile mantenere un `timeoutDelay` di durata ragionevole, in modo da non inquinare l'Actor System con `WorkerActor` dormienti che non effettuano alcuna operazione. Nel caso in cui un bot debba memorizzare informazioni importanti o con una durata di vita elevata, è buona pratica non utilizzare variabili in memory, ma appoggiarsi ad un database, in modo anche da far fronte ad eventuali perdite di dati dovute a crash.
+
+Nel caso in cui si decidesse di supportare ulteriormente la libreria implementando anche la modalità Webhook, l'Actor System è stato strutturato in modo da non dover subire drastici cambiamenti per supportare anche un tipo di operatività unicamente push, in aggiunta a quella pull attuale. In modalità Webhook poi sarebbe necessaria la creazione di un server HTTP a cui Telegram può inoltrare gli update, ma anche questa operazione è disponibile tramite Akka.
+
+### 5.2 Implementazione - Francesco Boschi [Modelli, marshalling]
+
 Boschi Francesco è responsabile dell'implementazione delle seguenti componenti:
+
 #### Package PPS19.scalagram.models
+
 Il seguente package contiene tutti i file atti a definire le entità relative alle API di Telegram e le operazioni di codifica e decodifica in JSON delle stesse.
 
 Sebbene i modelli presenti siano in grande numero, la struttura utilizzata è simile per tutti e rispecchia il paradigma OO-FP Mixed, essendo presenti riferimenti al classico OO come gerarchie tra classi e trait atti a definire contratti comuni, oltre a elementi tipici di FP come companion object che fungono da contenitori di impliciti o Factory.
@@ -413,6 +492,7 @@ La stessa operazione di conversione in camel case deve essere effettuata in fase
 In questa sezione del progetto, quindi, il pattern maggiormente presente è certamente **Pimp my library**, utilizzato per estendere le classi messe a disposizione dalla libreria Circe.
 
 #### Package PPS19.scalagram.marshalling
+
 Poiché tutti i campi all'interno dei JSON sfruttati da Telegram sono definiti seguendo il formato [snake_case](https://en.wikipedia.org/wiki/Snake_case), al contrario di quelle definite via codice che seguono quello [camelCase](https://en.wikipedia.org/wiki/Camel_case), il package marshalling è incaricato di eseguire le conversioni tra i due stili.
 
 Si è deciso quindi di utilizzare due classi implicite che wrappassero le classi Decoder ed Encoder della libreria Circe, così da poter sfruttare in maniera comoda e immediata i metodi per la conversione contenuti al loro interno.\
@@ -450,8 +530,8 @@ Data la natura del trait appena descritto, sia al suo interno che nelle case cla
 
 Di seguito sono riportati i due metodi fondamentali per il funzionamento di un bot Telegram:
 
-- **GetUpdates**: utilizzato per effettuare il recupero degli update, che vengono messi a disposizione sotto forma di lista
-- **SendMessage**: 
+- **GetUpdates**: utilizzato per effettuare il recupero degli update, che vengono messi a disposizione sotto forma di lista. Restituisce sempre successo, poiché il JSON contenente gli update, anche se vuoto, deve essere parsato
+- **SendMessage**: utilizzato per effettuare l'invio di un messaggio, restituisce un oggetto TelegramMessage
 - **PinMessage**: 
 
 #### Package PPS19.scalagram.examples
@@ -487,13 +567,14 @@ InlineKeyboard(Callback("Button 1" -> "callback"))
 #### DSL
 
 ## 6. OPS
+
 In questa sezione verranno descritti dettagliatamente gli aspetti relativi alla parte di **Operations** (Ops) implementati all'interno del progetto. Con Ops si intendono tutte quelle strategie finalizzate a semplificare ed automatizzare alcuni workflow relativi alla gestione del progetto.
 
 L'utilizzo di un ambiente di Continuous Integration (CI), quale GitHub Actions consentirà di eseguire in maniera automatizzata alcune di queste procedure relative sia alla build automation del progetto, come compilazione, testing e quality assurance, ma anche relative alla gestione del repository ed alla pubblicazione degli artefatti.
 
 Nelle successive sottosezioni verranno descritte tutte le procedure attuate proprio a questo fine.
 
-### Automatic delivery e deployment [Rossi, Pistocchi]
+### 6.1 Automatic delivery e deployment [Rossi, Pistocchi]
 
 In questa sezione verranno dettagliati gli aspetti relativi alla gestione automatizzata del repository ed alla pubblicazione degli artefatti sulla nota piattaforma Maven Central. Verrà dettagliato inoltre come l'utilizzo dell'integrator ci supporterà interamente durante questa fase.
 
@@ -507,7 +588,7 @@ In questa sezione verranno dettagliati gli aspetti relativi alla gestione automa
 
 - Ci si avvale allo stesso modo del task precedente, mediante un ulteriore action pubblica, per effettuare la pubblicazione degli artefatti in maniere automatizzata sul **Maven Central** Repository.
 
-### Build automation [Rossi, Pistocchi]
+### 6.2 Build automation [Rossi, Pistocchi]
 
 Questa sezione dettaglierà come è stata strutturata la fase di build automation all'interno dell'integrator GitHub Actions.
 
@@ -520,9 +601,10 @@ La fase di build è stata strutturata in un unica fase principale (job). Gli asp
 - È stato inoltre schedulato un **chron job**, che ci permetterà di eseguire il workflow dedicato alla build automation settimanalmente.
 
 
-### Licensing [Rossi]
+### 6.3 Licensing [Rossi]
+
 La scelta della licenza da applicare al nostro sistema è ricaduta sulla **Apache License 2.0**, ideale per chi vuole sviluppare software open source con supporto a lungo termine.\
-Si tratta di una licenza non copyleft che obbliga gli utenti a preservare l'informativa di diritto d'autore e d'esclusione di responsabilità nelle versioni modificate. In particolar modo i vincoli imposti e gli usi concessi sono i seguenti: 
+Si tratta di una licenza non copyleft che obbliga gli utenti a preservare l'informativa di diritto d'autore e d'esclusione di responsabilità nelle versioni modificate. In particolar modo i vincoli imposti e gli usi concessi sono i seguenti:
 
 | Permessi         | Limitazioni     | Condizioni                     |
 |------------------|-----------------|--------------------------------|
@@ -532,11 +614,14 @@ Si tratta di una licenza non copyleft che obbliga gli utenti a preservare l'info
 | Uso del brevetto |                 |                                |
 | Uso privato      |                 |                                |
 
-### Quality Assurance [Boschi, Tumedei]
+### 6.4 Quality Assurance
+
 #### Testing
+
 Buona parte dello sviluppo ha seguito un approccio TDD (Test Driven Development) facendo uso della libreria ScalaTest e JUnit.\
 
 ##### Testing automatizzato
+
 Il progetto è stato sviluppato su sistemi Linux, Mac e Windows utilizzando Java 14. Tuttavia grazie all'utilizzo di GitHub Actions è stato possibile automatizzare il testing su questi tre sistemi operativi utilizzando in ciascuno le versioni 8, 11 e 14 di Java.\
 Le componenti principali testate sono riportate di seguito con alcune considerazioni:
 - **Models**: per le classi che estendono il trait ReplyMarkup, le cui istanze devono essere inviate ai server di Telegram, si è testata la corretta codifica in formato JSON confrontandola con dei  file JSON memorizzati in precedenza.\
@@ -547,25 +632,40 @@ Le componenti principali testate sono riportate di seguito con alcune consideraz
     - ContextSuite: il Context contiene proprietà e metodi relative all'attivazione di scene e step di un bot. La suite in questione testa dunque il corretto funzionamento di tali elementi.
     - ReactionsSuite crea reaction utilizzando tutti i tipi possibili di ReactionBuilder e testa il corretto funzionamento dei trigger e delle action così ottenuti.
 - **DSL**: questa suite si occupa di verificare che l'utilizzo di tutte le funzionalità della libreria tramite il DSL produca lo stesso risultato ottenuto richiamando tali funzionalità senza l'utilizzo del DSL.
+
 ##### Testing non automatizzato
+
 Il funzionamento del semplice Actor System Akka che si occupa dello smistamento degli update è stato testato tramite un'interazione diretta con i bot di esempio sulle chat di Telegram.
 
-Il testing automatizzato delle chiamate alle API è stato escluso a causa delle limitazioni di traffico imposte da Telegram, quindi anch'esse sono state testate direttamente nelle chat di Telegram sfruttando i bot di esempio creati. 
+Il testing automatizzato delle chiamate alle API è stato escluso a causa delle limitazioni di traffico imposte da Telegram, quindi anch'esse sono state testate direttamente nelle chat di Telegram sfruttando i bot di esempio creati.
+
 #### Coverage
+
 La copertura dei test è stata verificata tramite il plugin **Gradle Scoverage**.\
 La percentuale di coverage ottenuta ammonta a X%. Tale valore è influenzato dalle funzionalità testate in maniera non automatizzata, senza le quali la percentuale di statement coverage supererebbe il 90%.
-TODO:SCREEN STATEMENT COVERAGE
-TODO:SCREEN PACKAGE
+
+<figure align="center">
+  <img src="img/statement-coverage.png" alt="Statement coverage"/>
+  <figcaption>Statement coverage</figcaption>
+</figure>
+
+<figure align="center">
+  <img src="img/package-coverage.png" alt="Package coverage"/>
+  <figcaption>Package coverage</figcaption>
+</figure>
 
 #### Code style
+
 Il compilatore Scala esegue già numerosi controlli per assicurare una buona qualità del codice. Per renderlo ancora più stringente si è deciso di abilitare gli warning per gli import non utilizzati e convertire tutti gli warning in errori di compilazione.
 
 Per quanto riguarda la formattazione del codice, questa viene eseguita in maniera automatizzata dal plugin Gradle Spotless che si appoggia al tool **Scalafmt**. Anche in questo caso, il warning per formattazione non corretta del codice viene convertito in un errore di compilazione.\
 Poiché Scalafmt è supportato da IntelliJ IDEA, è possibile eseguire la formattazione del codice con l'apposito shortcut, mantenendo lo stile definito nel file di configurazione del plugin.
-## 7. Retrospective [Rossi, Optional[Tumedei]]
+
+## 7. Retrospective
+
 Retrospettiva (descrizione finale dettagliata dell'andamento dello sviluppo, del backlog, delle iterazioni; commenti finali)
 
-### Sprint 1
+### 7.1 Sprint 1 (18/01/2020)
 
 L'obiettivo che il team si è posto al primo sprint è stato quello di stabilire le linee guida da seguire per lo sviluppo del progetto, con particolare enfasi su: design del dominio, architettura del sistema e definizione dei concetti chiave.
 
@@ -580,7 +680,7 @@ I task per questo sprint sono stati:
 - **CI/CD setup**: creazione di una GitHub Action per automatizzare le operazioni di build e test
 - **Setup project documentation**: creazione della board Trello del progetto e dei seguenti documenti: README, report, Project Backlog.
 
-### Sprint 2
+### 7.2 Sprint 2 (25/01/2020)
 
 L'obiettivo per il secondo sprint è stato quello di fornire delle implementazioni basiche, ma già funzionanti, degli aspetti core del sistema, in particolare per quanto riguarda:
 - Effettuare richieste alle Telegram API
@@ -594,7 +694,7 @@ I task per questo sprint sono stati:
 - **Setup proper unit tests**: eseguire i task precedentemente elencati aderendo a una metodologia di sviluppo TDD
 - **CI/CD Setup**: migliorare la matrice di espansione della GitHub action, passando un token diverso ad ogni cella in modo da evitare errori HTTP 429 da parte dei server di Telegram
 
-### Sprint 3
+### 7.3 Sprint 3 (01/02/2020)
 
 Dal momento che il team aveva intenzione di iniziare lo sviluppo del DSL a partire dalla quarta settimana, l'obiettivo di questo sprint è stato quello di ottenere un sistema il più possibile funzionante, in modo da poter iniziare a wrappare le sue funzionalità con la sintassi del DSL nello sprint successivo.
 
@@ -605,7 +705,7 @@ I task per questo sprint sono stati:
 - **Develop a system to work in polling mode**: completare l'implementazione della modalità di polling per quanto riguarda il download degli update
 - **CI/CD Setup**: installazione del plugin Scalafmt per la formattazione automatica del codice; miglioramento delle prestazioni della pipeline di CI
 
-### Sprint 4
+### 7.4 Sprint 4 (08/02/2020)
 
 Avendo la prima versione funzionante della libreria, gli obiettivi principali di questo sprint sono stati: la definizione della sintassi del DSL, la creazione del primo bot di esempio basato su Scalagram e il rilascio della prima versione della libreria (in questa fase solamente attraverso l'upload di un artifact su GitHub).
 
@@ -616,21 +716,21 @@ I task per questo sprint sono stati:
 - **Define and automate semantic versioning and releases**: installazione del plugin GitSemVer e pubblicazione della prima release
 - **Create some bots to showcase the library**: creazione del primo bot basato su Scalagram
 
-### Sprint 5
+### 7.5 Sprint 5 (15/02/2020)
 
 L'obiettivo di questo sprint verteva principalmente sull'estensione della sintassi del DSL appena creato e la creazione di un bot d'esempio che fosse in grado di sfruttarlo, per cui ci siamo concentrati anche sulla possibilità di poter sfruttare le API di Telegram, in questo caso unicamente per l'invio di un messaggio, a partire dal DSL.
 
 I task per questo sprint sono stati:
 - **Define a DSL for using the implemented solution**: estensione della sintassi del DSL per l'implementazione di reactions e middlewares
-- **Define a DSL for interacting with the Telegram API**: a partire dal DSL sono state utilizzate le Telegram API per effettuare l'invio di messaggi 
-- **Gradle automation process**: aggiunta e configurazione di Scalafmt come plugin per la formattazione del codice Scala 
+- **Define a DSL for interacting with the Telegram API**: a partire dal DSL sono state utilizzate le Telegram API per effettuare l'invio di messaggi
+- **Gradle automation process**: aggiunta e configurazione di Scalafmt come plugin per la formattazione del codice Scala
 - **Refactoring**: avendo proseguito con l'implementazione della sintassi del DSL, si è eseguito un refactoring delle reactions, della logica di funzionamento del bot e dei package dei modelli
 - **Create some bots to showcase the library**: creazione di un primo bot di esempio che sfrutta la sintassi del DSL
 
-### Sprint 6
+### 7.6 Sprint 6 (22/02/2020)
 
 In questa fase dello sviluppo ci siamo concentrati sugli aspetti riguardanti l'automazione del sistema, creando le basi per effettuare un rilascio automatico su Maven Central, oltre all'installazione e configurazione di diversi strumenti di supporto come Dependabot.\
-Inoltre, in seguito all'installazione del plugin di scoverage, abbiamo creato nuovi test precedentemente mancanti e modificato quelli già presenti per evitare di usare le API di Telegram e quindi effettuare troppe richieste HTTP che spesso si traducevano in fallimenti dovuti a timeout. 
+Inoltre, in seguito all'installazione del plugin di scoverage, abbiamo creato nuovi test precedentemente mancanti e modificato quelli già presenti per evitare di usare le API di Telegram e quindi effettuare troppe richieste HTTP che spesso si traducevano in fallimenti dovuti a timeout.
 
 I task per questo sprint sono stati:
 - **Release on Maven Central**: registrazione al servizio di Sonatype, creazione delle chiavi gpg per la firma digitale, aggiunta e configurazione del plugin necessario per la pubblicazione automatica su Maven Central
@@ -638,17 +738,17 @@ I task per questo sprint sono stati:
 - **Define a DSL for programming the bot logic**: estensione della sintassi del DSL per l'implementazione delle scene e aggiunta della possibilità di creare triggers che facciano match con qualsiasi messaggio
 - **Setup proper unit tests**: aggiunta di ulteriori test per la verifica di parti del sistema altrimenti scoperte e modifica dei test già esistenti per evitare che utilizzino le Telegram API
 
-### Sprint 7
+### 7.7 Sprint 7 (01/03/2020)
 
 Dal momento che la fase di sviluppo del sistema era ormai conclusa, abbiamo sfruttato questo sprint per la modifica di aspetti secondari come l'aggiunta di alcune regole particolarmente restrittive per la corretta compilazione del codice Scala (errori su import non utilizzati e warning).\
-L'aspetto chiave di questo sprint è sicuramente stato la creazione di una moltitudine di test che, grazie all'analisi del plugin di scoverage, abbiamo aggiunto per ottenere un buon livello di copertura. 
+L'aspetto chiave di questo sprint è sicuramente stato la creazione di una moltitudine di test che, grazie all'analisi del plugin di scoverage, abbiamo aggiunto per ottenere un buon livello di copertura.
 
 I task per questo sprint sono stati:
 - **Gradle automation process**: configurazione di ulteriori regole per la compilazione del codice Scala
 - **Setup proper unit tests**: aggiunta di ulteriori test per raggiungere un livello di copertura del sistema sufficientemente elevato
 - **Refactoring**: modifica della struttura dei package per permettere agli utenti della libreria di effettuare il minor numero di import necessari all'utilizzo
 
-### Sprint 8
+### 7.8 Sprint 8 (08/03/2020)
 
 Durante l'ultimo sprint il team ha curato alcuni aspetti precedentemente preteriti e ci siamo assicurati che il sistema rispettasse i vincoli architetturali e di DDD precedentemente stilati.\
 Una volta creati in via definitiva i bot di esempio, utili agli utenti che utilizzeranno la libreria, abbiamo lavorato sulla documentazione del progetto, in particolare sulla generazione della ScalaDoc e del report finale; ci siamo inoltre sincerati che gli aspetti di automazione del sistema fossero adeguati.
@@ -658,10 +758,12 @@ I task per questo sprint sono stati:
 - **Develop final report**: stesura della ScalaDoc e di parte del report finale
 - **Release on Maven Central**: prima release del sistema su Nexus Repository
 - **Domain Driven Design**: considerazioni finali su aspetti riguardanti il DDD adottato durante lo svolgimento del progetto
-- **Define architecture**: considerazioni finali sull'architettura del sistema e aggiunta di aspetti di dettaglio 
-- **Gradle automation process**: aggiunta e configurazione dei plugin per il versioning semantico e la creazione di un jar non eseguibile contenente la ScalaDoc 
+- **Define architecture**: considerazioni finali sull'architettura del sistema e aggiunta di aspetti di dettaglio
+- **Gradle automation process**: aggiunta e configurazione dei plugin per il versioning semantico e la creazione di un jar non eseguibile contenente la ScalaDoc
 - **CI/CD Setup**: refactor del workflow di GitHub Actions e creazione della Action per eseguire automaticamente il merge delle pull requests effettuate da Dependabot
 
 ## 8. Conclusioni [Gruppo]
-### Sviluppi futuri
-### Conclusioni
+
+### 8.1 Sviluppi futuri
+
+### 8.2 Conclusioni
