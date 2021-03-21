@@ -34,12 +34,50 @@
     - [5.2 Implementazione - Francesco Boschi [Modelli, marshalling]](#52-implementazione---francesco-boschi-modelli-marshalling)
       - [Package PPS19.scalagram.models](#package-pps19scalagrammodels)
       - [Package PPS19.scalagram.marshalling](#package-pps19scalagrammarshalling)
+    - [Implementazione - Mattia Rossi [Metodi, Esempi]](#implementazione---mattia-rossi-metodi-esempi)
+      - [Package PPS19.scalagram.methods](#package-pps19scalagrammethods)
+      - [Package PPS19.scalagram.examples](#package-pps19scalagramexamples)
+    - [Attività di gruppo](#attività-di-gruppo)
+      - [Package PPS19.scalagram.dsl](#package-pps19scalagramdsl)
+        - [Package object dsl](#package-object-dsl)
+        - [Trait ScalagramDSL](#trait-scalagramdsl)
+        - [Packages keyboard, middleware, mode, reaction, scene](#packages-keyboard-middleware-mode-reaction-scene)
+  - [6. OPS](#6-ops)
+    - [6.1 Automatic delivery e deployment [Rossi, Pistocchi]](#61-automatic-delivery-e-deployment-rossi-pistocchi)
+    - [6.2 Build automation [Rossi, Pistocchi]](#62-build-automation-rossi-pistocchi)
+    - [6.3 Licensing [Rossi]](#63-licensing-rossi)
+    - [6.4 Quality Assurance](#64-quality-assurance)
+      - [Testing](#testing)
+        - [Testing automatizzato](#testing-automatizzato)
+        - [Testing non automatizzato](#testing-non-automatizzato)
+      - [Coverage](#coverage)
+      - [Code style](#code-style)
+  - [7. Retrospective](#7-retrospective)
+    - [7.1 Sprint 1 (18/01/2020)](#71-sprint-1-18012020)
+    - [7.2 Sprint 2 (25/01/2020)](#72-sprint-2-25012020)
+    - [7.3 Sprint 3 (01/02/2020)](#73-sprint-3-01022020)
+    - [7.4 Sprint 4 (08/02/2020)](#74-sprint-4-08022020)
+    - [7.5 Sprint 5 (15/02/2020)](#75-sprint-5-15022020)
+    - [7.6 Sprint 6 (22/02/2020)](#76-sprint-6-22022020)
+    - [7.7 Sprint 7 (01/03/2020)](#77-sprint-7-01032020)
+    - [7.8 Sprint 8 (08/03/2020)](#78-sprint-8-08032020)
+  - [8. Conclusioni [Gruppo]](#8-conclusioni-gruppo)
+    - [8.1 Sviluppi futuri](#81-sviluppi-futuri)
+    - [8.2 Conclusioni](#82-conclusioni)
+<<<<<<< HEAD
     - [5.3 Implementazione - Mattia Rossi [Metodi]](#53-implementazione---mattia-rossi-metodi)
     - [5.4 Implementazione - Attività di gruppo [Gruppo]](#54-implementazione---attività-di-gruppo-gruppo)
       - [Package PPS19.scalagram.dsl](#package-pps19scalagramdsl)
         - [Package object dsl](#package-object-dsl)
         - [Trait ScalagramDSL](#trait-scalagramdsl)
         - [Packages keyboard, middleware, mode, reaction, scene](#packages-keyboard-middleware-mode-reaction-scene)
+=======
+    - [Implementazione - Mattia Rossi [Metodi, Esempi]](#implementazione---mattia-rossi-metodi-esempi)
+      - [Package PPS19.scalagram.methods](#package-pps19scalagrammethods)
+      - [Package PPS19.scalagram.examples](#package-pps19scalagramexamples)
+    - [Attività di gruppo [Gruppo]](#attività-di-gruppo-gruppo)
+      - [DSL](#dsl-1)
+>>>>>>> 120fb73a481779548dce6963a8cd586fa6975019
   - [6. OPS](#6-ops)
     - [6.1 Automatic delivery e deployment [Rossi, Pistocchi]](#61-automatic-delivery-e-deployment-rossi-pistocchi)
     - [6.2 Build automation [Rossi, Pistocchi]](#62-build-automation-rossi-pistocchi)
@@ -505,9 +543,67 @@ Per portare a termine queste operazioni si è sfruttata una funzione higher-orde
 Tali funzioni di trasformazione sono definite nel file package object di marhalling e incluse all'interno di una classe CaseString, la quale wrappa la classe String, in modo che tali trasformazioni possano essere usate anche sulle singole stringhe e non necessariamente sui JSON, come accade per esempio nella codifica dell'URL delle richieste che la libreria effettua alle Telegram API.
 
 
-### 5.3 Implementazione - Mattia Rossi [Metodi]
+### Implementazione - Mattia Rossi [Metodi, Esempi]
 
-### 5.4 Implementazione - Attività di gruppo [Gruppo]
+Rossi Mattia è responsabile dell'implementazione delle seguenti componenti:
+
+#### Package PPS19.scalagram.methods
+Il contenuto di questo package include la definizione di tutti i metodi delle Telegram API che possono essere utilizzati all'interno della libreria. I metodi sono tutti rappresentati da case class che estendono il trait **TelegramRequest**, il quale accetta come parametro un generico T, che indica il tipo di ritorno della richiesta che si sta implementando.
+
+Racchiude inoltre tutta la logica per effettuare le richieste a Telegram, in questo modo all'interno dei metodi sarà necessario unicamente definire i campi che caratterizzano la richiesta, che sono i seguenti:
+
+- **token**: token del bot di tipo BotToken (PPS19.scalagram.logic)
+- **request**: tipo della richiesta HTTP da effettuare, si tratta di un Requester, istanza della libreria utilizzata per effettuare le chiamate HTTP
+- **endpoint**: deve essere concatenato all'URL e identifica l'endpoint del metodo delle API che si vuole richiamare
+- **urlParams**: si tratta di una mappa da String a Any, rappresenta tutti i possibili parametri che possono essere inseriti all'interno dell'URL
+- **multipartFormData**: si tratta di una mappa da String a String (vuota di default); permette di aggiungere parametri alla richiesta che non possono essere specificati all'interno dell'URL, come file multimediali
+- `parseSuccessResponse(json: Json): Try[T]`: metodo che effettua il parsing di un oggetto di tipo JSON e torna un Try del generico T, il cui tipo dipende dal tipo di ritorno del metodo utilizzato
+
+I campi che invece devono essere utilizzati per effettuare la richiesta, ma sono già implementati all'interno del trait sono i seguenti:
+- **TELEGRAM_API_URL**: url di base per contattare le API di Telegram
+- **endpointUrl**: URL completo della richiesta effettuata a Telegram, concatena il TELEGRAM_API_URL, il token del bot e l'endpoint da raggiungere
+- **computedUrlParams**: torna una mappa da String a String contenente tutti i parametri presenti nell'URL della richiesta e i rispettivi valori, la mappa viene filtrata per eliminare i parametri che non sono stati specificati
+- **computedMultipartFormData**: torna una lista di MultiItem, ognuno dei quali è un file da allegare alla richiesta
+- **call**: punto di partenza dal quale viene effettivamente lanciata la richiesta alle API di Telegram, al suo interno vengono svolte diverse operazioni di case matching innestate. In prima battuta si istanzia un oggetto Request diverso in base alla presenza o meno di computedMultipartFormData, successivamente viene controllato il risultato della richiesta; se il JSON fornito da Telegram è valido allora la richiesta è andata a buon fine, altrimenti vengono controllati eventuali errori nel parsing o di rete, in quanto vi è l'eventualità di non poter contattare le API per errori di rete o timeout.
+
+Data la natura del trait appena descritto, sia al suo interno che nelle case class che lo estendono, si è fatto ampio uso della monade Try per la gestione degli errori in modo funzionale.
+
+Di seguito sono riportati i due metodi fondamentali per il funzionamento di un bot Telegram:
+
+- **GetUpdates**: utilizzato per effettuare il recupero degli update, che vengono messi a disposizione sotto forma di lista. Restituisce sempre successo, poiché il JSON contenente gli update, anche se vuoto, deve essere parsato
+- **SendMessage**: utilizzato per effettuare l'invio di un messaggio, restituisce un oggetto TelegramMessage
+- **PinMessage**:
+
+#### Package PPS19.scalagram.examples
+Questo package contiene tutti i bot di esempio necessari a un utente per comprendere le funzionalità di base della libreria, al suo interno è presente un oggetto **SimpleBot** con scope privato, visibile unicamente all'interno del suddetto package, che illustra il funzionamento di middleware, reactions, scenes e avvio del bot senza sfruttare la sintassi del DSL.
+
+All'interno del package **PPS19.scalagram.examples.dsl** sono presenti quattro oggetti, anch'essi con scope privato e quindi visibili solo all'interno del package di appartenenza, ognuno dei quali rappresenta un'istanza del trait **ScalagramDSL** e quindi un bot che sfrutta la sintassi del DSL.
+
+- **CommandsBot.scala**: illustra l'utilizzo delle reaction
+- **KeyboardsBot.scala**: illustra l'utilizzo delle tastiere
+- **ScenesBot.scala**: illustra l'utilizzo delle scene
+- **SimpleDSLBot.scala**: implementazione di un bot completo, creato principalmente per scopi interni al progetto come verificare il comportamento di funzionalità che non è stato possibile coprire con test automatizzati
+
+Gli esempi forniti in questo package vogliono sottolineare quanto l'utilizzo del DSL in questa libreria faciliti la creazione e la gestione di un bot Telegram agli sviluppatori. Come nel seguente esempio:
+
+Sintassi per la creazione di una tastiera con un bottone di callback con bypassando il DSL
+```scala
+InlineKeyboardMarkup(
+  List(
+    List(
+      InlineKeyboardButton.callback("Button", "callback")
+    )
+  )
+)
+```
+
+Medesima operazione sfruttando la sintassi del DSL
+
+```scala
+InlineKeyboard(Callback("Button 1" -> "callback"))
+```
+
+### Attività di gruppo
 
 #### Package PPS19.scalagram.dsl
 
@@ -820,5 +916,27 @@ I task per questo sprint sono stati:
 ## 8. Conclusioni [Gruppo]
 
 ### 8.1 Sviluppi futuri
+In questa sezione vengono elencati alcuni possibili sviluppi futuri che il eam o uno sviluppatore esterno potrebbe voler sviluppare:
 
+- Implementazione della modalità di lavoro webhook
+- Aggiunta di ulteriori tipologie di messaggi utente, quali video, audio, stickers, sondaggi, animazioni ecc.
+- Aggiunta dei messaggi di sistema mancanti, per facilitare la gestione delle chat
+- Aggiunta della modalità di sviluppo di videogiochi interni a Telegram
+
+Inoltre, poiché l'intero sistema dipende da un servizio esterno, è fondamentale per il corretto funzionamento che la libreria venga mantenuta aggiornata in maniera concorde con le modifiche e le linee guida rilasciate nel tempo da Telegram.\
+A questo scopo, la suddivisione del codice e il design scelto dal team, sono pensati per rendere il codice il più possibile mantenibile e modificabile nel tempo riducendo allo stretto essenziale le relazioni tra le componenti del sistema e la piattaforma di messaggistica.
 ### 8.2 Conclusioni
+
+La scelta del progetto è stata fatta con l'idea di sfruttare al massimo le peculiarità del paradigma funzionale, questo ci ha permesso di apprezzare appieno le potenzialità del linguaggio Scala con il progredire dell'applicativo, specialmente durante le fasi avanzate della definizione del DSL.\
+È infatti evidente come alcuni pattern e funzionalità messi a disposizione da Scala, come Pimp My Library e impliciti, uniti al suo zucchero sintattico, abbiano permesso di programmare in maniera relativamente intuitiva un DSL chiaro e facilmente utilizzabile dall'utente finale.
+
+Un'attenta e prolungata fase di analisi, definizione del design e modellazione ingegneristica, ha permesso al team di avere le idee chiare sin dai primi Scrum sprint, riducendo al minimo i rischi di sviluppo di porzioni di software inconsistenti e facilitando le operazioni di integrazione, oltre a permettere una migliore parallelizzazione del lavoro.
+
+L’utilizzo dell’approccio di sviluppo agile Scrum per gestire le attività di progetto ha permesso al team di coordinare in maniera molto precisa le attività, rendendo chiari i goal che ogni membro avrebbe dovuto portare a termine settimanalmente.\
+Adottando delivery settimanali, inoltre, tutte le fasi di monitoraggio dei tempi e dello sviluppo del progetto sono risultate più semplici, riducendo ulteriormente i rischi di fallimenti o ritardi nella consegna.
+
+La possibilità inoltre di integrare al progetto tutte le operazioni viste durante il corso Laboratorio di Sistemi Software, vale a dire automatic delivery/deployment, build automation, licensing, quality assurance, coverage e code style, ha permesso ai membri del team di capire l'effettiva importanza nell'utilizzare tecniche di automazione e adottare formalismi atti a rendere il team allineato e coerente durante tutto lo sviluppo.
+
+Nel complesso il team si ritiene quindi soddisfatto del lavoro svolto e del risultato raggiunto.\
+Il progetto è risultato fondamentale per confrontarsi con un problema nuovo e mettere in pratica i concetti teorici appresi durante le lezioni, così da valutarne la reale importanza che spesso è difficile da cogliere fino a quando non si approccia un problema reale.\
+Le competenze acquisite durante questa esperienza risulteranno certamente fondamentale in progetti futuri, siano essi in ambito accademico o lavorativo.
