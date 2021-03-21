@@ -28,7 +28,7 @@
     - [4.1 Scelte rilevanti](#41-scelte-rilevanti)
     - [4.2 Organizzazione del codice](#42-organizzazione-del-codice)
   - [5. Implementation](#5-implementation)
-    - [5.1 Implementazione - Gianni Tumedei [Logica bot]](#51-implementazione---gianni-tumedei-logica-bot)
+    - [5.1 Implementazione - Gianni Tumedei](#51-implementazione---gianni-tumedei)
       - [Package PPS19.scalagram.logic](#package-pps19scalagramlogic)
       - [Package PPS19.scalagram.modes](#package-pps19scalagrammodes)
     - [5.2 Implementazione - Francesco Boschi [Modelli, marshalling]](#52-implementazione---francesco-boschi-modelli-marshalling)
@@ -36,7 +36,10 @@
       - [Package PPS19.scalagram.marshalling](#package-pps19scalagrammarshalling)
     - [5.3 Implementazione - Mattia Rossi [Metodi]](#53-implementazione---mattia-rossi-metodi)
     - [5.4 Implementazione - Attività di gruppo [Gruppo]](#54-implementazione---attività-di-gruppo-gruppo)
-      - [DSL](#dsl-1)
+      - [Package PPS19.scalagram.dsl](#package-pps19scalagramdsl)
+        - [Package object dsl](#package-object-dsl)
+        - [Trait ScalagramDSL](#trait-scalagramdsl)
+        - [Packages keyboard, middleware, mode, reaction, scene](#packages-keyboard-middleware-mode-reaction-scene)
   - [6. OPS](#6-ops)
     - [6.1 Automatic delivery e deployment [Rossi, Pistocchi]](#61-automatic-delivery-e-deployment-rossi-pistocchi)
     - [6.2 Build automation [Rossi, Pistocchi]](#62-build-automation-rossi-pistocchi)
@@ -190,10 +193,10 @@ Le user stories sono definite dal punto di vista di un developer, che deve poter
 
 A partire dalle user stories è stato definito il seguente diagramma dei casi d'uso:
 
-<figure align="center">
+<p align="center">
   <img src="./img/use-case.png" alt="Diagramma dei casi d'uso"/>
-  <figcaption>Diagramma dei casi d'uso</figcaption>
-</figure>
+</p>
+<p align="center">Figura 2.1 - Diagramma dei casi d'uso</p>
 
 #### DSL
 
@@ -224,10 +227,10 @@ Di seguito è riportata la context map del progetto, da notare che i modelli rel
 
 Queste decisioni impatteranno in maniera significativa successivamente, quando sarà necessario organizzare e scomporre i moduli di basso livello.
 
-<figure align="center">
+<p align="center">
   <img src="./img/context-map.png" alt="Context map"/>
-  <figcaption>Context map</figcaption>
-</figure>
+</p>
+<p align="center">Figura 3.1 - Context map</p>
 
 ### 3.2 DSL
 Dal momento che il DSL della libreria fa da wrapper a tutte le altre funzionalità, la parte di design relativa alla sua sintassi è stata affrontata a partire dal quarto sprint.\
@@ -401,16 +404,16 @@ L'organizzazione dei package del progetto riflette i bounded context definiti in
 - `utils`: contiene alcuni metodi di utility privati utilizzati all'interno della libreria.
 - `examples`: contiene alcuni bot di esempio a cui gli sviluppatori possono fare riferimento.
 
-<figure align="center">
+<p align="center">
   <img src="./img/code-organization.png" alt="Organizzazione del codice"/>
-  <figcaption>Organizzazione del codice</figcaption>
-</figure>
+</p>
+<p align="center">Figura 4.1 - Organizzazione del codice</p>
 
 ## 5. Implementation
 
 Implementazione (per ogni studente, una sotto-sezione descrittiva di cosa fatto/co-fatto e con chi, e descrizione di aspetti implementativi importanti non già presenti nel design)
 
-### 5.1 Implementazione - Gianni Tumedei [Logica bot]
+### 5.1 Implementazione - Gianni Tumedei
 
 Gianni Tumedei è responsabile dell'implementazione dei seguenti componenti:
 
@@ -432,11 +435,12 @@ Il package `PPS19.scalagram.logic.reactions` contiene il trait `ReactionBuilder`
 Il trait `Scalagram` rappresenta un bot Telegram creato con questa libreria. Oltre alle operazioni che caratterizzano il bot, mette a disposizione degli shortcut ai metodi definiti nel package `PPS19.scalagram.methods`, in modo da facilitare lo sviluppatore finale e ridurre il numero di import da egli richiesto.\
 Il companion object di `Scalagram` fornisce un'implementazione immutabile e privata del trait, utilizzata nel metodo `apply`. Inoltre, sempre per migliorare la quality of life dello sviluppatore finale, sono qui inseriti dei riferimenti ai metodi di `PPS19.scalagram.logic.reactions`.
 
-Il trait `Context` rappresenta, appunto, il contesto di esecuzione di un bot. Esiste un'istanza di `Context` per ogni chat su cui il bot sta comunicando, che contiene vari campi utili allo sviluppatore finale, come:
+Il trait `Context` rappresenta, appunto, il contesto di esecuzione di un bot. Esiste un'istanza di `Context` per ogni chat su cui il bot sta comunicando, che contiene vari shortcut utili allo sviluppatore finale, come:
 - Un riferimento al bot
 - Una `Map` su cui è possibile memorizzare dati tra un'interazione e l'altra
 - Un riferimento alla chat del `Context`
 - Un riferimento all'ultimo `Update` ricevuto, al suo `Payload` e allo `User` che lo ha generato
+- Un metodo `reply`, da utilizzare come alternativa rapida a `sendMessage` in quanto permette di omettere la chat di destinazione, valorizzandola automaticamente a quella attuale
 
 `Context` include poi i metodi necessari all'attivazione delle `Scene` e dei loro `Step`.\
 Il companion object di `Context` fornisce un'implementazione privata del trait, sfruttata dal metodo `apply`.
@@ -505,7 +509,117 @@ Tali funzioni di trasformazione sono definite nel file package object di marhall
 
 ### 5.4 Implementazione - Attività di gruppo [Gruppo]
 
-#### DSL
+#### Package PPS19.scalagram.dsl
+
+Essendo un parte trasversale della libreria, che wrappa tutte le sue funzionalità, il DSL è stato sviluppato dal team lavorando prevalentemente in gruppo.
+
+Il package `dsl` costituisce buona parte dell'API che l'utente finale utilizzerà sviluppando dei bot con la libreria Scalagram, ed è strutturato come segue:
+- Package object `dsl`: contiene tutti gli impliciti necessari alla corretta compilazione del DSL e vari metodi di utility
+- Trait `ScalagramDSL`: è il trait da estendere quando si vuole creare un bot utilizzando il DSL
+- Package `keyboard`, `middleware`, `mode`, `reaction` e `scene`: contengono ciascuno il DSL della parte di libreria da cui prendono il nome
+
+##### Package object dsl
+
+Il package object `dsl` mette a disposizione varie conversioni implicite, utili per rendere il linguaggio più sintetico ed espressivo e riportate di seguito.
+- `String` to `Context => Unit`: permette di trasformare la seguente sintassi
+  ```scala
+  reactions(
+    << "Message"
+    >> { context =>
+      context.reply("Reply")
+    }
+  )
+  ```
+  in
+  ```scala
+  reactions(
+    << "Message"
+    >> "Reply"
+  )
+  ```
+- `MessageContainer` to `Context => Unit`: permette di trasformare la seguente sintassi
+  ```scala
+  reactions(
+    << "Message"
+    >> { context =>
+      context.reply("Reply", Some(Keyboard("Button")))
+    }
+  )
+  ```
+  in
+  ```scala
+  reactions(
+    << "Message"
+    >> "Reply" - Keyboard("Button")
+  )
+  ```
+- `String` to `MessageContainer`: permette di trasformare la seguente sintassi
+  ```scala
+  reactions(
+    << "Message"
+    >> MessageContainer("Reply", None, Some(Left(Keyboard("Button"))))
+  )
+  ```
+  in
+  ```scala
+  reactions(
+    << "Message"
+    >> "Reply" - Keyboard("Button")
+  )
+  ```
+- `String` to `KeyboardButtonContainer`\
+  `String` to `KeyboardButtonRow`\
+  `KeyboardButtonContainer` to `KeyboardButtonRow`: permettono di assieme di trasformare la seguente sintassi
+  ```scala
+  Keyboard(KeyboardRow(KeyboardButtonContainer("Button")))
+  ```
+  in
+  ```scala
+  Keyboard("Button")
+  ```
+
+Nel package object vi sono poi tre classi implicite che utilizzano il pattern **pimp my library** per estendere i seguenti elementi:
+- `String`: aggiunge i metodi:
+    - `| : String => List`: permette la creazione di liste a partire da una stringa con la seguente chiamata:
+      ```scala
+      "string1" | "string2"
+      ```
+    - `<|: String => PartialStepContainer`: permette la creazione delle `Scene` con la seguente sintassi:
+      ```scala
+      Scene(
+        "SCENE_NAME"
+
+        <| "STEP_NAME"
+        >> "Reply"
+      )
+      ```
+- `List`: offre il simbolo `|` come ulteriore alias per `appended` e `+:`, che in concomitanza con il pimping di `String`, consente la creazione di liste con la seguente sintassi, utilizzata nel DSL per indicare una reaction che viene eseguita se il messaggio ricevuto corrisponde ad una delle stringhe indicate:
+  ```scala
+  "string1" | "string2" | "string3"
+  ```
+- `ReplyKeyboardMarkup`: offre i metodi `withResize`, `withOneTime` e `withSelective` per personalizzare un `ReplyKeyboardMarkup` tramite il DSL
+
+Il package object offre infine vari metodi di utility volti a semplificare:
+- La creazione delle tastiere e dei loro bottoni
+- La formattazione di messaggi di tipo HTML e Markdown
+- La definizione dell'operatività di tipo Polling
+
+##### Trait ScalagramDSL
+
+Questo trait offre le basi per la realizzazione di un bot con il DSL della libreria e va pertanto esteso in un object dallo sviluppatore finale.
+
+L'object creato a partire da ScalagramDSL è una sorta di builder, che permette di configurare i parametri del bot tramite i metodi: `token`, `mode`, `middlewares`, `reactions` e `scenes`.\
+Una volta definite questa caratteristiche, `ScalagramDSL` mette a disposizione un metodo `start()` per istanziare e avviare un bot di classe `Scalagram`.
+
+##### Packages keyboard, middleware, mode, reaction, scene
+
+Questi package e le classi che contengono hanno una struttura piuttosto simile tra loro, in quanto ciascuno di essi effettua il wrap della corrispondente feature della libreria per offrirne il DSL. Si prenda come esempio il wrapper `MiddlewareContainer`:
+- È una case class immutabile, creata a partire da una `List[Middleware]`
+- Mette a disposizione un metodo `<>` che, data una funzione `Context => Boolean`, restituisce una nuova istanza di `MiddlewareContainer`, contenente tutti i `Middleware` della lista precedente più uno nuovo creato a partire da questo
+
+Un caso particolare è quello di `ReactionContainer`. Dal momento che il DSL prevede due step per la creazione di una reaction, e solo una lista di reaction complete può essere passata al metodo `reactions` di `ScalagramDSL`, si è deciso di creare ReactionContainer come trait con due implementazioni:
+- `PartialReactionContainer`: wrappa una `List[Reaction]` e una reaction di cui non è stata ancora specificata l'action. Una sua istanza non può essere passata al metodo `reactions` in quanto contiene una reaction incompleta, ma definisce il metodo `>>` per terminarne la creazione
+- `TotalReactionContainer`: wrappa una `List[Reaction]` completa e può quindi essere passato al metodo `reactions`. Offre vari metodi per iniziare la creazione di una nuova reaction, come `<<` e `<*`
 
 ## 6. OPS
 
@@ -585,15 +699,15 @@ Il testing automatizzato delle chiamate alle API è stato escluso a causa delle 
 La copertura dei test è stata verificata tramite il plugin **Gradle Scoverage**.\
 La percentuale di coverage ottenuta ammonta a X%. Tale valore è influenzato dalle funzionalità testate in maniera non automatizzata, senza le quali la percentuale di statement coverage supererebbe il 90%.
 
-<figure align="center">
+<p align="center">
   <img src="img/statement-coverage.png" alt="Statement coverage"/>
-  <figcaption>Statement coverage</figcaption>
-</figure>
+</p>
+<p align="center">Figura 6.1 - Statement coverage</p>
 
-<figure align="center">
+<p align="center">
   <img src="img/package-coverage.png" alt="Package coverage"/>
-  <figcaption>Package coverage</figcaption>
-</figure>
+</p>
+<p align="center">Figura 6.2 - Package coverage</p>
 
 #### Code style
 
