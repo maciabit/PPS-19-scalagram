@@ -529,7 +529,13 @@ Nel caso in cui un trait fosse ereditato da più classi, quindi, tramite un appo
 
 Per le classi utilizzate in fase di invio di un messaggio, ad esempio per la creazione di tastiere, è inoltre presente un **Encoder**, sempre messo a disposizione da Circe, utilizzato per convertire in maniera automatica o sulla base di uno specifico parametro un'istanza di tale classe in formato JSON.
 
-In fase di ricezione di un update la classe **Update** è incaricata dell'avvio delle operazioni di derivazione semiautomatica e deve quindi convertire l'intero JSON in stile camel case così da assicurare la corrispondenza tra i campi del JSON e delle classi.
+In fase di ricezione di un update il trait **Update** con il companion object ad esso associato sono incaricati dell'avvio delle operazioni di derivazione semiautomatica e deve quindi convertire l'intero JSON in stile camel case così da assicurare la corrispondenza tra i campi del JSON e delle classi.\
+Classi e trait in questa porzione di progetto risultano innestate secondo una complessa gerarchia, atta non solo a fornire una corretta rappresentazione, ma anche a facilitare le operazioni esterne di accesso ai campi dei messaggi:
+- **Update**: rappresenta un generico update. L'unico campo che accomuna tutte le tipologie è `updateId`, l'identificatore.
+- **ChatUpdate**: rappresenta un generico update appartenente ad una specifica chat. Utilizzato per reperire in maniera immediata la chat di appartenenza di un messaggio senza scendere nella gerarchia.
+- **MessageUpdate**: rappresenta tutti i messaggi, esclusivi quelli di tipo Callback. Utilizzato per impostare correttamente i campi del messaggio, incluso l'`updateType`, utilizzato per verificare la classe di appartenenza del messaggio senza dover analizzare la gerarchia innestata.
+
+La definizione di questi tre trait/abstract class permette di definire dei metodi che garantiscano un contratto unificato per l'accesso ai campi delle classi, senza influire sull'encoding/decoding automatico delle stesse, essendo necessaria una corrispondenza tra i nomi utilizzati dalle Telegram API e quelli dei modelli della libreria.
 
 La stessa operazione di conversione in camel case deve essere effettuata in fase di decodifica da tutte le classi le cui istanze possono essere restituite da una chiamata alle API di Telegram, come ad esempio **TelegramMessage**.
 
