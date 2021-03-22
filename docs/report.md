@@ -102,13 +102,13 @@ I componenti del team si prefissano di realizzare meeting con cadenza giornalier
 - **GitHub Actions**: servizio integrato all'interno di GitHub per la CI (continuos integration) per eseguire la build del progetto in sistemi eterogenei
 - **Scoverage**: utilizzato per calcolare la copertura dei test implementati, al fine di stabilire la percentuale minima di sistema non "coperto" e quindi soggetto a eventuali bug.
 - **Trello**: è stato utilizzato in maniera distribuita per definire nel dettaglio le attività presenti nel backlog. In particolare sono state definite le seguenti sezioni:
-  - To do: task che devono ancora essere sviluppati
-  - In progress: lo sviluppo del task è iniziato ma non concluso
-  - Done: contiene i task che sono stati completati
-  - Paused: contiene i task che erano in progresso e sono stati momentaneamente sospesi
-  - Aborted: contiene i task definitivamente cancellati
-- **Google Docs**: utilizzato sia per scrivere il backlog settimanale che gli appunti riguardanti il design,
--  l'architettura e le user story del progetto
+  - *To do*: task che devono ancora essere sviluppati
+  - *In progress*: lo sviluppo del task è iniziato ma non concluso
+  - *Done*: contiene i task che sono stati completati
+  - *Paused*: contiene i task che erano in progresso e sono stati momentaneamente sospesi
+  - *Aborted*: contiene i task definitivamente cancellati
+- **Google Docs**: utilizzato sia per scrivere il backlog settimanale che gli appunti riguardanti il design, l'architettura e le user story del progetto
+- **Miro**: le board messe a disposizione da questo tool sono state utilizzate in fase iniziale per effettuare brainstorming
 
 ## 2. Requirements
 
@@ -207,7 +207,10 @@ Il DSL deve essere sviluppato con l'idea di fornire un ulteriore livello di astr
 
 ### 2.4 Requisiti Non funzionali
 
-Dal momento che implementare tutti i metodi resi disponibili dalle API di Telegram e la modalità webhook avrebbe richiesto un tempo superiore a quello disponibile per il progetto, alcune funzionalità non sono state implementate. Per questo motivo il team si è posto come obiettivo quello di realizzare la libreria adottando un'architettura facilmente estendibile, in modo da far fronte a eventuali sviluppi futuri.
+Dal momento che implementare tutti i metodi resi disponibili dalle API di Telegram e la modalità webhook avrebbe richiesto un tempo superiore a quello disponibile per il progetto, alcune funzionalità sono state omesse. Per questo motivo il team si è posto come obiettivo quello di realizzare la libreria adottando un'architettura facilmente estendibile, in modo da far fronte a eventuali sviluppi futuri.
+
+Un altro importante requisito non funzionale da soddisfare è quello di garantire una buona scalabilità dal punto di vista delle performance, in modo che un bot Scalagram possa sempre rispondere in maniera reattiva ai messaggi, indipendentemente dal numero di utenti con cui sta chattando contemporaneamente.\
+Come evidenziato successivamente in questo report, è stato utilizzato un Actor System Akka, che ha permesso di parallelizzare l'elaborazione dei messaggi su varie chat, ponendo come unico limite alla scalabilità le capacità hardware della macchina su cui è effettuato l'hosting del bot.
 
 ### 2.5 Requisiti Implementativi
 
