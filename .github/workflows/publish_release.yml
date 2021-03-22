@@ -36,8 +36,6 @@ jobs:
           repository: maciabit/PPS-19-scalagram
           releases-only: true
         id: tag_id
-      - name: Create JAR name
-        run: echo ${{ steps.tag_id.outputs.tag }}
       - name: Load release artifact
         uses: Roang-zero1/github-upload-release-artifacts-action@master
         with:
