@@ -189,8 +189,9 @@ Le user stories individuate sono riportate di seguito.
 - Come developer, voglio definire il token appartenente al bot
 - Come developer, voglio definire un middleware associato al bot
 - Come developer, voglio definire una specifica reaction eseguibile dal bot. Voglio poter specificare quale evento deve far scattare la reaction (trigger) e quale azione dev'essere eseguita di conseguenza (action)
-- Come developer, voglio definire uno step per una specifica scena
+- Come developer, voglio definire una scena composta da uno o più step
 - Come developer, voglio avviare l'esecuzione del bot in modalità polling, opzionalmente specificandone i parametri
+- Come developer, voglio effettuare una chiamata alle Telegram API
 - Come developer, voglio poter bypassare il DSL in caso di esigenze particolari
 
 A partire dalle user stories è stato definito il seguente diagramma dei casi d'uso:
