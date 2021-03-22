@@ -32,7 +32,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get latest tag
-      - uses: oprypin/find-latest-tag@v1
+        uses: oprypin/find-latest-tag@v1
         with:
           repository: maciabit/PPS-19-scalagram
           releases-only: true
