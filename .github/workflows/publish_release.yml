@@ -9,6 +9,7 @@ on:
   push:
     tags:
       - "[0-9]+.[0-9]+.[0-9]+"
+  workflow_dispatch:
 
 jobs:
   publish_release:
@@ -24,21 +25,22 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 14
-      - name: Create application.properties file with the bot's token
-        shell: bash
-        run: |
-          mkdir -p src/main/resources
-          echo token=hello > src/main/resources/application.properties
       - name: Build with Gradle
         run: ./gradlew build
       - name: Create release
         uses: Roang-zero1/github-create-release-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get latest tag
+      - uses: oprypin/find-latest-tag@v1
+        with:
+          repository: maciabit/PPS-19-scalagram
+          releases-only: true
+        id: tag_id
       - name: Load release artifact
         uses: Roang-zero1/github-upload-release-artifacts-action@master
         with:
-          args: build/libs/PPS-19-scalagram.jar
+          args: build/libs/PPS-19-scalagram-${{ steps.tag_id.outputs.tag }}.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish on Maven Central
