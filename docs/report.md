@@ -838,10 +838,10 @@ La percentuale di coverage ottenuta ammonta a X%. Tale valore è influenzato dal
 #### Code style
 
 Per rendere maggiormente restrittiva la compilazione del codice Scala e quindi garantire una qualità del software più elevata sono stati inseriti una serie di parametri aggiuntivi per i task di tipo **ScalaCompile**: 
-- `-Xfatal-warnings`: se il compilatore rileva dei warning, questi vengono interpretati come effettivi errori di compilazione
-- `-Ywarn-unused`: genera dei warning a seguito del rilevamento di import non utilizzati
-- `-feature`: genera warning per l'uso di feature di Scala che dovrebbero essere abilitate esplicitamente
-- `-language:implicitConversions`: abilita le conversioni implicite di default, silenziando così il feature warning associato
+- `-Xfatal-warnings`: se il compilatore rileva dei warning, questi vengono interpretati come effettivi errori di compilazione.
+- `-Ywarn-unused`: genera dei warning a seguito del rilevamento di import non utilizzati.
+- `-feature`: genera warning per l'uso di feature di Scala che dovrebbero essere abilitate esplicitamente.
+- `-language:implicitConversions`: abilita le conversioni implicite di default, silenziando così il feature warning associato.
 
 Per quanto riguarda la formattazione del codice, questa viene eseguita in maniera automatizzata dal plugin Gradle Spotless che si appoggia al tool **Scalafmt**. Anche in questo caso, il warning per formattazione non corretta del codice viene convertito in un errore di compilazione.\
 Poiché Scalafmt è supportato da IntelliJ IDEA, è possibile eseguire la formattazione del codice con l'apposito shortcut, mantenendo lo stile definito nel file di configurazione del plugin.\
