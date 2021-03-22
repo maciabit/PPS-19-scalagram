@@ -159,7 +159,7 @@ Telegram è un è un servizio di messaggistica istantanea e broadcasting basato 
 Dal 2015 Telegram ha introdotto due funzionalità che lo hanno distinto particolarmente dalla concorrenza: i canali e una piattaforma dedicata alla creazione e alla gestione di bot.\
 Questi ultimi sono utenti virtuali che forniscono molteplici funzionalità in maniera totalmente automatizzata e sono l'oggetto di principale interesse del progetto.
 
-La creazione stessa dei bot e la loro gestione sono demandate al bot ufficiale di Telegram, BotFather, che permette ad ogni utente di:
+La creazione stessa dei bot e la loro gestione sono demandate al bot ufficiale di Telegram, **BotFather**, che permette ad ogni utente di:
 
 - Creare, elencare e cancellare i propri bot
 - Modificare nome, descrizione, bio, immagine, comandi suggeriti e impostazioni di privacy e pagamenti dei propri bot
