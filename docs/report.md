@@ -182,16 +182,16 @@ Le funzionalità che la libreria deve mettere a disposizione sono state definite
 
 #### User stories
 
-Al termine della fase di knowledge crunching si sono sviluppate user stories col fine di poter definire dettagliatamente i principali casi d'uso della libreria da parte di un utente finale, ossia uno sviluppatore software. Questo passaggio è risultato cruciale per poter in seguito definire un DSL che ricalcasse le user stories con una nuova sintassi dichiarativa, sviluppata ad hoc per venire in contro alle esigente del cliente.
+Al termine della fase di knowledge crunching si sono sviluppate user stories col fine di poter definire dettagliatamente i principali casi d'uso della libreria da parte di un utente finale, ossia uno sviluppatore software. Questo passaggio è risultato cruciale per poter in seguito definire un DSL che ricalcasse le user stories con una nuova sintassi dichiarativa, sviluppata ad hoc per venire in contro alle esigente del cliente, ossia lo sviluppatore finale che utilizza Scalagram per implementare un bot Telegram.
 
-Le user stories sono definite dal punto di vista di un developer, che deve poter:
+Le user stories individuate sono riportate di seguito.
 
-- Definire il token appartenente al bot
-- Definire un middleware associato al bot
-- Definire una specifica reaction eseguibile dal bot composta da trigger e action
-- Definire uno step per una specifica scena
-- Avviare l'esecuzione del bot in modalità polling, opzionalmente specificandone i parametri
-- Bypassare il DSL in caso di esigenze particolari
+- Come developer, voglio definire il token appartenente al bot
+- Come developer, voglio definire un middleware associato al bot
+- Come developer, voglio definire una specifica reaction eseguibile dal bot. Voglio poter specificare quale evento deve far scattare la reaction (trigger) e quale azione dev'essere eseguita di conseguenza (action)
+- Come developer, voglio definire uno step per una specifica scena
+- Come developer, voglio avviare l'esecuzione del bot in modalità polling, opzionalmente specificandone i parametri
+- Come developer, voglio poter bypassare il DSL in caso di esigenze particolari
 
 A partire dalle user stories è stato definito il seguente diagramma dei casi d'uso:
 
@@ -406,8 +406,6 @@ Contact("Button")
 ```
 
 ## 4. Design Detail
-
-Design di dettaglio (scelte rilevanti, pattern di progettazione, organizzazione del codice -- corredato da pochi ma efficaci diagrammi)
 
 ### 4.1 Scelte rilevanti
 
@@ -741,46 +739,46 @@ In questa sezione sono dettagliati gli aspetti relativi alla gestione automatizz
 Per quanto riguarda la politica di **versioning** il progetto si avvale del semantic versioning, sfruttando le funzionalità offerte dal plugin [gitSemVer](https://github.com/DanySK/git-sensitive-semantic-versioning-gradle-plugin). Per creare le nuove versioni si utilizzano i **tag annotati** di Git.\
 Una volta effettuato il tagging tramite il VCS, ci si avvale dell'integrator per effettuare la **pubblicazione della release**; a questo scopo è stato sviluppato un workflow in grado di reagire alla creazione di un tag annotato, caricando gli artefatti della build sul repository e avviando la procedura di pubblicazione su Maven Central.
 
-Il numero di versione della libreria è ottenuto in maniera automatizzata nei seguenti metodi: 
+Il numero di versione della libreria è ottenuto in maniera automatizzata nei seguenti metodi:
 - Nel README del repository attraverso un [badge](https://github.com/badges/shields)
 - Negli artefatti caricati su Maven Central attraverso il metodo `computeGitSemVer()` del plugin gitSemVer
 - Nelle release di GitHub, essendo queste effettuate al momento della creazione del tag, prendendo semplicemente il suo contenuto
 
 #### Pubblicazione degli artefatti su Maven Central
 
-La pubblicazione automatica su Maven Central ha richiesto l'esecuzione di vari step riportati di seguito. 
+La pubblicazione automatica su Maven Central ha richiesto l'esecuzione di vari step riportati di seguito.
 
 - Creazione di una coppia di chiavi in formato **GPG 2** (2.2.11) per la firma digitale degli artefatti
 - Apertura di una issue su **Sonatype JIRA** per avviare il processo di verifica e registrazione dell'account
 - Configurazione del plugin [Maven Central Gradle Plugin](https://github.com/DanySK/maven-central-gradle-plugin)
 - Aggiunta del plugin [scaladoc](https://plugins.gradle.org/plugin/org.kordamp.gradle.scaladoc) per la generazione di un file JAR non eseguibile contenente la ScalaDoc del progetto
-- Aggiunta dei seguenti segreti al repository: MAVEN_CENTRAL_USERNAME, MAVEN_CENTRAL_PASSWORD, ORG_GRADLE_PROJECT_SIGNINGKEY, ORG_GRADLE_PROJECT_SIGNINGPASSWORD 
+- Aggiunta dei seguenti segreti al repository: MAVEN_CENTRAL_USERNAME, MAVEN_CENTRAL_PASSWORD, ORG_GRADLE_PROJECT_SIGNINGKEY, ORG_GRADLE_PROJECT_SIGNINGPASSWORD
 - Creazione del workflow per la pubblicazione su **Nexus Repository Manager**
 
-Per questo processo si è deciso di automatizzare gli step fino all'aggiunta degli artefatti alle staging area di Nexus Repository. Per quanto concerne l'operazione finale di chiusura del repository e pubblicazione su Maven Central, si è deciso di effettuarla manualmente a causa della politica no-retract adottata da Maven.  
+Per questo processo si è deciso di automatizzare gli step fino all'aggiunta degli artefatti alle staging area di Nexus Repository. Per quanto concerne l'operazione finale di chiusura del repository e pubblicazione su Maven Central, si è deciso di effettuarla manualmente a causa della politica no-retract adottata da Maven.
 
 ### 6.2 Build automation
 
 La fase di build è strutturata in un unico workflow, i cui aspetti principali sono riportati di seguito.
 
-L'utilizzo di una **matrice di build** ha permesso di riutilizzare codice per generalizzare sul sistema operativo e sulla versione di Java sui quali eseguire il workflow. La matrice contiene i seguenti elementi: 
+L'utilizzo di una **matrice di build** ha permesso di riutilizzare codice per generalizzare sul sistema operativo e sulla versione di Java sui quali eseguire il workflow. La matrice contiene i seguenti elementi:
 
 - Sistemi operativi: Windows, MacOS e Ubuntu, ciascuno all'ultima versione resa disponibile da GitHub Actions
 - Versioni di Java: 8, 11 e 14
 
-Nel caso in cui la build o i test dovessero fallire, è stata sfruttata una Action per la generazione degli artefatti contenenti l'ouput della console di tutte le celle della matrice sulle quali si è verificato l'errore. 
+Nel caso in cui la build o i test dovessero fallire, è stata sfruttata una Action per la generazione degli artefatti contenenti l'ouput della console di tutte le celle della matrice sulle quali si è verificato l'errore.
 
-Ai trigger del workflow di CI sono stati aggiunti i seguenti elementi: 
+Ai trigger del workflow di CI sono stati aggiunti i seguenti elementi:
 - Un chron job che esegue periodicamente il workflow con cadenza settimanale
 - La voce `workflow_dispatch` che permette di eseguire la Action direttamente dall'interfaccia di GitHub
 
 #### Gestione automatizzata delle dipendenze
 
-Per l'aggiornamento semiautomatico delle versioni delle librerie utilizzate si è deciso di avvalersi di **Dependabot**, un servizio integrato all'interno di GitHub che effettua una pull request ogni qualvolta una delle dipendenze del progetto non è aggiornata all'ultima versione disponibile. 
+Per l'aggiornamento semiautomatico delle versioni delle librerie utilizzate si è deciso di avvalersi di **Dependabot**, un servizio integrato all'interno di GitHub che effettua una pull request ogni qualvolta una delle dipendenze del progetto non è aggiornata all'ultima versione disponibile.
 
-Sfruttando i workflow di Actions Dependabot è stato configurato con la seguente logica: 
+Sfruttando i workflow di Actions Dependabot è stato configurato con la seguente logica:
 - Utilizzo di develop come branch target per le pull requests
-- Controllo giornaliero delle versioni delle dipendenze 
+- Controllo giornaliero delle versioni delle dipendenze
 - Merge automatico effettuato solo se i test sul branch creato da Dependabot terminano con successo e si tratta di un incremento della versione di patch. Per quanto concerne major e minor si è deciso di lasciare agli sviluppatori il compito di effettuare il merge manuale
 
 ### 6.3 Licensing
@@ -837,7 +835,7 @@ La percentuale di coverage ottenuta ammonta a X%. Tale valore è influenzato dal
 
 #### Code style
 
-Per rendere maggiormente restrittiva la compilazione del codice Scala e quindi garantire una qualità del software più elevata sono stati inseriti una serie di parametri aggiuntivi per i task di tipo **ScalaCompile**: 
+Per rendere maggiormente restrittiva la compilazione del codice Scala e quindi garantire una qualità del software più elevata sono stati inseriti una serie di parametri aggiuntivi per i task di tipo **ScalaCompile**:
 - `-Xfatal-warnings`: se il compilatore rileva dei warning, questi vengono interpretati come effettivi errori di compilazione.
 - `-Ywarn-unused`: genera dei warning a seguito del rilevamento di import non utilizzati.
 - `-feature`: genera warning per l'uso di feature di Scala che dovrebbero essere abilitate esplicitamente.
@@ -845,7 +843,7 @@ Per rendere maggiormente restrittiva la compilazione del codice Scala e quindi g
 
 Per quanto riguarda la formattazione del codice, questa viene eseguita in maniera automatizzata dal plugin Gradle Spotless che si appoggia al tool **Scalafmt**. Anche in questo caso, il warning per formattazione non corretta del codice viene convertito in un errore di compilazione.\
 Poiché Scalafmt è supportato da IntelliJ IDEA, è possibile eseguire la formattazione del codice con l'apposito shortcut, mantenendo lo stile definito nel file di configurazione del plugin.\
-Inoltre l'esecuzione del task **compileScala** dipende da **spotlessCheck**, per assicurarsi che la compilazione del codice avvenga unicamente se questo è formattato correttamente. 
+Inoltre l'esecuzione del task **compileScala** dipende da **spotlessCheck**, per assicurarsi che la compilazione del codice avvenga unicamente se questo è formattato correttamente.
 
 ## 7. Retrospective
 
