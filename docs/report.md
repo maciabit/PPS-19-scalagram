@@ -763,7 +763,7 @@ Per questo processo si è deciso di automatizzare gli step fino all'aggiunta deg
 
 La fase di build è strutturata in un unico workflow, i cui aspetti principali sono riportati di seguito.
 
-L'utilizzo di una **matrice di build** ha permesso di riutilizzare codice per generalizzare sistema operativo e versione di Java sui quali eseguire il workflow. La matrice contiene i seguenti elementi: 
+L'utilizzo di una **matrice di build** ha permesso di riutilizzare codice per generalizzare sul sistema operativo e sulla versione di Java sui quali eseguire il workflow. La matrice contiene i seguenti elementi: 
 
 - Sistemi operativi: Windows, MacOS e Ubuntu, ciascuno all'ultima versione resa disponibile da GitHub Actions
 - Versioni di Java: 8, 11 e 14
