@@ -117,7 +117,7 @@ I componenti del team si prefissano di realizzare meeting con cadenza giornalier
 Questa sezione è dedicata all'analisi e definizione dei requisiti di business che caratterizzeranno il sistema. L'approccio utilizzato per la definizione del modello è basato sulla filosofia **Domain Driven Design** (DDD).\
 L'obiettivo del progetto è lo sviluppo di una libreria per la creazione di bot per la piattaforma di messaggistica Telegram.\
 Il progetto è nato grazie alla passione di alcuni membri del gruppo per lo sviluppo di bot Telegram e a causa dell'assenza di un pratico framework/libreria in Scala che li soddisfacesse.
-Questo capito è suddiviso nelle sezioni Ubiquitous language e Knowledge crunching.
+Questo capitolo è suddiviso nelle sezioni Ubiquitous language e Knowledge crunching.
 
 #### Ubiquitous language
 Questa sezione riporta le terminologie tecniche che sono emerse durante durante tutto lo svolgimento del progetto accompagnate dalla loro definizione.\
