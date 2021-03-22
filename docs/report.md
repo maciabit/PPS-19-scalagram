@@ -525,21 +525,24 @@ Sebbene i modelli presenti siano in grande numero, la struttura utilizzata è si
 
 Elemento fondamentale che accomuna la maggior parte di queste classi è la sezione dedicata alla **derivazione semiautomatica** messa a disposizione dalla libreria Circe.\
 L'utilizzo di deriveDecoder, permette di decodificare in maniera automatica un JSON creando un oggetto della classe corrispondente, basandosi sul match tra i field del JSON e quelli della classe che verrà istanziata.\
-Nel caso in cui un trait fosse ereditato da più classi, quindi, tramite un apposito implicito definito all'interno del **companion object**, viene selezionata la classe che sarà istanziata in maniera automatica o sulla base di parametri specifici, come nel caso della classe MessageEntity nella quale la derivazione viene fatta sulla base del valore assunto da uno specifico campo.
+Nel caso in cui un trait fosse ereditato da più classi, tramite un apposito implicito definito all'interno del companion object, viene selezionata la classe che sarà istanziata in maniera automatica o sulla base di parametri specifici, come nel caso della classe `MessageEntity` nella quale la derivazione viene fatta sulla base del valore assunto da uno specifico campo.
 
-Per le classi utilizzate in fase di invio di un messaggio, ad esempio per la creazione di tastiere, è inoltre presente un **Encoder**, sempre messo a disposizione da Circe, utilizzato per convertire in maniera automatica o sulla base di uno specifico parametro un'istanza di tale classe in formato JSON.
+In questa sezione del progetto, quindi, sono presenti numerosi impliciti, utilizzati per inserire nei companion object dei model i decoder corrispondenti.
 
-In fase di ricezione di un update il trait **Update** con il companion object ad esso associato sono incaricati dell'avvio delle operazioni di derivazione semiautomatica e deve quindi convertire l'intero JSON in stile camel case così da assicurare la corrispondenza tra i campi del JSON e delle classi.\
-Classi e trait in questa porzione di progetto risultano innestate secondo una complessa gerarchia, atta non solo a fornire una corretta rappresentazione, ma anche a facilitare le operazioni esterne di accesso ai campi dei messaggi:
-- **Update**: rappresenta un generico update. L'unico campo che accomuna tutte le tipologie è `updateId`, l'identificatore.
-- **ChatUpdate**: rappresenta un generico update appartenente ad una specifica chat. Utilizzato per reperire in maniera immediata la chat di appartenenza di un messaggio senza scendere nella gerarchia.
-- **MessageUpdate**: rappresenta tutti i messaggi, esclusivi quelli di tipo Callback. Utilizzato per impostare correttamente i campi del messaggio, incluso l'`updateType`, utilizzato per verificare la classe di appartenenza del messaggio senza dover analizzare la gerarchia innestata.
+Per le classi utilizzate in fase di invio di un messaggio, ad esempio per la creazione di tastiere, è inoltre presente un `Encoder`, sempre messo a disposizione da Circe, utilizzato per convertire in maniera automatica o sulla base di uno specifico parametro un'istanza di tale classe in formato JSON.
 
-La definizione di questi tre trait/abstract class permette di definire dei metodi che garantiscano un contratto unificato per l'accesso ai campi delle classi, senza influire sull'encoding/decoding automatico delle stesse, essendo necessaria una corrispondenza tra i nomi utilizzati dalle Telegram API e quelli dei modelli della libreria.
+In fase di ricezione di un update, la classe `Update` è incaricata dell'avvio delle operazioni di derivazione semiautomatica e deve quindi convertire l'intero JSON in stile camel case così da assicurare la corrispondenza tra i campi del JSON e delle classi.
 
-La stessa operazione di conversione in camel case deve essere effettuata in fase di decodifica da tutte le classi le cui istanze possono essere restituite da una chiamata alle API di Telegram, come ad esempio **TelegramMessage**.
+La stessa operazione di conversione in camel case deve essere effettuata in fase di decodifica da tutte le classi le cui istanze possono essere restituite da una chiamata alle API di Telegram, come ad esempio `TelegramMessage`.
 
-In questa sezione del progetto, quindi, il pattern maggiormente presente è certamente **Pimp My library**, utilizzato per estendere le classi messe a disposizione dalla libreria Circe.
+Gli oggetti restituiti dalle Telegram API, in particolar modo per quanto riguarda gli update, contengono innumerevoli campi innestati e opzionali. Questo renderebbe complicato, per lo sviluppatore finale, accedere ai dati, pertanto è stata studiata una gerarchia a partire dal trait `Update` che faciliti l'accesso alle informazioni principali, ossia `Chat`, `User`, e `Payload` di un update. Tale gerarchia è riportata di seguito:
+- `trait Update`: rappresenta un generico update, identificato da un `updateId`
+  - `trait ChatUpdate`: rappresenta un update riferito ad una specifica chat, permettendo l'accesso all'istanza di `Chat` senza scendere nella gerarchia
+    - `abstract class MessageUpdate`: rappresenta un ChatUpdate contenente un messaggio (proprietà `message`). Implementazioni: `MessageReceived`, `MessageEdited`, `ChannelPostReceived`, `ChannelPostEdited`
+    - `class CallbackButtonSelected`: rappresenta la pressione dal tasto di una tastiera inline
+  - `class UnknownUpdate`: rappresenta un update non gestito dalla libreria
+
+Questa struttura permette di mantenere invariati i modelli degli oggetti restituiti da Telegram, in modo da non complicare le operazioni di decoding.
 
 #### Package PPS19.scalagram.marshalling
 
