@@ -76,7 +76,7 @@ implementation 'io.github.maciabit:PPS-19-scalagram:<VERSION>'
 
 Gradle dependency (Kotlin DSL):
 ```kotlin
-implementation 'implementation("io.github.maciabit:PPS-19-scalagram:<VERSION>")'
+implementation("io.github.maciabit:PPS-19-scalagram:<VERSION>")
 ```
 
 sbt dependency:
