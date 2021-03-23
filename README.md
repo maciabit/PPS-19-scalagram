@@ -69,14 +69,19 @@ object SimpleBot extends App {
 
 ## Getting started
 
-Gradle dependency:
+Gradle dependency (Groovy DSL):
+```groovy
+implementation 'io.github.maciabit:PPS-19-scalagram:<VERSION>'
 ```
-coming soon
+
+Gradle dependency (Kotlin DSL):
+```kotlin
+implementation 'implementation("io.github.maciabit:PPS-19-scalagram:<VERSION>")'
 ```
 
 sbt dependency:
-```
-coming soon
+```scala
+libraryDependencies += "io.github.maciabit" % "PPS-19-scalagram" % "<VERSION>"
 ```
 
 Build from source:
