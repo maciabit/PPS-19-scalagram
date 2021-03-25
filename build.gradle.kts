@@ -9,7 +9,7 @@ plugins {
     `maven-publish`
     signing
 
-    id("org.danilopianini.publish-on-central") version "0.4.2-dev09-f29ccec"
+    id("org.danilopianini.publish-on-central") version "0.4.3-dev01-3da9d5d"
     id("com.diffplug.spotless") version "5.11.0"
     id("org.scoverage") version "5.0.0"
     id("org.danilopianini.git-sensitive-semantic-versioning") version "0.1.0"
