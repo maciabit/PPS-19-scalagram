@@ -23,7 +23,7 @@ repositories {
 dependencies {
     implementation("org.scala-lang:scala-library:2.13.5")
 
-    implementation("com.lihaoyi:requests_2.13:0.6.5")
+    implementation("com.lihaoyi:requests_2.13:0.6.8")
 
     implementation("io.circe:circe-core_2.13:0.14.0-M4")
     implementation("io.circe:circe-parser_2.13:0.14.0-M4")
