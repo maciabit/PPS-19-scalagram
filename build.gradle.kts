@@ -12,7 +12,7 @@ plugins {
     id("org.danilopianini.publish-on-central") version "0.4.2-dev09-f29ccec"
     id("com.diffplug.spotless") version "5.11.0"
     id("org.scoverage") version "5.0.0"
-    id("org.danilopianini.git-sensitive-semantic-versioning") version "0.1.0"
+    id("org.danilopianini.git-sensitive-semantic-versioning") version "0.2.3"
     id("org.kordamp.gradle.scaladoc") version "0.40.0"
 }
 
@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.scala-lang:scala-library:2.13.5")
+    implementation("org.scala-lang:scala-library:2.13.6")
 
     implementation("com.lihaoyi:requests_2.13:0.6.5")
 
