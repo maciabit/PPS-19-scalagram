@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.scala-lang:scala-library:2.13.5")
+    implementation("org.scala-lang:scala-library:2.13.6")
 
     implementation("com.lihaoyi:requests_2.13:0.6.5")
 
