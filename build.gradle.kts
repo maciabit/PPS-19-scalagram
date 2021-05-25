@@ -12,7 +12,7 @@ plugins {
     id("org.danilopianini.publish-on-central") version "0.4.2-dev09-f29ccec"
     id("com.diffplug.spotless") version "5.11.0"
     id("org.scoverage") version "5.0.0"
-    id("org.danilopianini.git-sensitive-semantic-versioning") version "0.1.0"
+    id("org.danilopianini.git-sensitive-semantic-versioning") version "0.2.3"
     id("org.kordamp.gradle.scaladoc") version "0.40.0"
 }
 
@@ -36,7 +36,7 @@ dependencies {
     testImplementation("org.scalatest:scalatest_2.13:3.3.0-SNAP3")
     testImplementation("org.scalatestplus:junit-4-12_2.13:3.3.0.0-SNAP2")
 
-    testRuntimeOnly("org.scala-lang.modules:scala-xml_2.13:1.3.0")
+    testRuntimeOnly("org.scala-lang.modules:scala-xml_2.13:2.0.0")
 }
 
 val additionalScalaCParams = listOf("-Xfatal-warnings", "-Ywarn-unused", "-feature", "-language:implicitConversions")
