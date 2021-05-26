@@ -25,7 +25,7 @@ dependencies {
 
     implementation("com.lihaoyi:requests_2.13:0.6.9")
 
-    implementation("io.circe:circe-core_2.13:0.14.0-M7")
+    implementation("io.circe:circe-core_2.13:0.14.0")
     implementation("io.circe:circe-parser_2.13:0.14.0-M4")
     implementation("io.circe:circe-generic_2.13:0.14.0-M7")
 
