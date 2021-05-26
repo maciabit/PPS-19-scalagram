@@ -10,7 +10,7 @@ plugins {
     signing
 
     id("org.danilopianini.publish-on-central") version "0.4.4"
-    id("com.diffplug.spotless") version "5.11.0"
+    id("com.diffplug.spotless") version "5.12.5"
     id("org.scoverage") version "5.0.0"
     id("org.danilopianini.git-sensitive-semantic-versioning") version "0.2.3"
     id("org.kordamp.gradle.scaladoc") version "0.40.0"
