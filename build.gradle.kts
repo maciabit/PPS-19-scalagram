@@ -9,7 +9,7 @@ plugins {
     `maven-publish`
     signing
 
-    id("org.danilopianini.publish-on-central") version "0.4.2-dev09-f29ccec"
+    id("org.danilopianini.publish-on-central") version "0.4.4"
     id("com.diffplug.spotless") version "5.11.0"
     id("org.scoverage") version "5.0.0"
     id("org.danilopianini.git-sensitive-semantic-versioning") version "0.2.3"
@@ -30,7 +30,7 @@ dependencies {
     implementation("io.circe:circe-generic_2.13:0.14.0-M4")
 
     implementation("org.slf4j:slf4j-nop:1.7.30")
-    implementation("com.typesafe.akka:akka-actor-typed_2.13:2.6.13")
+    implementation("com.typesafe.akka:akka-actor-typed_2.13:2.6.14")
 
     testImplementation("junit:junit:null")
     testImplementation("org.scalatest:scalatest_2.13:3.3.0-SNAP3")
